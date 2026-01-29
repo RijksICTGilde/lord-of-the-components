@@ -1,0 +1,60 @@
+// =============================================================================
+// c-breadcrumb - Breadcrumb navigation
+// =============================================================================
+
+component "breadcrumb" {
+    description "Breadcrumb navigation showing page hierarchy"
+    category "navigation"
+    status "stable"
+
+    props {
+        items type="array" {
+            description "Breadcrumb items"
+            item-shape {
+                label "string" required=true
+                href "string"
+            }
+        }
+        separator type="string" default="/" {
+            description "Separator character or icon name"
+        }
+    }
+
+    slots {
+        default {
+            description "Breadcrumb items"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Breadcrumb"
+            code ```
+                <c-breadcrumb>
+                    <c-breadcrumb-item href="/">Home</c-breadcrumb-item>
+                    <c-breadcrumb-item href="/products">Products</c-breadcrumb-item>
+                    <c-breadcrumb-item>Widget Pro</c-breadcrumb-item>
+                </c-breadcrumb>
+            ```
+        }
+        example "from-data" {
+            title "From Data"
+            code ```
+                <c-breadcrumb :items="[
+                    {label: 'Home', href: '/'},
+                    {label: 'Category', href: '/category'},
+                    {label: 'Current Page'}
+                ]" />
+            ```
+        }
+        example "custom-separator" {
+            title "Custom Separator"
+            code ```
+                <c-breadcrumb separator="›">
+                    <c-breadcrumb-item href="/">Home</c-breadcrumb-item>
+                    <c-breadcrumb-item>Page</c-breadcrumb-item>
+                </c-breadcrumb>
+            ```
+        }
+    }
+}

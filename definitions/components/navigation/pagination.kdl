@@ -1,0 +1,74 @@
+// =============================================================================
+// c-pagination - Page navigation
+// =============================================================================
+
+component "pagination" {
+    description "Pagination controls for paged content"
+    category "navigation"
+    status "stable"
+
+    props {
+        currentPage type="number" required=true {
+            description "Current page number (1-based)"
+        }
+        totalPages type="number" required=true {
+            description "Total number of pages"
+        }
+        totalItems type="number" {
+            description "Total item count (for display)"
+        }
+        itemsPerPage type="number" {
+            description "Items per page (for display)"
+        }
+
+        // Display options
+        showFirstLast type="boolean" default=true {
+            description "Show first/last page buttons"
+        }
+        showPrevNext type="boolean" default=true {
+            description "Show prev/next buttons"
+        }
+        maxVisiblePages type="number" default=5 {
+            description "Max page numbers to show"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Pagination size"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Pagination"
+            code ```
+                <c-pagination currentPage="3" totalPages="10" />
+            ```
+        }
+        example "with-info" {
+            title "With Item Info"
+            code ```
+                <c-pagination
+                    currentPage="2"
+                    totalPages="5"
+                    totalItems="47"
+                    itemsPerPage="10"
+                />
+            ```
+        }
+        example "minimal" {
+            title "Minimal"
+            code ```
+                <c-pagination
+                    currentPage="1"
+                    totalPages="3"
+                    :showFirstLast="false"
+                />
+            ```
+        }
+    }
+}

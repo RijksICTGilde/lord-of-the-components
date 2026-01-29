@@ -1,0 +1,83 @@
+// =============================================================================
+// c-input-file - File input element
+// =============================================================================
+
+component "input-file" {
+    description "File upload input element"
+    category "inputs"
+    status "stable"
+
+    props {
+        name type="string" {
+            description "Form field name"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable input"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Input size"
+            values "sm" "md" "lg"
+        }
+
+        // File options
+        accept type="string" {
+            description "Accepted file types (e.g., 'image/*,.pdf')"
+        }
+        multiple type="boolean" default=false {
+            description "Allow multiple files"
+        }
+        capture type="capture" {
+            description "Camera capture mode"
+            values "user" "environment"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Input ID"
+        }
+        ariaDescribedby type="string" {
+            description "ID of describing element"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "basic" {
+            title "Basic File Input"
+            code ```
+                <c-input-file name="document" />
+            ```
+        }
+        example "images-only" {
+            title "Images Only"
+            code ```
+                <c-input-file name="photo" accept="image/*" />
+            ```
+        }
+        example "multiple" {
+            title "Multiple Files"
+            code ```
+                <c-input-file name="attachments" multiple accept=".pdf,.doc,.docx" />
+            ```
+        }
+        example "camera" {
+            title "Camera Capture"
+            code ```
+                <c-input-file name="selfie" accept="image/*" capture="user" />
+            ```
+        }
+    }
+}

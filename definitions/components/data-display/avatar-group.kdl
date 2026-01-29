@@ -1,0 +1,70 @@
+// =============================================================================
+// c-avatar-group - Group of avatars
+// =============================================================================
+
+component "avatar-group" {
+    description "Stacked group of avatars"
+    category "data-display"
+    status "stable"
+
+    props {
+        max type="number" {
+            description "Maximum avatars to show"
+        }
+        size type="generic-size" default="md" {
+            description "Avatar size for all children"
+            values "xs" "sm" "md" "lg" "xl"
+        }
+        spacing type="avatar-group-spacing" default="tight" {
+            description "Overlap amount"
+            values "tight" "normal" "loose"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Avatar components"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Avatar Group"
+            code ```
+                <c-avatar-group>
+                    <c-avatar src="/user1.jpg" />
+                    <c-avatar src="/user2.jpg" />
+                    <c-avatar src="/user3.jpg" />
+                </c-avatar-group>
+            ```
+        }
+        example "with-max" {
+            title "With Maximum"
+            code ```
+                <c-avatar-group :max="3">
+                    <c-avatar src="/user1.jpg" />
+                    <c-avatar src="/user2.jpg" />
+                    <c-avatar src="/user3.jpg" />
+                    <c-avatar src="/user4.jpg" />
+                    <c-avatar src="/user5.jpg" />
+                </c-avatar-group>
+            ```
+        }
+        example "sizes" {
+            title "Group Sizes"
+            code ```
+                <c-avatar-group size="sm">
+                    <c-avatar name="A" />
+                    <c-avatar name="B" />
+                    <c-avatar name="C" />
+                </c-avatar-group>
+
+                <c-avatar-group size="lg">
+                    <c-avatar name="A" />
+                    <c-avatar name="B" />
+                    <c-avatar name="C" />
+                </c-avatar-group>
+            ```
+        }
+    }
+}

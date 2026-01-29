@@ -1,0 +1,75 @@
+// =============================================================================
+// c-progress - Progress bar
+// =============================================================================
+
+component "progress" {
+    description "Progress bar for task completion"
+    category "feedback"
+    status "stable"
+
+    props {
+        value type="number" required=true {
+            description "Current progress value"
+        }
+        max type="number" default=100 {
+            description "Maximum value"
+        }
+        variant type="generic-color" default="primary" {
+            description "Progress bar color"
+        }
+        size type="generic-size" default="md" {
+            description "Bar thickness"
+            values "sm" "md" "lg"
+        }
+        showValue type="boolean" default=false {
+            description "Display percentage text"
+        }
+        indeterminate type="boolean" default=false {
+            description "Indeterminate/loading state"
+        }
+        label type="string" {
+            description "Accessible label"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Progress"
+            code ```
+                <c-progress :value="65" />
+            ```
+        }
+        example "with-value" {
+            title "With Percentage"
+            code ```
+                <c-progress :value="42" showValue />
+            ```
+        }
+        example "variants" {
+            title "Color Variants"
+            code ```
+                <c-progress :value="80" variant="success" />
+                <c-progress :value="50" variant="warning" />
+                <c-progress :value="30" variant="error" />
+            ```
+        }
+        example "sizes" {
+            title "Sizes"
+            code ```
+                <c-progress :value="60" size="sm" />
+                <c-progress :value="60" size="md" />
+                <c-progress :value="60" size="lg" />
+            ```
+        }
+        example "indeterminate" {
+            title "Indeterminate"
+            code ```
+                <c-progress indeterminate label="Loading..." />
+            ```
+        }
+    }
+}

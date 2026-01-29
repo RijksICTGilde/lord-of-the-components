@@ -1,0 +1,79 @@
+// =============================================================================
+// c-input-email - Email input element
+// =============================================================================
+
+component "input-email" {
+    description "Email input element with built-in validation"
+    category "inputs"
+    status "stable"
+
+    props {
+        name type="string" {
+            description "Form field name"
+        }
+        value type="string" {
+            description "Current value"
+        }
+        placeholder type="string" default="email@example.com" {
+            description "Placeholder text"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable input"
+        }
+        readonly type="boolean" default=false {
+            description "Read-only mode"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Input size"
+            values "sm" "md" "lg"
+        }
+
+        // Validation
+        multiple type="boolean" default=false {
+            description "Allow multiple emails (comma-separated)"
+        }
+        pattern type="string" {
+            description "Custom validation regex"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Input ID"
+        }
+        ariaDescribedby type="string" {
+            description "ID of describing element"
+        }
+        autocomplete type="autocomplete" default="email" {
+            description "Autocomplete hint"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Email Input"
+            code ```
+                <c-input-email name="email" />
+            ```
+        }
+        example "multiple" {
+            title "Multiple Emails"
+            code ```
+                <c-input-email name="recipients" multiple placeholder="Enter emails..." />
+            ```
+        }
+    }
+}

@@ -1,0 +1,68 @@
+// =============================================================================
+// c-icon - Icon display
+// =============================================================================
+
+component "icon" {
+    description "SVG icon display"
+    category "data-display"
+    status "stable"
+
+    props {
+        name type="icon" required=true {
+            description "Icon name from icon set"
+        }
+        size type="generic-size" default="md" {
+            description "Icon size"
+            values "xs" "sm" "md" "lg" "xl" "2xl"
+        }
+        color type="icon-color" {
+            description "Icon color (inherits by default)"
+            values "current" "primary" "secondary" "success" "warning" "error" "muted"
+        }
+        ariaLabel type="string" {
+            description "Accessible label (if icon has meaning)"
+        }
+        ariaHidden type="boolean" default=true {
+            description "Hide from screen readers (decorative)"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Icon"
+            code ```
+                <c-icon name="home" />
+                <c-icon name="user" />
+                <c-icon name="settings" />
+            ```
+        }
+        example "sizes" {
+            title "Icon Sizes"
+            code ```
+                <c-icon name="star" size="xs" />
+                <c-icon name="star" size="sm" />
+                <c-icon name="star" size="md" />
+                <c-icon name="star" size="lg" />
+                <c-icon name="star" size="xl" />
+            ```
+        }
+        example "colors" {
+            title "Icon Colors"
+            code ```
+                <c-icon name="check" color="success" />
+                <c-icon name="alert-circle" color="warning" />
+                <c-icon name="x" color="error" />
+            ```
+        }
+        example "accessible" {
+            title "Accessible Icon"
+            code ```
+                <c-icon name="warning" ariaLabel="Warning" :ariaHidden="false" />
+            ```
+        }
+    }
+}

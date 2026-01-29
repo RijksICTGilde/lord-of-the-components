@@ -1,0 +1,74 @@
+// =============================================================================
+// c-badge - Badge / counter
+// =============================================================================
+
+component "badge" {
+    description "Badge for status indicators or counts"
+    category "feedback"
+    status "stable"
+
+    props {
+        variant type="generic-color" default="neutral" {
+            description "Badge color variant"
+        }
+        size type="generic-size" default="md" {
+            description "Badge size"
+            values "sm" "md" "lg"
+        }
+        rounded type="boolean" default=false {
+            description "Fully rounded (pill shape)"
+        }
+        dot type="boolean" default=false {
+            description "Show as dot only (no content)"
+        }
+        max type="number" {
+            description "Max value to display (shows '99+' if exceeded)"
+        }
+    }
+
+    slots {
+        default {
+            description "Badge content (text or number)"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Badge"
+            code ```
+                <c-badge>New</c-badge>
+            ```
+        }
+        example "variants" {
+            title "Color Variants"
+            code ```
+                <c-badge variant="primary">Primary</c-badge>
+                <c-badge variant="success">Success</c-badge>
+                <c-badge variant="warning">Warning</c-badge>
+                <c-badge variant="error">Error</c-badge>
+            ```
+        }
+        example "counter" {
+            title "Counter Badge"
+            code ```
+                <c-badge variant="error" rounded>5</c-badge>
+                <c-badge variant="error" rounded :max="99">150</c-badge>
+            ```
+        }
+        example "dot" {
+            title "Dot Badge"
+            code ```
+                <c-badge variant="error" dot />
+            ```
+        }
+        example "with-icon" {
+            title "Badge on Icon"
+            code ```
+                <span class="relative">
+                    <c-icon name="bell" />
+                    <c-badge variant="error" dot class="absolute -top-1 -right-1" />
+                </span>
+            ```
+        }
+    }
+}

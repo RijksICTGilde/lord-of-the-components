@@ -1,0 +1,51 @@
+// =============================================================================
+// c-container - Centered container with max-width
+// =============================================================================
+
+component "container" {
+    description "Centered container with configurable max-width"
+    category "layout"
+    status "stable"
+
+    props {
+        maxWidth type="container-size" default="lg" {
+            description "Maximum width constraint"
+            values "sm" "md" "lg" "xl" "2xl" "full"
+        }
+        padding type="generic-spacing" default="md" {
+            description "Horizontal padding"
+        }
+        centered type="boolean" default=true {
+            description "Center the container horizontally"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Container content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Container"
+            code ```
+                <c-container>
+                    <h1>Centered Content</h1>
+                    <p>This content is constrained to a max-width.</p>
+                </c-container>
+            ```
+        }
+        example "sizes" {
+            title "Different Sizes"
+            code ```
+                <c-container maxWidth="sm">
+                    <p>Small container (640px)</p>
+                </c-container>
+                <c-container maxWidth="xl">
+                    <p>Extra large container (1280px)</p>
+                </c-container>
+            ```
+        }
+    }
+}

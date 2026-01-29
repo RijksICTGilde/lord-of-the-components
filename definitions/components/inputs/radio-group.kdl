@@ -1,0 +1,92 @@
+// =============================================================================
+// c-radio-group - Group of radio buttons
+// =============================================================================
+
+component "radio-group" {
+    description "Group of mutually exclusive radio buttons"
+    category "inputs"
+    status "stable"
+
+    props {
+        label type="string" {
+            description "Group label (legend)"
+        }
+        options type="array" {
+            description "Available options"
+            item-shape {
+                label "string" required=true
+                value "any" required=true
+                disabled "boolean"
+                description "string"
+            }
+        }
+        value type="any" {
+            description "Selected value"
+        }
+        name type="string" required=true {
+            description "Form field name"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable all radios"
+        }
+        required type="boolean" default=false {
+            description "Required selection"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Layout
+        direction type="direction" default="vertical" {
+            description "Layout direction"
+        }
+        gap type="generic-spacing" default="sm" {
+            description "Gap between items"
+        }
+    }
+
+    slots {
+        helper {
+            description "Helper text"
+        }
+        error {
+            description "Error message"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Radio Group"
+            code ```
+                <c-radio-group
+                    label="Payment Method"
+                    name="payment"
+                    :options="[
+                        {label: 'Credit Card', value: 'card'},
+                        {label: 'iDEAL', value: 'ideal'},
+                        {label: 'PayPal', value: 'paypal'}
+                    ]"
+                />
+            ```
+        }
+        example "horizontal" {
+            title "Horizontal Layout"
+            code ```
+                <c-radio-group
+                    label="Rating"
+                    name="rating"
+                    direction="horizontal"
+                    :options="[
+                        {label: '1', value: 1},
+                        {label: '2', value: 2},
+                        {label: '3', value: 3},
+                        {label: '4', value: 4},
+                        {label: '5', value: 5}
+                    ]"
+                />
+            ```
+        }
+    }
+}

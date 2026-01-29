@@ -1,0 +1,74 @@
+// =============================================================================
+// c-skeleton - Skeleton loading placeholder
+// =============================================================================
+
+component "skeleton" {
+    description "Skeleton placeholder for loading states"
+    category "feedback"
+    status "stable"
+
+    props {
+        variant type="skeleton-variant" default="text" {
+            description "Skeleton shape"
+            values "text" "circular" "rectangular"
+        }
+        width type="string" {
+            description "Width (CSS value)"
+        }
+        height type="string" {
+            description "Height (CSS value)"
+        }
+        lines type="number" default=1 {
+            description "Number of text lines (for variant=text)"
+        }
+        animation type="skeleton-animation" default="pulse" {
+            description "Animation type"
+            values "pulse" "wave" "none"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "text" {
+            title "Text Skeleton"
+            code ```
+                <c-skeleton variant="text" />
+                <c-skeleton variant="text" width="80%" />
+                <c-skeleton variant="text" width="60%" />
+            ```
+        }
+        example "multi-line" {
+            title "Multi-line Text"
+            code ```
+                <c-skeleton variant="text" :lines="3" />
+            ```
+        }
+        example "circular" {
+            title "Circular (Avatar)"
+            code ```
+                <c-skeleton variant="circular" width="48px" height="48px" />
+            ```
+        }
+        example "rectangular" {
+            title "Rectangular (Image)"
+            code ```
+                <c-skeleton variant="rectangular" width="100%" height="200px" />
+            ```
+        }
+        example "card-loading" {
+            title "Card Loading State"
+            code ```
+                <c-card>
+                    <c-skeleton variant="rectangular" height="150px" />
+                    <div class="p-4">
+                        <c-skeleton variant="text" width="70%" />
+                        <c-skeleton variant="text" :lines="2" />
+                    </div>
+                </c-card>
+            ```
+        }
+    }
+}

@@ -1,0 +1,81 @@
+// =============================================================================
+// c-avatar - User avatar
+// =============================================================================
+
+component "avatar" {
+    description "User avatar image or initials"
+    category "data-display"
+    status "stable"
+
+    props {
+        src type="string" {
+            description "Image URL"
+        }
+        alt type="string" {
+            description "Alt text for image"
+        }
+        name type="string" {
+            description "Name (for initials fallback)"
+        }
+        size type="generic-size" default="md" {
+            description "Avatar size"
+            values "xs" "sm" "md" "lg" "xl" "2xl"
+        }
+        shape type="avatar-shape" default="circle" {
+            description "Avatar shape"
+            values "circle" "square" "rounded"
+        }
+        status type="avatar-status" {
+            description "Online/offline status indicator"
+            values "online" "offline" "away" "busy"
+        }
+    }
+
+    slots {
+        fallback {
+            description "Custom fallback content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Avatar"
+            code ```
+                <c-avatar src="/avatar.jpg" alt="John Doe" />
+            ```
+        }
+        example "initials" {
+            title "Initials Fallback"
+            code ```
+                <c-avatar name="John Doe" />
+            ```
+        }
+        example "sizes" {
+            title "Avatar Sizes"
+            code ```
+                <c-avatar size="xs" name="XS" />
+                <c-avatar size="sm" name="SM" />
+                <c-avatar size="md" name="MD" />
+                <c-avatar size="lg" name="LG" />
+                <c-avatar size="xl" name="XL" />
+            ```
+        }
+        example "shapes" {
+            title "Avatar Shapes"
+            code ```
+                <c-avatar shape="circle" src="/avatar.jpg" />
+                <c-avatar shape="rounded" src="/avatar.jpg" />
+                <c-avatar shape="square" src="/avatar.jpg" />
+            ```
+        }
+        example "status" {
+            title "With Status"
+            code ```
+                <c-avatar src="/avatar.jpg" status="online" />
+                <c-avatar src="/avatar.jpg" status="away" />
+                <c-avatar src="/avatar.jpg" status="busy" />
+                <c-avatar src="/avatar.jpg" status="offline" />
+            ```
+        }
+    }
+}

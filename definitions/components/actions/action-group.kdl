@@ -1,0 +1,115 @@
+// =============================================================================
+// c-action-group - Group of action buttons
+// =============================================================================
+
+component "action-group" {
+    description "Group of related action buttons with layout control"
+    category "actions"
+    status "stable"
+
+    props {
+        // Data-driven
+        actions type="array" {
+            description "Actions as data"
+            item-shape {
+                label "string" required=true
+                variant "generic-color"
+                icon "icon"
+                href "string"
+                disabled "boolean"
+            }
+        }
+
+        // Layout
+        direction type="direction" default="horizontal" {
+            description "Layout direction"
+            values "horizontal" "vertical"
+        }
+        align type="align" default="start" {
+            description "Alignment within container"
+            values "start" "center" "end" "space-between"
+        }
+        gap type="generic-size" default="md" {
+            description "Gap between items"
+            values "xs" "sm" "md" "lg"
+        }
+
+        // Appearance
+        size type="generic-size" {
+            description "Size for all buttons (overrides individual)"
+            values "sm" "md" "lg"
+        }
+        fullWidth type="boolean" default=false {
+            description "Buttons take full width"
+        }
+    }
+
+    slots {
+        default {
+            description "Action buttons (manual composition)"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Action Group"
+            code ```
+                <c-action-group>
+                    <c-button variant="primary">Save</c-button>
+                    <c-button variant="secondary">Cancel</c-button>
+                </c-action-group>
+            ```
+        }
+        example "data-driven" {
+            title "Data-Driven"
+            code ```
+                <c-action-group :actions='[
+                    {"label": "Save", "variant": "primary"},
+                    {"label": "Save as Draft", "variant": "secondary"},
+                    {"label": "Cancel", "variant": "ghost"}
+                ]' />
+            ```
+        }
+        example "alignment" {
+            title "Right Aligned"
+            code ```
+                <c-action-group align="end">
+                    <c-button variant="secondary">Cancel</c-button>
+                    <c-button variant="primary">Submit</c-button>
+                </c-action-group>
+            ```
+        }
+        example "space-between" {
+            title "Space Between"
+            code ```
+                <c-action-group align="space-between">
+                    <c-button variant="ghost">Back</c-button>
+                    <c-button variant="primary">Continue</c-button>
+                </c-action-group>
+            ```
+        }
+        example "vertical" {
+            title "Vertical Stack"
+            code ```
+                <c-action-group direction="vertical" fullWidth>
+                    <c-button variant="primary">Sign in</c-button>
+                    <c-button variant="secondary">Create account</c-button>
+                    <c-button variant="ghost">Forgot password?</c-button>
+                </c-action-group>
+            ```
+        }
+        example "form-actions" {
+            title "Form Actions"
+            code ```
+                <c-form>
+                    <!-- form fields -->
+                    <c-action-group align="end" gap="sm">
+                        <c-button variant="ghost">Reset</c-button>
+                        <c-button variant="secondary">Save Draft</c-button>
+                        <c-button variant="primary">Submit</c-button>
+                    </c-action-group>
+                </c-form>
+            ```
+        }
+    }
+}

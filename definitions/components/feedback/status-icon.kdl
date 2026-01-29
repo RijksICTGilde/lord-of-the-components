@@ -1,0 +1,70 @@
+// =============================================================================
+// c-status-icon - Status indicator icon
+// =============================================================================
+
+component "status-icon" {
+    description "Icon indicating status (info, success, warning, error)"
+    category "feedback"
+    status "stable"
+
+    props {
+        status type="status" required=true {
+            description "Status type"
+            values "info" "success" "warning" "error"
+        }
+        size type="generic-size" default="md" {
+            description "Icon size"
+            values "sm" "md" "lg" "xl"
+        }
+        ariaLabel type="string" {
+            description "Accessible label (auto-generated from status if not provided)"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "basic" {
+            title "Status Icons"
+            code ```
+                <c-status-icon status="info" />
+                <c-status-icon status="success" />
+                <c-status-icon status="warning" />
+                <c-status-icon status="error" />
+            ```
+        }
+        example "sizes" {
+            title "Sizes"
+            code ```
+                <c-status-icon status="success" size="sm" />
+                <c-status-icon status="success" size="md" />
+                <c-status-icon status="success" size="lg" />
+                <c-status-icon status="success" size="xl" />
+            ```
+        }
+        example "in-context" {
+            title "In Context"
+            code ```
+                <p>
+                    <c-status-icon status="success" size="sm" />
+                    Operation completed successfully
+                </p>
+                <p>
+                    <c-status-icon status="error" size="sm" />
+                    Connection failed
+                </p>
+            ```
+        }
+        example "with-text" {
+            title "With Text"
+            code ```
+                <div class="flex items-center gap-2">
+                    <c-status-icon status="warning" />
+                    <span>Your session will expire soon</span>
+                </div>
+            ```
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "lord-of-the-components",
+  "version": "0.1.0",
+  "description": "Implementation-agnostic component system with c- prefixed tagnames",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "core"
+  ],
+  "scripts": {
+    "build": "npm run build -w core",
+    "dev": "npm run dev -w core",
+    "test": "npm run test -w core",
+    "lint": "npm run lint -w core",
+    "lotc": "node core/dist/cli/index.js"
+  },
+  "keywords": [
+    "components",
+    "design-system",
+    "jinja2",
+    "react",
+    "web-components"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

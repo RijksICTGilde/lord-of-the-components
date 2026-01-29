@@ -1,0 +1,132 @@
+// Lord of the Components - Color Primitives
+// Raw color values that form the foundation of the design system
+
+colors {
+    // Neutrals
+    white {
+        "DEFAULT" (color)"#ffffff"
+    }
+    black {
+        "DEFAULT" (color)"#000000"
+    }
+
+    // Gray scale
+    gray {
+        "50" (color)"#f9fafb"
+        "100" (color)"#f3f4f6"
+        "200" (color)"#e5e7eb"
+        "300" (color)"#d1d5db"
+        "400" (color)"#9ca3af"
+        "500" (color)"#6b7280"
+        "600" (color)"#4b5563"
+        "700" (color)"#374151"
+        "800" (color)"#1f2937"
+        "900" (color)"#111827"
+        "950" (color)"#030712"
+    }
+
+    // Blue
+    blue {
+        "50" (color)"#eff6ff"
+        "100" (color)"#dbeafe"
+        "200" (color)"#bfdbfe"
+        "300" (color)"#93c5fd"
+        "400" (color)"#60a5fa"
+        "500" (color)"#3b82f6"
+        "600" (color)"#2563eb"
+        "700" (color)"#1d4ed8"
+        "800" (color)"#1e40af"
+        "900" (color)"#1e3a8a"
+        "950" (color)"#172554"
+    }
+
+    // Green
+    green {
+        "50" (color)"#f0fdf4"
+        "100" (color)"#dcfce7"
+        "200" (color)"#bbf7d0"
+        "300" (color)"#86efac"
+        "400" (color)"#4ade80"
+        "500" (color)"#22c55e"
+        "600" (color)"#16a34a"
+        "700" (color)"#15803d"
+        "800" (color)"#166534"
+        "900" (color)"#14532d"
+        "950" (color)"#052e16"
+    }
+
+    // Red
+    red {
+        "50" (color)"#fef2f2"
+        "100" (color)"#fee2e2"
+        "200" (color)"#fecaca"
+        "300" (color)"#fca5a5"
+        "400" (color)"#f87171"
+        "500" (color)"#ef4444"
+        "600" (color)"#dc2626"
+        "700" (color)"#b91c1c"
+        "800" (color)"#991b1b"
+        "900" (color)"#7f1d1d"
+        "950" (color)"#450a0a"
+    }
+
+    // Yellow
+    yellow {
+        "50" (color)"#fefce8"
+        "100" (color)"#fef9c3"
+        "200" (color)"#fef08a"
+        "300" (color)"#fde047"
+        "400" (color)"#facc15"
+        "500" (color)"#eab308"
+        "600" (color)"#ca8a04"
+        "700" (color)"#a16207"
+        "800" (color)"#854d0e"
+        "900" (color)"#713f12"
+        "950" (color)"#422006"
+    }
+
+    // Orange
+    orange {
+        "50" (color)"#fff7ed"
+        "100" (color)"#ffedd5"
+        "200" (color)"#fed7aa"
+        "300" (color)"#fdba74"
+        "400" (color)"#fb923c"
+        "500" (color)"#f97316"
+        "600" (color)"#ea580c"
+        "700" (color)"#c2410c"
+        "800" (color)"#9a3412"
+        "900" (color)"#7c2d12"
+        "950" (color)"#431407"
+    }
+
+    // Purple
+    purple {
+        "50" (color)"#faf5ff"
+        "100" (color)"#f3e8ff"
+        "200" (color)"#e9d5ff"
+        "300" (color)"#d8b4fe"
+        "400" (color)"#c084fc"
+        "500" (color)"#a855f7"
+        "600" (color)"#9333ea"
+        "700" (color)"#7e22ce"
+        "800" (color)"#6b21a8"
+        "900" (color)"#581c87"
+        "950" (color)"#3b0764"
+    }
+
+    // Teal
+    teal {
+        "50" (color)"#f0fdfa"
+        "100" (color)"#ccfbf1"
+        "200" (color)"#99f6e4"
+        "300" (color)"#5eead4"
+        "400" (color)"#2dd4bf"
+        "500" (color)"#14b8a6"
+        "600" (color)"#0d9488"
+        "700" (color)"#0f766e"
+        "800" (color)"#115e59"
+        "900" (color)"#134e4a"
+        "950" (color)"#042f2e"
+    }
+}

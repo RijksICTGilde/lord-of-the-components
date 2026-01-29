@@ -1,0 +1,71 @@
+// =============================================================================
+// c-time - Time/date display
+// =============================================================================
+
+component "time" {
+    description "Formatted time or date display"
+    category "data-display"
+    status "stable"
+
+    props {
+        datetime type="string" required=true {
+            description "ISO 8601 datetime string"
+        }
+        format type="time-format" default="relative" {
+            description "Display format"
+            values "relative" "date" "time" "datetime" "custom"
+        }
+        customFormat type="string" {
+            description "Custom format string (when format='custom')"
+        }
+        locale type="string" {
+            description "Locale for formatting (default: browser locale)"
+        }
+        tooltip type="boolean" default=true {
+            description "Show full datetime on hover"
+        }
+    }
+
+    slots {
+        // No slots
+    }
+
+    examples {
+        example "relative" {
+            title "Relative Time"
+            code ```
+                <c-time datetime="2024-01-15T10:30:00Z" format="relative" />
+                <!-- "2 days ago" -->
+            ```
+        }
+        example "date" {
+            title "Date Format"
+            code ```
+                <c-time datetime="2024-01-15T10:30:00Z" format="date" />
+                <!-- "January 15, 2024" -->
+            ```
+        }
+        example "datetime" {
+            title "Date and Time"
+            code ```
+                <c-time datetime="2024-01-15T10:30:00Z" format="datetime" />
+                <!-- "January 15, 2024 at 10:30 AM" -->
+            ```
+        }
+        example "locale" {
+            title "With Locale"
+            code ```
+                <c-time datetime="2024-01-15T10:30:00Z" format="date" locale="nl-NL" />
+                <!-- "15 januari 2024" -->
+            ```
+        }
+        example "in-context" {
+            title "In Context"
+            code ```
+                <p>
+                    Last updated <c-time datetime="2024-01-15T10:30:00Z" />.
+                </p>
+            ```
+        }
+    }
+}

@@ -1,0 +1,89 @@
+// =============================================================================
+// c-empty - Empty state
+// =============================================================================
+
+component "empty" {
+    description "Empty state placeholder for no content"
+    category "feedback"
+    status "stable"
+
+    props {
+        icon type="icon" {
+            description "Illustration or icon"
+        }
+        title type="string" {
+            description "Empty state title"
+        }
+        description type="string" {
+            description "Descriptive message"
+        }
+        size type="generic-size" default="md" {
+            description "Overall size"
+            values "sm" "md" "lg"
+        }
+    }
+
+    slots {
+        default {
+            description "Custom content"
+        }
+        icon {
+            description "Custom illustration slot"
+        }
+        actions {
+            description "Action buttons"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Empty State"
+            code ```
+                <c-empty
+                    icon="inbox"
+                    title="No messages"
+                    description="You don't have any messages yet."
+                />
+            ```
+        }
+        example "with-action" {
+            title "With Action"
+            code ```
+                <c-empty
+                    icon="file"
+                    title="No documents"
+                    description="Get started by uploading your first document."
+                >
+                    <template slot="actions">
+                        <c-button variant="primary" icon="upload">Upload Document</c-button>
+                    </template>
+                </c-empty>
+            ```
+        }
+        example "search-results" {
+            title "No Search Results"
+            code ```
+                <c-empty
+                    icon="search"
+                    title="No results found"
+                    description="Try adjusting your search terms or filters."
+                >
+                    <template slot="actions">
+                        <c-button variant="secondary">Clear Filters</c-button>
+                    </template>
+                </c-empty>
+            ```
+        }
+        example "custom-illustration" {
+            title "Custom Illustration"
+            code ```
+                <c-empty title="Welcome!">
+                    <template slot="icon">
+                        <img src="/illustrations/welcome.svg" alt="" />
+                    </template>
+                    <p>Get started with our quick tutorial.</p>
+                </c-empty>
+            ```
+        }
+    }
+}

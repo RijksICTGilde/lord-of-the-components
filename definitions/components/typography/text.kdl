@@ -1,0 +1,97 @@
+// =============================================================================
+// c-text - Text styling
+// =============================================================================
+
+component "text" {
+    description "Styled text with semantic variants"
+    category "typography"
+    status "stable"
+
+    props {
+        as type="text-element" default="span" {
+            description "HTML element to render"
+            values "span" "p" "div" "label" "strong" "em" "small"
+        }
+        size type="text-size" default="md" {
+            description "Text size"
+            values "xs" "sm" "md" "lg" "xl"
+        }
+        weight type="font-weight" {
+            description "Font weight"
+            values "normal" "medium" "semibold" "bold"
+        }
+        color type="text-color" {
+            description "Text color"
+            values "default" "muted" "primary" "success" "warning" "error"
+        }
+        align type="text-align" {
+            description "Text alignment"
+            values "left" "center" "right" "justify"
+        }
+        truncate type="boolean" default=false {
+            description "Single line with ellipsis"
+        }
+        lineClamp type="number" {
+            description "Max lines before truncation"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Text content"
+        }
+    }
+
+    examples {
+        example "sizes" {
+            title "Text Sizes"
+            code ```
+                <c-text size="xs">Extra small text</c-text>
+                <c-text size="sm">Small text</c-text>
+                <c-text size="md">Medium text (default)</c-text>
+                <c-text size="lg">Large text</c-text>
+                <c-text size="xl">Extra large text</c-text>
+            ```
+        }
+        example "colors" {
+            title "Text Colors"
+            code ```
+                <c-text>Default text</c-text>
+                <c-text color="muted">Muted text</c-text>
+                <c-text color="primary">Primary text</c-text>
+                <c-text color="success">Success text</c-text>
+                <c-text color="error">Error text</c-text>
+            ```
+        }
+        example "weights" {
+            title "Font Weights"
+            code ```
+                <c-text weight="normal">Normal weight</c-text>
+                <c-text weight="medium">Medium weight</c-text>
+                <c-text weight="semibold">Semibold weight</c-text>
+                <c-text weight="bold">Bold weight</c-text>
+            ```
+        }
+        example "paragraph" {
+            title "Paragraph"
+            code ```
+                <c-text as="p">
+                    This is a paragraph of text. It renders as a p element
+                    and includes proper paragraph spacing.
+                </c-text>
+            ```
+        }
+        example "truncate" {
+            title "Truncation"
+            code ```
+                <c-text truncate>
+                    This text will be truncated if it's too long...
+                </c-text>
+                <c-text :lineClamp="2">
+                    This text will be clamped to two lines maximum
+                    and show an ellipsis at the end if needed.
+                </c-text>
+            ```
+        }
+    }
+}

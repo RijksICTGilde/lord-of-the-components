@@ -1,0 +1,80 @@
+// =============================================================================
+// c-menubar-item - Menu bar item
+// =============================================================================
+
+component "menubar-item" {
+    description "Single item in a menubar"
+    category "navigation"
+    status "stable"
+
+    props {
+        href type="string" {
+            description "Link destination"
+        }
+        icon type="icon" {
+            description "Item icon"
+        }
+        active type="boolean" default=false {
+            description "Active/current state"
+        }
+        disabled type="boolean" default=false {
+            description "Disabled state"
+        }
+        align type="align" {
+            description "Alignment (e.g., 'end' for right-aligned)"
+            values "start" "end"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Item label"
+        }
+        submenu {
+            description "Dropdown submenu items"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Item"
+            code ```
+                <c-menubar-item href="/about">About</c-menubar-item>
+            ```
+        }
+        example "with-icon" {
+            title "With Icon"
+            code ```
+                <c-menubar-item href="/settings" icon="settings">Settings</c-menubar-item>
+            ```
+        }
+        example "active" {
+            title "Active State"
+            code ```
+                <c-menubar-item href="/products" active>Products</c-menubar-item>
+            ```
+        }
+        example "with-submenu" {
+            title "With Submenu"
+            code ```
+                <c-menubar-item>
+                    Products
+                    <template slot="submenu">
+                        <c-menubar-item href="/products/a">Category A</c-menubar-item>
+                        <c-menubar-item href="/products/b">Category B</c-menubar-item>
+                    </template>
+                </c-menubar-item>
+            ```
+        }
+        example "right-aligned" {
+            title "Right Aligned"
+            code ```
+                <c-menubar>
+                    <c-menubar-item href="/">Home</c-menubar-item>
+                    <c-menubar-item href="/about">About</c-menubar-item>
+                    <c-menubar-item href="/login" align="end">Login</c-menubar-item>
+                </c-menubar>
+            ```
+        }
+    }
+}

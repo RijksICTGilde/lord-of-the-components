@@ -1,0 +1,35 @@
+# Lord of the Components - Page Component Logic
+# Renders the HTML document structure
+
+# The page component is special - it creates the full HTML document
+# Most of the rendering happens in the connector template (page.html.j2)
+# This RigScript file defines the semantic structure
+
+render.element("html"):
+    attrs.lang = props.lang
+
+    render.element("head"):
+        render.element("meta", charset=props.charset)
+        render.element("meta", name="viewport", content="width=device-width, initial-scale=1.0")
+        render.element("title"):
+            render.text(props.title)
+
+        if props.description:
+            render.element("meta", name="description", content=props.description)
+
+        # Stylesheet links are injected by the connector
+        render.slot("styles")
+
+        # Additional head content
+        if props.head:
+            render.html(props.head)
+
+    render.element("body"):
+        if props.theme:
+            attrs.class = "theme-" + props.theme
+
+        # Main content
+        render.slot("default")
+
+        # Script tags are injected by the connector
+        render.slot("scripts")

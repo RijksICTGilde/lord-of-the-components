@@ -1,0 +1,42 @@
+// =============================================================================
+// c-field-helper - Form field helper text
+// =============================================================================
+
+component "field-helper" {
+    description "Helper/hint text for form inputs"
+    category "inputs"
+    status "stable"
+
+    props {
+        id type="string" {
+            description "ID for aria-describedby association"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Helper text content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Helper Text"
+            code ```
+                <c-field-label for="password">Password</c-field-label>
+                <c-input-password id="password" ariaDescribedby="password-hint" />
+                <c-field-helper id="password-hint">
+                    Must be at least 8 characters with a number
+                </c-field-helper>
+            ```
+        }
+        example "with-link" {
+            title "Helper with Link"
+            code ```
+                <c-field-helper>
+                    See our <c-link href="/privacy">privacy policy</c-link> for details.
+                </c-field-helper>
+            ```
+        }
+    }
+}

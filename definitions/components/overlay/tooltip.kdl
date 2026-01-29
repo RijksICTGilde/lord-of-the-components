@@ -1,0 +1,80 @@
+// =============================================================================
+// c-tooltip - Tooltip
+// =============================================================================
+
+component "tooltip" {
+    description "Simple text tooltip on hover/focus"
+    category "overlay"
+    status "stable"
+
+    props {
+        content type="string" required=true {
+            description "Tooltip text"
+        }
+        placement type="placement" default="top" {
+            description "Position relative to target"
+        }
+        delay type="number" default=200 {
+            description "Show delay in ms"
+        }
+        hideDelay type="number" default=0 {
+            description "Hide delay in ms"
+        }
+        arrow type="boolean" default=true {
+            description "Show arrow pointer"
+        }
+        disabled type="boolean" default=false {
+            description "Disable tooltip"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Target element"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Tooltip"
+            code ```
+                <c-tooltip content="This is a tooltip">
+                    <c-button>Hover me</c-button>
+                </c-tooltip>
+            ```
+        }
+        example "placements" {
+            title "Tooltip Placements"
+            code ```
+                <c-tooltip content="Top" placement="top">
+                    <c-button>Top</c-button>
+                </c-tooltip>
+                <c-tooltip content="Bottom" placement="bottom">
+                    <c-button>Bottom</c-button>
+                </c-tooltip>
+                <c-tooltip content="Left" placement="left">
+                    <c-button>Left</c-button>
+                </c-tooltip>
+                <c-tooltip content="Right" placement="right">
+                    <c-button>Right</c-button>
+                </c-tooltip>
+            ```
+        }
+        example "icon-button" {
+            title "On Icon Button"
+            code ```
+                <c-tooltip content="Edit item">
+                    <c-icon-button icon="edit" ariaLabel="Edit" />
+                </c-tooltip>
+            ```
+        }
+        example "delayed" {
+            title "With Delay"
+            code ```
+                <c-tooltip content="Slow tooltip" :delay="500">
+                    <span>Hover and wait</span>
+                </c-tooltip>
+            ```
+        }
+    }
+}

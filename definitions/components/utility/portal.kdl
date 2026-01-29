@@ -1,0 +1,81 @@
+// =============================================================================
+// c-portal - Render content elsewhere in DOM
+// =============================================================================
+
+component "portal" {
+    description "Renders children into a different DOM location"
+    category "utility"
+    status "stable"
+
+    props {
+        target type="string" default="body" {
+            description "CSS selector for target container"
+        }
+        disabled type="boolean" default=false {
+            description "Render in place instead of portal"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Content to portal"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Portal"
+            code ```
+                <c-portal>
+                    <c-modal :open="true">
+                        Modal rendered at body level
+                    </c-modal>
+                </c-portal>
+            ```
+        }
+        example "custom-target" {
+            title "Custom Target"
+            code ```
+                <div id="modal-container"></div>
+
+                <c-portal target="#modal-container">
+                    <c-modal :open="showModal">
+                        Content
+                    </c-modal>
+                </c-portal>
+            ```
+        }
+        example "disabled" {
+            title "Disabled Portal"
+            code ```
+                <!-- Useful for SSR or when portal target doesn't exist -->
+                <c-portal :disabled="isServer">
+                    <c-tooltip content="Hello">
+                        <c-button>Hover</c-button>
+                    </c-tooltip>
+                </c-portal>
+            ```
+        }
+        example "nested-overlays" {
+            title "Nested Overlays"
+            code ```
+                <c-modal :open="showModal">
+                    <p>Modal content</p>
+
+                    <!-- Nested dropdown portals to body to escape modal stacking -->
+                    <c-portal>
+                        <c-dropdown>
+                            <template slot="trigger">
+                                <c-button>Options</c-button>
+                            </template>
+                            <c-menu>
+                                <c-menu-item>Action 1</c-menu-item>
+                                <c-menu-item>Action 2</c-menu-item>
+                            </c-menu>
+                        </c-dropdown>
+                    </c-portal>
+                </c-modal>
+            ```
+        }
+    }
+}
