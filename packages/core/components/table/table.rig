@@ -1,0 +1,76 @@
+# Lord of the Components - Table Component Logic
+# Data table for displaying structured information
+
+render.element("table"):
+    # Boolean modifiers
+    if props.striped:
+        attrs.striped = true
+    if props.hoverable:
+        attrs.hoverable = true
+    if props.bordered:
+        attrs.bordered = true
+    if props.compact:
+        attrs.compact = true
+
+    # Caption for accessibility
+    if props.caption:
+        render.element("caption"):
+            attrs.class = "c-table__caption"
+            render.text(props.caption)
+
+    # Data-driven rendering when columns and data provided
+    if props.columns:
+        # Table header
+        render.element("thead"):
+            attrs.class = "c-table__head"
+            if slots.header:
+                render.slot("header")
+            else:
+                render.element("tr"):
+                    attrs.class = "c-table__row"
+                    for column in props.columns:
+                        render.element("th"):
+                            attrs.class = "c-table__cell c-table__cell--header"
+                            attrs.scope = "col"
+                            if column.align:
+                                attrs["data-align"] = column.align
+                            if column.width:
+                                attrs.style = "width: " + column.width
+                            if column.sortable:
+                                attrs["data-sortable"] = true
+                                if props.sortBy == column.key:
+                                    attrs["data-sort-active"] = true
+                                    attrs["data-sort-order"] = props.sortOrder or "asc"
+                            render.text(column.label)
+
+        # Table body
+        render.element("tbody"):
+            attrs.class = "c-table__body"
+            if props.data:
+                for row in props.data:
+                    render.element("tr"):
+                        attrs.class = "c-table__row"
+                        for column in props.columns:
+                            render.element("td"):
+                                attrs.class = "c-table__cell"
+                                if column.align:
+                                    attrs["data-align"] = column.align
+                                render.text(row[column.key])
+            else:
+                if slots.empty:
+                    render.element("tr"):
+                        attrs.class = "c-table__row c-table__row--empty"
+                        render.element("td"):
+                            attrs.class = "c-table__cell"
+                            attrs.colspan = length(props.columns)
+                            render.slot("empty")
+
+    # Manual composition mode (no columns prop)
+    else:
+        render.slot("default")
+
+    # Footer slot (when columns provided)
+    if props.columns and slots.footer:
+        render.element("tfoot"):
+            attrs.class = "c-table__foot"
+            render.slot("footer")
