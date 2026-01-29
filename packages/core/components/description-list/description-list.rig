@@ -1,0 +1,29 @@
+# Lord of the Components - Description List Component Logic
+# Key-value pairs for definitions or metadata
+
+render.element("dl"):
+    # Layout style (stacked, horizontal, grid)
+    if props.layout:
+        attrs.layout = props.layout
+
+    # Grid columns
+    if props.layout == "grid" and props.columns:
+        attrs["data-columns"] = props.columns
+
+    # Striped alternating rows
+    if props.striped:
+        attrs.striped = true
+
+    # Data-driven rendering when items provided
+    if props.items:
+        for item in props.items:
+            render.element("dt"):
+                attrs.class = "c-description-list__term"
+                render.text(item.term)
+            render.element("dd"):
+                attrs.class = "c-description-list__description"
+                render.text(item.description)
+
+    # Manual composition mode (no items prop)
+    else:
+        render.slot("default")
