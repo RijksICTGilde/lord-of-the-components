@@ -240,145 +240,127 @@ KDL Definition (agnostic)              RVO React (original source)
 
 ---
 
-## Phase 4: Scale to All Components
+## Phase 4: End-to-End Validation ⬅️ CURRENT PRIORITY
 
-**Goal:** All ~95 components have RigScript implementations with visual tests
+**Goal:** Prove the full pipeline works before building more components
 
-### 4.1 Scaffold CLI Command ✅ DONE
-- **File:** `core/src/cli/commands/scaffold.ts`
-- **Usage:** `lotc scaffold <component-name>`
-- **Output:** `.rig` file skeleton from KDL definition
-- **Features:**
-  - Generates RigScript skeleton with header comments, render.element(), and slot rendering
-  - Smart tag detection (button for buttons, a for links, etc.)
-  - Groups props by type (core, boolean, special boolean with ARIA)
-  - Filters invalid props from KDL parsing artifacts
-  - Provides "Did you mean?" suggestions for typos
-  - Supports custom output path with -o flag
+### The Pipeline
+```
+button.rig  →  Jinja2 Transpiler  →  button.html.j2  →  Python Preprocessor  →  Final HTML
+                                                              ↓
+                                                    <c-button variant="primary">
+                                                              ↓
+                                                    <button class="c-button c-button--primary">
+```
 
-### 4.2-4.10 Component Categories
+### 4.1 Validate RigScript → Jinja2 Transpilation ✅ DONE
+- [x] Pick ONE component as validation target (button)
+- [x] Run transpilation via `compileToJinja2()` function
+- [x] Verify generated `.html.j2` is syntactically valid Jinja2
+- [x] Compare output to existing `button.html.j2` template
+- [x] Document gaps and differences:
+  - Fixed transpiler to handle computed attribute names (`attrs["data-variant"]`)
+  - Fixed transpiler to handle conditional attributes (`if loading: attrs["aria-busy"] = "true"`)
+  - Updated `button.rig` to explicitly build CSS classes
+  - Generated template is functionally equivalent to manual template
 
-| Category | Count | Components |
-|----------|-------|------------|
-| Layout | 12 | page, layout, stack, grid, grid-item, container, section, spacer, divider, header, footer, hero |
-| Action | 4 | button, icon-button, link, action-group |
-| Typography | 3 | heading, text, prose |
-| Feedback | 10 | alert, notification, badge, tag, skeleton, spinner, status-icon, empty, progress, progress-tracker |
-| Navigation | 8 | breadcrumb, menu, menubar, tabs, tab, pagination, skip-link |
-| Data Display | 14 | card, table, list-item, description-list, avatar, avatar-group, image, figure, codeblock, code, time, icon |
-| Overlay | 6 | modal, dialog, dropdown, tooltip, drawer, popover |
-| Input | 20+ | text, email, password, number, date, time, file, checkbox, radio, switch, select, textarea, range, color, autocomplete, field wrappers |
-| Utility | 3 | focus-trap, portal, visually-hidden |
+### 4.2 Validate Generated Template Works with Python Preprocessor
+- [ ] Use generated `button.html.j2` as the component template
+- [ ] Create test page with `<c-button variant="primary">Click me</c-button>`
+- [ ] Run through Python preprocessor
+- [ ] Verify final HTML output is correct
 
-#### Layout Components Progress (12 total)
-| Component | Status | File |
-|-----------|--------|------|
-| page | ✅ DONE | `packages/core/components/page/page.rig` |
-| layout | ✅ DONE | `packages/layout/components/layout/layout.rig` |
-| stack | ✅ DONE | `packages/layout/components/stack/stack.rig` |
-| grid | ✅ DONE | `packages/layout/components/grid/grid.rig` |
-| grid-item | ✅ DONE | `packages/layout/components/grid-item/grid-item.rig` |
-| container | ✅ DONE | `packages/layout/components/container/container.rig` |
-| section | ✅ DONE | `packages/layout/components/section/section.rig` |
-| spacer | ✅ DONE | `packages/layout/components/spacer/spacer.rig` |
-| divider | ✅ DONE | `packages/layout/components/divider/divider.rig` |
-| header | ✅ DONE | `packages/layout/components/header/header.rig` |
-| footer | ✅ DONE | `packages/layout/components/footer/footer.rig` |
-| hero | ✅ DONE | `packages/layout/components/hero/hero.rig` |
+### 4.3 Validate Visual Output
+- [ ] Render the test page in browser
+- [ ] Compare visually to RVO baseline
+- [ ] Run Playwright visual test
+- [ ] Document any visual differences
 
-#### Action Components Progress (4 total)
-| Component | Status | File |
-|-----------|--------|------|
-| button | ✅ DONE | `packages/core/components/button/button.rig` |
-| icon-button | ✅ DONE | `packages/core/components/icon-button/icon-button.rig` |
-| link | ✅ DONE | `packages/core/components/link/link.rig` |
-| action-group | ✅ DONE | `packages/core/components/action-group/action-group.rig` |
+### 4.4 Fix Issues Found
+- [ ] List all issues discovered during validation
+- [ ] Fix transpiler bugs
+- [ ] Fix RigScript language gaps
+- [ ] Fix Python preprocessor issues
+- [ ] Re-run validation until clean
 
-#### Typography Components Progress (3 total)
-| Component | Status | File |
-|-----------|--------|------|
-| heading | ✅ DONE | `packages/core/components/heading/heading.rig` |
-| text | ✅ DONE | `packages/core/components/text/text.rig` |
-| prose | ✅ DONE | `packages/core/components/prose/prose.rig` |
+### 4.5 Document the Working Pipeline
+- [ ] Write step-by-step guide: "How to add a new component"
+- [ ] Document the exact commands needed
+- [ ] Document common pitfalls and solutions
 
-#### Data Display Components Progress (partial)
-| Component | Status | File |
-|-----------|--------|------|
-| card | ✅ DONE | `packages/core/components/card/card.rig` |
-| table | ✅ DONE | `packages/core/components/table/table.rig` |
-| list | ✅ DONE | `packages/core/components/list/list.rig` |
-| list-item | ✅ DONE | `packages/core/components/list-item/list-item.rig` |
-| description-list | ✅ DONE | `packages/core/components/description-list/description-list.rig` |
-| icon | ✅ DONE | `packages/core/components/icon/icon.rig` |
-| avatar | ✅ DONE | `packages/core/components/avatar/avatar.rig` |
-| avatar-group | ✅ DONE | `packages/core/components/avatar-group/avatar-group.rig` |
-| image | ✅ DONE | `packages/core/components/image/image.rig` |
-| figure | ✅ DONE | `packages/core/components/figure/figure.rig` |
-| codeblock | ✅ DONE | `packages/core/components/codeblock/codeblock.rig` |
-| code | ✅ DONE | `packages/core/components/code/code.rig` |
-| time | ✅ DONE | `packages/core/components/time/time.rig` |
-
-#### Feedback Components Progress (10 total)
-| Component | Status | File |
-|-----------|--------|------|
-| badge | ✅ DONE | `packages/core/components/badge/badge.rig` |
-| alert | ✅ DONE | `packages/core/components/alert/alert.rig` |
-| notification | ✅ DONE | `packages/core/components/notification/notification.rig` |
-| tag | ✅ DONE | `packages/core/components/tag/tag.rig` |
-| skeleton | ✅ DONE | `packages/core/components/skeleton/skeleton.rig` |
-| spinner | ✅ DONE | `packages/core/components/spinner/spinner.rig` |
-| status-icon | ✅ DONE | `packages/core/components/status-icon/status-icon.rig` |
-| empty | ✅ DONE | `packages/core/components/empty/empty.rig` |
-| progress | ✅ DONE | `packages/core/components/progress/progress.rig` |
-| progress-tracker | ✅ DONE | `packages/core/components/progress-tracker/progress-tracker.rig` |
-
-#### Navigation Components Progress (11 total)
-| Component | Status | File |
-|-----------|--------|------|
-| breadcrumb | ✅ DONE | `packages/core/components/breadcrumb/breadcrumb.rig` |
-| breadcrumb-item | ✅ DONE | `packages/core/components/breadcrumb-item/breadcrumb-item.rig` |
-| tabs | ✅ DONE | `packages/core/components/tabs/tabs.rig` |
-| tab | ✅ DONE | `packages/core/components/tab/tab.rig` |
-| tab-panel | ✅ DONE | `packages/core/components/tab-panel/tab-panel.rig` |
-| menu | ✅ DONE | `packages/core/components/menu/menu.rig` |
-| menu-item | ✅ DONE | `packages/core/components/menu-item/menu-item.rig` |
-| menubar | ✅ DONE | `packages/core/components/menubar/menubar.rig` |
-| menubar-item | ✅ DONE | `packages/core/components/menubar-item/menubar-item.rig` |
-| pagination | ✅ DONE | `packages/core/components/pagination/pagination.rig` |
-| skip-link | ✅ DONE | `packages/core/components/skip-link/skip-link.rig` |
-
-#### Overlay Components Progress (6 total)
-| Component | Status | File |
-|-----------|--------|------|
-| modal | ✅ DONE | `packages/core/components/modal/modal.rig` |
-| dialog | ⏳ TODO | |
-| dropdown | ⏳ TODO | |
-| tooltip | ⏳ TODO | |
-| drawer | ✅ DONE | `packages/core/components/drawer/drawer.rig` |
-| popover | ⏳ TODO | |
-
-### 4.11-4.12 Completion Criteria
-- **Visual Tests:** All 95 components pass
-- **Documentation:** `docs/component-coverage.md` with 95/95 status
+### 4.6 Validate 5 Reference Components End-to-End
+Once button works, validate these 4 additional components:
+| Component | RigScript → Jinja2 | Preprocessor | Visual Test |
+|-----------|-------------------|--------------|-------------|
+| button    | ⏳                | ⏳           | ⏳          |
+| card      | ⏳                | ⏳           | ⏳          |
+| stack     | ⏳                | ⏳           | ⏳          |
+| layout    | ⏳                | ⏳           | ⏳          |
+| page      | ⏳                | ⏳           | ⏳          |
 
 ---
 
-## Phase 5: React Transpiler Enhancement
+## Phase 5: Scale to All Components (PAUSED)
+
+**Status:** ⏸️ PAUSED - Resume after Phase 4 validation complete
+
+**Goal:** All ~95 components have RigScript implementations with visual tests
+
+### 5.1 Scaffold CLI Command ✅ DONE
+- **File:** `core/src/cli/commands/scaffold.ts`
+- **Usage:** `lotc scaffold <component-name>`
+
+### Components Created (for reference, not validated)
+
+<details>
+<summary>Click to expand component list (53 components created, not yet validated)</summary>
+
+#### Layout (12)
+page, layout, stack, grid, grid-item, container, section, spacer, divider, header, footer, hero
+
+#### Action (4)
+button, icon-button, link, action-group
+
+#### Typography (3)
+heading, text, prose
+
+#### Data Display (13)
+card, table, list, list-item, description-list, icon, avatar, avatar-group, image, figure, codeblock, code, time
+
+#### Feedback (10)
+badge, alert, notification, tag, skeleton, spinner, status-icon, empty, progress, progress-tracker
+
+#### Navigation (11)
+breadcrumb, breadcrumb-item, tabs, tab, tab-panel, menu, menu-item, menubar, menubar-item, pagination, skip-link
+
+#### Overlay (2)
+modal, drawer
+
+</details>
+
+### Remaining Components (after validation)
+- Overlay: dialog, dropdown, tooltip, popover
+- Input: All input components (~20)
+- Utility: focus-trap, portal, visually-hidden
+
+---
+
+## Phase 6: React Transpiler Enhancement
 
 **Goal:** React output matches RVO quality
 
-### 5.1 Audit Gaps
+### 6.1 Audit Gaps
 - **File:** `core/src/rigscript/transpiler-react.ts`
 - **Deliverable:** List of missing features vs RVO
 
-### 5.2 className Building
+### 6.2 className Building
 - **Implementation:** Generate `clsx()` calls
 - **Example:**
   ```typescript
   className={clsx('c-button', variant && `c-button--${variant}`)}
   ```
 
-### 5.3 Props Destructuring
+### 6.3 Props Destructuring
 - **Output:** TypeScript interface + destructuring
 - **Example:**
   ```typescript
@@ -390,22 +372,22 @@ KDL Definition (agnostic)              RVO React (original source)
   export function Button({ variant = 'primary', children }: ButtonProps) {
   ```
 
-### 5.4 Children/Slot Handling
+### 6.4 Children/Slot Handling
 - **Mapping:** `render.slot("default")` → `{children}`
 - **Named Slots:** Props-based slot pattern
 
-### 5.5-5.6 Generation and Testing
+### 6.5-6.6 Generation and Testing
 - **Command:** `lotc build --target react`
 - **Validation:** TypeScript compilation
 - **Visual Tests:** Compare to RVO baseline
 
 ---
 
-## Phase 6: Web Components Target
+## Phase 7: Web Components Target
 
 **Goal:** Generate Web Components from RigScript
 
-### 6.1 Architecture Design
+### 7.1 Architecture Design
 - **Document:** `docs/design/webcomponents-transpiler.md`
 - **Decisions:**
   - Custom Elements v1 API
@@ -413,7 +395,7 @@ KDL Definition (agnostic)              RVO React (original source)
   - Slot mapping approach
   - Style encapsulation
 
-### 6.2-6.4 Transpiler Implementation
+### 7.2-7.4 Transpiler Implementation
 - **File:** `core/src/rigscript/transpiler-webcomponents.ts` (NEW)
 - **Features:**
   - Custom Element class generation
@@ -421,7 +403,7 @@ KDL Definition (agnostic)              RVO React (original source)
   - `<slot>` element mapping
   - Attribute/property handling
 
-### 6.5-6.7 Generation and Testing
+### 7.5-7.7 Generation and Testing
 - **Initial:** 5 reference components (button, card, stack, layout, page)
 - **Full:** All 95 components
 - **Validation:** Visual tests match Jinja2/React output
@@ -436,14 +418,14 @@ KDL Definition (agnostic)              RVO React (original source)
 | `core/src/rigscript/parser.ts` | AST generation | 1 |
 | `core/src/rigscript/types.ts` | Type definitions | 1 |
 | `core/src/rigscript/builtins.ts` | Built-in functions | 1 |
-| `core/src/rigscript/transpiler-jinja2.ts` | Jinja2 output | 1 |
-| `core/src/rigscript/transpiler-react.ts` | React output | 5 |
-| `core/src/rigscript/transpiler-webcomponents.ts` | Web Components output | 6 |
+| `core/src/rigscript/transpiler-jinja2.ts` | Jinja2 output | 1, 4 |
+| `core/src/rigscript/transpiler-react.ts` | React output | 6 |
+| `core/src/rigscript/transpiler-webcomponents.ts` | Web Components output | 7 |
 | `core/src/generators/fixture-generator.ts` | Test fixtures | 2 |
-| `python/src/lord_of_the_components/extension.py` | Jinja2 preprocessor | 3 |
+| `python/src/lord_of_the_components/extension.py` | Jinja2 preprocessor | 3, 4 |
 | `python/src/lord_of_the_components/validation.py` | Expression validation | 3 |
 | `tests/visual/playwright.config.ts` | Visual test config | 2 |
-| `tests/visual/specs/components.spec.ts` | Visual test specs | 2 |
+| `tests/visual/specs/components.spec.ts` | Visual test specs | 2, 4 |
 
 ---
 
@@ -510,17 +492,25 @@ cd python && mypy src/              # Type check
 - [x] All Python tests pass
 - [x] mypy reports zero errors
 
-### Phase 4 Complete When:
+### Phase 4 Complete When: ⬅️ CURRENT
+- [ ] Button component works end-to-end (RigScript → Jinja2 → Preprocessor → HTML)
+- [ ] Generated Jinja2 template is syntactically valid
+- [ ] Python preprocessor renders component correctly
+- [ ] Visual output matches RVO baseline
+- [ ] 5 reference components validated (button, card, stack, layout, page)
+- [ ] Pipeline documentation written
+
+### Phase 5 Complete When:
 - [ ] 95 .rig files exist
 - [ ] All transpile to valid Jinja2
 - [ ] All visual tests pass
 
-### Phase 5 Complete When:
+### Phase 6 Complete When:
 - [ ] React transpiler feature-complete
 - [ ] 95 React components generate
 - [ ] Visual tests match RVO baseline
 
-### Phase 6 Complete When:
+### Phase 7 Complete When:
 - [ ] Web Components transpiler complete
 - [ ] 95 Web Components generate
 - [ ] Visual tests pass
