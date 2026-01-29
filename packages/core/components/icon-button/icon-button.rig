@@ -1,0 +1,46 @@
+# Lord of the Components - Icon Button Component Logic
+# Button displaying only an icon (requires aria-label for accessibility)
+
+# Render as <a> when href is provided, otherwise <button>
+if props.href:
+    render.element("a"):
+        # Link attributes
+        attrs.href = props.href
+        attrs.target = props.target
+        attrs["aria-label"] = props.ariaLabel
+
+        # Visual attributes
+        attrs.variant = props.variant
+        attrs.size = props.size
+        if props.rounded:
+            attrs.rounded = true
+
+        # State attributes
+        if props.disabled:
+            attrs.disabled = true
+            attrs["aria-disabled"] = "true"
+
+        # Icon content (no slot - icon only)
+        render.element("c-icon"):
+            attrs.name = props.icon
+
+else:
+    render.element("button"):
+        # Button attributes
+        attrs.type = "button"
+        attrs["aria-label"] = props.ariaLabel
+
+        # Visual attributes
+        attrs.variant = props.variant
+        attrs.size = props.size
+        if props.rounded:
+            attrs.rounded = true
+
+        # State attributes
+        if props.disabled:
+            attrs.disabled = true
+            attrs["aria-disabled"] = "true"
+
+        # Icon content (no slot - icon only)
+        render.element("c-icon"):
+            attrs.name = props.icon
