@@ -1,0 +1,59 @@
+# Lord of the Components - Tabs Component Logic
+# Tabbed interface for organizing content
+
+render.element("div"):
+    # Base class
+    attrs.class = "c-tabs"
+
+    # Variant modifier
+    if props.variant:
+        attrs.class = attrs.class + " c-tabs--" + props.variant
+
+    # Fitted modifier (tabs fill available width)
+    if props.fitted:
+        attrs.class = attrs.class + " c-tabs--fitted"
+
+    # Tab list (role="tablist")
+    render.element("div"):
+        attrs.class = "c-tabs__list"
+        attrs.role = "tablist"
+
+        # Render from items array if provided
+        if props.items:
+            for index, item in props.items:
+                render.element("button"):
+                    attrs.class = "c-tabs__tab"
+                    attrs.role = "tab"
+                    attrs.type = "button"
+                    attrs.id = "tab-" + item.id
+                    attrs["aria-controls"] = "panel-" + item.id
+
+                    # Active state
+                    if props.activeTab == item.id:
+                        attrs.class = attrs.class + " c-tabs__tab--active"
+                        attrs["aria-selected"] = "true"
+                    else:
+                        attrs["aria-selected"] = "false"
+                        attrs.tabindex = "-1"
+
+                    # Disabled state
+                    if item.disabled:
+                        attrs.class = attrs.class + " c-tabs__tab--disabled"
+                        attrs.disabled = true
+                        attrs["aria-disabled"] = "true"
+
+                    # Icon (optional)
+                    if item.icon:
+                        render.element("span"):
+                            attrs.class = "c-tabs__icon"
+                            render.component("icon", name=item.icon)
+
+                    # Label
+                    render.element("span"):
+                        attrs.class = "c-tabs__label"
+                        render.text(item.label)
+
+    # Tab panels (slot-based content)
+    render.element("div"):
+        attrs.class = "c-tabs__panels"
+        render.slot("default")

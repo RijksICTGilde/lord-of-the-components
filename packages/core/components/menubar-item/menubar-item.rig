@@ -1,0 +1,52 @@
+# Lord of the Components - Menubar Item Component Logic
+# Single item in a menubar
+
+render.element("li"):
+    # Base class
+    attrs.class = "c-menubar__item"
+    attrs.role = "none"
+
+    # Alignment modifier
+    if props.align:
+        attrs.class = attrs.class + " c-menubar__item--" + props.align
+
+    # Link element
+    render.element("a"):
+        attrs.class = "c-menubar__link"
+        attrs.role = "menuitem"
+        attrs.href = props.href or "#"
+
+        # Active state
+        if props.active:
+            attrs.class = attrs.class + " c-menubar__link--active"
+            attrs["aria-current"] = "page"
+
+        # Disabled state
+        if props.disabled:
+            attrs.class = attrs.class + " c-menubar__link--disabled"
+            attrs["aria-disabled"] = "true"
+
+        # Icon (optional)
+        if props.icon:
+            render.element("span"):
+                attrs.class = "c-menubar__icon"
+                render.component("icon", name=props.icon)
+
+        # Label content
+        render.element("span"):
+            attrs.class = "c-menubar__label"
+            render.slot("default")
+
+        # Submenu indicator
+        if slots.submenu:
+            render.element("span"):
+                attrs.class = "c-menubar__arrow"
+                attrs["aria-hidden"] = "true"
+                render.component("icon", name="chevron-down")
+
+    # Submenu slot
+    if slots.submenu:
+        render.element("ul"):
+            attrs.class = "c-menubar__submenu"
+            attrs.role = "menu"
+            render.slot("submenu")

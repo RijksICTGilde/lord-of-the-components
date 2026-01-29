@@ -1,0 +1,132 @@
+# Lord of the Components - Pagination Component Logic
+# Pagination controls for paged content
+
+render.element("nav"):
+    # Base class
+    attrs.class = "c-pagination"
+
+    # Size modifier
+    if props.size:
+        attrs.class = attrs.class + " c-pagination--" + props.size
+
+    # ARIA label for accessibility
+    attrs["aria-label"] = "Pagination"
+
+    # Item info (optional)
+    if props.totalItems:
+        render.element("span"):
+            attrs.class = "c-pagination__info"
+            # Calculate range
+            let startItem = ((props.currentPage - 1) * (props.itemsPerPage or 10)) + 1
+            let endItem = min(props.currentPage * (props.itemsPerPage or 10), props.totalItems)
+            render.text(startItem + "-" + endItem + " of " + props.totalItems)
+
+    # Pagination controls
+    render.element("ul"):
+        attrs.class = "c-pagination__list"
+
+        # First page button (optional)
+        if props.showFirstLast != false:
+            render.element("li"):
+                attrs.class = "c-pagination__item"
+
+                render.element("a"):
+                    attrs.class = "c-pagination__link c-pagination__link--first"
+                    attrs.href = "?page=1"
+                    attrs["aria-label"] = "Go to first page"
+
+                    if props.currentPage == 1:
+                        attrs.class = attrs.class + " c-pagination__link--disabled"
+                        attrs["aria-disabled"] = "true"
+
+                    render.component("icon", name="chevrons-left")
+
+        # Previous page button (optional)
+        if props.showPrevNext != false:
+            render.element("li"):
+                attrs.class = "c-pagination__item"
+
+                render.element("a"):
+                    attrs.class = "c-pagination__link c-pagination__link--prev"
+                    attrs.href = "?page=" + (props.currentPage - 1)
+                    attrs["aria-label"] = "Go to previous page"
+
+                    if props.currentPage == 1:
+                        attrs.class = attrs.class + " c-pagination__link--disabled"
+                        attrs["aria-disabled"] = "true"
+
+                    render.component("icon", name="chevron-left")
+
+        # Page numbers
+        # Calculate visible page range
+        let maxVisible = props.maxVisiblePages or 5
+        let halfVisible = floor(maxVisible / 2)
+        let startPage = max(1, props.currentPage - halfVisible)
+        let endPage = min(props.totalPages, startPage + maxVisible - 1)
+
+        # Adjust start if near end
+        if endPage - startPage < maxVisible - 1:
+            startPage = max(1, endPage - maxVisible + 1)
+
+        # Ellipsis before if needed
+        if startPage > 1:
+            render.element("li"):
+                attrs.class = "c-pagination__item"
+                render.element("span"):
+                    attrs.class = "c-pagination__ellipsis"
+                    render.text("...")
+
+        # Page number buttons
+        for page in range(startPage, endPage + 1):
+            render.element("li"):
+                attrs.class = "c-pagination__item"
+
+                render.element("a"):
+                    attrs.class = "c-pagination__link c-pagination__link--page"
+                    attrs.href = "?page=" + page
+
+                    if page == props.currentPage:
+                        attrs.class = attrs.class + " c-pagination__link--active"
+                        attrs["aria-current"] = "page"
+
+                    render.text(page)
+
+        # Ellipsis after if needed
+        if endPage < props.totalPages:
+            render.element("li"):
+                attrs.class = "c-pagination__item"
+                render.element("span"):
+                    attrs.class = "c-pagination__ellipsis"
+                    render.text("...")
+
+        # Next page button (optional)
+        if props.showPrevNext != false:
+            render.element("li"):
+                attrs.class = "c-pagination__item"
+
+                render.element("a"):
+                    attrs.class = "c-pagination__link c-pagination__link--next"
+                    attrs.href = "?page=" + (props.currentPage + 1)
+                    attrs["aria-label"] = "Go to next page"
+
+                    if props.currentPage == props.totalPages:
+                        attrs.class = attrs.class + " c-pagination__link--disabled"
+                        attrs["aria-disabled"] = "true"
+
+                    render.component("icon", name="chevron-right")
+
+        # Last page button (optional)
+        if props.showFirstLast != false:
+            render.element("li"):
+                attrs.class = "c-pagination__item"
+
+                render.element("a"):
+                    attrs.class = "c-pagination__link c-pagination__link--last"
+                    attrs.href = "?page=" + props.totalPages
+                    attrs["aria-label"] = "Go to last page"
+
+                    if props.currentPage == props.totalPages:
+                        attrs.class = attrs.class + " c-pagination__link--disabled"
+                        attrs["aria-disabled"] = "true"
+
+                    render.component("icon", name="chevrons-right")
