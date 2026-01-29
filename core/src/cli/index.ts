@@ -15,6 +15,7 @@ import { generateDocs } from './commands/docs.js';
 import { generateRegistry } from './commands/registry.js';
 import { generateIdeSupport } from './commands/ide.js';
 import { extractTemplate } from './commands/extract.js';
+import { generateFixtures } from './commands/fixtures.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -32,6 +33,7 @@ interface CliOptions {
   tokens?: boolean;
   verbose?: boolean;
   comments?: boolean;
+  css?: string;
 }
 
 function printHelp(): void {
@@ -42,12 +44,13 @@ ${chalk.bold('Usage:')}
   lotc <command> [options]
 
 ${chalk.bold('Commands:')}
-  build      Build components and tokens
-  validate   Validate component definitions
-  docs       Generate documentation site
-  registry   Generate component registry for Python
-  ide        Generate IDE autocomplete files
-  extract    Extract Jinja2 template to RigScript
+  build          Build components and tokens
+  validate       Validate component definitions
+  docs           Generate documentation site
+  registry       Generate component registry for Python
+  ide            Generate IDE autocomplete files
+  extract        Extract Jinja2 template to RigScript
+  test:fixtures  Generate visual test fixtures
 
 ${chalk.bold('Options:')}
   -h, --help      Show this help message
@@ -59,6 +62,7 @@ ${chalk.bold('Options:')}
   -w, --watch     Watch for changes and rebuild
   --tokens        Only build tokens (skip components)
   --comments      Include comments (for extract command)
+  --css           CSS file path for fixtures
   --verbose       Enable verbose output
 
 ${chalk.bold('Examples:')}
@@ -71,6 +75,8 @@ ${chalk.bold('Examples:')}
   lotc ide                      Generate IDE autocomplete
   lotc extract -i file.j2       Extract Jinja2 to RigScript
   lotc extract -i file.j2 -o out.rig  Extract with custom output
+  lotc test:fixtures            Generate visual test fixtures
+  lotc test:fixtures -o ./out   Custom output directory
 `);
 }
 
@@ -90,6 +96,7 @@ async function main(): Promise<void> {
       watch: { type: 'boolean', short: 'w' },
       tokens: { type: 'boolean' },
       comments: { type: 'boolean' },
+      css: { type: 'string' },
       verbose: { type: 'boolean' },
     },
     allowPositionals: true,
@@ -179,6 +186,16 @@ async function main(): Promise<void> {
           verbose: options.verbose,
         });
         console.log(chalk.green('Extraction complete!'));
+        break;
+
+      case 'test:fixtures':
+        console.log(chalk.blue('Generating visual test fixtures...'));
+        await generateFixtures({
+          configPath,
+          outputDir: options.output ? resolve(process.cwd(), options.output) : undefined,
+          cssPath: options.css,
+          verbose: options.verbose,
+        });
         break;
 
       default:

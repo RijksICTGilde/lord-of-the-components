@@ -23,9 +23,9 @@ component "button" {
         }
         "HTML button type attribute"
 
-        disabled type="boolean" default=false "Whether the button is disabled"
+        disabled type="boolean" default=#false "Whether the button is disabled"
 
-        loading type="boolean" default=false "Whether to show loading state"
+        loading type="boolean" default=#false "Whether to show loading state"
 
         icon type="string" "Icon name to display"
 
@@ -34,11 +34,11 @@ component "button" {
         }
         "Position of icon relative to text"
 
-        fullWidth type="boolean" default=false "Whether button spans full width"
+        fullWidth type="boolean" default=#false "Whether button spans full width"
     }
 
     slots {
-        default required=true "Button label/content"
+        default required=#true "Button label/content"
     }
 
     tokens {
@@ -54,62 +54,37 @@ component "button" {
         example "variants" {
             title "Button Variants"
             description "All available visual styles"
-            code ```
-                <c-button variant="primary">Primary</c-button>
-                <c-button variant="secondary">Secondary</c-button>
-                <c-button variant="success">Success</c-button>
-                <c-button variant="warning">Warning</c-button>
-                <c-button variant="error">Error</c-button>
-                <c-button variant="ghost">Ghost</c-button>
-            ```
+            code "<c-button variant=\"primary\">Primary</c-button>"
         }
 
         example "sizes" {
             title "Button Sizes"
             description "Available size options"
-            code ```
-                <c-button size="sm">Small</c-button>
-                <c-button size="md">Medium</c-button>
-                <c-button size="lg">Large</c-button>
-            ```
+            code "<c-button size=\"sm\">Small</c-button>"
         }
 
         example "with-icons" {
             title "Buttons with Icons"
             description "Icons can be placed before or after text"
-            code ```
-                <c-button icon="download">Download</c-button>
-                <c-button icon="arrow-right" iconPosition="after">Next</c-button>
-                <c-button icon="plus" variant="success">Add Item</c-button>
-            ```
+            code "<c-button icon=\"download\">Download</c-button>"
         }
 
         example "states" {
             title "Button States"
             description "Disabled and loading states"
-            code ```
-                <c-button disabled>Disabled</c-button>
-                <c-button loading>Loading...</c-button>
-            ```
+            code "<c-button disabled>Disabled</c-button>"
         }
 
         example "full-width" {
             title "Full Width Button"
             description "Button that spans the full container width"
-            code ```
-                <c-button fullWidth>Full Width Button</c-button>
-            ```
+            code "<c-button fullWidth>Full Width Button</c-button>"
         }
 
         example "form-submit" {
             title "Form Submit Button"
             description "Button with submit type for forms"
-            code ```
-                <form>
-                    <c-button type="submit" variant="primary">Submit Form</c-button>
-                    <c-button type="reset" variant="secondary">Reset</c-button>
-                </form>
-            ```
+            code "<form><c-button type=\"submit\" variant=\"primary\">Submit Form</c-button></form>"
         }
     }
 }

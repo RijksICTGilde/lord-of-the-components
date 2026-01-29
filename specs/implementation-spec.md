@@ -133,8 +133,8 @@ KDL Definition (agnostic)              RVO React (original source)
   - Snapshot directory: `tests/visual/snapshots/`
   - Diff threshold: Configurable pixel tolerance (maxDiffPixelRatio: 0.01)
 
-### 2.3-2.5 Fixture Generation
-- **Generator:** `core/src/generators/fixture-generator.ts` (NEW)
+### 2.3-2.5 Fixture Generation ✅ DONE
+- **Generator:** `core/src/generators/fixtures/index.ts`
 - **CLI Command:** `lotc test:fixtures --output <dir>`
 - **Output:** `tests/visual/fixtures/` directory
 - **Process:**

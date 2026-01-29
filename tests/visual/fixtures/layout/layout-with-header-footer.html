@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>layout - Layout with Header and Footer</title>
+    
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="layout" data-example="with-header-footer">
+        <c-layout><template #header><nav>Navigation here</nav></template><main><h1>Welcome</h1><p>Main content area.</p></main><template #footer><p>2024 Company Name</p></template></c-layout>
+    </div>
+</body>
+</html>

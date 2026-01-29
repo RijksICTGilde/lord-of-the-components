@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grid - Responsive Grid</title>
+    
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="grid" data-example="responsive">
+        <c-grid cols="4" gap="lg"><div>Card 1</div><div>Card 2</div><div>Card 3</div><div>Card 4</div></c-grid>
+    </div>
+</body>
+</html>

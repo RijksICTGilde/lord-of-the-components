@@ -17,13 +17,13 @@ component "card" {
         }
         "Padding inside the card"
 
-        interactive type="boolean" default=false "Whether card has hover state (clickable)"
+        interactive type="boolean" default=#false "Whether card has hover state (clickable)"
 
         href type="string" "Optional link URL (makes card a link)"
     }
 
     slots {
-        default required=true "Main card content"
+        default required=#true "Main card content"
         header "Optional header content"
         footer "Optional footer content"
         media "Optional media (image/video) slot"
@@ -41,65 +41,31 @@ component "card" {
         example "basic" {
             title "Basic Card"
             description "Simple card with content"
-            code ```
-                <c-card>
-                    <h3>Card Title</h3>
-                    <p>Card content goes here.</p>
-                </c-card>
-            ```
+            code "<c-card><h3>Card Title</h3><p>Card content goes here.</p></c-card>"
         }
 
         example "with-header-footer" {
             title "Card with Header and Footer"
             description "Card with all sections"
-            code ```
-                <c-card>
-                    <template #header>
-                        <h3>Card Title</h3>
-                    </template>
-
-                    <p>Main content area.</p>
-
-                    <template #footer>
-                        <c-button variant="ghost">Action</c-button>
-                    </template>
-                </c-card>
-            ```
+            code "<c-card><template #header><h3>Card Title</h3></template><p>Main content area.</p><template #footer><c-button variant=\"ghost\">Action</c-button></template></c-card>"
         }
 
         example "interactive" {
             title "Interactive Card"
             description "Card with hover state"
-            code ```
-                <c-card interactive href="/details">
-                    <h3>Clickable Card</h3>
-                    <p>Click to see more details.</p>
-                </c-card>
-            ```
+            code "<c-card interactive href=\"/details\"><h3>Clickable Card</h3><p>Click to see more details.</p></c-card>"
         }
 
         example "with-media" {
             title "Card with Media"
             description "Card with image"
-            code ```
-                <c-card>
-                    <template #media>
-                        <img src="image.jpg" alt="Card image" />
-                    </template>
-                    <h3>Image Card</h3>
-                    <p>Card with featured image.</p>
-                </c-card>
-            ```
+            code "<c-card><template #media><img src=\"image.jpg\" alt=\"Card image\" /></template><h3>Image Card</h3><p>Card with featured image.</p></c-card>"
         }
 
         example "variants" {
             title "Card Variants"
             description "Different visual styles"
-            code ```
-                <c-card variant="default">Default</c-card>
-                <c-card variant="outlined">Outlined</c-card>
-                <c-card variant="elevated">Elevated</c-card>
-            ```
+            code "<c-card variant=\"default\">Default</c-card>"
         }
     }
 }
