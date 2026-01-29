@@ -8,6 +8,9 @@ Transforms custom component tags into standard Jinja2 includes:
 
 import hashlib
 import logging
+import re
+from dataclasses import dataclass
+from difflib import get_close_matches
 from typing import Any, Dict, List, Optional
 
 from bs4 import BeautifulSoup, Tag
@@ -17,6 +20,120 @@ from jinja2.ext import Extension
 from .registry import ComponentRegistry
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class SourceLocation:
+    """Represents a location in source code."""
+
+    line: int
+    column: int
+
+    def __str__(self) -> str:
+        return f"line {self.line}, column {self.column}"
+
+
+class ComponentError(Exception):
+    """Exception for component-related errors with source location information."""
+
+    def __init__(
+        self,
+        message: str,
+        location: Optional[SourceLocation] = None,
+        suggestion: Optional[str] = None,
+    ) -> None:
+        self.message = message
+        self.location = location
+        self.suggestion = suggestion
+
+        full_message = message
+        if location:
+            full_message = f"{message} at {location}"
+        if suggestion:
+            full_message = f"{full_message}. Did you mean '{suggestion}'?"
+
+        super().__init__(full_message)
+
+
+def _find_tag_location(source: str, tag_name: str, occurrence: int = 0) -> Optional[SourceLocation]:
+    """
+    Find the line and column of a tag in the source.
+
+    Args:
+        source: The original template source
+        tag_name: The tag name to find (e.g., 'c-button')
+        occurrence: Which occurrence to find (0-indexed)
+
+    Returns:
+        SourceLocation or None if not found
+    """
+    # Pattern to match opening tags with the given name
+    pattern = rf"<{re.escape(tag_name)}(?:\s|>|/)"
+    matches = list(re.finditer(pattern, source, re.IGNORECASE))
+
+    if occurrence >= len(matches):
+        return None
+
+    match = matches[occurrence]
+    pos = match.start()
+
+    # Calculate line and column
+    lines_before = source[:pos].split("\n")
+    line = len(lines_before)
+    column = len(lines_before[-1]) + 1 if lines_before else 1
+
+    return SourceLocation(line=line, column=column)
+
+
+def _find_attribute_location(
+    source: str, tag_name: str, attr_name: str, tag_occurrence: int = 0
+) -> Optional[SourceLocation]:
+    """
+    Find the line and column of an attribute within a tag.
+
+    Args:
+        source: The original template source
+        tag_name: The tag name containing the attribute
+        attr_name: The attribute name to find
+        tag_occurrence: Which occurrence of the tag (0-indexed)
+
+    Returns:
+        SourceLocation or None if not found
+    """
+    # First, find the tag
+    tag_pattern = rf"<{re.escape(tag_name)}[^>]*>"
+    tag_matches = list(re.finditer(tag_pattern, source, re.IGNORECASE | re.DOTALL))
+
+    if tag_occurrence >= len(tag_matches):
+        return None
+
+    tag_match = tag_matches[tag_occurrence]
+    tag_content = tag_match.group()
+    tag_start = tag_match.start()
+
+    # Find the attribute within the tag
+    # Handle both attr="value" and :attr="value" and @attr="value"
+    attr_pattern = rf'(?:^|[\s])({re.escape(attr_name)})(?:=|[\s>])'
+    attr_match = re.search(attr_pattern, tag_content, re.IGNORECASE)
+
+    if not attr_match:
+        # Fallback: try to find attribute with prefix stripped for :attr
+        clean_attr = attr_name.lstrip(":@")
+        attr_pattern = rf'(?:^|[\s])[:@]?({re.escape(clean_attr)})(?:=|[\s>])'
+        attr_match = re.search(attr_pattern, tag_content, re.IGNORECASE)
+
+    if not attr_match:
+        return None
+
+    # Calculate absolute position
+    attr_pos = tag_start + attr_match.start(1)
+
+    # Calculate line and column
+    lines_before = source[:attr_pos].split("\n")
+    line = len(lines_before)
+    column = len(lines_before[-1]) + 1 if lines_before else 1
+
+    return SourceLocation(line=line, column=column)
 
 
 class ComponentExtension(Extension):
@@ -30,6 +147,8 @@ class ComponentExtension(Extension):
         self._jinja_placeholders: Dict[str, str] = {}
         self._placeholder_counter: int = 0
         self._current_template_id: str = ""
+        self._current_source: str = ""
+        self._tag_occurrence_counts: Dict[str, int] = {}
 
     def preprocess(
         self, source: str, name: Optional[str], filename: Optional[str] = None
@@ -42,6 +161,8 @@ class ComponentExtension(Extension):
         self._jinja_placeholders.clear()
         self._placeholder_counter = 0
         self._current_template_id = template_id
+        self._current_source = source
+        self._tag_occurrence_counts.clear()
 
         try:
             soup = BeautifulSoup(source, features="html.parser")
@@ -50,6 +171,10 @@ class ComponentExtension(Extension):
             result = self._restore_jinja_tags(result)
             logger.debug(f"Successfully processed template: {template_id}")
             return result
+
+        except ComponentError:
+            # Re-raise ComponentError as-is (already has location info)
+            raise
 
         except Exception as e:
             logger.error(f"Component preprocessing failed for template {template_id}: {e}")
@@ -82,22 +207,38 @@ class ComponentExtension(Extension):
         """Check if a tag is a component tag (starts with 'c-')."""
         if not hasattr(tag, "name"):
             return False
-        return tag.name and tag.name.startswith("c-")
+        return bool(tag.name and tag.name.startswith("c-"))
 
     def _process_single_component(self, tag: Tag) -> None:
         """
         Process a single component tag and replace it with Jinja2 include.
         """
         component_name = tag.name[2:]  # Remove 'c-' prefix
+        tag_name = tag.name
+
+        # Track occurrence count for this tag type
+        occurrence = self._tag_occurrence_counts.get(tag_name, 0)
+        self._tag_occurrence_counts[tag_name] = occurrence + 1
+
+        # Get location for this tag
+        location = _find_tag_location(self._current_source, tag_name, occurrence)
 
         if not self.registry.has_component(component_name):
-            available = ", ".join(sorted(self.registry.get_all_component_names()))
-            raise ValueError(
-                f"Unknown component '{tag.name}'. Available components: {available}"
+            available = sorted(self.registry.get_all_component_names())
+            # Try to find a close match for suggestion
+            suggestion = None
+            close_matches = get_close_matches(component_name, available, n=1, cutoff=0.6)
+            if close_matches:
+                suggestion = f"c-{close_matches[0]}"
+
+            raise ComponentError(
+                f"Unknown component '{tag_name}'",
+                location=location,
+                suggestion=suggestion,
             )
 
         component_def = self.registry.get_component(component_name)
-        attrs = self._parse_component_attributes(tag, component_def)
+        attrs = self._parse_component_attributes(tag, component_def, location, occurrence)
 
         content = None
         if tag.contents:
@@ -113,7 +254,11 @@ class ComponentExtension(Extension):
         self._jinja_placeholders[placeholder] = include_str
 
     def _parse_component_attributes(
-        self, tag: Tag, component_def: Any
+        self,
+        tag: Tag,
+        component_def: Any,
+        tag_location: Optional[SourceLocation] = None,
+        tag_occurrence: int = 0,
     ) -> Dict[str, Any]:
         """Parse and validate component attributes."""
         attrs = {}
@@ -144,9 +289,30 @@ class ComponentExtension(Extension):
                     attrs[correct_name] = attr_value
                 else:
                     available = sorted(set(valid_attrs.values()))
-                    raise ValueError(
-                        f"Unknown attribute '{attr_name}' used in component '{tag.name}'. "
-                        f"Available attributes for '{component_def.name}': {', '.join(available)}"
+
+                    # Find location of the attribute
+                    attr_location = _find_attribute_location(
+                        self._current_source, tag.name, attr_name, tag_occurrence
+                    )
+                    # Fall back to tag location if attribute not found
+                    location = attr_location or tag_location
+
+                    # Try to find a suggestion
+                    suggestion = None
+                    close_matches = get_close_matches(
+                        clean_name, [a.lower() for a in available], n=1, cutoff=0.6
+                    )
+                    if close_matches:
+                        # Map back to original casing
+                        for avail in available:
+                            if avail.lower() == close_matches[0]:
+                                suggestion = avail
+                                break
+
+                    raise ComponentError(
+                        f"Unknown attribute '{attr_name}' on component '{tag.name}'",
+                        location=location,
+                        suggestion=suggestion,
                     )
 
         return attrs
