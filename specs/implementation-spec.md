@@ -354,7 +354,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | dialog | ⏳ TODO | |
 | dropdown | ⏳ TODO | |
 | tooltip | ⏳ TODO | |
-| drawer | ⏳ TODO | |
+| drawer | ✅ DONE | `packages/core/components/drawer/drawer.rig` |
 | popover | ⏳ TODO | |
 
 ### 4.11-4.12 Completion Criteria
