@@ -1,0 +1,37 @@
+# Lord of the Components - Text Component Logic
+# Renders styled text with semantic variants
+
+# Determine the HTML tag based on 'as' prop (default: span)
+let tag = props.as or "span"
+
+render.element(tag):
+    # Base class
+    attrs.class = "c-text"
+
+    # Size variant
+    if props.size:
+        attrs.class = attrs.class + " c-text--size-" + props.size
+
+    # Font weight
+    if props.weight:
+        attrs.class = attrs.class + " c-text--weight-" + props.weight
+
+    # Text color
+    if props.color:
+        attrs.class = attrs.class + " c-text--color-" + props.color
+
+    # Text alignment
+    if props.align:
+        attrs.class = attrs.class + " c-text--align-" + props.align
+
+    # Truncation (single line with ellipsis)
+    if props.truncate:
+        attrs.class = attrs.class + " c-text--truncate"
+
+    # Line clamp (multi-line truncation)
+    if props.lineClamp:
+        attrs.class = attrs.class + " c-text--line-clamp"
+        attrs.style = "-webkit-line-clamp: " + props.lineClamp
+
+    # Render text content
+    render.slot("default")

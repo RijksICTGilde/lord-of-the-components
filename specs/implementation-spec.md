@@ -295,7 +295,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | Component | Status | File |
 |-----------|--------|------|
 | heading | ✅ DONE | `packages/core/components/heading/heading.rig` |
-| text | ⏳ TODO | - |
+| text | ✅ DONE | `packages/core/components/text/text.rig` |
 | prose | ⏳ TODO | - |
 
 #### Data Display Components Progress (partial)
