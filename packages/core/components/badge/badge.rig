@@ -1,0 +1,12 @@
+# Lord of the Components - Badge Component Logic
+# Renders a counter badge displaying a numeric count
+
+render.element("span"):
+    # Base class
+    attrs.class = "rvo-badge"
+
+    # Display count with 99+ cap for large numbers
+    if props.count > 99:
+        render.text("99+")
+    else:
+        render.text(props.count or 0)

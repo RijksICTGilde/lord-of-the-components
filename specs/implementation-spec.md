@@ -315,6 +315,20 @@ KDL Definition (agnostic)              RVO React (original source)
 | code | ✅ DONE | `packages/core/components/code/code.rig` |
 | time | ✅ DONE | `packages/core/components/time/time.rig` |
 
+#### Feedback Components Progress (10 total)
+| Component | Status | File |
+|-----------|--------|------|
+| badge | ✅ DONE | `packages/core/components/badge/badge.rig` |
+| alert | ⬜ TODO | |
+| notification | ⬜ TODO | |
+| tag | ⬜ TODO | |
+| skeleton | ⬜ TODO | |
+| spinner | ⬜ TODO | |
+| status-icon | ⬜ TODO | |
+| empty | ⬜ TODO | |
+| progress | ⬜ TODO | |
+| progress-tracker | ⬜ TODO | |
+
 ### 4.11-4.12 Completion Criteria
 - **Visual Tests:** All 95 components pass
 - **Documentation:** `docs/component-coverage.md` with 95/95 status
