@@ -1,0 +1,41 @@
+# Lord of the Components - Card Component Logic
+# Container for grouping related content with optional header and footer
+
+# Determine wrapper element (link if href provided, div otherwise)
+let tag = props.href ? "a" : "div"
+
+render.element(tag):
+    # Core attributes
+    attrs.variant = props.variant
+    attrs.padding = props.padding
+
+    # Interactive state
+    if props.interactive:
+        attrs.interactive = true
+
+    # Link href
+    if props.href:
+        attrs.href = props.href
+
+    # Media slot (rendered first, typically above content)
+    if props.media:
+        render.element("div"):
+            attrs.class = "c-card__media"
+            render.slot("media")
+
+    # Header slot
+    if props.header:
+        render.element("div"):
+            attrs.class = "c-card__header"
+            render.slot("header")
+
+    # Main content
+    render.element("div"):
+        attrs.class = "c-card__body"
+        render.slot("default")
+
+    # Footer slot
+    if props.footer:
+        render.element("div"):
+            attrs.class = "c-card__footer"
+            render.slot("footer")
