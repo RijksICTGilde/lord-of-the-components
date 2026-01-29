@@ -1,0 +1,49 @@
+# Lord of the Components - Image Component Logic
+# Displays an image with optional styling and accessibility features
+
+render.element("img"):
+    # Build CSS classes array
+    let classes = ["c-image"]
+
+    # Object-fit modifier
+    if props.objectFit:
+        classes = classes + ["c-image--" + props.objectFit]
+
+    # Aspect ratio modifier
+    if props.aspectRatio:
+        classes = classes + ["c-image--aspect-" + props.aspectRatio]
+
+    # Border radius modifier (rounded, full)
+    if props.rounded:
+        classes = classes + ["c-image--rounded"]
+    if props.circle:
+        classes = classes + ["c-image--circle"]
+
+    # Apply classes
+    attrs.class = join(classes, " ")
+
+    # Required image source
+    attrs.src = props.src
+
+    # Alt text (required for accessibility)
+    attrs.alt = props.alt or ""
+
+    # Optional dimensions
+    if props.width:
+        attrs.width = props.width
+    if props.height:
+        attrs.height = props.height
+
+    # Loading strategy
+    if props.loading:
+        attrs.loading = props.loading
+
+    # Decoding hint
+    if props.decoding:
+        attrs.decoding = props.decoding
+
+    # Responsive images
+    if props.srcset:
+        attrs.srcset = props.srcset
+    if props.sizes:
+        attrs.sizes = props.sizes

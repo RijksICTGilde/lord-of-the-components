@@ -309,7 +309,11 @@ KDL Definition (agnostic)              RVO React (original source)
 | icon | ✅ DONE | `packages/core/components/icon/icon.rig` |
 | avatar | ✅ DONE | `packages/core/components/avatar/avatar.rig` |
 | avatar-group | ✅ DONE | `packages/core/components/avatar-group/avatar-group.rig` |
-| (others) | ⏳ TODO | - |
+| image | ✅ DONE | `packages/core/components/image/image.rig` |
+| figure | ⏳ TODO | - |
+| codeblock | ⏳ TODO | - |
+| code | ⏳ TODO | - |
+| time | ⏳ TODO | - |
 
 ### 4.11-4.12 Completion Criteria
 - **Visual Tests:** All 95 components pass
