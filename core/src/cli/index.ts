@@ -14,6 +14,7 @@ import { validateProject } from './commands/validate.js';
 import { generateDocs } from './commands/docs.js';
 import { generateRegistry } from './commands/registry.js';
 import { generateIdeSupport } from './commands/ide.js';
+import { extractTemplate } from './commands/extract.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -25,10 +26,12 @@ interface CliOptions {
   version?: boolean;
   config?: string;
   output?: string;
+  input?: string;
   theme?: string;
   watch?: boolean;
   tokens?: boolean;
   verbose?: boolean;
+  comments?: boolean;
 }
 
 function printHelp(): void {
@@ -44,15 +47,18 @@ ${chalk.bold('Commands:')}
   docs       Generate documentation site
   registry   Generate component registry for Python
   ide        Generate IDE autocomplete files
+  extract    Extract Jinja2 template to RigScript
 
 ${chalk.bold('Options:')}
   -h, --help      Show this help message
   -v, --version   Show version number
   -c, --config    Path to config file (default: lotc.config.kdl)
-  -o, --output    Output directory (default: dist)
+  -o, --output    Output directory/file (default: dist)
+  -i, --input     Input file (for extract command)
   -t, --theme     Theme to use (default: from config)
   -w, --watch     Watch for changes and rebuild
   --tokens        Only build tokens (skip components)
+  --comments      Include comments (for extract command)
   --verbose       Enable verbose output
 
 ${chalk.bold('Examples:')}
@@ -63,6 +69,8 @@ ${chalk.bold('Examples:')}
   lotc validate                 Validate all definitions
   lotc docs                     Generate documentation
   lotc ide                      Generate IDE autocomplete
+  lotc extract -i file.j2       Extract Jinja2 to RigScript
+  lotc extract -i file.j2 -o out.rig  Extract with custom output
 `);
 }
 
@@ -77,9 +85,11 @@ async function main(): Promise<void> {
       version: { type: 'boolean', short: 'v' },
       config: { type: 'string', short: 'c' },
       output: { type: 'string', short: 'o' },
+      input: { type: 'string', short: 'i' },
       theme: { type: 'string', short: 't' },
       watch: { type: 'boolean', short: 'w' },
       tokens: { type: 'boolean' },
+      comments: { type: 'boolean' },
       verbose: { type: 'boolean' },
     },
     allowPositionals: true,
@@ -154,6 +164,21 @@ async function main(): Promise<void> {
           outputDir: options.output ? resolve(process.cwd(), options.output) : undefined,
           verbose: options.verbose,
         });
+        break;
+
+      case 'extract':
+        if (!options.input) {
+          console.error(chalk.red('Error: --input (-i) option is required for extract command'));
+          process.exit(1);
+        }
+        console.log(chalk.blue('Extracting Jinja2 template to RigScript...'));
+        await extractTemplate({
+          input: options.input,
+          output: options.output,
+          includeComments: options.comments,
+          verbose: options.verbose,
+        });
+        console.log(chalk.green('Extraction complete!'));
         break;
 
       default:

@@ -155,13 +155,15 @@ This specification defines a universal component system that generates templates
   - content|safe → render.slot("default") mapping
 - **Tests:** `core/src/extractors/rigscript-generator.test.ts`
 
-### 2.5-2.6 CLI Command: `extract`
-- **File:** `core/src/cli/commands/extract.ts` (NEW)
+### 2.5-2.6 CLI Command: `extract` ✅ DONE
+- **File:** `core/src/cli/commands/extract.ts`
 - **Registration:** `core/src/cli/index.ts`
 - **Usage:** `lotc extract --input <file> --output <file>`
 - **Options:**
-  - `--input` - Source Jinja2 template
-  - `--output` - Output .rig file path
+  - `--input` (`-i`) - Source Jinja2 template
+  - `--output` (`-o`) - Output .rig file path (optional, defaults to same directory with .rig extension)
+  - `--comments` - Include comments from source template
+  - `--verbose` - Verbose output
 
 ### 2.7-2.8 Template Extraction Tasks
 Extract these templates:
