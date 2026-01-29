@@ -1,0 +1,16 @@
+# Lord of the Components - Container Component Logic
+# Centered container with configurable max-width
+
+render.element("div"):
+    # Maximum width constraint
+    attrs.maxWidth = props.maxWidth
+
+    # Horizontal padding
+    attrs.padding = props.padding
+
+    # Center the container horizontally
+    if props.centered:
+        attrs.centered = true
+
+    # Container content
+    render.slot("default")
