@@ -1,0 +1,28 @@
+# Lord of the Components - Grid Item Component Logic
+# Grid item that can span multiple columns/rows
+
+render.element("div"):
+    # Column spanning
+    if props.colSpan:
+        attrs.colSpan = props.colSpan
+
+    # Row spanning
+    if props.rowSpan:
+        attrs.rowSpan = props.rowSpan
+
+    # Explicit column positioning
+    if props.colStart:
+        attrs.colStart = props.colStart
+
+    if props.colEnd:
+        attrs.colEnd = props.colEnd
+
+    # Explicit row positioning
+    if props.rowStart:
+        attrs.rowStart = props.rowStart
+
+    if props.rowEnd:
+        attrs.rowEnd = props.rowEnd
+
+    # Item content
+    render.slot("default")
