@@ -244,10 +244,17 @@ KDL Definition (agnostic)              RVO React (original source)
 
 **Goal:** All ~95 components have RigScript implementations with visual tests
 
-### 4.1 Scaffold CLI Command
-- **File:** `core/src/cli/commands/scaffold.ts` (NEW)
+### 4.1 Scaffold CLI Command ✅ DONE
+- **File:** `core/src/cli/commands/scaffold.ts`
 - **Usage:** `lotc scaffold <component-name>`
 - **Output:** `.rig` file skeleton from KDL definition
+- **Features:**
+  - Generates RigScript skeleton with header comments, render.element(), and slot rendering
+  - Smart tag detection (button for buttons, a for links, etc.)
+  - Groups props by type (core, boolean, special boolean with ARIA)
+  - Filters invalid props from KDL parsing artifacts
+  - Provides "Did you mean?" suggestions for typos
+  - Supports custom output path with -o flag
 
 ### 4.2-4.10 Component Categories
 
