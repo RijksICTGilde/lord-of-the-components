@@ -136,13 +136,24 @@ This specification defines a universal component system that generates templates
   - Event handlers
 - **Tests:** `core/src/extractors/html-analyzer.test.ts`
 
-### 2.4 RigScript Generator
-- **File:** `core/src/extractors/rigscript-generator.ts` (NEW)
+### 2.4 RigScript Generator ✅ DONE
+- **File:** `core/src/extractors/rigscript-generator.ts`
 - **Purpose:** Convert IR to RigScript
 - **Process:**
   1. Receive IR from analyzers
   2. Build RigScript AST
   3. Serialize to formatted `.rig` file
+- **Features:**
+  - Variable declarations with filter mappings
+  - Element generation with render.element()
+  - Attribute handling (static, dynamic, mixed, conditional)
+  - Text and expression output
+  - Conditionals (if/elif/else)
+  - Loops (for...in)
+  - Filter mappings (join, default, trim, etc.)
+  - ctx → props transformation
+  - content|safe → render.slot("default") mapping
+- **Tests:** `core/src/extractors/rigscript-generator.test.ts`
 
 ### 2.5-2.6 CLI Command: `extract`
 - **File:** `core/src/cli/commands/extract.ts` (NEW)
