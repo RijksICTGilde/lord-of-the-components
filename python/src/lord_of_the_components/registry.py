@@ -342,6 +342,48 @@ class ComponentRegistry:
             )
         )
 
+        # Card component
+        self.register_component(
+            ComponentDefinition(
+                name="card",
+                description="Content container with optional header and footer",
+                category="data-display",
+                status="stable",
+                attributes=[
+                    AttributeDefinition(
+                        name="variant",
+                        type=AttributeType.ENUM,
+                        default="default",
+                        enum_values=["default", "outlined", "elevated", "filled"],
+                        description="Visual style of the card",
+                    ),
+                    AttributeDefinition(
+                        name="padding",
+                        type=AttributeType.GENERIC_SIZE,
+                        default="md",
+                        description="Internal padding",
+                    ),
+                    AttributeDefinition(
+                        name="interactive",
+                        type=AttributeType.BOOLEAN,
+                        default=False,
+                        description="Whether card is interactive/clickable",
+                    ),
+                    AttributeDefinition(
+                        name="href",
+                        type=AttributeType.STRING,
+                        description="Link destination for clickable card",
+                    ),
+                ],
+                slots=[
+                    SlotDefinition(name="default", required=True, description="Card body content"),
+                    SlotDefinition(name="header", description="Card header content"),
+                    SlotDefinition(name="footer", description="Card footer content"),
+                    SlotDefinition(name="media", description="Card media/image content"),
+                ],
+            )
+        )
+
         # Button component
         self.register_component(
             ComponentDefinition(

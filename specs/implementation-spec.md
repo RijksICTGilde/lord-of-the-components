@@ -187,10 +187,15 @@ KDL Definition (agnostic)              RVO React (original source)
   - `ComponentError` exception with location and suggestion support
   - `_find_tag_location()` and `_find_attribute_location()` helpers
 
-### 3.4 Named Slot Extraction
+### 3.4 Named Slot Extraction ✅ DONE
 - **Syntax:** `<template slot="name">content</template>`
 - **Behavior:** Extract slot content, pass to component context
 - **Access:** `slots.name` in component template
+- **Implementation:**
+  - `_extract_slots()` method separates named slots from default content
+  - Named slots stored in `slots` dict in component context
+  - Default content (non-slot children) captured as `content`
+  - Supports multiple named slots, nested components, and Jinja expressions
 
 ### 3.5 Expression Validation
 - **File:** `python/src/lord_of_the_components/validation.py`
@@ -211,12 +216,12 @@ KDL Definition (agnostic)              RVO React (original source)
 - **Error:** Clear message about nesting limit
 
 ### 3.8-3.11 Python Unit Tests
-| Test File | Coverage |
-|-----------|----------|
-| `python/tests/test_extension.py` | Placeholder system |
-| `python/tests/test_slots.py` | Named slot extraction |
-| `python/tests/test_errors.py` | Error message quality |
-| `python/tests/test_nesting.py` | Topological sort, depth limits |
+| Test File | Coverage | Status |
+|-----------|----------|--------|
+| `python/tests/test_extension.py` | Placeholder system, source locations, error suggestions | ✅ DONE |
+| `python/tests/test_slots.py` | Named slot extraction | ✅ DONE |
+| `python/tests/test_errors.py` | Error message quality | |
+| `python/tests/test_nesting.py` | Topological sort, depth limits | |
 
 ### 3.12-3.14 Documentation and Validation
 - **Documentation:** `docs/features/jinja-preprocessor.md`
@@ -395,7 +400,7 @@ cd python && mypy src/              # Type check
 ### Phase 3 Complete When:
 - [x] Deterministic placeholders implemented
 - [x] Error messages include source locations
-- [ ] Named slots work correctly
+- [x] Named slots work correctly
 - [ ] Nesting depth protected
 - [ ] All Python tests pass
 - [ ] mypy reports zero errors

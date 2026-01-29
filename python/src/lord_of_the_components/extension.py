@@ -240,18 +240,52 @@ class ComponentExtension(Extension):
         component_def = self.registry.get_component(component_name)
         attrs = self._parse_component_attributes(tag, component_def, location, occurrence)
 
-        content = None
-        if tag.contents:
-            content_parts = []
-            for child in tag.contents:
-                content_parts.append(str(child))
-            content = "".join(content_parts).strip()
+        # Extract named slots and default content
+        named_slots, default_content = self._extract_slots(tag)
 
-        include_str = self._build_include(component_name, attrs, content)
+        include_str = self._build_include(component_name, attrs, default_content, named_slots)
 
         placeholder = f"JINJA2_PLACEHOLDER_{self._generate_id()}"
         tag.replace_with(placeholder)
         self._jinja_placeholders[placeholder] = include_str
+
+    def _extract_slots(self, tag: Tag) -> tuple[Dict[str, str], Optional[str]]:
+        """
+        Extract named slots and default content from a component tag.
+
+        Named slots are defined using <template slot="name">content</template>.
+        All other content becomes the default content.
+
+        Args:
+            tag: The component tag to extract slots from
+
+        Returns:
+            A tuple of (named_slots dict, default_content string or None)
+        """
+        named_slots: Dict[str, str] = {}
+        default_content_parts: List[str] = []
+
+        for child in tag.contents:
+            if isinstance(child, Tag) and child.name == "template" and child.get("slot"):
+                # This is a named slot
+                slot_name = child.get("slot")
+                if isinstance(slot_name, list):
+                    slot_name = slot_name[0]
+                slot_name = str(slot_name)
+
+                # Get the inner content of the template tag
+                slot_content_parts = []
+                for slot_child in child.contents:
+                    slot_content_parts.append(str(slot_child))
+                slot_content = "".join(slot_content_parts).strip()
+
+                named_slots[slot_name] = slot_content
+            else:
+                # This is default content
+                default_content_parts.append(str(child))
+
+        default_content = "".join(default_content_parts).strip()
+        return named_slots, default_content if default_content else None
 
     def _parse_component_attributes(
         self,
@@ -326,11 +360,16 @@ class ComponentExtension(Extension):
         return False
 
     def _build_include(
-        self, component_name: str, attrs: Dict[str, Any], content: Optional[str]
+        self,
+        component_name: str,
+        attrs: Dict[str, Any],
+        content: Optional[str],
+        named_slots: Optional[Dict[str, str]] = None,
     ) -> str:
         """Build the Jinja2 include statement."""
         template_path = f"components/{component_name}.html.j2"
         context_items = []
+        set_statements: List[str] = []
 
         for key, value in attrs.items():
             if key.startswith(":"):
@@ -347,24 +386,35 @@ class ComponentExtension(Extension):
                 escaped_value = str_value.replace('"', '\\"')
                 context_items.append(f'"{key}": "{escaped_value}"')
 
+        # Handle default content
         if content:
             var_suffix = self._generate_id()
             capture_var = f"_captured_content_{var_suffix}"
-            content_part = f'"content": {capture_var}'
-            context_str = ", ".join(context_items) if context_items else ""
-            full_context = context_str + (", " if context_str else "") + content_part
+            set_statements.append(f"{{% set {capture_var} %}}{content}{{% endset %}}")
+            context_items.append(f'"content": {capture_var}')
 
-            return (
-                f"{{% set {capture_var} %}}{content}{{% endset %}}"
-                f"{{% set _component_context = {{{full_context}}} %}}"
-                f'{{% include "{template_path}" with context %}}'
-            )
-        else:
-            context_str = ", ".join(context_items)
-            return (
-                f"{{% set _component_context = {{{context_str}}} %}}"
-                f'{{% include "{template_path}" with context %}}'
-            )
+        # Handle named slots
+        slot_items: List[str] = []
+        if named_slots:
+            for slot_name, slot_content in named_slots.items():
+                var_suffix = self._generate_id()
+                slot_var = f"_slot_{slot_name}_{var_suffix}"
+                set_statements.append(f"{{% set {slot_var} %}}{slot_content}{{% endset %}}")
+                slot_items.append(f'"{slot_name}": {slot_var}')
+
+        # Build slots dict if we have named slots
+        if slot_items:
+            slots_dict = "{" + ", ".join(slot_items) + "}"
+            context_items.append(f'"slots": {slots_dict}')
+
+        context_str = ", ".join(context_items)
+        set_stmts_str = "".join(set_statements)
+
+        return (
+            f"{set_stmts_str}"
+            f"{{% set _component_context = {{{context_str}}} %}}"
+            f'{{% include "{template_path}" with context %}}'
+        )
 
     def _generate_id(self) -> str:
         """
