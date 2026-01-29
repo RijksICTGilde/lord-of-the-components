@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>layout - Holy Grail Layout (RVO Baseline)</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .c-layout {
+            display: grid;
+            grid-template-areas:
+                "header header"
+                "sidebar main"
+                "footer footer";
+            grid-template-columns: 200px 1fr;
+            grid-template-rows: auto 1fr auto;
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 1rem;
+            gap: 1rem;
+            min-height: 300px;
+        }
+        .c-layout__header {
+            grid-area: header;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1rem;
+        }
+        .c-layout__sidebar {
+            grid-area: sidebar;
+            border-right: 1px solid #ddd;
+            padding-right: 1rem;
+        }
+        .c-layout__main {
+            grid-area: main;
+        }
+        .c-layout__footer {
+            grid-area: footer;
+            border-top: 1px solid #ddd;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="layout" data-example="holy-grail">
+        <div class="c-layout" data-variant="holy-grail" data-max-width="lg" data-padding="md">
+            <header class="c-layout__header">Site Header</header>
+            <aside class="c-layout__sidebar">Sidebar</aside>
+            <main class="c-layout__main">Main Content</main>
+            <footer class="c-layout__footer">Site Footer</footer>
+        </div>
+    </div>
+</body>
+</html>

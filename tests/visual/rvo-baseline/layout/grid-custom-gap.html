@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grid - Custom Gaps (RVO Baseline)</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .c-grid {
+            display: grid;
+        }
+        .c-grid[data-cols="3"] {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .c-grid[data-gap-x="lg"] {
+            column-gap: 1.5rem;
+        }
+        .c-grid[data-gap-y="sm"] {
+            row-gap: 0.5rem;
+        }
+        .c-grid__item {
+            padding: 1rem;
+            background: #f0f0f0;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="grid" data-example="custom-gap">
+        <div class="c-grid" data-cols="3" data-gap-x="lg" data-gap-y="sm">
+            <div class="c-grid__item">Item 1</div>
+            <div class="c-grid__item">Item 2</div>
+            <div class="c-grid__item">Item 3</div>
+        </div>
+    </div>
+</body>
+</html>

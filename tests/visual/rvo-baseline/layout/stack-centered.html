@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stack - Centered Stack (RVO Baseline)</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .c-stack {
+            display: flex;
+        }
+        .c-stack[data-direction="vertical"] {
+            flex-direction: column;
+        }
+        .c-stack[data-align="center"] {
+            align-items: center;
+        }
+        .c-stack[data-justify="center"] {
+            justify-content: center;
+        }
+        .c-stack[data-gap="md"] {
+            gap: 1rem;
+        }
+        h2 {
+            margin: 0;
+        }
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="stack" data-example="centered">
+        <div class="c-stack" data-direction="vertical" data-align="center" data-justify="center" data-gap="md">
+            <h2>Centered Title</h2>
+            <p>Centered content</p>
+        </div>
+    </div>
+</body>
+</html>

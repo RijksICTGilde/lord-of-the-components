@@ -142,9 +142,9 @@ KDL Definition (agnostic)              RVO React (original source)
   2. Extract example configurations
   3. Generate standalone HTML files
 
-### 2.6 RVO Baseline
+### 2.6 RVO Baseline ✅ DONE
 - **Directory:** `tests/visual/rvo-baseline/`
-- **Content:** HTML fixtures from RVO React components
+- **Content:** HTML fixtures from RVO React components (29 fixtures for button, card, stack, layout, grid, page)
 - **Purpose:** Visual comparison reference
 
 ### 2.7-2.12 Visual Test Infrastructure

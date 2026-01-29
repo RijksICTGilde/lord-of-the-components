@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>button - Button Sizes (RVO Baseline)</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .c-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #0077cc;
+            color: white;
+        }
+        .c-button[data-size="sm"] {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .c-button[data-size="md"] {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+        .c-button[data-size="lg"] {
+            padding: 0.75rem 1.5rem;
+            font-size: 1.125rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="button" data-example="sizes">
+        <button type="button" class="c-button" data-variant="primary" data-size="sm">Small</button>
+    </div>
+</body>
+</html>
