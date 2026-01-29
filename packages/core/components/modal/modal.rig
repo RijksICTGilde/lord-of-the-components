@@ -1,0 +1,60 @@
+# Lord of the Components - Modal Component Logic
+# Modal dialog overlay with customizable size, close behavior, and slots
+
+# Outer wrapper (only renders when open)
+if props.open:
+    render.element("div"):
+        attrs.class = "c-modal"
+
+        # Size modifier
+        if props.size:
+            attrs.class = attrs.class + " c-modal--" + props.size
+
+        # ARIA attributes for accessibility
+        attrs.role = "dialog"
+        attrs["aria-modal"] = "true"
+        if props.title:
+            attrs["aria-labelledby"] = "modal-title"
+
+        # Overlay/backdrop
+        render.element("div"):
+            attrs.class = "c-modal__overlay"
+            if props.closeOnOverlay:
+                attrs["data-close-on-click"] = "true"
+
+        # Modal container
+        render.element("div"):
+            attrs.class = "c-modal__container"
+
+            # Header
+            render.element("div"):
+                attrs.class = "c-modal__header"
+
+                # Custom header slot or default title
+                if slots.header:
+                    render.slot("header")
+                else:
+                    if props.title:
+                        render.element("h2"):
+                            attrs.id = "modal-title"
+                            attrs.class = "c-modal__title"
+                            render.text(props.title)
+
+                # Close button (optional)
+                if props.showClose:
+                    render.element("button"):
+                        attrs.type = "button"
+                        attrs.class = "c-modal__close"
+                        attrs["aria-label"] = "Close modal"
+                        render.component("icon", name="close")
+
+            # Body/content
+            render.element("div"):
+                attrs.class = "c-modal__body"
+                render.slot("default")
+
+            # Footer (optional)
+            if slots.footer:
+                render.element("div"):
+                    attrs.class = "c-modal__footer"
+                    render.slot("footer")
