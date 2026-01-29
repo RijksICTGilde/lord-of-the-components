@@ -17,6 +17,7 @@ import { generateIdeSupport } from './commands/ide.js';
 import { extractTemplate } from './commands/extract.js';
 import { generateFixtures } from './commands/fixtures.js';
 import { runVisualTests } from './commands/test-visual.js';
+import { scaffoldComponent } from './commands/scaffold.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -53,6 +54,7 @@ ${chalk.bold('Commands:')}
   registry       Generate component registry for Python
   ide            Generate IDE autocomplete files
   extract        Extract Jinja2 template to RigScript
+  scaffold       Generate .rig file skeleton from KDL definition
   test:fixtures  Generate visual test fixtures
   test:visual    Run visual regression tests
 
@@ -81,6 +83,8 @@ ${chalk.bold('Examples:')}
   lotc ide                      Generate IDE autocomplete
   lotc extract -i file.j2       Extract Jinja2 to RigScript
   lotc extract -i file.j2 -o out.rig  Extract with custom output
+  lotc scaffold button          Generate .rig skeleton for button
+  lotc scaffold card -o card.rig  Scaffold with custom output path
   lotc test:fixtures            Generate visual test fixtures
   lotc test:fixtures -o ./out   Custom output directory
   lotc test:visual              Run visual regression tests
@@ -197,6 +201,21 @@ async function main(): Promise<void> {
           verbose: options.verbose,
         });
         console.log(chalk.green('Extraction complete!'));
+        break;
+
+      case 'scaffold':
+        if (!positionals[1]) {
+          console.error(chalk.red('Error: component name is required'));
+          console.error(chalk.gray('Usage: lotc scaffold <component-name>'));
+          process.exit(1);
+        }
+        console.log(chalk.blue(`Scaffolding ${positionals[1]}...`));
+        await scaffoldComponent({
+          componentName: positionals[1],
+          output: options.output,
+          projectRoot: process.cwd(),
+          verbose: options.verbose,
+        });
         break;
 
       case 'test:fixtures':
