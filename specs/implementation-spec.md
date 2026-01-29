@@ -312,7 +312,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | image | ✅ DONE | `packages/core/components/image/image.rig` |
 | figure | ✅ DONE | `packages/core/components/figure/figure.rig` |
 | codeblock | ✅ DONE | `packages/core/components/codeblock/codeblock.rig` |
-| code | ⏳ TODO | - |
+| code | ✅ DONE | `packages/core/components/code/code.rig` |
 | time | ⏳ TODO | - |
 
 ### 4.11-4.12 Completion Criteria
