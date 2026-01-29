@@ -2,10 +2,13 @@
 Data validation for component attributes.
 
 Validates complex data structures passed to components via dynamic attributes.
+Also validates expression syntax for dynamic attribute bindings (:attr="expression").
 """
 
+import ast
+import re
 from dataclasses import dataclass
-from typing import Any, List, Optional, Type, Union
+from typing import Any, List, Optional, Tuple, Type, Union
 
 
 @dataclass
@@ -359,3 +362,206 @@ def validate_generic_color(value: str) -> ValidationResult:
             )
         ])
     return ValidationResult.success()
+
+
+# =============================================================================
+# EXPRESSION VALIDATION
+# =============================================================================
+
+
+@dataclass
+class ExpressionError:
+    """Represents an expression syntax error."""
+
+    expression: str
+    message: str
+    position: Optional[int] = None
+    suggestion: Optional[str] = None
+
+
+def validate_expression(expression: str) -> Tuple[bool, Optional[ExpressionError]]:
+    """
+    Validate a Jinja2/Python expression for syntax correctness.
+
+    This validates expressions used in dynamic attribute bindings like:
+      :variant="item.variant"
+      :disabled="is_loading or not is_valid"
+      :items="get_menu_items()"
+
+    Args:
+        expression: The expression string to validate
+
+    Returns:
+        A tuple of (is_valid, error_or_none)
+    """
+    if not expression or not expression.strip():
+        return False, ExpressionError(
+            expression=expression,
+            message="Empty expression",
+        )
+
+    expression = expression.strip()
+
+    # Check for common Jinja2 syntax mistakes that would indicate
+    # the user is mixing up syntax
+    jinja_pattern_errors = _check_jinja_syntax_mistakes(expression)
+    if jinja_pattern_errors:
+        return False, jinja_pattern_errors
+
+    # Check for unbalanced brackets/parentheses
+    balance_error = _check_bracket_balance(expression)
+    if balance_error:
+        return False, balance_error
+
+    # Try to parse as Python expression
+    try:
+        ast.parse(expression, mode="eval")
+        return True, None
+    except SyntaxError as e:
+        # Try to provide a helpful error message
+        error_msg = str(e.msg) if e.msg else "Invalid syntax"
+        position = e.offset
+
+        suggestion = _suggest_expression_fix(expression, error_msg)
+
+        return False, ExpressionError(
+            expression=expression,
+            message=error_msg,
+            position=position,
+            suggestion=suggestion,
+        )
+
+
+def _check_jinja_syntax_mistakes(expression: str) -> Optional[ExpressionError]:
+    """Check for common Jinja2 syntax mistakes in expressions."""
+    # Check for {{ }} - user may be wrapping expression in Jinja tags
+    if "{{" in expression or "}}" in expression:
+        return ExpressionError(
+            expression=expression,
+            message="Expression should not contain {{ }} delimiters",
+            suggestion=re.sub(r"\{\{|\}\}", "", expression).strip(),
+        )
+
+    # Check for {% %} - control structures not allowed in expressions
+    if "{%" in expression or "%}" in expression:
+        return ExpressionError(
+            expression=expression,
+            message="Expression should not contain {% %} control structures",
+        )
+
+    # Check for |safe, |e, etc. at the wrong level (these are fine in Jinja context)
+    # We allow filters in expressions as they work in eval context
+
+    return None
+
+
+def _check_bracket_balance(expression: str) -> Optional[ExpressionError]:
+    """Check for unbalanced brackets in the expression."""
+    brackets = {"(": ")", "[": "]", "{": "}"}
+    closing = {v: k for k, v in brackets.items()}
+    stack: List[Tuple[str, int]] = []
+
+    in_string = False
+    string_char = None
+
+    for i, char in enumerate(expression):
+        # Track string state
+        if char in ('"', "'") and (i == 0 or expression[i - 1] != "\\"):
+            if not in_string:
+                in_string = True
+                string_char = char
+            elif char == string_char:
+                in_string = False
+                string_char = None
+            continue
+
+        if in_string:
+            continue
+
+        if char in brackets:
+            stack.append((char, i))
+        elif char in closing:
+            if not stack:
+                return ExpressionError(
+                    expression=expression,
+                    message=f"Unmatched closing '{char}'",
+                    position=i + 1,
+                )
+            if stack[-1][0] != closing[char]:
+                expected = brackets[stack[-1][0]]
+                return ExpressionError(
+                    expression=expression,
+                    message=f"Mismatched brackets: expected '{expected}' but found '{char}'",
+                    position=i + 1,
+                )
+            stack.pop()
+
+    if stack:
+        unclosed = stack[-1]
+        expected = brackets[unclosed[0]]
+        return ExpressionError(
+            expression=expression,
+            message=f"Unclosed '{unclosed[0]}' - missing '{expected}'",
+            position=unclosed[1] + 1,
+        )
+
+    # Check for unclosed string
+    if in_string:
+        return ExpressionError(
+            expression=expression,
+            message=f"Unclosed string (missing {string_char})",
+        )
+
+    return None
+
+
+def _suggest_expression_fix(expression: str, error_msg: str) -> Optional[str]:
+    """Try to suggest a fix for common expression errors."""
+    # Common typos and fixes
+    if "=" in expression and "==" not in expression:
+        # User might have meant == instead of =
+        fixed = expression.replace("=", "==", 1)
+        try:
+            ast.parse(fixed, mode="eval")
+            return fixed
+        except SyntaxError:
+            pass
+
+    # Check for common keyword mistakes
+    lower_expr = expression.lower()
+    if " and " not in lower_expr and " && " in expression:
+        return expression.replace("&&", "and")
+    if " or " not in lower_expr and " || " in expression:
+        return expression.replace("||", "or")
+    if " not " not in lower_expr and expression.startswith("!"):
+        return "not " + expression[1:]
+
+    return None
+
+
+def validate_dynamic_attribute(
+    attr_name: str, attr_value: str
+) -> Tuple[bool, Optional[ExpressionError]]:
+    """
+    Validate a dynamic attribute binding.
+
+    Dynamic attributes start with ':' and contain expressions:
+      :variant="item.variant"
+      :disabled="is_loading"
+
+    Args:
+        attr_name: The attribute name (with or without ':' prefix)
+        attr_value: The expression value
+
+    Returns:
+        A tuple of (is_valid, error_or_none)
+    """
+    # Strip the colon prefix if present
+    clean_name = attr_name.lstrip(":")
+
+    is_valid, error = validate_expression(attr_value)
+
+    if error:
+        error.expression = f":{clean_name}=\"{attr_value}\""
+
+    return is_valid, error

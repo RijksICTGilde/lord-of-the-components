@@ -10,11 +10,14 @@ from .validation import (
     DataValidator,
     ValidationResult,
     ValidationError,
+    ExpressionError,
     validate_items,
     validate_columns,
     validate_steps,
     validate_generic_size,
     validate_generic_color,
+    validate_expression,
+    validate_dynamic_attribute,
 )
 
 __version__ = "0.1.0"
@@ -33,9 +36,12 @@ __all__ = [
     "DataValidator",
     "ValidationResult",
     "ValidationError",
+    "ExpressionError",
     "validate_items",
     "validate_columns",
     "validate_steps",
     "validate_generic_size",
     "validate_generic_color",
+    "validate_expression",
+    "validate_dynamic_attribute",
 ]
