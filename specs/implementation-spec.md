@@ -6,13 +6,33 @@ This specification defines a universal component system that generates templates
 
 ### Related Projects
 - `lord-of-the-components` - Main project with KDL definitions, RigScript DSL, and tooling
-- `jinja-roos-components` - Original Jinja2 implementation (74 templates)
-- `rvo` - React design system (76 components with SCSS) - visual baseline reference
+- `jinja-roos-components` - Jinja2 implementation (74 templates) - translated from RVO
+- `rvo` - React design system (76 components with SCSS) - **original source / visual baseline**
 
 ### Target Priority Order
 1. Jinja2
 2. React
 3. Web Components
+
+### Architecture
+
+```
+KDL Definition (agnostic)              RVO React (original source)
+"button has variant, size"                    ↓
+         ↓                              visual/behavioral reference
+         ↓                                    ↓
+    RigScript (implementation logic)  ←  written manually
+    "if variant: add class, render element"
+         ↓
+    Transpilers
+    ↓         ↓           ↓
+ Jinja2    React    WebComponents
+```
+
+**Key Concepts:**
+- **KDL Definition** - Declares WHAT a component is (props, slots, types) - platform agnostic
+- **RigScript** - Defines HOW a component renders (logic, conditionals, element structure) - written manually using RVO as reference
+- **Transpilers** - Convert RigScript to platform-specific implementations
 
 ---
 
@@ -101,100 +121,19 @@ This specification defines a universal component system that generates templates
 
 ---
 
-## Phase 2: Template Extraction Pipeline
-
-**Goal:** Extract existing HTML/Jinja2 templates to RigScript
-
-### 2.1 Jinja2 Template Analyzer ✅ DONE
-- **File:** `core/src/extractors/jinja2-analyzer.ts`
-- **Purpose:** Parse Jinja2 templates, extract structure
-- **Output:** Intermediate Representation (IR) data structure
-- **Capabilities:**
-  - Variable reference extraction
-  - Conditional parsing
-  - Loop detection
-  - Filter identification
-- **Tests:** `core/src/extractors/jinja2-analyzer.test.ts`
-
-### 2.2 Pattern Recognition Mappings
-| Jinja2 Pattern | RigScript Equivalent |
-|----------------|---------------------|
-| `{{ ctx.prop }}` | `props.prop` |
-| `{% if x %}` | `if x:` |
-| `{% for item in items %}` | `for item in items:` |
-| `{{ content \| safe }}` | `render.slot("default")` |
-| `{{ x \| default(y) }}` | `default(x, y)` |
-
-### 2.3 HTML Structure Analyzer ✅ DONE
-- **File:** `core/src/extractors/html-analyzer.ts`
-- **Purpose:** Parse HTML, extract element hierarchy
-- **Output:** Element tree with attribute metadata
-- **Extracts:**
-  - Tag hierarchy
-  - Attribute names and values
-  - Class patterns (static vs dynamic)
-  - Event handlers
-- **Tests:** `core/src/extractors/html-analyzer.test.ts`
-
-### 2.4 RigScript Generator ✅ DONE
-- **File:** `core/src/extractors/rigscript-generator.ts`
-- **Purpose:** Convert IR to RigScript
-- **Process:**
-  1. Receive IR from analyzers
-  2. Build RigScript AST
-  3. Serialize to formatted `.rig` file
-- **Features:**
-  - Variable declarations with filter mappings
-  - Element generation with render.element()
-  - Attribute handling (static, dynamic, mixed, conditional)
-  - Text and expression output
-  - Conditionals (if/elif/else)
-  - Loops (for...in)
-  - Filter mappings (join, default, trim, etc.)
-  - ctx → props transformation
-  - content|safe → render.slot("default") mapping
-- **Tests:** `core/src/extractors/rigscript-generator.test.ts`
-
-### 2.5-2.6 CLI Command: `extract` ✅ DONE
-- **File:** `core/src/cli/commands/extract.ts`
-- **Registration:** `core/src/cli/index.ts`
-- **Usage:** `lotc extract --input <file> --output <file>`
-- **Options:**
-  - `--input` (`-i`) - Source Jinja2 template
-  - `--output` (`-o`) - Output .rig file path (optional, defaults to same directory with .rig extension)
-  - `--comments` - Include comments from source template
-  - `--verbose` - Verbose output
-
-### 2.7-2.8 Template Extraction Tasks
-Extract these templates:
-1. `button.html.j2` → `button.rig`
-2. `page.html.j2` → `page.rig`
-3. `layout.html.j2` → `layout.rig`
-4. `stack.html.j2` → `stack.rig`
-5. `card.html.j2` → `card.rig`
-
-### 2.9-2.11 Documentation and Tests
-| File | Purpose |
-|------|---------|
-| `docs/features/template-extraction.md` | Extraction process documentation |
-| `core/tests/extractors/jinja2-analyzer.test.ts` | Analyzer unit tests |
-| `core/tests/extractors/rigscript-generator.test.ts` | Generator unit tests |
-
----
-
-## Phase 3: Visual Testing with Playwright
+## Phase 2: Visual Testing with Playwright
 
 **Goal:** Automated visual regression testing comparing to RVO baseline
 
-### 3.1-3.2 Playwright Setup
+### 2.1-2.2 Playwright Setup ✅ DONE
 - **Dependency:** `@playwright/test` (devDependency)
 - **Config File:** `tests/visual/playwright.config.ts`
 - **Configuration:**
   - Browser: Headless Chromium
   - Snapshot directory: `tests/visual/snapshots/`
-  - Diff threshold: Configurable pixel tolerance
+  - Diff threshold: Configurable pixel tolerance (maxDiffPixelRatio: 0.01)
 
-### 3.3-3.5 Fixture Generation
+### 2.3-2.5 Fixture Generation
 - **Generator:** `core/src/generators/fixture-generator.ts` (NEW)
 - **CLI Command:** `lotc test:fixtures --output <dir>`
 - **Output:** `tests/visual/fixtures/` directory
@@ -203,12 +142,12 @@ Extract these templates:
   2. Extract example configurations
   3. Generate standalone HTML files
 
-### 3.6 RVO Baseline
+### 2.6 RVO Baseline
 - **Directory:** `tests/visual/rvo-baseline/`
 - **Content:** HTML fixtures from RVO React components
 - **Purpose:** Visual comparison reference
 
-### 3.7-3.12 Visual Test Infrastructure
+### 2.7-2.12 Visual Test Infrastructure
 | File | Purpose |
 |------|---------|
 | `tests/visual/specs/components.spec.ts` | Playwright test specifications |
@@ -216,7 +155,7 @@ Extract these templates:
 | `core/src/cli/commands/test-visual.ts` | CLI wrapper for Playwright |
 | `.github/workflows/visual-tests.yml` | CI integration |
 
-### 3.13 Documentation
+### 2.13 Documentation
 - **File:** `docs/features/visual-testing.md`
 - **Content:**
   - Running visual tests
@@ -226,47 +165,47 @@ Extract these templates:
 
 ---
 
-## Phase 4: Python Preprocessor Refinement
+## Phase 3: Python Preprocessor Refinement
 
 **Goal:** Production-ready Jinja2 extension with excellent developer experience
 
-### 4.1 Deterministic Placeholder System
+### 3.1 Deterministic Placeholder System
 - **File:** `python/src/lord_of_the_components/extension.py`
 - **Current:** Random placeholders
 - **Target:** Position-based hashes
 - **Benefit:** Reproducible intermediate output
 
-### 4.2-4.3 Source Location Tracking
+### 3.2-3.3 Source Location Tracking
 - **File:** `python/src/lord_of_the_components/extension.py`
 - **Features:**
   - Track line/column for parsed component tags
   - Include location in error messages
 - **Error Format:** `Unknown attribute 'varient' at line 42, column 5. Did you mean 'variant'?`
 
-### 4.4 Named Slot Extraction
+### 3.4 Named Slot Extraction
 - **Syntax:** `<template slot="name">content</template>`
 - **Behavior:** Extract slot content, pass to component context
 - **Access:** `slots.name` in component template
 
-### 4.5 Expression Validation
+### 3.5 Expression Validation
 - **File:** `python/src/lord_of_the_components/validation.py`
 - **Validates:** `:attr="expression"` syntax
 - **Timing:** Before template rendering
 - **Errors:** Clear syntax error messages
 
-### 4.6 Topological Sort for Nesting
+### 3.6 Topological Sort for Nesting
 - **Purpose:** Single-pass processing of nested components
 - **Algorithm:**
   1. Build dependency graph
   2. Topologically sort components
   3. Process in sorted order
 
-### 4.7 Nesting Depth Protection
+### 3.7 Nesting Depth Protection
 - **Constant:** `MAX_NESTING_DEPTH = 50`
 - **Behavior:** Raise error if exceeded
 - **Error:** Clear message about nesting limit
 
-### 4.8-4.11 Python Unit Tests
+### 3.8-3.11 Python Unit Tests
 | Test File | Coverage |
 |-----------|----------|
 | `python/tests/test_extension.py` | Placeholder system |
@@ -274,23 +213,23 @@ Extract these templates:
 | `python/tests/test_errors.py` | Error message quality |
 | `python/tests/test_nesting.py` | Topological sort, depth limits |
 
-### 4.12-4.14 Documentation and Validation
+### 3.12-3.14 Documentation and Validation
 - **Documentation:** `docs/features/jinja-preprocessor.md`
 - **Type Checking:** `mypy src/` (zero errors)
 - **Test Suite:** `pytest tests/ -v` (all pass)
 
 ---
 
-## Phase 5: Scale to All Components
+## Phase 4: Scale to All Components
 
 **Goal:** All ~95 components have RigScript implementations with visual tests
 
-### 5.1 Scaffold CLI Command
+### 4.1 Scaffold CLI Command
 - **File:** `core/src/cli/commands/scaffold.ts` (NEW)
 - **Usage:** `lotc scaffold <component-name>`
 - **Output:** `.rig` file skeleton from KDL definition
 
-### 5.2-5.10 Component Categories
+### 4.2-4.10 Component Categories
 
 | Category | Count | Components |
 |----------|-------|------------|
@@ -304,28 +243,28 @@ Extract these templates:
 | Input | 20+ | text, email, password, number, date, time, file, checkbox, radio, switch, select, textarea, range, color, autocomplete, field wrappers |
 | Utility | 3 | focus-trap, portal, visually-hidden |
 
-### 5.11-5.12 Completion Criteria
+### 4.11-4.12 Completion Criteria
 - **Visual Tests:** All 95 components pass
 - **Documentation:** `docs/component-coverage.md` with 95/95 status
 
 ---
 
-## Phase 6: React Transpiler Enhancement
+## Phase 5: React Transpiler Enhancement
 
 **Goal:** React output matches RVO quality
 
-### 6.1 Audit Gaps
+### 5.1 Audit Gaps
 - **File:** `core/src/rigscript/transpiler-react.ts`
 - **Deliverable:** List of missing features vs RVO
 
-### 6.2 className Building
+### 5.2 className Building
 - **Implementation:** Generate `clsx()` calls
 - **Example:**
   ```typescript
   className={clsx('c-button', variant && `c-button--${variant}`)}
   ```
 
-### 6.3 Props Destructuring
+### 5.3 Props Destructuring
 - **Output:** TypeScript interface + destructuring
 - **Example:**
   ```typescript
@@ -337,22 +276,22 @@ Extract these templates:
   export function Button({ variant = 'primary', children }: ButtonProps) {
   ```
 
-### 6.4 Children/Slot Handling
+### 5.4 Children/Slot Handling
 - **Mapping:** `render.slot("default")` → `{children}`
 - **Named Slots:** Props-based slot pattern
 
-### 6.5-6.6 Generation and Testing
+### 5.5-5.6 Generation and Testing
 - **Command:** `lotc build --target react`
 - **Validation:** TypeScript compilation
 - **Visual Tests:** Compare to RVO baseline
 
 ---
 
-## Phase 7: Web Components Target
+## Phase 6: Web Components Target
 
 **Goal:** Generate Web Components from RigScript
 
-### 7.1 Architecture Design
+### 6.1 Architecture Design
 - **Document:** `docs/design/webcomponents-transpiler.md`
 - **Decisions:**
   - Custom Elements v1 API
@@ -360,7 +299,7 @@ Extract these templates:
   - Slot mapping approach
   - Style encapsulation
 
-### 7.2-7.4 Transpiler Implementation
+### 6.2-6.4 Transpiler Implementation
 - **File:** `core/src/rigscript/transpiler-webcomponents.ts` (NEW)
 - **Features:**
   - Custom Element class generation
@@ -368,7 +307,7 @@ Extract these templates:
   - `<slot>` element mapping
   - Attribute/property handling
 
-### 7.5-7.7 Generation and Testing
+### 6.5-6.7 Generation and Testing
 - **Initial:** 5 reference components (button, card, stack, layout, page)
 - **Full:** All 95 components
 - **Validation:** Visual tests match Jinja2/React output
@@ -384,16 +323,13 @@ Extract these templates:
 | `core/src/rigscript/types.ts` | Type definitions | 1 |
 | `core/src/rigscript/builtins.ts` | Built-in functions | 1 |
 | `core/src/rigscript/transpiler-jinja2.ts` | Jinja2 output | 1 |
-| `core/src/rigscript/transpiler-react.ts` | React output | 6 |
-| `core/src/rigscript/transpiler-webcomponents.ts` | Web Components output | 7 |
-| `core/src/extractors/jinja2-analyzer.ts` | Template extraction | 2 |
-| `core/src/extractors/html-analyzer.ts` | HTML parsing | 2 |
-| `core/src/extractors/rigscript-generator.ts` | RigScript generation | 2 |
-| `core/src/generators/fixture-generator.ts` | Test fixtures | 3 |
-| `python/src/lord_of_the_components/extension.py` | Jinja2 preprocessor | 4 |
-| `python/src/lord_of_the_components/validation.py` | Expression validation | 4 |
-| `tests/visual/playwright.config.ts` | Visual test config | 3 |
-| `tests/visual/specs/components.spec.ts` | Visual test specs | 3 |
+| `core/src/rigscript/transpiler-react.ts` | React output | 5 |
+| `core/src/rigscript/transpiler-webcomponents.ts` | Web Components output | 6 |
+| `core/src/generators/fixture-generator.ts` | Test fixtures | 2 |
+| `python/src/lord_of_the_components/extension.py` | Jinja2 preprocessor | 3 |
+| `python/src/lord_of_the_components/validation.py` | Expression validation | 3 |
+| `tests/visual/playwright.config.ts` | Visual test config | 2 |
+| `tests/visual/specs/components.spec.ts` | Visual test specs | 2 |
 
 ---
 
@@ -406,11 +342,6 @@ lotc build --target jinja2          # Jinja2 only
 lotc build --target react           # React only
 lotc build --target webcomponents   # Web Components only
 lotc build --component button       # Single component
-```
-
-### Extract Commands
-```bash
-lotc extract --input file.j2 --output file.rig
 ```
 
 ### Test Commands
@@ -451,17 +382,12 @@ cd python && mypy src/              # Type check
 - [x] All unit tests pass
 
 ### Phase 2 Complete When:
-- [ ] `lotc extract` command works
-- [ ] 5 Jinja2 templates extract to valid RigScript
-- [ ] Extracted output matches hand-written references
-
-### Phase 3 Complete When:
 - [ ] Playwright configured and running
 - [ ] RVO baseline screenshots captured
 - [ ] Visual comparison tests execute
 - [ ] CI workflow operational
 
-### Phase 4 Complete When:
+### Phase 3 Complete When:
 - [ ] Deterministic placeholders implemented
 - [ ] Error messages include source locations
 - [ ] Named slots work correctly
@@ -469,17 +395,17 @@ cd python && mypy src/              # Type check
 - [ ] All Python tests pass
 - [ ] mypy reports zero errors
 
-### Phase 5 Complete When:
+### Phase 4 Complete When:
 - [ ] 95 .rig files exist
 - [ ] All transpile to valid Jinja2
 - [ ] All visual tests pass
 
-### Phase 6 Complete When:
+### Phase 5 Complete When:
 - [ ] React transpiler feature-complete
 - [ ] 95 React components generate
 - [ ] Visual tests match RVO baseline
 
-### Phase 7 Complete When:
+### Phase 6 Complete When:
 - [ ] Web Components transpiler complete
 - [ ] 95 Web Components generate
 - [ ] Visual tests pass
