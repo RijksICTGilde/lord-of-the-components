@@ -175,12 +175,17 @@ KDL Definition (agnostic)              RVO React (original source)
 - **Implementation:** Counter-based hash combining template ID and position
 - **Benefit:** Reproducible intermediate output
 
-### 3.2-3.3 Source Location Tracking
+### 3.2-3.3 Source Location Tracking ✅ DONE
 - **File:** `python/src/lord_of_the_components/extension.py`
 - **Features:**
   - Track line/column for parsed component tags
   - Include location in error messages
+  - "Did you mean?" suggestions using difflib
 - **Error Format:** `Unknown attribute 'varient' at line 42, column 5. Did you mean 'variant'?`
+- **Implementation:**
+  - `SourceLocation` dataclass for line/column tracking
+  - `ComponentError` exception with location and suggestion support
+  - `_find_tag_location()` and `_find_attribute_location()` helpers
 
 ### 3.4 Named Slot Extraction
 - **Syntax:** `<template slot="name">content</template>`
@@ -389,7 +394,7 @@ cd python && mypy src/              # Type check
 
 ### Phase 3 Complete When:
 - [x] Deterministic placeholders implemented
-- [ ] Error messages include source locations
+- [x] Error messages include source locations
 - [ ] Named slots work correctly
 - [ ] Nesting depth protected
 - [ ] All Python tests pass
