@@ -7,3 +7,4 @@
 
 export * from './jinja2-analyzer.js';
 export * from './html-analyzer.js';
+export * from './rigscript-generator.js';
