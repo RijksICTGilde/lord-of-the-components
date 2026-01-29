@@ -1,0 +1,74 @@
+# Lord of the Components - Progress Tracker Component Logic
+# Multi-step progress indicator for wizards and multi-step processes
+
+render.element("nav"):
+    # Base class
+    attrs.class = "c-progress-tracker"
+
+    # Orientation modifier (default: horizontal)
+    if props.orientation:
+        attrs.class = attrs.class + " c-progress-tracker--" + props.orientation
+
+    # Size modifier (default: md)
+    if props.size:
+        attrs.class = attrs.class + " c-progress-tracker--" + props.size
+
+    # ARIA attributes for accessibility
+    attrs["aria-label"] = props.label or "Progress"
+
+    # Ordered list for steps
+    render.element("ol"):
+        attrs.class = "c-progress-tracker__list"
+
+        # Iterate over steps
+        for index, step in props.steps:
+            render.element("li"):
+                attrs.class = "c-progress-tracker__item"
+
+                # Add state modifier class
+                if step.state:
+                    attrs.class = attrs.class + " c-progress-tracker__item--" + step.state
+                else:
+                    # Default state based on currentStep prop if provided
+                    if props.currentStep:
+                        if index < props.currentStep:
+                            attrs.class = attrs.class + " c-progress-tracker__item--complete"
+                        else if index == props.currentStep:
+                            attrs.class = attrs.class + " c-progress-tracker__item--current"
+                        else:
+                            attrs.class = attrs.class + " c-progress-tracker__item--pending"
+
+                # ARIA current for current step
+                if step.state == "current":
+                    attrs["aria-current"] = "step"
+
+                # Step marker (number or icon)
+                render.element("span"):
+                    attrs.class = "c-progress-tracker__marker"
+                    render.text(index + 1)
+
+                # Step content wrapper
+                render.element("span"):
+                    attrs.class = "c-progress-tracker__content"
+
+                    # Step label - link or text
+                    if step.href:
+                        render.element("a"):
+                            attrs.class = "c-progress-tracker__label"
+                            attrs.href = step.href
+                            render.text(step.label)
+                    else:
+                        render.element("span"):
+                            attrs.class = "c-progress-tracker__label"
+                            render.text(step.label)
+
+                    # Optional description
+                    if step.description:
+                        render.element("span"):
+                            attrs.class = "c-progress-tracker__description"
+                            render.text(step.description)
+
+                # Connector line between steps (except for last item)
+                if index < length(props.steps) - 1:
+                    render.element("span"):
+                        attrs.class = "c-progress-tracker__connector"
