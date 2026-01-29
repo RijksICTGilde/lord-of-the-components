@@ -1,0 +1,44 @@
+# Lord of the Components - Avatar Component Logic
+# User avatar image or initials display
+
+render.element("div"):
+    # Build CSS classes array
+    let classes = ["c-avatar"]
+
+    # Size modifier (default: md)
+    let size = props.size or "md"
+    classes = classes + ["c-avatar--" + size]
+
+    # Shape modifier (default: circle)
+    let shape = props.shape or "circle"
+    classes = classes + ["c-avatar--" + shape]
+
+    # Apply classes
+    attrs.class = join(classes, " ")
+
+    # Image display (if src provided)
+    if props.src:
+        render.element("img"):
+            attrs.class = "c-avatar__image"
+            attrs.src = props.src
+            attrs.alt = props.alt or props.name or ""
+
+    # Initials fallback (if no src but name provided)
+    if not props.src and props.name:
+        render.element("span"):
+            attrs.class = "c-avatar__initials"
+            # Generate initials from name (first letter of each word, max 2)
+            attrs["aria-hidden"] = "true"
+            render.text(props.name)
+
+    # Custom fallback slot
+    if not props.src and not props.name:
+        render.element("span"):
+            attrs.class = "c-avatar__fallback"
+            render.slot("fallback")
+
+    # Status indicator
+    if props.status:
+        render.element("span"):
+            attrs.class = "c-avatar__status c-avatar__status--" + props.status
+            attrs["aria-label"] = props.status
