@@ -1,0 +1,10 @@
+# Lord of the Components - Spacer Component Logic
+# Empty space element for layout spacing
+
+render.element("div"):
+    # Size-based spacing
+    attrs.size = props.size
+
+    # Grow to fill available space (flex-grow: 1)
+    if props.grow:
+        attrs.grow = true
