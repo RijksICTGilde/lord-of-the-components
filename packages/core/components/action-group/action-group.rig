@@ -1,0 +1,37 @@
+# Lord of the Components - Action Group Component Logic
+# Group of related action buttons with layout control
+
+render.element("div"):
+    # Layout direction
+    attrs.direction = props.direction
+
+    # Alignment within container
+    attrs.align = props.align
+
+    # Gap between items
+    attrs.gap = props.gap
+
+    # Size for all child buttons (overrides individual)
+    if props.size:
+        attrs.size = props.size
+
+    # Full width buttons
+    if props.fullWidth:
+        attrs.fullWidth = true
+
+    # Data-driven mode: render buttons from actions array
+    if props.actions:
+        for action in props.actions:
+            render.component("button"):
+                attrs.variant = action.variant
+                if action.disabled:
+                    attrs.disabled = true
+                if action.href:
+                    attrs.href = action.href
+                if action.icon:
+                    attrs.icon = action.icon
+                render.text(action.label)
+
+    # Manual composition mode: use slotted content
+    else:
+        render.slot("default")
