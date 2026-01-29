@@ -18,6 +18,7 @@ from jinja2 import Environment
 from jinja2.ext import Extension
 
 from .registry import ComponentRegistry
+from .validation import validate_expression
 
 logger = logging.getLogger(__name__)
 
@@ -312,7 +313,27 @@ class ComponentExtension(Extension):
             else:
                 attr_value = str(attr_value)
 
-            if attr_name.startswith(":") or attr_name.startswith("@"):
+            if attr_name.startswith(":"):
+                # Validate dynamic attribute expression
+                is_valid, expr_error = validate_expression(attr_value)
+                if not is_valid and expr_error:
+                    attr_location = _find_attribute_location(
+                        self._current_source, tag.name, attr_name, tag_occurrence
+                    )
+                    location = attr_location or tag_location
+
+                    suggestion = expr_error.suggestion
+                    error_msg = f"Invalid expression in '{attr_name}': {expr_error.message}"
+                    if expr_error.position:
+                        error_msg += f" at position {expr_error.position}"
+
+                    raise ComponentError(
+                        error_msg,
+                        location=location,
+                        suggestion=suggestion,
+                    )
+                attrs[attr_name] = attr_value
+            elif attr_name.startswith("@"):
                 attrs[attr_name] = attr_value
             elif self._is_generic_html_attribute(attr_name):
                 attrs[attr_name] = attr_value

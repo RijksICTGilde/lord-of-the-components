@@ -197,11 +197,17 @@ KDL Definition (agnostic)              RVO React (original source)
   - Default content (non-slot children) captured as `content`
   - Supports multiple named slots, nested components, and Jinja expressions
 
-### 3.5 Expression Validation
+### 3.5 Expression Validation ✅ DONE
 - **File:** `python/src/lord_of_the_components/validation.py`
 - **Validates:** `:attr="expression"` syntax
-- **Timing:** Before template rendering
-- **Errors:** Clear syntax error messages
+- **Timing:** Before template rendering (in `_parse_component_attributes`)
+- **Errors:** Clear syntax error messages with location and suggestions
+- **Implementation:**
+  - `validate_expression()` function using Python AST parsing
+  - Bracket balance checking with position reporting
+  - Common mistake detection ({{ }}, {% %}, &&, ||)
+  - Helpful suggestions for fixes (e.g., `&&` → `and`)
+  - Integration with `ComponentError` for source location tracking
 
 ### 3.6 Topological Sort for Nesting
 - **Purpose:** Single-pass processing of nested components
@@ -218,7 +224,7 @@ KDL Definition (agnostic)              RVO React (original source)
 ### 3.8-3.11 Python Unit Tests
 | Test File | Coverage | Status |
 |-----------|----------|--------|
-| `python/tests/test_extension.py` | Placeholder system, source locations, error suggestions | ✅ DONE |
+| `python/tests/test_extension.py` | Placeholder system, source locations, error suggestions, expression validation | ✅ DONE |
 | `python/tests/test_slots.py` | Named slot extraction | ✅ DONE |
 | `python/tests/test_errors.py` | Error message quality | |
 | `python/tests/test_nesting.py` | Topological sort, depth limits | |
@@ -401,6 +407,7 @@ cd python && mypy src/              # Type check
 - [x] Deterministic placeholders implemented
 - [x] Error messages include source locations
 - [x] Named slots work correctly
+- [x] Expression validation works
 - [ ] Nesting depth protected
 - [ ] All Python tests pass
 - [ ] mypy reports zero errors

@@ -141,6 +141,96 @@ class TestMultipleComponents:
         assert error.location.line == 2
 
 
+class TestExpressionValidation:
+    """Tests for expression validation in dynamic attributes."""
+
+    def test_valid_simple_expression(self, extension):
+        """Test that valid expressions are accepted."""
+        source = '<c-button :variant="item.variant">Click</c-button>'
+        result = extension.preprocess(source, "test.html")
+        assert "components/button.html.j2" in result
+        assert "item.variant" in result
+
+    def test_valid_boolean_expression(self, extension):
+        """Test that boolean expressions are accepted."""
+        source = '<c-button :disabled="is_loading or not is_valid">Click</c-button>'
+        result = extension.preprocess(source, "test.html")
+        assert "components/button.html.j2" in result
+
+    def test_valid_function_call(self, extension):
+        """Test that function calls in expressions are accepted."""
+        source = '<c-button :variant="get_variant()">Click</c-button>'
+        result = extension.preprocess(source, "test.html")
+        assert "components/button.html.j2" in result
+
+    def test_valid_list_expression(self, extension):
+        """Test that list expressions are accepted."""
+        source = '<c-button :class="[\'btn\', \'btn-primary\']">Click</c-button>'
+        result = extension.preprocess(source, "test.html")
+        assert "components/button.html.j2" in result
+
+    def test_valid_dict_expression(self, extension):
+        """Test that dict expressions are accepted."""
+        source = '<c-button :style="{\'color\': \'red\'}">Click</c-button>'
+        result = extension.preprocess(source, "test.html")
+        assert "components/button.html.j2" in result
+
+    def test_invalid_empty_expression(self, extension):
+        """Test that empty expressions are rejected."""
+        source = '<c-button :variant="">Click</c-button>'
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+        assert "Empty expression" in str(exc_info.value)
+
+    def test_invalid_unclosed_bracket(self, extension):
+        """Test that unclosed brackets are detected."""
+        source = '<c-button :variant="get_variant(">Click</c-button>'
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+        assert "Unclosed" in str(exc_info.value) or "missing" in str(exc_info.value).lower()
+
+    def test_invalid_mismatched_brackets(self, extension):
+        """Test that mismatched brackets are detected."""
+        source = '<c-button :variant="items[0)">Click</c-button>'
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+        assert "Mismatched" in str(exc_info.value) or "bracket" in str(exc_info.value).lower()
+
+    def test_invalid_jinja_delimiters(self, extension):
+        """Test that {{ }} delimiters in expressions are rejected."""
+        source = '<c-button :variant="{{ item.variant }}">Click</c-button>'
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+        assert "should not contain {{ }}" in str(exc_info.value)
+
+    def test_invalid_syntax_error_with_location(self, extension):
+        """Test that syntax errors include location information."""
+        source = '''<div>
+    <c-button :variant="item..variant">Click</c-button>
+</div>'''
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+        error = exc_info.value
+        assert error.location is not None
+        assert error.location.line == 2
+
+    def test_suggests_and_for_double_ampersand(self, extension):
+        """Test that && is suggested to be replaced with 'and'."""
+        source = '<c-button :disabled="a && b">Click</c-button>'
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+        # Should suggest using 'and' instead of '&&'
+        assert "and" in str(exc_info.value).lower() or exc_info.value.suggestion == "a and b"
+
+    def test_suggests_or_for_double_pipe(self, extension):
+        """Test that || is suggested to be replaced with 'or'."""
+        source = '<c-button :disabled="a || b">Click</c-button>'
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+        # Should suggest using 'or' instead of '||'
+        assert "or" in str(exc_info.value).lower() or exc_info.value.suggestion == "a or b"
+
+
 class TestSuccessfulPreprocessing:
     """Tests that valid templates still work correctly."""
 
