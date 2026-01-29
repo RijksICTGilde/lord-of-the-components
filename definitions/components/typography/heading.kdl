@@ -1,0 +1,84 @@
+// =============================================================================
+// c-heading - Semantic heading
+// =============================================================================
+
+component "heading" {
+    description "Semantic heading with level control"
+    category "typography"
+    status "stable"
+
+    props {
+        level type="heading-level" default=2 {
+            description "Heading level (1-6)"
+            values 1 2 3 4 5 6
+        }
+        as type="heading-level" {
+            description "Visual style override (renders as level, looks like 'as')"
+        }
+        size type="heading-size" {
+            description "Size variant"
+            values "xs" "sm" "md" "lg" "xl" "2xl" "3xl" "4xl"
+        }
+        weight type="font-weight" default="bold" {
+            description "Font weight"
+            values "normal" "medium" "semibold" "bold"
+        }
+        align type="text-align" {
+            description "Text alignment"
+            values "left" "center" "right"
+        }
+        truncate type="boolean" default=false {
+            description "Truncate with ellipsis"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Heading text"
+        }
+    }
+
+    examples {
+        example "levels" {
+            title "Heading Levels"
+            code ```
+                <c-heading :level="1">Heading 1</c-heading>
+                <c-heading :level="2">Heading 2</c-heading>
+                <c-heading :level="3">Heading 3</c-heading>
+                <c-heading :level="4">Heading 4</c-heading>
+                <c-heading :level="5">Heading 5</c-heading>
+                <c-heading :level="6">Heading 6</c-heading>
+            ```
+        }
+        example "visual-override" {
+            title "Visual Style Override"
+            code ```
+                <!-- Semantically h2, visually styled as h1 -->
+                <c-heading :level="2" :as="1">Page Title</c-heading>
+            ```
+        }
+        example "sizes" {
+            title "Size Variants"
+            code ```
+                <c-heading :level="2" size="xl">Extra Large</c-heading>
+                <c-heading :level="2" size="lg">Large</c-heading>
+                <c-heading :level="2" size="md">Medium</c-heading>
+                <c-heading :level="2" size="sm">Small</c-heading>
+            ```
+        }
+        example "alignment" {
+            title "Text Alignment"
+            code ```
+                <c-heading :level="2" align="center">Centered Heading</c-heading>
+            ```
+        }
+        example "truncate" {
+            title "Truncated"
+            code ```
+                <c-heading :level="3" truncate>
+                    This is a very long heading that will be truncated with ellipsis
+                </c-heading>
+            ```
+        }
+    }
+}

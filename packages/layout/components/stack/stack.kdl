@@ -1,0 +1,118 @@
+// Lord of the Components - Stack Component
+// Flexbox-based layout for stacking items vertically or horizontally
+
+component "stack" {
+    description "Flexbox-based layout for stacking items with consistent spacing"
+    category "layout"
+    status "stable"
+
+    props {
+        direction type="enum" default="vertical" {
+            enum "vertical" "horizontal"
+        }
+        "Stack direction"
+
+        gap type="generic-size" default="md" "Space between stacked items"
+
+        align type="enum" default="stretch" {
+            enum "start" "center" "end" "stretch" "baseline"
+        }
+        "Cross-axis alignment"
+
+        justify type="enum" default="start" {
+            enum "start" "center" "end" "space-between" "space-around" "space-evenly"
+        }
+        "Main-axis alignment"
+
+        wrap type="boolean" default=false "Whether items should wrap"
+
+        reverse type="boolean" default=false "Reverse the stack order"
+
+        dividers type="boolean" default=false "Show dividers between items"
+    }
+
+    slots {
+        default required=true "Stack items"
+    }
+
+    tokens {
+        "divider-color" "{color.border}"
+        "divider-width" "1px"
+    }
+
+    examples {
+        example "vertical" {
+            title "Vertical Stack"
+            description "Items stacked vertically"
+            code ```
+                <c-stack direction="vertical" gap="md">
+                    <div>First item</div>
+                    <div>Second item</div>
+                    <div>Third item</div>
+                </c-stack>
+            ```
+        }
+
+        example "horizontal" {
+            title "Horizontal Stack"
+            description "Items stacked horizontally"
+            code ```
+                <c-stack direction="horizontal" gap="lg">
+                    <button>Action 1</button>
+                    <button>Action 2</button>
+                    <button>Action 3</button>
+                </c-stack>
+            ```
+        }
+
+        example "centered" {
+            title "Centered Stack"
+            description "Items centered both horizontally and vertically"
+            code ```
+                <c-stack direction="vertical" align="center" justify="center" gap="md">
+                    <h2>Centered Title</h2>
+                    <p>Centered content</p>
+                    <button>Centered Button</button>
+                </c-stack>
+            ```
+        }
+
+        example "with-dividers" {
+            title "Stack with Dividers"
+            description "Stack with visual dividers between items"
+            code ```
+                <c-stack direction="vertical" dividers>
+                    <div>Section 1</div>
+                    <div>Section 2</div>
+                    <div>Section 3</div>
+                </c-stack>
+            ```
+        }
+
+        example "space-between" {
+            title "Space Between"
+            description "Items spread out with space between"
+            code ```
+                <c-stack direction="horizontal" justify="space-between">
+                    <span>Left</span>
+                    <span>Center</span>
+                    <span>Right</span>
+                </c-stack>
+            ```
+        }
+
+        example "wrapping" {
+            title "Wrapping Stack"
+            description "Items that wrap to next line"
+            code ```
+                <c-stack direction="horizontal" gap="sm" wrap>
+                    <span class="tag">Tag 1</span>
+                    <span class="tag">Tag 2</span>
+                    <span class="tag">Tag 3</span>
+                    <span class="tag">Tag 4</span>
+                    <span class="tag">Tag 5</span>
+                </c-stack>
+            ```
+        }
+    }
+}

@@ -1,0 +1,33 @@
+# Lord of the Components - Button Component Logic
+# Renders an interactive button element
+
+render.element("button"):
+    # Core attributes
+    attrs.type = props.type
+    attrs.variant = props.variant
+    attrs.size = props.size
+
+    # State attributes
+    if props.disabled:
+        attrs.disabled = true
+
+    if props.loading:
+        attrs.loading = true
+        attrs.aria-busy = "true"
+
+    if props.fullWidth:
+        attrs.fullWidth = true
+
+    # Icon before content
+    if props.icon and props.iconPosition == "before":
+        render.component("icon", name=props.icon, size=props.size)
+
+    # Loading spinner (replaces content when loading)
+    if props.loading:
+        render.component("spinner", size=props.size)
+    else:
+        render.slot("default")
+
+    # Icon after content
+    if props.icon and props.iconPosition == "after":
+        render.component("icon", name=props.icon, size=props.size)

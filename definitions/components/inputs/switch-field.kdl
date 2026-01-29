@@ -1,0 +1,108 @@
+// =============================================================================
+// c-switch-field - Complete switch/toggle field
+// =============================================================================
+
+component "switch-field" {
+    description "Complete toggle switch with label and helper"
+    category "inputs"
+    status "stable"
+
+    props {
+        // Label
+        label type="string" required=true {
+            description "Field label text"
+        }
+
+        // Switch
+        name type="string" {
+            description "Form field name"
+        }
+        checked type="boolean" default=false {
+            description "Checked state"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable switch"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Field size"
+        }
+        labelPosition type="position" default="end" {
+            description "Label position relative to switch"
+            values "start" "end"
+        }
+
+        // Help text
+        helper type="string" {
+            description "Helper text"
+        }
+        error type="string" {
+            description "Error message"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Switch ID"
+        }
+    }
+
+    slots {
+        label {
+            description "Custom label content"
+        }
+        helper {
+            description "Custom helper content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Switch Field"
+            code ```
+                <c-switch-field
+                    label="Enable notifications"
+                    name="notifications"
+                />
+            ```
+        }
+        example "with-helper" {
+            title "With Helper"
+            code ```
+                <c-switch-field
+                    label="Dark mode"
+                    name="dark_mode"
+                    helper="Use dark theme throughout the application"
+                />
+            ```
+        }
+        example "label-start" {
+            title "Label at Start"
+            code ```
+                <c-switch-field
+                    label="Public profile"
+                    name="public"
+                    labelPosition="start"
+                />
+            ```
+        }
+        example "settings" {
+            title "Settings Example"
+            code ```
+                <c-fieldset legend="Notification Settings">
+                    <c-switch-field label="Email notifications" name="email_notif" />
+                    <c-switch-field label="Push notifications" name="push_notif" />
+                    <c-switch-field label="SMS notifications" name="sms_notif" />
+                </c-fieldset>
+            ```
+        }
+    }
+}

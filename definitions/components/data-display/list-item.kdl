@@ -1,0 +1,79 @@
+// =============================================================================
+// c-list-item - List item
+// =============================================================================
+
+component "list-item" {
+    description "Individual list item"
+    category "data-display"
+    status "stable"
+
+    props {
+        href type="string" {
+            description "Link destination (makes item clickable)"
+        }
+        icon type="icon" {
+            description "Leading icon"
+        }
+        selected type="boolean" default=false {
+            description "Selected state"
+        }
+        disabled type="boolean" default=false {
+            description "Disabled state"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Item content"
+        }
+        leading {
+            description "Content before main content (avatar, icon)"
+        }
+        trailing {
+            description "Content after main content (badge, action)"
+        }
+        description {
+            description "Secondary text below main content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic List Item"
+            code ```
+                <c-list-item>Simple text item</c-list-item>
+            ```
+        }
+        example "with-icon" {
+            title "With Icon"
+            code ```
+                <c-list-item icon="user">User profile</c-list-item>
+                <c-list-item icon="settings">Settings</c-list-item>
+            ```
+        }
+        example "with-description" {
+            title "With Description"
+            code ```
+                <c-list-item>
+                    Primary text
+                    <template slot="description">Secondary supporting text</template>
+                </c-list-item>
+            ```
+        }
+        example "complex" {
+            title "Complex Item"
+            code ```
+                <c-list-item href="/user/123">
+                    <template slot="leading">
+                        <c-avatar src="/avatar.jpg" />
+                    </template>
+                    John Doe
+                    <template slot="description">john@example.com</template>
+                    <template slot="trailing">
+                        <c-badge variant="success">Active</c-badge>
+                    </template>
+                </c-list-item>
+            ```
+        }
+    }
+}

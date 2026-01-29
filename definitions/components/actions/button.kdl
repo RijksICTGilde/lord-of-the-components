@@ -1,0 +1,104 @@
+// =============================================================================
+// c-button - Interactive button
+// =============================================================================
+
+component "button" {
+    description "Interactive button for user actions"
+    category "actions"
+    status "stable"
+
+    props {
+        variant type="generic-color" default="primary" {
+            description "Visual style variant"
+        }
+        size type="generic-size" default="md" {
+            description "Button size"
+        }
+        type type="button-type" default="button" {
+            description "HTML button type"
+            values "button" "submit" "reset"
+        }
+        disabled type="boolean" default=false {
+            description "Disable the button"
+        }
+        loading type="boolean" default=false {
+            description "Show loading state"
+        }
+        icon type="icon" {
+            description "Icon to display"
+        }
+        iconPosition type="icon-position" default="before" {
+            description "Position of icon"
+            values "before" "after"
+        }
+        fullWidth type="boolean" default=false {
+            description "Stretch to full width"
+        }
+        href type="string" {
+            description "Link URL (renders as <a>)"
+        }
+        target type="link-target" default="_self" {
+            description "Link target (when href is set)"
+        }
+        outline type="boolean" default=false {
+            description "Outline style (transparent background)"
+        }
+        rounded type="boolean" default=false {
+            description "Fully rounded corners (pill shape)"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Button label"
+        }
+    }
+
+    examples {
+        example "variants" {
+            title "Button Variants"
+            code ```
+                <c-button variant="primary">Primary</c-button>
+                <c-button variant="secondary">Secondary</c-button>
+                <c-button variant="success">Success</c-button>
+                <c-button variant="warning">Warning</c-button>
+                <c-button variant="error">Danger</c-button>
+            ```
+        }
+        example "sizes" {
+            title "Button Sizes"
+            code ```
+                <c-button size="sm">Small</c-button>
+                <c-button size="md">Medium</c-button>
+                <c-button size="lg">Large</c-button>
+            ```
+        }
+        example "with-icon" {
+            title "With Icon"
+            code ```
+                <c-button icon="download">Download</c-button>
+                <c-button icon="arrow-right" iconPosition="after">Next</c-button>
+            ```
+        }
+        example "states" {
+            title "States"
+            code ```
+                <c-button disabled>Disabled</c-button>
+                <c-button loading>Loading...</c-button>
+            ```
+        }
+        example "outline" {
+            title "Outline Style"
+            code ```
+                <c-button outline variant="primary">Outline</c-button>
+            ```
+        }
+        example "as-link" {
+            title "As Link"
+            code ```
+                <c-button href="/page" variant="primary">Go to Page</c-button>
+                <c-button href="https://example.com" target="_blank">External</c-button>
+            ```
+        }
+    }
+}

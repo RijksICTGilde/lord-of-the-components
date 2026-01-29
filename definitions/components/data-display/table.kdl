@@ -1,0 +1,121 @@
+// =============================================================================
+// c-table - Data table
+// =============================================================================
+
+component "table" {
+    description "Data table for structured information"
+    category "data-display"
+    status "stable"
+
+    props {
+        columns type="array" {
+            description "Column definitions"
+            item-shape {
+                key "string" required=true
+                label "string" required=true
+                sortable "boolean"
+                align "text-align"
+                width "string"
+            }
+        }
+        data type="array" {
+            description "Row data"
+        }
+        striped type="boolean" default=false {
+            description "Alternating row colors"
+        }
+        hoverable type="boolean" default=false {
+            description "Highlight row on hover"
+        }
+        bordered type="boolean" default=false {
+            description "Show cell borders"
+        }
+        compact type="boolean" default=false {
+            description "Reduced padding"
+        }
+        sortBy type="string" {
+            description "Current sort column key"
+        }
+        sortOrder type="sort-order" default="asc" {
+            description "Sort direction"
+            values "asc" "desc"
+        }
+        caption type="string" {
+            description "Table caption for accessibility"
+        }
+    }
+
+    slots {
+        default {
+            description "Table rows (manual composition)"
+        }
+        header {
+            description "Custom header row"
+        }
+        footer {
+            description "Table footer"
+        }
+        empty {
+            description "Empty state content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Table"
+            code ```
+                <c-table
+                    :columns='[
+                        {"key": "name", "label": "Name"},
+                        {"key": "email", "label": "Email"},
+                        {"key": "role", "label": "Role"}
+                    ]'
+                    :data='[
+                        {"name": "John Doe", "email": "john@example.com", "role": "Admin"},
+                        {"name": "Jane Smith", "email": "jane@example.com", "role": "User"}
+                    ]'
+                />
+            ```
+        }
+        example "styled" {
+            title "Styled Table"
+            code ```
+                <c-table striped hoverable bordered :columns="columns" :data="users" />
+            ```
+        }
+        example "sortable" {
+            title "Sortable Columns"
+            code ```
+                <c-table
+                    :columns='[
+                        {"key": "name", "label": "Name", "sortable": true},
+                        {"key": "date", "label": "Date", "sortable": true},
+                        {"key": "status", "label": "Status"}
+                    ]'
+                    :data="items"
+                    sortBy="date"
+                    sortOrder="desc"
+                />
+            ```
+        }
+        example "manual" {
+            title "Manual Composition"
+            code ```
+                <c-table caption="User List">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John</td>
+                            <td><c-badge variant="success">Active</c-badge></td>
+                        </tr>
+                    </tbody>
+                </c-table>
+            ```
+        }
+    }
+}

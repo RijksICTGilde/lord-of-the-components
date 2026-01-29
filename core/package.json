@@ -1,0 +1,75 @@
+{
+  "name": "@lotc/core",
+  "version": "0.1.0",
+  "description": "Core build tooling for Lord of the Components - Implementation-agnostic component system",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "lotc": "./dist/cli/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./cli": {
+      "types": "./dist/cli/index.d.ts",
+      "import": "./dist/cli/index.js"
+    },
+    "./rigscript": {
+      "types": "./dist/rigscript/index.d.ts",
+      "import": "./dist/rigscript/index.js"
+    },
+    "./generators": {
+      "types": "./dist/generators/index.d.ts",
+      "import": "./dist/generators/index.js"
+    }
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.map"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "node --test dist/**/*.test.js",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "components",
+    "design-system",
+    "jinja2",
+    "react",
+    "web-components",
+    "kdl",
+    "tokens"
+  ],
+  "author": "Lord of the Components",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lord-of-the-components/lord-of-the-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lord-of-the-components/lord-of-the-components/issues"
+  },
+  "homepage": "https://lord-of-the-components.dev",
+  "dependencies": {
+    "kdljs": "^0.3.0",
+    "chalk": "^5.3.0",
+    "glob": "^10.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "eslint": "^8.55.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

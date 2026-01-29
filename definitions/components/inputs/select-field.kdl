@@ -1,0 +1,123 @@
+// =============================================================================
+// c-select-field - Complete select field
+// =============================================================================
+
+component "select-field" {
+    description "Complete select dropdown with label, helper, and error"
+    category "inputs"
+    status "stable"
+
+    props {
+        // Label
+        label type="string" required=true {
+            description "Field label text"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        optional type="boolean" default=false {
+            description "Optional field"
+        }
+
+        // Select
+        name type="string" {
+            description "Form field name"
+        }
+        value type="string" {
+            description "Selected value"
+        }
+        options type="array" {
+            description "Select options"
+            item-shape {
+                value "string" required=true
+                label "string" required=true
+                disabled "boolean"
+            }
+        }
+        placeholder type="string" {
+            description "Placeholder option text"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable select"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Field size"
+        }
+
+        // Help text
+        helper type="string" {
+            description "Helper text"
+        }
+        error type="string" {
+            description "Error message"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Select ID"
+        }
+    }
+
+    slots {
+        default {
+            description "Option elements"
+        }
+        helper {
+            description "Custom helper content"
+        }
+        error {
+            description "Custom error content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Select Field"
+            code ```
+                <c-select-field
+                    label="Country"
+                    name="country"
+                    placeholder="Select a country"
+                    :options='[
+                        {"value": "nl", "label": "Netherlands"},
+                        {"value": "be", "label": "Belgium"},
+                        {"value": "de", "label": "Germany"}
+                    ]'
+                />
+            ```
+        }
+        example "required" {
+            title "Required"
+            code ```
+                <c-select-field
+                    label="Department"
+                    name="department"
+                    required
+                    :options="departments"
+                />
+            ```
+        }
+        example "with-helper" {
+            title "With Helper"
+            code ```
+                <c-select-field
+                    label="Priority"
+                    name="priority"
+                    helper="Higher priority items are processed first"
+                    :options='[
+                        {"value": "low", "label": "Low"},
+                        {"value": "medium", "label": "Medium"},
+                        {"value": "high", "label": "High"}
+                    ]'
+                />
+            ```
+        }
+    }
+}

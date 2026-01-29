@@ -1,0 +1,89 @@
+// =============================================================================
+// c-range - Range slider
+// =============================================================================
+
+component "range" {
+    description "Range slider for numeric input"
+    category "inputs"
+    status "stable"
+
+    props {
+        label type="string" {
+            description "Range label"
+        }
+        value type="number" {
+            description "Current value"
+        }
+        name type="string" {
+            description "Form field name"
+        }
+
+        // Range
+        min type="number" default=0 {
+            description "Minimum value"
+        }
+        max type="number" default=100 {
+            description "Maximum value"
+        }
+        step type="number" default=1 {
+            description "Step increment"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable slider"
+        }
+
+        // Display
+        showValue type="boolean" default=false {
+            description "Show current value"
+        }
+        showMinMax type="boolean" default=false {
+            description "Show min/max labels"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Slider size"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Range ID"
+        }
+    }
+
+    slots {
+        helper {
+            description "Helper text"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Range"
+            code ```
+                <c-range label="Volume" min="0" max="100" value="50" />
+            ```
+        }
+        example "with-value" {
+            title "Showing Value"
+            code ```
+                <c-range label="Brightness" showValue min="0" max="100" value="75" />
+            ```
+        }
+        example "custom-range" {
+            title "Custom Range"
+            code ```
+                <c-range
+                    label="Price"
+                    min="0"
+                    max="1000"
+                    step="50"
+                    showValue
+                    showMinMax
+                />
+            ```
+        }
+    }
+}

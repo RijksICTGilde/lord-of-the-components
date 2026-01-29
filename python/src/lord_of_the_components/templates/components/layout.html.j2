@@ -1,0 +1,37 @@
+{#
+  Lord of the Components - Layout Template
+
+  Main layout container with optional sidebar, header, and footer regions.
+#}
+{% set ctx = _component_context %}
+{% set variant = ctx.variant | default('default') %}
+{% set max_width = ctx.maxWidth | default('lg') %}
+{% set padding = ctx.padding | default('md') %}
+{% set gap = ctx.gap | default('md') %}
+
+{# Build CSS classes - implementation-agnostic, to be styled by theme #}
+{% set classes = ['c-layout', 'c-layout--' ~ variant, 'c-layout--max-' ~ max_width] %}
+
+<div class="{{ classes | join(' ') }}" style="--layout-padding: var(--space-{{ padding }}); --layout-gap: var(--space-{{ gap }});">
+    {% if ctx.header is defined %}
+    <header class="c-layout__header">
+        {{ ctx.header | safe }}
+    </header>
+    {% endif %}
+
+    {% if variant in ['sidebar-left', 'sidebar-right', 'holy-grail'] and ctx.sidebar is defined %}
+    <aside class="c-layout__sidebar">
+        {{ ctx.sidebar | safe }}
+    </aside>
+    {% endif %}
+
+    <main class="c-layout__main">
+        {{ ctx.content | safe }}
+    </main>
+
+    {% if ctx.footer is defined %}
+    <footer class="c-layout__footer">
+        {{ ctx.footer | safe }}
+    </footer>
+    {% endif %}
+</div>

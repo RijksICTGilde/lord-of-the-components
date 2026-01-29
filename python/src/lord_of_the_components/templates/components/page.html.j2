@@ -1,0 +1,51 @@
+{#
+  Lord of the Components - Page Template
+
+  This template renders the <c-page> component, which creates the HTML
+  structure and auto-includes all CSS/JS dependencies.
+#}
+{% set ctx = _component_context %}
+<!DOCTYPE html>
+<html lang="{{ ctx.lang | default('en') }}">
+<head>
+    <meta charset="{{ ctx.charset | default('utf-8') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ctx.title }}</title>
+    {% if ctx.description %}
+    <meta name="description" content="{{ ctx.description }}">
+    {% endif %}
+
+    {# Core LOTC tokens #}
+    {% for css_url in get_component_assets().css_files %}
+    <link rel="stylesheet" href="{{ css_url }}">
+    {% endfor %}
+
+    {# User-provided additional styles #}
+    {% if ctx.styles %}
+    {% for style_url in ctx.styles %}
+    <link rel="stylesheet" href="{{ style_url }}">
+    {% endfor %}
+    {% endif %}
+
+    {# Additional head content #}
+    {% if ctx.head %}
+    {{ ctx.head | safe }}
+    {% endif %}
+</head>
+<body{% if ctx.theme %} class="theme-{{ ctx.theme }}"{% endif %}>
+    {# Page content #}
+    {{ ctx.content | safe }}
+
+    {# Package scripts #}
+    {% for js_url in get_component_assets().js_files %}
+    <script src="{{ js_url }}"></script>
+    {% endfor %}
+
+    {# User-provided additional scripts #}
+    {% if ctx.scripts %}
+    {% for script_url in ctx.scripts %}
+    <script src="{{ script_url }}"></script>
+    {% endfor %}
+    {% endif %}
+</body>
+</html>

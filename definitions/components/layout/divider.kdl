@@ -1,0 +1,58 @@
+// =============================================================================
+// c-divider - Visual separator
+// =============================================================================
+
+component "divider" {
+    description "Visual separator line between content"
+    category "layout"
+    status "stable"
+
+    props {
+        orientation type="string" default="horizontal" {
+            description "Divider orientation"
+            values "horizontal" "vertical"
+        }
+        spacing type="generic-spacing" default="md" {
+            description "Space around the divider"
+        }
+        color type="string" {
+            description "Divider color"
+        }
+        label type="string" {
+            description "Text label in the middle of divider"
+        }
+    }
+
+    slots {
+        default {
+            description "Label content (alternative to label prop)"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Divider"
+            code ```
+                <p>Content above</p>
+                <c-divider />
+                <p>Content below</p>
+            ```
+        }
+        example "with-label" {
+            title "With Label"
+            code ```
+                <c-divider label="OR" />
+            ```
+        }
+        example "vertical" {
+            title "Vertical Divider"
+            code ```
+                <c-stack direction="horizontal" gap="md">
+                    <span>Left</span>
+                    <c-divider orientation="vertical" />
+                    <span>Right</span>
+                </c-stack>
+            ```
+        }
+    }
+}

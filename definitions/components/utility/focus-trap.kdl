@@ -1,0 +1,88 @@
+// =============================================================================
+// c-focus-trap - Trap keyboard focus
+// =============================================================================
+
+component "focus-trap" {
+    description "Traps keyboard focus within container"
+    category "utility"
+    status "stable"
+
+    props {
+        active type="boolean" default=true {
+            description "Whether trap is active"
+        }
+        initialFocus type="string" {
+            description "Selector for initial focus element"
+        }
+        returnFocus type="boolean" default=true {
+            description "Return focus to trigger on deactivate"
+        }
+        allowOutsideClick type="boolean" default=false {
+            description "Allow clicks outside trapped area"
+        }
+        escapeDeactivates type="boolean" default=true {
+            description "Escape key deactivates trap"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Content to trap focus within"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Focus Trap"
+            code ```
+                <c-focus-trap>
+                    <div class="dialog">
+                        <h2>Dialog Title</h2>
+                        <p>Tab key will cycle through focusable elements here.</p>
+                        <c-button>First</c-button>
+                        <c-button>Second</c-button>
+                        <c-button>Third</c-button>
+                    </div>
+                </c-focus-trap>
+            ```
+        }
+        example "initial-focus" {
+            title "Initial Focus"
+            code ```
+                <c-focus-trap initialFocus="#confirm-button">
+                    <div class="confirm-dialog">
+                        <p>Are you sure?</p>
+                        <c-button id="cancel-button" variant="secondary">Cancel</c-button>
+                        <c-button id="confirm-button" variant="primary">Confirm</c-button>
+                    </div>
+                </c-focus-trap>
+            ```
+        }
+        example "conditional" {
+            title "Conditional Trap"
+            code ```
+                <c-focus-trap :active="modalOpen">
+                    <div class="modal">
+                        <!-- Focus only trapped when modal is open -->
+                    </div>
+                </c-focus-trap>
+            ```
+        }
+        example "with-modal" {
+            title "Used in Modal"
+            code ```
+                <!-- Typically focus-trap is built into modal/drawer components -->
+                <div class="modal-overlay">
+                    <c-focus-trap :active="open" initialFocus=".modal-close">
+                        <div class="modal" role="dialog" aria-modal="true">
+                            <button class="modal-close">×</button>
+                            <div class="modal-content">
+                                <!-- content -->
+                            </div>
+                        </div>
+                    </c-focus-trap>
+                </div>
+            ```
+        }
+    }
+}

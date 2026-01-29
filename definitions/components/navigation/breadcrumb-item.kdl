@@ -1,0 +1,36 @@
+// =============================================================================
+// c-breadcrumb-item - Breadcrumb item
+// =============================================================================
+
+component "breadcrumb-item" {
+    description "Single breadcrumb item"
+    category "navigation"
+    status "stable"
+
+    props {
+        href type="string" {
+            description "Link destination (omit for current page)"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Item label"
+        }
+    }
+
+    examples {
+        example "link" {
+            title "As Link"
+            code ```
+                <c-breadcrumb-item href="/products">Products</c-breadcrumb-item>
+            ```
+        }
+        example "current" {
+            title "Current Page"
+            code ```
+                <c-breadcrumb-item>Current Page</c-breadcrumb-item>
+            ```
+        }
+    }
+}

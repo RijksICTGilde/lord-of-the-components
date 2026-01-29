@@ -1,0 +1,82 @@
+// =============================================================================
+// c-prose - Long-form content
+// =============================================================================
+
+component "prose" {
+    description "Container for long-form rich text content"
+    category "typography"
+    status "stable"
+
+    props {
+        size type="prose-size" default="md" {
+            description "Base text size"
+            values "sm" "md" "lg"
+        }
+        maxWidth type="prose-width" default="prose" {
+            description "Maximum content width"
+            values "prose" "full" "none"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Rich text content (HTML, markdown rendered)"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Prose"
+            code ```
+                <c-prose>
+                    <h1>Article Title</h1>
+                    <p>This is the introduction paragraph with some
+                    <strong>bold text</strong> and <em>italic text</em>.</p>
+
+                    <h2>Section Heading</h2>
+                    <p>More content here with proper typography styling
+                    applied automatically.</p>
+
+                    <ul>
+                        <li>First item</li>
+                        <li>Second item</li>
+                        <li>Third item</li>
+                    </ul>
+
+                    <blockquote>
+                        This is a blockquote with styled formatting.
+                    </blockquote>
+                </c-prose>
+            ```
+        }
+        example "sizes" {
+            title "Prose Sizes"
+            code ```
+                <c-prose size="sm">
+                    <p>Smaller prose for compact reading.</p>
+                </c-prose>
+
+                <c-prose size="lg">
+                    <p>Larger prose for comfortable reading.</p>
+                </c-prose>
+            ```
+        }
+        example "full-width" {
+            title "Full Width"
+            code ```
+                <c-prose maxWidth="full">
+                    <p>This content spans the full width of its container
+                    without the typical prose max-width constraint.</p>
+                </c-prose>
+            ```
+        }
+        example "markdown" {
+            title "Rendered Markdown"
+            code ```
+                <c-prose>
+                    {{ markdown_content | safe }}
+                </c-prose>
+            ```
+        }
+    }
+}

@@ -1,0 +1,96 @@
+// =============================================================================
+// c-drawer - Slide-out drawer
+// =============================================================================
+
+component "drawer" {
+    description "Slide-out drawer panel"
+    category "overlay"
+    status "stable"
+
+    props {
+        open type="boolean" default=false {
+            description "Drawer visibility"
+        }
+        title type="string" {
+            description "Drawer title"
+        }
+        position type="drawer-position" default="right" {
+            description "Slide-in direction"
+            values "left" "right" "top" "bottom"
+        }
+        size type="drawer-size" default="md" {
+            description "Drawer width/height"
+            values "sm" "md" "lg" "xl" "full"
+        }
+        closeOnOverlay type="boolean" default=true {
+            description "Close when clicking overlay"
+        }
+        closeOnEscape type="boolean" default=true {
+            description "Close on Escape key"
+        }
+        showClose type="boolean" default=true {
+            description "Show close button"
+        }
+        overlay type="boolean" default=true {
+            description "Show backdrop overlay"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Drawer content"
+        }
+        header {
+            description "Custom header"
+        }
+        footer {
+            description "Footer content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Drawer"
+            code ```
+                <c-drawer :open="isOpen" title="Navigation">
+                    <c-nav vertical>
+                        <c-nav-item href="/">Home</c-nav-item>
+                        <c-nav-item href="/about">About</c-nav-item>
+                        <c-nav-item href="/contact">Contact</c-nav-item>
+                    </c-nav>
+                </c-drawer>
+            ```
+        }
+        example "positions" {
+            title "Drawer Positions"
+            code ```
+                <c-drawer position="left" title="Left Drawer">...</c-drawer>
+                <c-drawer position="right" title="Right Drawer">...</c-drawer>
+                <c-drawer position="top" title="Top Drawer">...</c-drawer>
+                <c-drawer position="bottom" title="Bottom Drawer">...</c-drawer>
+            ```
+        }
+        example "full-height" {
+            title "Full Height Drawer"
+            code ```
+                <c-drawer :open="showFilters" position="left" size="lg" title="Filters">
+                    <c-form>
+                        <!-- Filter form fields -->
+                    </c-form>
+                    <template slot="footer">
+                        <c-button variant="secondary">Reset</c-button>
+                        <c-button variant="primary">Apply Filters</c-button>
+                    </template>
+                </c-drawer>
+            ```
+        }
+        example "no-overlay" {
+            title "Without Overlay"
+            code ```
+                <c-drawer :open="true" :overlay="false" position="right">
+                    <p>Content visible alongside main content</p>
+                </c-drawer>
+            ```
+        }
+    }
+}

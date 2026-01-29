@@ -1,0 +1,59 @@
+// =============================================================================
+// c-fieldset - Form field grouping
+// =============================================================================
+
+component "fieldset" {
+    description "Groups related form fields with optional legend"
+    category "inputs"
+    status "stable"
+
+    props {
+        legend type="string" {
+            description "Fieldset legend text"
+        }
+        disabled type="boolean" default=false {
+            description "Disable all fields in group"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Form fields"
+        }
+        legend {
+            description "Custom legend content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Fieldset"
+            code ```
+                <c-fieldset legend="Personal Information">
+                    <c-input-text-field label="First name" name="first_name" />
+                    <c-input-text-field label="Last name" name="last_name" />
+                    <c-input-email-field label="Email" name="email" />
+                </c-fieldset>
+            ```
+        }
+        example "disabled" {
+            title "Disabled Fieldset"
+            code ```
+                <c-fieldset legend="Locked Section" disabled>
+                    <c-input-text-field label="Field 1" name="field1" />
+                    <c-input-text-field label="Field 2" name="field2" />
+                </c-fieldset>
+            ```
+        }
+        example "radio-group" {
+            title "Radio Button Group"
+            code ```
+                <c-fieldset legend="Preferred contact method">
+                    <c-radio name="contact" value="email">Email</c-radio>
+                    <c-radio name="contact" value="phone">Phone</c-radio>
+                    <c-radio name="contact" value="mail">Mail</c-radio>
+                </c-fieldset>
+            ```
+        }
+    }
+}

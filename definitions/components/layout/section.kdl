@@ -1,0 +1,61 @@
+// =============================================================================
+// c-section - Semantic page section
+// =============================================================================
+
+component "section" {
+    description "Semantic page section with optional heading"
+    category "layout"
+    status "stable"
+
+    props {
+        title type="string" {
+            description "Section heading text"
+        }
+        level type="heading-level" default="2" {
+            description "Heading level (h2-h6)"
+            values "2" "3" "4" "5" "6"
+        }
+        padding type="generic-spacing" default="lg" {
+            description "Section padding"
+        }
+        background type="string" {
+            description "Background variant"
+            values "default" "surface" "muted" "accent"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Section content"
+        }
+        header {
+            description "Custom header content (replaces title)"
+        }
+        footer {
+            description "Section footer"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Section"
+            code ```
+                <c-section title="Features">
+                    <p>Our product features...</p>
+                </c-section>
+            ```
+        }
+        example "with-background" {
+            title "Muted Background"
+            code ```
+                <c-section title="Pricing" background="muted" padding="xl">
+                    <c-grid cols="3" gap="lg">
+                        <c-card>Basic</c-card>
+                        <c-card>Pro</c-card>
+                        <c-card>Enterprise</c-card>
+                    </c-grid>
+                </c-section>
+            ```
+        }
+    }
+}

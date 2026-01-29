@@ -1,0 +1,116 @@
+// =============================================================================
+// c-menubar - Navigation menu bar
+// =============================================================================
+
+component "menubar" {
+    description "Horizontal or vertical navigation menu bar"
+    category "navigation"
+    status "stable"
+
+    props {
+        // Data-driven
+        items type="array" {
+            description "Menu items as data"
+            item-shape {
+                label "string" required=true
+                href "string"
+                icon "icon"
+                active "boolean"
+                disabled "boolean"
+                align "align"
+                divider "boolean"
+                submenu "array"
+            }
+        }
+
+        // Layout
+        direction type="direction" default="horizontal" {
+            description "Menu direction"
+            values "horizontal" "vertical"
+        }
+        size type="generic-size" default="md" {
+            description "Menu size"
+            values "sm" "md" "lg"
+        }
+        maxWidth type="max-width" {
+            description "Maximum content width"
+            values "sm" "md" "lg" "xl" "full"
+        }
+
+        // Appearance
+        showIcons type="boolean" default=false {
+            description "Show icons in menu items"
+        }
+        iconPosition type="position" default="start" {
+            description "Icon position"
+            values "start" "end"
+        }
+        showDivider type="boolean" default=true {
+            description "Show bottom divider line"
+        }
+    }
+
+    slots {
+        default {
+            description "Menu items (manual composition)"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Menubar"
+            code ```
+                <c-menubar>
+                    <c-menubar-item href="/">Home</c-menubar-item>
+                    <c-menubar-item href="/products">Products</c-menubar-item>
+                    <c-menubar-item href="/about">About</c-menubar-item>
+                    <c-menubar-item href="/contact">Contact</c-menubar-item>
+                </c-menubar>
+            ```
+        }
+        example "data-driven" {
+            title "Data-Driven"
+            code ```
+                <c-menubar :items='[
+                    {"label": "Home", "href": "/", "icon": "home"},
+                    {"label": "Products", "href": "/products"},
+                    {"label": "About", "href": "/about"},
+                    {"label": "Contact", "href": "/contact", "align": "end"}
+                ]' showIcons />
+            ```
+        }
+        example "with-submenu" {
+            title "With Submenu"
+            code ```
+                <c-menubar :items='[
+                    {"label": "Home", "href": "/"},
+                    {"label": "Products", "submenu": [
+                        {"label": "Category A", "href": "/products/a"},
+                        {"label": "Category B", "href": "/products/b"}
+                    ]},
+                    {"label": "Contact", "href": "/contact"}
+                ]' />
+            ```
+        }
+        example "vertical" {
+            title "Vertical Menu"
+            code ```
+                <c-menubar direction="vertical">
+                    <c-menubar-item href="/dashboard" icon="home">Dashboard</c-menubar-item>
+                    <c-menubar-item href="/settings" icon="settings">Settings</c-menubar-item>
+                    <c-menubar-item href="/profile" icon="user">Profile</c-menubar-item>
+                </c-menubar>
+            ```
+        }
+        example "with-active" {
+            title "With Active State"
+            code ```
+                <c-menubar>
+                    <c-menubar-item href="/">Home</c-menubar-item>
+                    <c-menubar-item href="/products" active>Products</c-menubar-item>
+                    <c-menubar-item href="/about">About</c-menubar-item>
+                </c-menubar>
+            ```
+        }
+    }
+}

@@ -1,0 +1,86 @@
+// =============================================================================
+// c-header - Page header
+// =============================================================================
+
+component "header" {
+    description "Page header section with logo and navigation"
+    category "layout"
+    status "stable"
+
+    props {
+        sticky type="boolean" default=false {
+            description "Stick to top on scroll"
+        }
+        bordered type="boolean" default=true {
+            description "Show bottom border"
+        }
+        maxWidth type="max-width" {
+            description "Content max width"
+            values "sm" "md" "lg" "xl" "full"
+        }
+    }
+
+    slots {
+        default {
+            description "Header content"
+        }
+        logo {
+            description "Logo/brand section"
+        }
+        nav {
+            description "Navigation section"
+        }
+        actions {
+            description "Right-side actions (buttons, search)"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Header"
+            code ```
+                <c-header>
+                    <template slot="logo">
+                        <a href="/"><img src="/logo.svg" alt="Company" /></a>
+                    </template>
+                    <template slot="nav">
+                        <c-nav>
+                            <c-nav-item href="/">Home</c-nav-item>
+                            <c-nav-item href="/about">About</c-nav-item>
+                            <c-nav-item href="/contact">Contact</c-nav-item>
+                        </c-nav>
+                    </template>
+                </c-header>
+            ```
+        }
+        example "with-actions" {
+            title "With Actions"
+            code ```
+                <c-header sticky>
+                    <template slot="logo">
+                        <a href="/">Brand</a>
+                    </template>
+                    <template slot="nav">
+                        <c-nav>
+                            <c-nav-item href="/products">Products</c-nav-item>
+                            <c-nav-item href="/pricing">Pricing</c-nav-item>
+                        </c-nav>
+                    </template>
+                    <template slot="actions">
+                        <c-button variant="secondary">Log in</c-button>
+                        <c-button variant="primary">Sign up</c-button>
+                    </template>
+                </c-header>
+            ```
+        }
+        example "sticky" {
+            title "Sticky Header"
+            code ```
+                <c-header sticky maxWidth="lg">
+                    <template slot="logo">Logo</template>
+                    <template slot="nav">Navigation</template>
+                </c-header>
+            ```
+        }
+    }
+}

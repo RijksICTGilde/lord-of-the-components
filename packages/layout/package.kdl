@@ -1,0 +1,13 @@
+// Lord of the Components - Layout Package
+// Layout system components for page structure
+
+package "layout" {
+    version "0.1.0"
+    description "Layout components for page structure including grid, stack, and container"
+
+    components {
+        layout
+        grid
+        stack
+    }
+}

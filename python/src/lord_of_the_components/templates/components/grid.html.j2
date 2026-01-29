@@ -1,0 +1,33 @@
+{#
+  Lord of the Components - Grid Template
+
+  CSS Grid-based layout for arranging content in rows and columns.
+#}
+{% set ctx = _component_context %}
+{% set cols = ctx.cols | default(12) %}
+{% set gap = ctx.gap | default('md') %}
+{% set gap_x = ctx.gapX | default(gap) %}
+{% set gap_y = ctx.gapY | default(gap) %}
+{% set align = ctx.align | default('stretch') %}
+{% set justify = ctx.justify | default('stretch') %}
+{% set flow = ctx.flow | default('row') %}
+
+{% set classes = ['c-grid'] %}
+
+{% set styles = [
+    'grid-template-columns: repeat(' ~ cols ~ ', 1fr)',
+    '--grid-gap-x: var(--space-' ~ gap_x ~ ')',
+    '--grid-gap-y: var(--space-' ~ gap_y ~ ')',
+    'gap: var(--grid-gap-y) var(--grid-gap-x)',
+    'align-items: ' ~ align,
+    'justify-items: ' ~ justify,
+    'grid-auto-flow: ' ~ flow
+] %}
+
+{% if ctx.rows is defined %}
+{% set styles = styles + ['grid-template-rows: repeat(' ~ ctx.rows ~ ', 1fr)'] %}
+{% endif %}
+
+<div class="{{ classes | join(' ') }}" style="display: grid; {{ styles | join('; ') }};">
+    {{ ctx.content | safe }}
+</div>

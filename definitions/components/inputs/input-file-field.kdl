@@ -1,0 +1,105 @@
+// =============================================================================
+// c-input-file-field - Complete file input field
+// =============================================================================
+
+component "input-file-field" {
+    description "Complete file upload with label, helper, and error"
+    category "inputs"
+    status "stable"
+
+    props {
+        // Label
+        label type="string" required=true {
+            description "Field label text"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        optional type="boolean" default=false {
+            description "Optional field"
+        }
+
+        // Input
+        name type="string" {
+            description "Form field name"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable input"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Field size"
+        }
+
+        // File options
+        accept type="string" {
+            description "Accepted file types"
+        }
+        multiple type="boolean" default=false {
+            description "Allow multiple files"
+        }
+
+        // Help text
+        helper type="string" {
+            description "Helper text"
+        }
+        error type="string" {
+            description "Error message"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Input ID"
+        }
+    }
+
+    slots {
+        helper {
+            description "Custom helper content"
+        }
+        error {
+            description "Custom error content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic File Field"
+            code ```
+                <c-input-file-field
+                    label="Upload document"
+                    name="document"
+                />
+            ```
+        }
+        example "images" {
+            title "Image Upload"
+            code ```
+                <c-input-file-field
+                    label="Profile picture"
+                    name="avatar"
+                    accept="image/*"
+                    helper="JPG, PNG or GIF, max 5MB"
+                />
+            ```
+        }
+        example "multiple" {
+            title "Multiple Files"
+            code ```
+                <c-input-file-field
+                    label="Attachments"
+                    name="attachments"
+                    multiple
+                    accept=".pdf,.doc,.docx"
+                    helper="Upload up to 5 documents"
+                />
+            ```
+        }
+    }
+}

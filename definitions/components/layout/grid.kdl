@@ -1,0 +1,72 @@
+// =============================================================================
+// c-grid - CSS Grid layout
+// =============================================================================
+
+component "grid" {
+    description "CSS Grid-based layout system"
+    category "layout"
+    status "stable"
+
+    props {
+        cols type="number" default=12 {
+            description "Number of columns"
+        }
+        rows type="number" {
+            description "Number of rows (auto if not specified)"
+        }
+        gap type="generic-spacing" default="md" {
+            description "Gap between grid items"
+        }
+        gapX type="generic-spacing" {
+            description "Horizontal gap (overrides gap)"
+        }
+        gapY type="generic-spacing" {
+            description "Vertical gap (overrides gap)"
+        }
+        align type="align" default="stretch" {
+            description "Vertical alignment of items"
+        }
+        justify type="justify" default="stretch" {
+            description "Horizontal alignment of items"
+        }
+        minItemWidth type="string" {
+            description "Minimum item width for auto-fit/fill"
+        }
+        autoFit type="boolean" default=false {
+            description "Use auto-fit for responsive columns"
+        }
+        autoFill type="boolean" default=false {
+            description "Use auto-fill for responsive columns"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Grid items"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic 3-Column Grid"
+            code ```
+                <c-grid cols="3" gap="lg">
+                    <div>Item 1</div>
+                    <div>Item 2</div>
+                    <div>Item 3</div>
+                </c-grid>
+            ```
+        }
+        example "responsive" {
+            title "Responsive Auto-Fit"
+            code ```
+                <c-grid autoFit minItemWidth="200px" gap="md">
+                    <c-card>Card 1</c-card>
+                    <c-card>Card 2</c-card>
+                    <c-card>Card 3</c-card>
+                    <c-card>Card 4</c-card>
+                </c-grid>
+            ```
+        }
+    }
+}

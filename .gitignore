@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# IDE
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Claude settings
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/

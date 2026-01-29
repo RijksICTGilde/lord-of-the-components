@@ -1,0 +1,120 @@
+// =============================================================================
+// c-input-number-field - Complete number input field
+// =============================================================================
+
+component "input-number-field" {
+    description "Complete number input with label, helper, and error"
+    category "inputs"
+    status "stable"
+
+    props {
+        // Label
+        label type="string" required=true {
+            description "Field label text"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        optional type="boolean" default=false {
+            description "Optional field"
+        }
+
+        // Input
+        name type="string" {
+            description "Form field name"
+        }
+        value type="number" {
+            description "Current value"
+        }
+        placeholder type="string" {
+            description "Placeholder text"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable input"
+        }
+        readonly type="boolean" default=false {
+            description "Read-only mode"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Field size"
+        }
+
+        // Validation
+        min type="number" {
+            description "Minimum value"
+        }
+        max type="number" {
+            description "Maximum value"
+        }
+        step type="number" default=1 {
+            description "Step increment"
+        }
+
+        // Help text
+        helper type="string" {
+            description "Helper text"
+        }
+        error type="string" {
+            description "Error message"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Input ID"
+        }
+    }
+
+    slots {
+        helper {
+            description "Custom helper content"
+        }
+        error {
+            description "Custom error content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Number Field"
+            code ```
+                <c-input-number-field
+                    label="Quantity"
+                    name="quantity"
+                    :min="1"
+                />
+            ```
+        }
+        example "with-range" {
+            title "With Range"
+            code ```
+                <c-input-number-field
+                    label="Age"
+                    name="age"
+                    :min="0"
+                    :max="120"
+                    helper="Enter your age in years"
+                />
+            ```
+        }
+        example "price" {
+            title "Price Input"
+            code ```
+                <c-input-number-field
+                    label="Price"
+                    name="price"
+                    :min="0"
+                    :step="0.01"
+                    placeholder="0.00"
+                    helper="Enter amount in euros"
+                />
+            ```
+        }
+    }
+}

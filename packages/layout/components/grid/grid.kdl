@@ -1,0 +1,97 @@
+// Lord of the Components - Grid Component
+// CSS Grid-based layout for arranging content in rows and columns
+
+component "grid" {
+    description "CSS Grid-based layout for arranging content in rows and columns"
+    category "layout"
+    status "stable"
+
+    props {
+        cols type="number" default=12 "Number of columns in the grid"
+
+        rows type="number" "Number of rows (auto if not specified)"
+
+        gap type="generic-size" default="md" "Gap between grid items"
+
+        gapX type="generic-size" "Horizontal gap (overrides gap)"
+
+        gapY type="generic-size" "Vertical gap (overrides gap)"
+
+        align type="enum" default="stretch" {
+            enum "start" "center" "end" "stretch"
+        }
+        "Vertical alignment of items"
+
+        justify type="enum" default="stretch" {
+            enum "start" "center" "end" "stretch" "space-between" "space-around"
+        }
+        "Horizontal alignment of items"
+
+        flow type="enum" default="row" {
+            enum "row" "column" "row-dense" "column-dense"
+        }
+        "Grid auto-flow direction"
+    }
+
+    slots {
+        default required=true "Grid items"
+    }
+
+    tokens {
+        // Grid uses semantic spacing tokens
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Grid"
+            description "Simple 3-column grid"
+            code ```
+                <c-grid cols="3">
+                    <div>Item 1</div>
+                    <div>Item 2</div>
+                    <div>Item 3</div>
+                    <div>Item 4</div>
+                    <div>Item 5</div>
+                    <div>Item 6</div>
+                </c-grid>
+            ```
+        }
+
+        example "responsive" {
+            title "Responsive Grid"
+            description "Grid that adapts to screen size (using CSS)"
+            code ```
+                <c-grid cols="4" gap="lg">
+                    <div>Card 1</div>
+                    <div>Card 2</div>
+                    <div>Card 3</div>
+                    <div>Card 4</div>
+                </c-grid>
+            ```
+        }
+
+        example "custom-gap" {
+            title "Custom Gaps"
+            description "Different horizontal and vertical gaps"
+            code ```
+                <c-grid cols="3" gapX="lg" gapY="sm">
+                    <div>Item 1</div>
+                    <div>Item 2</div>
+                    <div>Item 3</div>
+                </c-grid>
+            ```
+        }
+
+        example "centered" {
+            title "Centered Items"
+            description "Grid with centered items"
+            code ```
+                <c-grid cols="3" align="center" justify="center">
+                    <div>Centered 1</div>
+                    <div>Centered 2</div>
+                    <div>Centered 3</div>
+                </c-grid>
+            ```
+        }
+    }
+}

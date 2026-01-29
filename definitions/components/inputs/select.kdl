@@ -1,0 +1,119 @@
+// =============================================================================
+// c-select - Dropdown selection
+// =============================================================================
+
+component "select" {
+    description "Dropdown selection input"
+    category "inputs"
+    status "stable"
+
+    props {
+        label type="string" {
+            description "Select label"
+        }
+        placeholder type="string" {
+            description "Placeholder text"
+        }
+        value type="any" {
+            description "Selected value"
+        }
+        name type="string" {
+            description "Form field name"
+        }
+
+        // Options
+        options type="array" {
+            description "Available options"
+            item-shape {
+                label "string" required=true
+                value "any" required=true
+                disabled "boolean"
+            }
+        }
+        optionLabel type="string" default="label" {
+            description "Key for option label"
+        }
+        optionValue type="string" default="value" {
+            description "Key for option value"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable select"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Features
+        multiple type="boolean" default=false {
+            description "Allow multiple selection"
+        }
+        searchable type="boolean" default=false {
+            description "Enable search/filter"
+        }
+        clearable type="boolean" default=false {
+            description "Show clear button"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Select size"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Select ID"
+        }
+    }
+
+    slots {
+        helper {
+            description "Helper text"
+        }
+        error {
+            description "Error message"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Select"
+            code ```
+                <c-select
+                    label="Country"
+                    placeholder="Select a country"
+                    :options="[
+                        {label: 'Netherlands', value: 'nl'},
+                        {label: 'Belgium', value: 'be'},
+                        {label: 'Germany', value: 'de'}
+                    ]"
+                />
+            ```
+        }
+        example "multiple" {
+            title "Multiple Selection"
+            code ```
+                <c-select
+                    label="Skills"
+                    multiple
+                    :options="skills"
+                />
+            ```
+        }
+        example "searchable" {
+            title "Searchable"
+            code ```
+                <c-select
+                    label="City"
+                    searchable
+                    placeholder="Search cities..."
+                    :options="cities"
+                />
+            ```
+        }
+    }
+}

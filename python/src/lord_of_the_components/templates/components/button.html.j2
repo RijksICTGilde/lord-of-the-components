@@ -1,0 +1,58 @@
+{#
+  Lord of the Components - Button Template
+
+  Interactive button for user actions.
+#}
+{% set ctx = _component_context %}
+{% set variant = ctx.variant | default('primary') %}
+{% set size = ctx.size | default('md') %}
+{% set btn_type = ctx.type | default('button') %}
+{% set disabled = ctx.disabled | default(false) %}
+{% set loading = ctx.loading | default(false) %}
+{% set full_width = ctx.fullWidth | default(false) %}
+{% set icon = ctx.icon | default(none) %}
+{% set icon_position = ctx.iconPosition | default('before') %}
+
+{# Build CSS classes - semantic, to be styled by theme #}
+{% set classes = ['c-button'] %}
+{% set classes = classes + ['c-button--' ~ variant] %}
+{% set classes = classes + ['c-button--' ~ size] %}
+{% if full_width %}{% set classes = classes + ['c-button--full-width'] %}{% endif %}
+{% if loading %}{% set classes = classes + ['c-button--loading'] %}{% endif %}
+{% if disabled %}{% set classes = classes + ['c-button--disabled'] %}{% endif %}
+
+<button
+    type="{{ btn_type }}"
+    class="{{ classes | join(' ') }}"
+    {% if disabled %}disabled{% endif %}
+    {% if loading %}aria-busy="true"{% endif %}
+    data-variant="{{ variant }}"
+    data-size="{{ size }}"
+>
+    {# Icon before content #}
+    {% if icon and icon_position == 'before' and not loading %}
+    <span class="c-button__icon c-button__icon--before">
+        {# Icon component would be included here #}
+        <span data-icon="{{ icon }}"></span>
+    </span>
+    {% endif %}
+
+    {# Loading spinner #}
+    {% if loading %}
+    <span class="c-button__spinner" aria-hidden="true">
+        {# Spinner component would be included here #}
+    </span>
+    {% endif %}
+
+    {# Button content #}
+    <span class="c-button__content"{% if loading %} aria-hidden="true"{% endif %}>
+        {{ ctx.content | safe }}
+    </span>
+
+    {# Icon after content #}
+    {% if icon and icon_position == 'after' and not loading %}
+    <span class="c-button__icon c-button__icon--after">
+        <span data-icon="{{ icon }}"></span>
+    </span>
+    {% endif %}
+</button>

@@ -1,0 +1,115 @@
+// =============================================================================
+// c-checkbox-field - Complete checkbox field
+// =============================================================================
+
+component "checkbox-field" {
+    description "Complete checkbox with label and error"
+    category "inputs"
+    status "stable"
+
+    props {
+        // Label
+        label type="string" required=true {
+            description "Checkbox label text"
+        }
+
+        // Checkbox
+        name type="string" {
+            description "Form field name"
+        }
+        value type="string" {
+            description "Checkbox value"
+        }
+        checked type="boolean" default=false {
+            description "Checked state"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable checkbox"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+        indeterminate type="boolean" default=false {
+            description "Indeterminate state"
+        }
+
+        // Appearance
+        size type="generic-size" default="md" {
+            description "Field size"
+        }
+
+        // Help text
+        helper type="string" {
+            description "Helper text"
+        }
+        error type="string" {
+            description "Error message"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Checkbox ID"
+        }
+    }
+
+    slots {
+        label {
+            description "Custom label content"
+        }
+        helper {
+            description "Custom helper content"
+        }
+        error {
+            description "Custom error content"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Checkbox Field"
+            code ```
+                <c-checkbox-field
+                    label="I agree to the terms and conditions"
+                    name="terms"
+                    required
+                />
+            ```
+        }
+        example "with-helper" {
+            title "With Helper"
+            code ```
+                <c-checkbox-field
+                    label="Subscribe to newsletter"
+                    name="newsletter"
+                    helper="Receive weekly updates about new features"
+                />
+            ```
+        }
+        example "rich-label" {
+            title "Rich Label"
+            code ```
+                <c-checkbox-field name="privacy" required>
+                    <template slot="label">
+                        I have read and accept the <c-link href="/privacy">privacy policy</c-link>
+                    </template>
+                </c-checkbox-field>
+            ```
+        }
+        example "with-error" {
+            title "With Error"
+            code ```
+                <c-checkbox-field
+                    label="I agree to the terms"
+                    name="terms"
+                    invalid
+                    error="You must accept the terms to continue"
+                />
+            ```
+        }
+    }
+}

@@ -1,0 +1,95 @@
+// =============================================================================
+// c-textarea - Multi-line text input
+// =============================================================================
+
+component "textarea" {
+    description "Multi-line text input field"
+    category "inputs"
+    status "stable"
+
+    props {
+        label type="string" {
+            description "Textarea label"
+        }
+        placeholder type="string" {
+            description "Placeholder text"
+        }
+        value type="string" {
+            description "Current value"
+        }
+        name type="string" {
+            description "Form field name"
+        }
+
+        // State
+        disabled type="boolean" default=false {
+            description "Disable textarea"
+        }
+        readonly type="boolean" default=false {
+            description "Read-only mode"
+        }
+        required type="boolean" default=false {
+            description "Required field"
+        }
+        invalid type="boolean" default=false {
+            description "Invalid state"
+        }
+
+        // Appearance
+        rows type="number" default=3 {
+            description "Number of visible rows"
+        }
+        resize type="resize" default="vertical" {
+            description "Resize behavior"
+            values "none" "vertical" "horizontal" "both"
+        }
+        autoGrow type="boolean" default=false {
+            description "Auto-grow with content"
+        }
+
+        // Validation
+        maxLength type="number" {
+            description "Maximum character length"
+        }
+
+        // Accessibility
+        id type="string" {
+            description "Textarea ID"
+        }
+        autofocus type="boolean" default=false {
+            description "Focus on mount"
+        }
+    }
+
+    slots {
+        helper {
+            description "Helper text"
+        }
+        error {
+            description "Error message"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Textarea"
+            code ```
+                <c-textarea label="Description" placeholder="Enter description..." rows="4" />
+            ```
+        }
+        example "with-helper" {
+            title "With Helper Text"
+            code ```
+                <c-textarea label="Bio" maxLength="500">
+                    <template slot="helper">Maximum 500 characters</template>
+                </c-textarea>
+            ```
+        }
+        example "auto-grow" {
+            title "Auto-Growing"
+            code ```
+                <c-textarea label="Comments" autoGrow placeholder="Start typing..." />
+            ```
+        }
+    }
+}

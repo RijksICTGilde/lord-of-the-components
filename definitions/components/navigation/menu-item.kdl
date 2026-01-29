@@ -1,0 +1,54 @@
+// =============================================================================
+// c-menu-item - Menu item
+// =============================================================================
+
+component "menu-item" {
+    description "Single menu item"
+    category "navigation"
+    status "stable"
+
+    props {
+        href type="string" {
+            description "Link destination"
+        }
+        icon type="icon" {
+            description "Item icon"
+        }
+        disabled type="boolean" default=false {
+            description "Disabled state"
+        }
+        destructive type="boolean" default=false {
+            description "Destructive action styling"
+        }
+    }
+
+    slots {
+        default required=true {
+            description "Item label"
+        }
+        description {
+            description "Secondary text"
+        }
+    }
+
+    examples {
+        example "basic" {
+            title "Basic Menu Item"
+            code ```
+                <c-menu-item href="/settings">Settings</c-menu-item>
+            ```
+        }
+        example "with-icon" {
+            title "With Icon"
+            code ```
+                <c-menu-item icon="user" href="/profile">Profile</c-menu-item>
+            ```
+        }
+        example "destructive" {
+            title "Destructive Action"
+            code ```
+                <c-menu-item icon="trash" destructive>Delete</c-menu-item>
+            ```
+        }
+    }
+}

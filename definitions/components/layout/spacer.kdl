@@ -1,0 +1,45 @@
+// =============================================================================
+// c-spacer - Empty space
+// =============================================================================
+
+component "spacer" {
+    description "Empty space element for layout spacing"
+    category "layout"
+    status "stable"
+
+    props {
+        size type="generic-spacing" default="md" {
+            description "Size of the space"
+        }
+        grow type="boolean" default=false {
+            description "Grow to fill available space (flex-grow: 1)"
+        }
+    }
+
+    slots {
+        // No slots - empty element
+    }
+
+    examples {
+        example "fixed" {
+            title "Fixed Spacer"
+            code ```
+                <c-stack>
+                    <p>Content</p>
+                    <c-spacer size="xl" />
+                    <p>More content with extra space above</p>
+                </c-stack>
+            ```
+        }
+        example "grow" {
+            title "Growing Spacer"
+            code ```
+                <c-stack direction="horizontal">
+                    <span>Left</span>
+                    <c-spacer grow />
+                    <span>Right (pushed to end)</span>
+                </c-stack>
+            ```
+        }
+    }
+}
