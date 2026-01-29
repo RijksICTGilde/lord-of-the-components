@@ -281,7 +281,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | container | ✅ DONE | `packages/layout/components/container/container.rig` |
 | section | ✅ DONE | `packages/layout/components/section/section.rig` |
 | spacer | ✅ DONE | `packages/layout/components/spacer/spacer.rig` |
-| divider | ⏳ TODO | - |
+| divider | ✅ DONE | `packages/layout/components/divider/divider.rig` |
 
 #### Action Components Progress (4 total)
 | Component | Status | File |
