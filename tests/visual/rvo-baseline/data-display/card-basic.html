@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>card - Basic Card (RVO Baseline)</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .c-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+        .c-card h3 {
+            margin: 0 0 0.5rem 0;
+        }
+        .c-card p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="card" data-example="basic">
+        <article class="c-card" data-variant="default" data-padding="md">
+            <div class="c-card__body">
+                <h3>Card Title</h3>
+                <p>Card content goes here.</p>
+            </div>
+        </article>
+    </div>
+</body>
+</html>

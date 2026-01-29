@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stack - Horizontal Stack (RVO Baseline)</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .c-stack {
+            display: flex;
+        }
+        .c-stack[data-direction="horizontal"] {
+            flex-direction: row;
+        }
+        .c-stack[data-gap="lg"] {
+            gap: 1.5rem;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="stack" data-example="horizontal">
+        <div class="c-stack" data-direction="horizontal" data-gap="lg" data-align="stretch">
+            <button>Action 1</button>
+            <button>Action 2</button>
+            <button>Action 3</button>
+        </div>
+    </div>
+</body>
+</html>
