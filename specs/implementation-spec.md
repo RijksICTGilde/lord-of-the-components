@@ -260,7 +260,7 @@ KDL Definition (agnostic)              RVO React (original source)
 
 | Category | Count | Components |
 |----------|-------|------------|
-| Layout | 9 | page, layout, stack, grid, grid-item, container, section, spacer, divider |
+| Layout | 12 | page, layout, stack, grid, grid-item, container, section, spacer, divider, header, footer, hero |
 | Action | 4 | button, icon-button, link, action-group |
 | Typography | 3 | heading, text, prose |
 | Feedback | 10 | alert, notification, badge, tag, skeleton, spinner, status-icon, empty, progress, progress-tracker |
@@ -270,7 +270,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | Input | 20+ | text, email, password, number, date, time, file, checkbox, radio, switch, select, textarea, range, color, autocomplete, field wrappers |
 | Utility | 3 | focus-trap, portal, visually-hidden |
 
-#### Layout Components Progress (9 total)
+#### Layout Components Progress (12 total)
 | Component | Status | File |
 |-----------|--------|------|
 | page | ✅ DONE | `packages/core/components/page/page.rig` |
@@ -282,6 +282,9 @@ KDL Definition (agnostic)              RVO React (original source)
 | section | ✅ DONE | `packages/layout/components/section/section.rig` |
 | spacer | ✅ DONE | `packages/layout/components/spacer/spacer.rig` |
 | divider | ✅ DONE | `packages/layout/components/divider/divider.rig` |
+| header | ✅ DONE | `packages/layout/components/header/header.rig` |
+| footer | ✅ DONE | `packages/layout/components/footer/footer.rig` |
+| hero | ✅ DONE | `packages/layout/components/hero/hero.rig` |
 
 #### Action Components Progress (4 total)
 | Component | Status | File |

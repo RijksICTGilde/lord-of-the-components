@@ -1,0 +1,55 @@
+# Lord of the Components - Hero Component Logic
+# Hero section for page headers with optional background image
+
+render.element("section"):
+    # Base class
+    attrs.class = "c-hero"
+
+    # Size modifier
+    if props.size:
+        attrs.class = attrs.class + " c-hero--" + props.size
+
+    # Alignment modifier
+    if props.align:
+        attrs.class = attrs.class + " c-hero--align-" + props.align
+
+    # Overlay modifier (for dark overlay on images)
+    if props.overlay:
+        attrs.class = attrs.class + " c-hero--overlay"
+
+    # Background image (inline style for dynamic URL)
+    if props.image:
+        attrs.style = "background-image: url('" + props.image.src + "')"
+        attrs.class = attrs.class + " c-hero--has-image"
+
+    # Inner container for content
+    render.element("div"):
+        attrs.class = "c-hero__inner"
+
+        # Title (slot takes precedence over prop)
+        if slots.title:
+            render.element("div"):
+                attrs.class = "c-hero__title"
+                render.slot("title")
+        else if props.title:
+            render.element("h1"):
+                attrs.class = "c-hero__title"
+                render.text(props.title)
+
+        # Subtitle
+        if props.subtitle:
+            render.element("p"):
+                attrs.class = "c-hero__subtitle"
+                render.text(props.subtitle)
+
+        # Default slot for additional content
+        if slots.default:
+            render.element("div"):
+                attrs.class = "c-hero__content"
+                render.slot("default")
+
+        # Actions section (CTAs)
+        if slots.actions:
+            render.element("div"):
+                attrs.class = "c-hero__actions"
+                render.slot("actions")

@@ -1,0 +1,42 @@
+# Lord of the Components - Footer Component Logic
+# Page footer section with navigation, social links, and legal text
+
+render.element("footer"):
+    # Base class
+    attrs.class = "c-footer"
+
+    # Bordered modifier (default true, so check for explicit false)
+    if props.bordered == false:
+        attrs.class = attrs.class + " c-footer--no-border"
+
+    # Max width modifier
+    if props.maxWidth:
+        attrs.class = attrs.class + " c-footer--max-" + props.maxWidth
+
+    # Inner container for content alignment
+    render.element("div"):
+        attrs.class = "c-footer__inner"
+
+        # Navigation section (footer links)
+        if slots.nav:
+            render.element("nav"):
+                attrs.class = "c-footer__nav"
+                render.slot("nav")
+
+        # Default slot for flexible content
+        if slots.default:
+            render.element("div"):
+                attrs.class = "c-footer__content"
+                render.slot("default")
+
+        # Social media links section
+        if slots.social:
+            render.element("div"):
+                attrs.class = "c-footer__social"
+                render.slot("social")
+
+        # Legal section (copyright, terms, privacy)
+        if slots.legal:
+            render.element("div"):
+                attrs.class = "c-footer__legal"
+                render.slot("legal")
