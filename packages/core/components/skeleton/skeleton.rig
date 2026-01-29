@@ -1,0 +1,47 @@
+# Lord of the Components - Skeleton Component Logic
+# Skeleton placeholder for loading states with different shapes and animations
+
+# For multiple text lines, we need a wrapper div
+if props.variant == "text" and props.lines > 1:
+    render.element("div"):
+        attrs.class = "c-skeleton-group"
+
+        # Render multiple skeleton lines
+        for i in range(props.lines):
+            render.element("div"):
+                # Base class
+                attrs.class = "c-skeleton c-skeleton--text"
+
+                # Animation modifier
+                if props.animation and props.animation != "none":
+                    attrs.class = attrs.class + " c-skeleton--" + props.animation
+
+                # Custom width (last line often shorter)
+                if props.width:
+                    attrs.style = "width: " + props.width
+                elif i == props.lines - 1:
+                    attrs.style = "width: 60%"
+else:
+    render.element("div"):
+        # Base class
+        attrs.class = "c-skeleton"
+
+        # Variant modifier
+        if props.variant:
+            attrs.class = attrs.class + " c-skeleton--" + props.variant
+        else:
+            attrs.class = attrs.class + " c-skeleton--text"
+
+        # Animation modifier (pulse is default)
+        if props.animation and props.animation != "none":
+            attrs.class = attrs.class + " c-skeleton--" + props.animation
+        elif props.animation != "none":
+            attrs.class = attrs.class + " c-skeleton--pulse"
+
+        # Custom dimensions via inline style
+        if props.width and props.height:
+            attrs.style = "width: " + props.width + "; height: " + props.height
+        elif props.width:
+            attrs.style = "width: " + props.width
+        elif props.height:
+            attrs.style = "height: " + props.height

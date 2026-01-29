@@ -322,7 +322,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | alert | ✅ DONE | `packages/core/components/alert/alert.rig` |
 | notification | ✅ DONE | `packages/core/components/notification/notification.rig` |
 | tag | ✅ DONE | `packages/core/components/tag/tag.rig` |
-| skeleton | ⬜ TODO | |
+| skeleton | ✅ DONE | `packages/core/components/skeleton/skeleton.rig` |
 | spinner | ⬜ TODO | |
 | status-icon | ⬜ TODO | |
 | empty | ⬜ TODO | |
