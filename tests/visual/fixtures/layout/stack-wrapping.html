@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stack - Wrapping Stack</title>
+    
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+            margin: 0;
+        }
+        .fixture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixture-container" data-component="stack" data-example="wrapping">
+        <c-stack direction="horizontal" gap="sm" wrap><span class="tag">Tag 1</span><span class="tag">Tag 2</span><span class="tag">Tag 3</span></c-stack>
+    </div>
+</body>
+</html>

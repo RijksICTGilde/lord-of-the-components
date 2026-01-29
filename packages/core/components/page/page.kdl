@@ -7,7 +7,7 @@ component "page" {
     status "stable"
 
     props {
-        title type="string" required=true "Page title displayed in browser tab"
+        title type="string" required=#true "Page title displayed in browser tab"
 
         lang type="string" default="en" "HTML language attribute"
 
@@ -25,7 +25,7 @@ component "page" {
     }
 
     slots {
-        default required=true "Main page content"
+        default required=#true "Main page content"
     }
 
     tokens {
@@ -37,54 +37,25 @@ component "page" {
         example "basic" {
             title "Basic Page"
             description "Simple page with title and content"
-            code ```
-                <c-page title="My Application">
-                    <h1>Welcome</h1>
-                    <p>This is my application.</p>
-                </c-page>
-            ```
+            code "<c-page title=\"My Application\"><h1>Welcome</h1><p>This is my application.</p></c-page>"
         }
 
         example "with-meta" {
             title "Page with Meta"
             description "Page with description and language"
-            code ```
-                <c-page
-                    title="About Us"
-                    description="Learn more about our company"
-                    lang="nl"
-                >
-                    <h1>Over Ons</h1>
-                    <p>Welkom op onze website.</p>
-                </c-page>
-            ```
+            code "<c-page title=\"About Us\" description=\"Learn more about our company\" lang=\"nl\"><h1>Over Ons</h1><p>Welkom op onze website.</p></c-page>"
         }
 
         example "with-extras" {
             title "Page with Extra Assets"
             description "Page with additional scripts and styles"
-            code ```
-                <c-page
-                    title="Dashboard"
-                    :scripts='["/js/charts.js", "/js/dashboard.js"]'
-                    :styles='["/css/dashboard.css"]'
-                >
-                    <div id="dashboard">
-                        <!-- Dashboard content -->
-                    </div>
-                </c-page>
-            ```
+            code "<c-page title=\"Dashboard\" :scripts='[\"/js/charts.js\"]' :styles='[\"/css/dashboard.css\"]'><div id=\"dashboard\"></div></c-page>"
         }
 
         example "themed" {
             title "Themed Page"
             description "Page with a specific theme applied"
-            code ```
-                <c-page title="Dark Mode" theme="dark">
-                    <h1>Dark Theme</h1>
-                    <p>This page uses the dark theme.</p>
-                </c-page>
-            ```
+            code "<c-page title=\"Dark Mode\" theme=\"dark\"><h1>Dark Theme</h1><p>This page uses the dark theme.</p></c-page>"
         }
     }
 }

@@ -23,7 +23,7 @@ component "layout" {
     }
 
     slots {
-        default required=true "Main content area"
+        default required=#true "Main content area"
         header "Header region (above main content)"
         footer "Footer region (below main content)"
         sidebar "Sidebar region (left or right based on variant)"
@@ -40,77 +40,25 @@ component "layout" {
         example "basic" {
             title "Basic Layout"
             description "Simple centered layout container"
-            code ```
-                <c-layout>
-                    <h1>Page Title</h1>
-                    <p>Main content goes here.</p>
-                </c-layout>
-            ```
+            code "<c-layout><h1>Page Title</h1><p>Main content goes here.</p></c-layout>"
         }
 
         example "with-header-footer" {
             title "Layout with Header and Footer"
             description "Full page structure with header, content, and footer"
-            code ```
-                <c-layout>
-                    <template #header>
-                        <nav>Navigation here</nav>
-                    </template>
-
-                    <main>
-                        <h1>Welcome</h1>
-                        <p>Main content area.</p>
-                    </main>
-
-                    <template #footer>
-                        <p>&copy; 2024 Company Name</p>
-                    </template>
-                </c-layout>
-            ```
+            code "<c-layout><template #header><nav>Navigation here</nav></template><main><h1>Welcome</h1><p>Main content area.</p></main><template #footer><p>2024 Company Name</p></template></c-layout>"
         }
 
         example "sidebar-left" {
             title "Left Sidebar Layout"
             description "Layout with navigation sidebar on the left"
-            code ```
-                <c-layout variant="sidebar-left">
-                    <template #sidebar>
-                        <nav>
-                            <ul>
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/about">About</a></li>
-                            </ul>
-                        </nav>
-                    </template>
-
-                    <article>
-                        <h1>Article Title</h1>
-                        <p>Article content...</p>
-                    </article>
-                </c-layout>
-            ```
+            code "<c-layout variant=\"sidebar-left\"><template #sidebar><nav><ul><li><a href=\"/\">Home</a></li></ul></nav></template><article><h1>Article Title</h1></article></c-layout>"
         }
 
         example "holy-grail" {
             title "Holy Grail Layout"
             description "Classic layout with header, footer, main content, and sidebar"
-            code ```
-                <c-layout variant="holy-grail">
-                    <template #header>
-                        <header>Site Header</header>
-                    </template>
-
-                    <template #sidebar>
-                        <aside>Sidebar</aside>
-                    </template>
-
-                    <main>Main Content</main>
-
-                    <template #footer>
-                        <footer>Site Footer</footer>
-                    </template>
-                </c-layout>
-            ```
+            code "<c-layout variant=\"holy-grail\"><template #header><header>Site Header</header></template><template #sidebar><aside>Sidebar</aside></template><main>Main Content</main><template #footer><footer>Site Footer</footer></template></c-layout>"
         }
     }
 }

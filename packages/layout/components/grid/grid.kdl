@@ -34,7 +34,7 @@ component "grid" {
     }
 
     slots {
-        default required=true "Grid items"
+        default required=#true "Grid items"
     }
 
     tokens {
@@ -45,53 +45,25 @@ component "grid" {
         example "basic" {
             title "Basic Grid"
             description "Simple 3-column grid"
-            code ```
-                <c-grid cols="3">
-                    <div>Item 1</div>
-                    <div>Item 2</div>
-                    <div>Item 3</div>
-                    <div>Item 4</div>
-                    <div>Item 5</div>
-                    <div>Item 6</div>
-                </c-grid>
-            ```
+            code "<c-grid cols=\"3\"><div>Item 1</div><div>Item 2</div><div>Item 3</div><div>Item 4</div><div>Item 5</div><div>Item 6</div></c-grid>"
         }
 
         example "responsive" {
             title "Responsive Grid"
             description "Grid that adapts to screen size (using CSS)"
-            code ```
-                <c-grid cols="4" gap="lg">
-                    <div>Card 1</div>
-                    <div>Card 2</div>
-                    <div>Card 3</div>
-                    <div>Card 4</div>
-                </c-grid>
-            ```
+            code "<c-grid cols=\"4\" gap=\"lg\"><div>Card 1</div><div>Card 2</div><div>Card 3</div><div>Card 4</div></c-grid>"
         }
 
         example "custom-gap" {
             title "Custom Gaps"
             description "Different horizontal and vertical gaps"
-            code ```
-                <c-grid cols="3" gapX="lg" gapY="sm">
-                    <div>Item 1</div>
-                    <div>Item 2</div>
-                    <div>Item 3</div>
-                </c-grid>
-            ```
+            code "<c-grid cols=\"3\" gapX=\"lg\" gapY=\"sm\"><div>Item 1</div><div>Item 2</div><div>Item 3</div></c-grid>"
         }
 
         example "centered" {
             title "Centered Items"
             description "Grid with centered items"
-            code ```
-                <c-grid cols="3" align="center" justify="center">
-                    <div>Centered 1</div>
-                    <div>Centered 2</div>
-                    <div>Centered 3</div>
-                </c-grid>
-            ```
+            code "<c-grid cols=\"3\" align=\"center\" justify=\"center\"><div>Centered 1</div><div>Centered 2</div><div>Centered 3</div></c-grid>"
         }
     }
 }

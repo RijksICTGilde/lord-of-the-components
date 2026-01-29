@@ -46,7 +46,7 @@ generators {
     // Documentation site
     generator "docs" {
         output "dist/docs"
-        include-examples true
+        include-examples #true
     }
 }
 
