@@ -169,10 +169,10 @@ KDL Definition (agnostic)              RVO React (original source)
 
 **Goal:** Production-ready Jinja2 extension with excellent developer experience
 
-### 3.1 Deterministic Placeholder System
+### 3.1 Deterministic Placeholder System ✅ DONE
 - **File:** `python/src/lord_of_the_components/extension.py`
-- **Current:** Random placeholders
-- **Target:** Position-based hashes
+- **Current:** ~~Random placeholders~~ Position-based hashes using SHA256
+- **Implementation:** Counter-based hash combining template ID and position
 - **Benefit:** Reproducible intermediate output
 
 ### 3.2-3.3 Source Location Tracking
@@ -388,7 +388,7 @@ cd python && mypy src/              # Type check
 - [x] CI workflow operational
 
 ### Phase 3 Complete When:
-- [ ] Deterministic placeholders implemented
+- [x] Deterministic placeholders implemented
 - [ ] Error messages include source locations
 - [ ] Named slots work correctly
 - [ ] Nesting depth protected

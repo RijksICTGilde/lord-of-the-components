@@ -6,12 +6,11 @@ Transforms custom component tags into standard Jinja2 includes:
 -> {% include "components/button.html.j2" with context %}
 """
 
+import hashlib
 import logging
-import random
-import string
 from typing import Any, Dict, List, Optional
 
-from bs4 import BeautifulSoup, NavigableString, Tag
+from bs4 import BeautifulSoup, Tag
 from jinja2 import Environment
 from jinja2.ext import Extension
 
@@ -29,6 +28,8 @@ class ComponentExtension(Extension):
         super().__init__(environment)
         self.registry = ComponentRegistry()
         self._jinja_placeholders: Dict[str, str] = {}
+        self._placeholder_counter: int = 0
+        self._current_template_id: str = ""
 
     def preprocess(
         self, source: str, name: Optional[str], filename: Optional[str] = None
@@ -39,6 +40,8 @@ class ComponentExtension(Extension):
         template_id = filename or name or "<unknown>"
         logger.debug(f"Preprocessing template: {template_id}")
         self._jinja_placeholders.clear()
+        self._placeholder_counter = 0
+        self._current_template_id = template_id
 
         try:
             soup = BeautifulSoup(source, features="html.parser")
@@ -198,8 +201,16 @@ class ComponentExtension(Extension):
             )
 
     def _generate_id(self) -> str:
-        """Generate a unique ID for variable names."""
-        return "".join(random.choices(string.ascii_lowercase, k=8))
+        """
+        Generate a deterministic unique ID for variable names.
+
+        Uses a position-based hash combining the template ID and a counter,
+        ensuring reproducible output for the same input template.
+        """
+        self._placeholder_counter += 1
+        hash_input = f"{self._current_template_id}:{self._placeholder_counter}"
+        hash_bytes = hashlib.sha256(hash_input.encode()).hexdigest()[:8]
+        return hash_bytes
 
     def _restore_jinja_tags(self, html: str) -> str:
         """Restore Jinja2 placeholders with actual Jinja2 tags."""
