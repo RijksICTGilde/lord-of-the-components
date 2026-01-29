@@ -20,7 +20,7 @@ This specification defines a universal component system that generates templates
 
 **Goal:** RigScript can fully represent any component template logic
 
-### 1.1 Lexer Enhancement: `or` Operator
+### 1.1 Lexer Enhancement: `or` Operator ✅ DONE
 - **File:** `core/src/rigscript/lexer.ts`
 - **Changes:**
   - Add `OR` to `TokenType` enum
@@ -28,10 +28,10 @@ This specification defines a universal component system that generates templates
 - **Expected Input:** `props.variant or "primary"`
 - **Expected Output:** Tokens: `[IDENTIFIER, OR, STRING]`
 
-### 1.2 Parser Enhancement: `or` Expression
+### 1.2 Parser Enhancement: `or` Expression ✅ DONE
 - **File:** `core/src/rigscript/parser.ts`
 - **Changes:**
-  - Add `parseOrExpression()` method
+  - Add `parseOr()` method
   - Integrate into expression parsing chain (precedence below `and`)
 - **Expected Input:** `let x = a or b`
 - **Expected AST:**
@@ -42,18 +42,11 @@ This specification defines a universal component system that generates templates
   }
   ```
 
-### 1.3 AST Type Definition: OrExpression
+### 1.3 AST Type Definition: OrExpression ✅ DONE
 - **File:** `core/src/rigscript/types.ts`
-- **New Interface:**
-  ```typescript
-  interface OrExpression {
-    type: "OrExpression";
-    left: Expression;
-    right: Expression;
-  }
-  ```
+- **Implementation:** Uses `BinaryExpression` with `operator: 'or'`
 
-### 1.4 Transpiler: String Concatenation
+### 1.4 Transpiler: String Concatenation ✅ DONE
 - **File:** `core/src/rigscript/transpiler-jinja2.ts`
 - **Changes:** Handle `BinaryExpression` with `+` operator for strings
 - **Mapping:** RigScript `+` → Jinja2 `~`
@@ -84,7 +77,7 @@ This specification defines a universal component system that generates templates
   - Handle `CallExpression` nodes for builtin functions
   - Map function calls to Jinja2 filter syntax
 
-### 1.8 Transpiler: Array Concatenation
+### 1.8 Transpiler: Array Concatenation ✅ DONE
 - **File:** `core/src/rigscript/transpiler-jinja2.ts`
 - **Changes:** Handle array concatenation with `+` operator
 - **Example:**
@@ -103,7 +96,7 @@ This specification defines a universal component system that generates templates
 ### 1.14-1.15 Unit Tests
 | Test File | Coverage | Status |
 |-----------|----------|--------|
-| `core/tests/rigscript/or-operator.test.ts` | Lexer, parser, transpiler for `or` | Pending |
+| `core/src/rigscript/or-operator.test.ts` | Lexer, parser, transpiler for `or` | ✅ DONE |
 | `core/src/rigscript/builtins.test.ts` | `join()`, `default()` functions | ✅ DONE |
 
 ---
@@ -436,11 +429,11 @@ cd python && mypy src/              # Type check
 ## Success Criteria
 
 ### Phase 1 Complete When:
-- [ ] `or` operator tokenizes, parses, and transpiles
-- [ ] `join()` and `default()` builtins work
-- [ ] String/array concatenation transpiles correctly
+- [x] `or` operator tokenizes, parses, and transpiles
+- [x] `join()` and `default()` builtins work
+- [x] String/array concatenation transpiles correctly
 - [ ] 5 reference .rig files transpile to valid Jinja2
-- [ ] All unit tests pass
+- [x] All unit tests pass
 
 ### Phase 2 Complete When:
 - [ ] `lotc extract` command works
