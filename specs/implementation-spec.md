@@ -270,6 +270,33 @@ KDL Definition (agnostic)              RVO React (original source)
 | Input | 20+ | text, email, password, number, date, time, file, checkbox, radio, switch, select, textarea, range, color, autocomplete, field wrappers |
 | Utility | 3 | focus-trap, portal, visually-hidden |
 
+#### Layout Components Progress (9 total)
+| Component | Status | File |
+|-----------|--------|------|
+| page | ✅ DONE | `packages/core/components/page/page.rig` |
+| layout | ✅ DONE | `packages/layout/components/layout/layout.rig` |
+| stack | ✅ DONE | `packages/layout/components/stack/stack.rig` |
+| grid | ✅ DONE | `packages/layout/components/grid/grid.rig` |
+| grid-item | ⏳ TODO | - |
+| container | ⏳ TODO | - |
+| section | ⏳ TODO | - |
+| spacer | ⏳ TODO | - |
+| divider | ⏳ TODO | - |
+
+#### Action Components Progress (4 total)
+| Component | Status | File |
+|-----------|--------|------|
+| button | ✅ DONE | `packages/core/components/button/button.rig` |
+| icon-button | ⏳ TODO | - |
+| link | ⏳ TODO | - |
+| action-group | ⏳ TODO | - |
+
+#### Data Display Components Progress (partial)
+| Component | Status | File |
+|-----------|--------|------|
+| card | ✅ DONE | `packages/core/components/card/card.rig` |
+| (others) | ⏳ TODO | - |
+
 ### 4.11-4.12 Completion Criteria
 - **Visual Tests:** All 95 components pass
 - **Documentation:** `docs/component-coverage.md` with 95/95 status
