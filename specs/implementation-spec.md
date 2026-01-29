@@ -148,12 +148,12 @@ KDL Definition (agnostic)              RVO React (original source)
 - **Purpose:** Visual comparison reference
 
 ### 2.7-2.12 Visual Test Infrastructure
-| File | Purpose |
-|------|---------|
-| `tests/visual/specs/components.spec.ts` | Playwright test specifications |
-| `tests/visual/snapshots/` | Baseline screenshots |
-| `core/src/cli/commands/test-visual.ts` | CLI wrapper for Playwright |
-| `.github/workflows/visual-tests.yml` | CI integration |
+| File | Purpose | Status |
+|------|---------|--------|
+| `tests/visual/specs/components.spec.ts` | Playwright test specifications | ✅ DONE |
+| `tests/visual/snapshots/` | Baseline screenshots | ✅ DONE |
+| `core/src/cli/commands/test-visual.ts` | CLI wrapper for Playwright | |
+| `.github/workflows/visual-tests.yml` | CI integration | |
 
 ### 2.13 Documentation
 - **File:** `docs/features/visual-testing.md`

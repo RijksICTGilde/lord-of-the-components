@@ -11,6 +11,8 @@
     "build": "npm run build -w core",
     "dev": "npm run dev -w core",
     "test": "npm run test -w core",
+    "test:visual": "npx playwright test --config=tests/visual/playwright.config.ts",
+    "test:visual:update": "npx playwright test --config=tests/visual/playwright.config.ts --update-snapshots",
     "lint": "npm run lint -w core",
     "lotc": "node core/dist/cli/index.js"
   },
