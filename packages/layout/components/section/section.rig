@@ -1,0 +1,33 @@
+# Lord of the Components - Section Component Logic
+# Semantic page section with optional heading
+
+render.element("section"):
+    # Section padding
+    attrs.padding = props.padding
+
+    # Background variant
+    attrs.background = props.background
+
+    # Header region (custom header slot or title prop)
+    if slots.header:
+        render.element("header"):
+            attrs.class = "c-section__header"
+            render.slot("header")
+    else if props.title:
+        render.element("header"):
+            attrs.class = "c-section__header"
+            # Heading with configurable level
+            render.element("h" + (props.level or "2")):
+                attrs.class = "c-section__title"
+                render.text(props.title)
+
+    # Main section content
+    render.element("div"):
+        attrs.class = "c-section__content"
+        render.slot("default")
+
+    # Footer region
+    if slots.footer:
+        render.element("footer"):
+            attrs.class = "c-section__footer"
+            render.slot("footer")
