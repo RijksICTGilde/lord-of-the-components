@@ -9,9 +9,10 @@ Transforms custom component tags into standard Jinja2 includes:
 import hashlib
 import logging
 import re
+from collections import deque
 from dataclasses import dataclass
 from difflib import get_close_matches
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 from bs4 import BeautifulSoup, Tag
 from jinja2 import Environment
@@ -21,6 +22,9 @@ from .registry import ComponentRegistry
 from .validation import validate_expression
 
 logger = logging.getLogger(__name__)
+
+# Maximum allowed nesting depth for components to prevent infinite recursion
+MAX_NESTING_DEPTH = 50
 
 
 @dataclass
@@ -185,24 +189,105 @@ class ComponentExtension(Extension):
 
     def _process_components_in_soup(self, soup: BeautifulSoup) -> None:
         """
-        Process all component tags in the BeautifulSoup tree.
-        Works from the deepest components up (bottom-up processing).
+        Process all component tags in the BeautifulSoup tree using topological sort.
+
+        Uses Kahn's algorithm to build a processing order where child components
+        are always processed before their parent components (bottom-up).
         """
-        processed = set()
+        # Find all component tags
+        all_components: List[Tag] = list(soup.find_all(self._is_component_tag))
 
-        while True:
-            found_any = False
-            for tag in soup.find_all(self._is_component_tag):
-                if id(tag) not in processed:
-                    child_components = tag.find_all(self._is_component_tag)
-                    if all(id(child) in processed for child in child_components):
-                        self._process_single_component(tag)
-                        processed.add(id(tag))
-                        found_any = True
-                        break
+        if not all_components:
+            return
 
-            if not found_any:
-                break
+        # Build dependency graph and check nesting depth
+        # For each component, track which components are its direct children
+        # A component depends on its children (must process children first)
+        tag_to_id: Dict[int, Tag] = {id(tag): tag for tag in all_components}
+        children_of: Dict[int, Set[int]] = {id(tag): set() for tag in all_components}
+        parent_of: Dict[int, Optional[int]] = {id(tag): None for tag in all_components}
+
+        for tag in all_components:
+            # Find direct child components (not nested further down)
+            for child in tag.find_all(self._is_component_tag, recursive=True):
+                child_id = id(child)
+                tag_id = id(tag)
+                if child_id in tag_to_id:
+                    # Find the immediate parent component of this child
+                    current = child.parent
+                    while current is not None:
+                        if id(current) == tag_id:
+                            # tag is the immediate component parent of child
+                            children_of[tag_id].add(child_id)
+                            parent_of[child_id] = tag_id
+                            break
+                        elif id(current) in tag_to_id:
+                            # Another component is between them
+                            break
+                        current = current.parent
+
+        # Check nesting depth
+        for tag in all_components:
+            depth = self._calculate_nesting_depth(tag, tag_to_id)
+            if depth > MAX_NESTING_DEPTH:
+                location = _find_tag_location(
+                    self._current_source,
+                    tag.name,
+                    self._tag_occurrence_counts.get(tag.name, 0),
+                )
+                raise ComponentError(
+                    f"Component nesting depth ({depth}) exceeds maximum allowed ({MAX_NESTING_DEPTH})",
+                    location=location,
+                )
+
+        # Topological sort using Kahn's algorithm
+        # Components with no children (leaves) have in-degree 0 and are processed first
+        in_degree: Dict[int, int] = {id(tag): len(children_of[id(tag)]) for tag in all_components}
+        queue: deque[int] = deque()
+
+        # Start with leaf components (no child components)
+        for tag_id, degree in in_degree.items():
+            if degree == 0:
+                queue.append(tag_id)
+
+        processing_order: List[Tag] = []
+
+        while queue:
+            tag_id = queue.popleft()
+            tag = tag_to_id[tag_id]
+            processing_order.append(tag)
+
+            # Find the parent of this component and decrease its in-degree
+            parent_id = parent_of.get(tag_id)
+            if parent_id is not None and parent_id in in_degree:
+                in_degree[parent_id] -= 1
+                if in_degree[parent_id] == 0:
+                    queue.append(parent_id)
+
+        # Verify all components are in the processing order (detect cycles)
+        if len(processing_order) != len(all_components):
+            # This shouldn't happen with valid HTML, but handle it gracefully
+            raise ComponentError(
+                "Circular component dependency detected. This may indicate malformed HTML."
+            )
+
+        # Process components in topological order (leaves first, then their parents)
+        for tag in processing_order:
+            self._process_single_component(tag)
+
+    def _calculate_nesting_depth(self, tag: Tag, tag_to_id: Dict[int, Tag]) -> int:
+        """
+        Calculate the nesting depth of a component tag.
+
+        Counts how many component ancestors this tag has.
+        """
+        depth = 0
+        current = tag.parent
+        while current is not None:
+            if id(current) in tag_to_id:
+                depth += 1
+            current = current.parent
+        return depth
 
     def _is_component_tag(self, tag: Any) -> bool:
         """Check if a tag is a component tag (starts with 'c-')."""

@@ -209,17 +209,21 @@ KDL Definition (agnostic)              RVO React (original source)
   - Helpful suggestions for fixes (e.g., `&&` → `and`)
   - Integration with `ComponentError` for source location tracking
 
-### 3.6 Topological Sort for Nesting
+### 3.6 Topological Sort for Nesting ✅ DONE
 - **Purpose:** Single-pass processing of nested components
-- **Algorithm:**
-  1. Build dependency graph
-  2. Topologically sort components
-  3. Process in sorted order
+- **Algorithm:** Kahn's algorithm for topological ordering
+  1. Build dependency graph (parent→children relationships)
+  2. Topologically sort components (leaves first)
+  3. Process in sorted order (bottom-up)
+- **Implementation:**
+  - `_process_components_in_soup()` uses Kahn's algorithm
+  - `_calculate_nesting_depth()` helper for depth checking
+  - Cycle detection with clear error message
 
-### 3.7 Nesting Depth Protection
+### 3.7 Nesting Depth Protection ✅ DONE
 - **Constant:** `MAX_NESTING_DEPTH = 50`
-- **Behavior:** Raise error if exceeded
-- **Error:** Clear message about nesting limit
+- **Behavior:** Raise `ComponentError` if exceeded
+- **Error:** Clear message with actual depth and maximum allowed
 
 ### 3.8-3.11 Python Unit Tests
 | Test File | Coverage | Status |
@@ -227,7 +231,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | `python/tests/test_extension.py` | Placeholder system, source locations, error suggestions, expression validation | ✅ DONE |
 | `python/tests/test_slots.py` | Named slot extraction | ✅ DONE |
 | `python/tests/test_errors.py` | Error message quality | |
-| `python/tests/test_nesting.py` | Topological sort, depth limits | |
+| `python/tests/test_nesting.py` | Topological sort, depth limits | ✅ DONE |
 
 ### 3.12-3.14 Documentation and Validation
 - **Documentation:** `docs/features/jinja-preprocessor.md`
@@ -408,9 +412,9 @@ cd python && mypy src/              # Type check
 - [x] Error messages include source locations
 - [x] Named slots work correctly
 - [x] Expression validation works
-- [ ] Nesting depth protected
-- [ ] All Python tests pass
-- [ ] mypy reports zero errors
+- [x] Nesting depth protected
+- [x] All Python tests pass
+- [x] mypy reports zero errors
 
 ### Phase 4 Complete When:
 - [ ] 95 .rig files exist
