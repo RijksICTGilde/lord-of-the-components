@@ -155,7 +155,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | `core/src/cli/commands/test-visual.ts` | CLI wrapper for Playwright | ✅ DONE |
 | `.github/workflows/visual-tests.yml` | CI integration | ✅ DONE |
 
-### 2.13 Documentation
+### 2.13 Documentation ✅ DONE
 - **File:** `docs/features/visual-testing.md`
 - **Content:**
   - Running visual tests
@@ -382,10 +382,10 @@ cd python && mypy src/              # Type check
 - [x] All unit tests pass
 
 ### Phase 2 Complete When:
-- [ ] Playwright configured and running
-- [ ] RVO baseline screenshots captured
-- [ ] Visual comparison tests execute
-- [ ] CI workflow operational
+- [x] Playwright configured and running
+- [x] RVO baseline screenshots captured
+- [x] Visual comparison tests execute
+- [x] CI workflow operational
 
 ### Phase 3 Complete When:
 - [ ] Deterministic placeholders implemented
