@@ -105,8 +105,8 @@ This specification defines a universal component system that generates templates
 
 **Goal:** Extract existing HTML/Jinja2 templates to RigScript
 
-### 2.1 Jinja2 Template Analyzer
-- **File:** `core/src/extractors/jinja2-analyzer.ts` (NEW)
+### 2.1 Jinja2 Template Analyzer ✅ DONE
+- **File:** `core/src/extractors/jinja2-analyzer.ts`
 - **Purpose:** Parse Jinja2 templates, extract structure
 - **Output:** Intermediate Representation (IR) data structure
 - **Capabilities:**
@@ -114,6 +114,7 @@ This specification defines a universal component system that generates templates
   - Conditional parsing
   - Loop detection
   - Filter identification
+- **Tests:** `core/src/extractors/jinja2-analyzer.test.ts`
 
 ### 2.2 Pattern Recognition Mappings
 | Jinja2 Pattern | RigScript Equivalent |
