@@ -308,6 +308,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | description-list | ✅ DONE | `packages/core/components/description-list/description-list.rig` |
 | icon | ✅ DONE | `packages/core/components/icon/icon.rig` |
 | avatar | ✅ DONE | `packages/core/components/avatar/avatar.rig` |
+| avatar-group | ✅ DONE | `packages/core/components/avatar-group/avatar-group.rig` |
 | (others) | ⏳ TODO | - |
 
 ### 4.11-4.12 Completion Criteria
