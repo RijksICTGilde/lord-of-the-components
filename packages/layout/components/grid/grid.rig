@@ -1,0 +1,38 @@
+# Lord of the Components - Grid Component Logic
+# CSS Grid-based layout system
+
+render.element("div"):
+    # Column configuration
+    attrs.cols = props.cols
+
+    # Row configuration
+    if props.rows:
+        attrs.rows = props.rows
+
+    # Gap spacing
+    attrs.gap = props.gap
+
+    # Directional gap overrides
+    if props.gapX:
+        attrs.gapX = props.gapX
+
+    if props.gapY:
+        attrs.gapY = props.gapY
+
+    # Alignment
+    attrs.align = props.align
+    attrs.justify = props.justify
+
+    # Responsive auto-fit/fill modes
+    if props.autoFit:
+        attrs.autoFit = true
+        if props.minItemWidth:
+            attrs.minItemWidth = props.minItemWidth
+
+    if props.autoFill:
+        attrs.autoFill = true
+        if props.minItemWidth:
+            attrs.minItemWidth = props.minItemWidth
+
+    # Grid content
+    render.slot("default")
