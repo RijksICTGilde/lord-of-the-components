@@ -279,7 +279,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | grid | ✅ DONE | `packages/layout/components/grid/grid.rig` |
 | grid-item | ✅ DONE | `packages/layout/components/grid-item/grid-item.rig` |
 | container | ✅ DONE | `packages/layout/components/container/container.rig` |
-| section | ⏳ TODO | - |
+| section | ✅ DONE | `packages/layout/components/section/section.rig` |
 | spacer | ⏳ TODO | - |
 | divider | ⏳ TODO | - |
 
