@@ -125,8 +125,8 @@ This specification defines a universal component system that generates templates
 | `{{ content \| safe }}` | `render.slot("default")` |
 | `{{ x \| default(y) }}` | `default(x, y)` |
 
-### 2.3 HTML Structure Analyzer
-- **File:** `core/src/extractors/html-analyzer.ts` (NEW)
+### 2.3 HTML Structure Analyzer ✅ DONE
+- **File:** `core/src/extractors/html-analyzer.ts`
 - **Purpose:** Parse HTML, extract element hierarchy
 - **Output:** Element tree with attribute metadata
 - **Extracts:**
@@ -134,6 +134,7 @@ This specification defines a universal component system that generates templates
   - Attribute names and values
   - Class patterns (static vs dynamic)
   - Event handlers
+- **Tests:** `core/src/extractors/html-analyzer.test.ts`
 
 ### 2.4 RigScript Generator
 - **File:** `core/src/extractors/rigscript-generator.ts` (NEW)
