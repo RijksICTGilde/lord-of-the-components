@@ -192,8 +192,9 @@ export class Jinja2Transpiler {
     const tagArg = stmt.args[0];
     const tagName = tagArg?.type === 'Literal' ? String(tagArg.value) : 'div';
 
-    // Collect attributes from children (attrs.* assignments)
+    // Collect attributes and conditional attributes from children (attrs.* assignments)
     const attributes: string[] = [];
+    const conditionalAttrs: Array<{ condition: string; attrName: string; attrValue: string | null }> = [];
 
     if (stmt.children) {
       for (const child of stmt.children) {
@@ -202,24 +203,76 @@ export class Jinja2Transpiler {
           if (target.type === 'MemberExpression' &&
               target.object.type === 'Identifier' &&
               (target.object as Identifier).name === 'attrs') {
-            const attrName = (target.property as Identifier).name;
-            const attrValue = this.transpileExpression(child.value);
-
-            // Handle boolean attributes
-            if (child.value.type === 'Literal' && typeof child.value.value === 'boolean') {
-              if (child.value.value) {
-                attributes.push(`{% if ${attrValue} %}${attrName}{% endif %}`);
+            // Get attribute name - handle both dot notation and bracket notation
+            let attrName: string;
+            if (target.computed) {
+              // Bracket notation: attrs["data-variant"]
+              if (target.property.type === 'Literal' && typeof target.property.value === 'string') {
+                attrName = target.property.value;
+              } else {
+                // Dynamic attribute name - skip for now
+                continue;
               }
-            } else if (child.value.type === 'Identifier' || child.value.type === 'MemberExpression') {
-              // Conditional attribute
-              const prefix = this.options.dataAttributes ? 'data-' : '';
-              attributes.push(`${prefix}${attrName}="{{ ${attrValue} }}"`);
             } else {
-              const prefix = this.options.dataAttributes ? 'data-' : '';
-              attributes.push(`${prefix}${attrName}="{{ ${attrValue} }}"`);
+              // Dot notation: attrs.class
+              attrName = (target.property as Identifier).name;
+            }
+
+            const value = child.value;
+
+            // Handle boolean literal: attrs.disabled = true -> disabled
+            if (value.type === 'Literal' && typeof value.value === 'boolean') {
+              if (value.value) {
+                attributes.push(attrName);
+              }
+              // false values are omitted
+            }
+            // Handle string literal: attrs.class = "foo" -> class="foo"
+            else if (value.type === 'Literal' && typeof value.value === 'string') {
+              attributes.push(`${attrName}="${value.value}"`);
+            }
+            // Handle dynamic values: attrs.class = join(classes, " ") -> class="{{ classes | join(" ") }}"
+            else {
+              const attrValue = this.transpileExpression(value);
+              attributes.push(`${attrName}="{{ ${attrValue} }}"`);
             }
           }
         }
+        // Handle conditional attributes: if loading: attrs["aria-busy"] = "true"
+        else if (child.type === 'IfStatement' && child.then.length === 1 && !child.else && child.elif.length === 0) {
+          const innerStmt = child.then[0];
+          if (innerStmt.type === 'AssignmentStatement' &&
+              innerStmt.target.type === 'MemberExpression' &&
+              innerStmt.target.object.type === 'Identifier' &&
+              (innerStmt.target.object as Identifier).name === 'attrs') {
+            // Get attribute name
+            let attrName: string;
+            if (innerStmt.target.computed && innerStmt.target.property.type === 'Literal') {
+              attrName = String(innerStmt.target.property.value);
+            } else {
+              attrName = (innerStmt.target.property as Identifier).name;
+            }
+            const condition = this.transpileExpression(child.condition);
+
+            // Handle different value types
+            if (innerStmt.value.type === 'Literal' && innerStmt.value.value === true) {
+              // Boolean true: attrs.disabled = true -> {% if condition %}disabled{% endif %}
+              conditionalAttrs.push({ condition, attrName, attrValue: null });
+            } else if (innerStmt.value.type === 'Literal' && typeof innerStmt.value.value === 'string') {
+              // String literal: attrs["aria-busy"] = "true" -> {% if condition %}aria-busy="true"{% endif %}
+              conditionalAttrs.push({ condition, attrName, attrValue: innerStmt.value.value });
+            }
+          }
+        }
+      }
+    }
+
+    // Build conditional attributes
+    for (const { condition, attrName, attrValue } of conditionalAttrs) {
+      if (attrValue === null) {
+        attributes.push(`{% if ${condition} %}${attrName}{% endif %}`);
+      } else {
+        attributes.push(`{% if ${condition} %}${attrName}="${attrValue}"{% endif %}`);
       }
     }
 
@@ -227,15 +280,32 @@ export class Jinja2Transpiler {
     const attrStr = attributes.length > 0 ? ' ' + attributes.join(' ') : '';
     this.emit(`<${tagName}${attrStr}>`);
 
-    // Render non-attribute children
+    // Render non-attribute children (skip if statements that were converted to conditional attrs)
     if (stmt.children) {
       this.currentIndent++;
       for (const child of stmt.children) {
-        if (child.type !== 'AssignmentStatement' ||
-            child.target.type !== 'MemberExpression' ||
-            (child.target.object as Identifier).name !== 'attrs') {
-          this.transpileStatement(child);
+        // Skip attribute assignments
+        if (child.type === 'AssignmentStatement' &&
+            child.target.type === 'MemberExpression' &&
+            child.target.object.type === 'Identifier' &&
+            (child.target.object as Identifier).name === 'attrs') {
+          continue;
         }
+        // Skip if statements that were converted to conditional attributes
+        if (child.type === 'IfStatement' && child.then.length === 1 && !child.else && child.elif.length === 0) {
+          const innerStmt = child.then[0];
+          if (innerStmt.type === 'AssignmentStatement' &&
+              innerStmt.target.type === 'MemberExpression' &&
+              innerStmt.target.object.type === 'Identifier' &&
+              (innerStmt.target.object as Identifier).name === 'attrs' &&
+              innerStmt.value.type === 'Literal') {
+            // Skip both boolean true and string values that were converted to conditional attrs
+            if (innerStmt.value.value === true || typeof innerStmt.value.value === 'string') {
+              continue;
+            }
+          }
+        }
+        this.transpileStatement(child);
       }
       this.currentIndent--;
     }

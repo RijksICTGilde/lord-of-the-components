@@ -1,33 +1,64 @@
 # Lord of the Components - Button Component Logic
 # Renders an interactive button element
 
+# Extract props with defaults
+let variant = default(props.variant, "primary")
+let size = default(props.size, "md")
+let btn_type = default(props.type, "button")
+let disabled = default(props.disabled, false)
+let loading = default(props.loading, false)
+let full_width = default(props.fullWidth, false)
+let icon = default(props.icon, none)
+let icon_position = default(props.iconPosition, "before")
+
+# Build CSS classes
+let classes = ["c-button"]
+let classes = classes + ["c-button--" + variant]
+let classes = classes + ["c-button--" + size]
+if full_width:
+    let classes = classes + ["c-button--full-width"]
+if loading:
+    let classes = classes + ["c-button--loading"]
+if disabled:
+    let classes = classes + ["c-button--disabled"]
+
 render.element("button"):
-    # Core attributes
-    attrs.type = props.type
-    attrs.variant = props.variant
-    attrs.size = props.size
-
-    # State attributes
-    if props.disabled:
+    attrs.type = btn_type
+    attrs.class = join(classes, " ")
+    if disabled:
         attrs.disabled = true
-
-    if props.loading:
-        attrs.loading = true
+    if loading:
         attrs["aria-busy"] = "true"
-
-    if props.fullWidth:
-        attrs.fullWidth = true
+    attrs["data-variant"] = variant
+    attrs["data-size"] = size
 
     # Icon before content
-    if props.icon and props.iconPosition == "before":
-        render.component("icon", name=props.icon, size=props.size)
+    if icon and icon_position == "before" and not loading:
+        render.element("span"):
+            attrs.class = "c-button__icon c-button__icon--before"
+            render.element("span"):
+                attrs["data-icon"] = icon
 
-    # Loading spinner (replaces content when loading)
-    if props.loading:
-        render.component("spinner", size=props.size)
+    # Loading spinner
+    if loading:
+        render.element("span"):
+            attrs.class = "c-button__spinner"
+            attrs["aria-hidden"] = "true"
+
+    # Button content - use different rendering for loading state
+    if loading:
+        render.element("span"):
+            attrs.class = "c-button__content"
+            attrs["aria-hidden"] = "true"
+            render.slot("default")
     else:
-        render.slot("default")
+        render.element("span"):
+            attrs.class = "c-button__content"
+            render.slot("default")
 
     # Icon after content
-    if props.icon and props.iconPosition == "after":
-        render.component("icon", name=props.icon, size=props.size)
+    if icon and icon_position == "after" and not loading:
+        render.element("span"):
+            attrs.class = "c-button__icon c-button__icon--after"
+            render.element("span"):
+                attrs["data-icon"] = icon
