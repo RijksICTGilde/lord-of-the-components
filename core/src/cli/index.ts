@@ -16,6 +16,7 @@ import { generateRegistry } from './commands/registry.js';
 import { generateIdeSupport } from './commands/ide.js';
 import { extractTemplate } from './commands/extract.js';
 import { generateFixtures } from './commands/fixtures.js';
+import { runVisualTests } from './commands/test-visual.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -34,6 +35,8 @@ interface CliOptions {
   verbose?: boolean;
   comments?: boolean;
   css?: string;
+  update?: boolean;
+  ui?: boolean;
 }
 
 function printHelp(): void {
@@ -51,6 +54,7 @@ ${chalk.bold('Commands:')}
   ide            Generate IDE autocomplete files
   extract        Extract Jinja2 template to RigScript
   test:fixtures  Generate visual test fixtures
+  test:visual    Run visual regression tests
 
 ${chalk.bold('Options:')}
   -h, --help      Show this help message
@@ -63,6 +67,8 @@ ${chalk.bold('Options:')}
   --tokens        Only build tokens (skip components)
   --comments      Include comments (for extract command)
   --css           CSS file path for fixtures
+  --update        Update visual test snapshots
+  --ui            Open Playwright UI mode
   --verbose       Enable verbose output
 
 ${chalk.bold('Examples:')}
@@ -77,6 +83,9 @@ ${chalk.bold('Examples:')}
   lotc extract -i file.j2 -o out.rig  Extract with custom output
   lotc test:fixtures            Generate visual test fixtures
   lotc test:fixtures -o ./out   Custom output directory
+  lotc test:visual              Run visual regression tests
+  lotc test:visual --update     Update baseline snapshots
+  lotc test:visual --ui         Open Playwright UI
 `);
 }
 
@@ -97,6 +106,8 @@ async function main(): Promise<void> {
       tokens: { type: 'boolean' },
       comments: { type: 'boolean' },
       css: { type: 'string' },
+      update: { type: 'boolean' },
+      ui: { type: 'boolean' },
       verbose: { type: 'boolean' },
     },
     allowPositionals: true,
@@ -196,6 +207,20 @@ async function main(): Promise<void> {
           cssPath: options.css,
           verbose: options.verbose,
         });
+        break;
+
+      case 'test:visual':
+        console.log(chalk.blue('Running visual regression tests...'));
+        const testsPassed = await runVisualTests({
+          configPath,
+          updateSnapshots: options.update,
+          component: positionals[1], // Optional component name filter
+          ui: options.ui,
+          verbose: options.verbose,
+        });
+        if (!testsPassed) {
+          process.exit(1);
+        }
         break;
 
       default:

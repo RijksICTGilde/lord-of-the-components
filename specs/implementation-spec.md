@@ -152,7 +152,7 @@ KDL Definition (agnostic)              RVO React (original source)
 |------|---------|--------|
 | `tests/visual/specs/components.spec.ts` | Playwright test specifications | ✅ DONE |
 | `tests/visual/snapshots/` | Baseline screenshots | ✅ DONE |
-| `core/src/cli/commands/test-visual.ts` | CLI wrapper for Playwright | |
+| `core/src/cli/commands/test-visual.ts` | CLI wrapper for Playwright | ✅ DONE |
 | `.github/workflows/visual-tests.yml` | CI integration | |
 
 ### 2.13 Documentation
