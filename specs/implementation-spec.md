@@ -291,6 +291,13 @@ KDL Definition (agnostic)              RVO React (original source)
 | link | ✅ DONE | `packages/core/components/link/link.rig` |
 | action-group | ✅ DONE | `packages/core/components/action-group/action-group.rig` |
 
+#### Typography Components Progress (3 total)
+| Component | Status | File |
+|-----------|--------|------|
+| heading | ✅ DONE | `packages/core/components/heading/heading.rig` |
+| text | ⏳ TODO | - |
+| prose | ⏳ TODO | - |
+
 #### Data Display Components Progress (partial)
 | Component | Status | File |
 |-----------|--------|------|
