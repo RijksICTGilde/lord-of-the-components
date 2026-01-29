@@ -1,0 +1,25 @@
+# Lord of the Components - Status Icon Component Logic
+# Icon indicating status (info, success, warning, error)
+
+render.element("span"):
+    # Build CSS classes array
+    let classes = ["c-status-icon"]
+
+    # Status modifier (required)
+    if props.status:
+        classes = classes + ["c-status-icon--" + props.status]
+
+    # Size modifier (default: md)
+    if props.size:
+        classes = classes + ["c-status-icon--" + props.size]
+
+    # Apply classes
+    attrs.class = join(classes, " ")
+
+    # ARIA attributes for accessibility
+    attrs.role = "img"
+    if props.ariaLabel:
+        attrs["aria-label"] = props.ariaLabel
+    else:
+        # Default aria-label based on status
+        attrs["aria-label"] = props.status
