@@ -347,6 +347,16 @@ KDL Definition (agnostic)              RVO React (original source)
 | pagination | ✅ DONE | `packages/core/components/pagination/pagination.rig` |
 | skip-link | ✅ DONE | `packages/core/components/skip-link/skip-link.rig` |
 
+#### Overlay Components Progress (6 total)
+| Component | Status | File |
+|-----------|--------|------|
+| modal | ✅ DONE | `packages/core/components/modal/modal.rig` |
+| dialog | ⏳ TODO | |
+| dropdown | ⏳ TODO | |
+| tooltip | ⏳ TODO | |
+| drawer | ⏳ TODO | |
+| popover | ⏳ TODO | |
+
 ### 4.11-4.12 Completion Criteria
 - **Visual Tests:** All 95 components pass
 - **Documentation:** `docs/component-coverage.md` with 95/95 status
