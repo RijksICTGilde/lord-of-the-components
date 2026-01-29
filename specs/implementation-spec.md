@@ -327,7 +327,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | status-icon | ✅ DONE | `packages/core/components/status-icon/status-icon.rig` |
 | empty | ✅ DONE | `packages/core/components/empty/empty.rig` |
 | progress | ✅ DONE | `packages/core/components/progress/progress.rig` |
-| progress-tracker | ⬜ TODO | |
+| progress-tracker | ✅ DONE | `packages/core/components/progress-tracker/progress-tracker.rig` |
 
 ### 4.11-4.12 Completion Criteria
 - **Visual Tests:** All 95 components pass
