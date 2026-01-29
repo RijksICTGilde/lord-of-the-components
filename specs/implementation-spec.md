@@ -310,7 +310,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | avatar | ✅ DONE | `packages/core/components/avatar/avatar.rig` |
 | avatar-group | ✅ DONE | `packages/core/components/avatar-group/avatar-group.rig` |
 | image | ✅ DONE | `packages/core/components/image/image.rig` |
-| figure | ⏳ TODO | - |
+| figure | ✅ DONE | `packages/core/components/figure/figure.rig` |
 | codeblock | ⏳ TODO | - |
 | code | ⏳ TODO | - |
 | time | ⏳ TODO | - |
