@@ -1,0 +1,69 @@
+# Lord of the Components - Menu Component Logic
+# Dropdown menu for actions or navigation
+
+render.element("div"):
+    # Base class
+    attrs.class = "c-menu"
+
+    # Open state modifier
+    if props.open:
+        attrs.class = attrs.class + " c-menu--open"
+
+    # Placement modifier
+    if props.placement:
+        attrs.class = attrs.class + " c-menu--" + props.placement
+
+    # Trigger slot wrapper
+    render.element("div"):
+        attrs.class = "c-menu__trigger"
+        render.slot("trigger")
+
+    # Dropdown container
+    render.element("div"):
+        attrs.class = "c-menu__dropdown"
+        attrs.role = "menu"
+
+        # Render from items array if provided
+        if props.items:
+            for index, item in props.items:
+                # Divider
+                if item.divider:
+                    render.element("div"):
+                        attrs.class = "c-menu__divider"
+                        attrs.role = "separator"
+                else:
+                    # Menu item element (link or button)
+                    let tag = item.href ? "a" : "button"
+                    render.element(tag):
+                        attrs.class = "c-menu__item"
+                        attrs.role = "menuitem"
+
+                        if item.href:
+                            attrs.href = item.href
+                        else:
+                            attrs.type = "button"
+
+                        # Destructive styling
+                        if item.destructive:
+                            attrs.class = attrs.class + " c-menu__item--destructive"
+
+                        # Disabled state
+                        if item.disabled:
+                            attrs.class = attrs.class + " c-menu__item--disabled"
+                            attrs["aria-disabled"] = "true"
+                            if not item.href:
+                                attrs.disabled = true
+
+                        # Icon (optional)
+                        if item.icon:
+                            render.element("span"):
+                                attrs.class = "c-menu__icon"
+                                render.component("icon", name=item.icon)
+
+                        # Label
+                        render.element("span"):
+                            attrs.class = "c-menu__label"
+                            render.text(item.label)
+        else:
+            # Slot-based menu items
+            render.slot("default")

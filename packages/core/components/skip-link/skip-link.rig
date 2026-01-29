@@ -1,0 +1,15 @@
+# Lord of the Components - Skip Link Component Logic
+# Accessible skip link for keyboard navigation
+
+render.element("a"):
+    # Base class (visually hidden until focused)
+    attrs.class = "c-skip-link"
+
+    # Target href (default to #main)
+    attrs.href = props.href or "#main"
+
+    # Link text
+    if slots.default:
+        render.slot("default")
+    else:
+        render.text("Skip to main content")
