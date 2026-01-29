@@ -287,7 +287,7 @@ KDL Definition (agnostic)              RVO React (original source)
 | Component | Status | File |
 |-----------|--------|------|
 | button | ✅ DONE | `packages/core/components/button/button.rig` |
-| icon-button | ⏳ TODO | - |
+| icon-button | ✅ DONE | `packages/core/components/icon-button/icon-button.rig` |
 | link | ⏳ TODO | - |
 | action-group | ⏳ TODO | - |
 
