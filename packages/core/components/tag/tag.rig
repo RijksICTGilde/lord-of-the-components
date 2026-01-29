@@ -1,0 +1,40 @@
+# Lord of the Components - Tag Component Logic
+# Tag/chip for categorization or filtering with optional icon and remove button
+
+render.element("span"):
+    # Base class
+    attrs.class = "c-tag"
+
+    # Variant modifier (color)
+    if props.variant:
+        attrs.class = attrs.class + " c-tag--" + props.variant
+
+    # Size modifier
+    if props.size:
+        attrs.class = attrs.class + " c-tag--" + props.size
+
+    # Disabled state
+    if props.disabled:
+        attrs.class = attrs.class + " c-tag--disabled"
+        attrs["aria-disabled"] = "true"
+
+    # Leading icon (optional)
+    if props.icon:
+        render.element("span"):
+            attrs.class = "c-tag__icon"
+            render.component("icon", name=props.icon)
+
+    # Tag label content (default slot)
+    render.element("span"):
+        attrs.class = "c-tag__label"
+        render.slot("default")
+
+    # Remove button (optional)
+    if props.removable:
+        render.element("button"):
+            attrs.type = "button"
+            attrs.class = "c-tag__remove"
+            attrs["aria-label"] = "Remove tag"
+            if props.disabled:
+                attrs.disabled = "disabled"
+            render.component("icon", name="close", size="sm")
