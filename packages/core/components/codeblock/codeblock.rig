@@ -1,0 +1,54 @@
+# Lord of the Components - Codeblock Component Logic
+# Code block with optional syntax highlighting, line numbers, and copy functionality
+
+render.element("div"):
+    # Build CSS classes array
+    let classes = ["c-codeblock"]
+
+    # Language modifier for styling
+    if props.language:
+        classes = classes + ["c-codeblock--" + props.language]
+
+    # Line numbers modifier
+    if props.showLineNumbers:
+        classes = classes + ["c-codeblock--line-numbers"]
+
+    # Apply classes
+    attrs.class = join(classes, " ")
+
+    # Data attributes for JavaScript enhancement
+    if props.language:
+        attrs["data-language"] = props.language
+    if props.highlightLines:
+        attrs["data-highlight-lines"] = props.highlightLines
+    if props.copyable:
+        attrs["data-copyable"] = "true"
+
+    # Filename header (optional)
+    if props.filename:
+        render.element("div"):
+            attrs.class = "c-codeblock__header"
+            render.element("span"):
+                attrs.class = "c-codeblock__filename"
+                render.text(props.filename)
+
+    # Code container with optional max height
+    render.element("div"):
+        let containerClasses = ["c-codeblock__container"]
+        attrs.class = join(containerClasses, " ")
+        if props.maxHeight:
+            attrs.style = "max-height: " + props.maxHeight + "; overflow-y: auto;"
+
+        # Pre element for code formatting
+        render.element("pre"):
+            attrs.class = "c-codeblock__pre"
+
+            # Code element with language class for syntax highlighters
+            render.element("code"):
+                let codeClasses = ["c-codeblock__code"]
+                if props.language:
+                    codeClasses = codeClasses + ["language-" + props.language]
+                attrs.class = join(codeClasses, " ")
+
+                # Render code content
+                render.slot("default")
