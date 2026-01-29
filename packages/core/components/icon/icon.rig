@@ -1,0 +1,33 @@
+# Lord of the Components - Icon Component Logic
+# Renders an icon using CSS background images
+
+render.element("span"):
+    # Build CSS classes array
+    let classes = ["utrecht-icon", "rvo-icon"]
+
+    # Process icon name (handle "Category > icon-name" format)
+    let iconName = props.icon
+    if props.icon and props.icon contains " > ":
+        iconName = props.icon.split(" > ")[1].replace(" ", "-").lower()
+
+    # Add icon-specific class
+    classes = classes + ["rvo-icon-" + iconName]
+
+    # Size modifier
+    if props.size:
+        classes = classes + ["rvo-icon--" + props.size]
+
+    # Color modifier
+    if props.color:
+        classes = classes + ["rvo-icon--" + props.color]
+
+    # Apply classes
+    attrs.class = join(classes, " ")
+
+    # ARIA attributes for accessibility
+    attrs.role = "img"
+    if props.ariaLabel:
+        attrs["aria-label"] = props.ariaLabel
+    else:
+        # Default aria-label from icon name
+        attrs["aria-label"] = iconName.replace("-", " ")
