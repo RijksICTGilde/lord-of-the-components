@@ -230,7 +230,7 @@ KDL Definition (agnostic)              RVO React (original source)
 |-----------|----------|--------|
 | `python/tests/test_extension.py` | Placeholder system, source locations, error suggestions, expression validation | ✅ DONE |
 | `python/tests/test_slots.py` | Named slot extraction | ✅ DONE |
-| `python/tests/test_errors.py` | Error message quality | |
+| `python/tests/test_errors.py` | Error message quality | ✅ DONE |
 | `python/tests/test_nesting.py` | Topological sort, depth limits | ✅ DONE |
 
 ### 3.12-3.14 Documentation and Validation
