@@ -1,0 +1,28 @@
+# Lord of the Components - Stack Component Logic
+# Flexbox-based layout for stacking items vertically or horizontally
+
+render.element("div"):
+    # Direction
+    attrs.direction = props.direction
+
+    # Spacing
+    attrs.gap = props.gap
+
+    # Alignment
+    attrs.align = props.align
+    attrs.justify = props.justify
+
+    # Wrap behavior
+    if props.wrap:
+        attrs.wrap = true
+
+    # Reverse order
+    if props.reverse:
+        attrs.reverse = true
+
+    # Dividers between items
+    if props.dividers:
+        attrs.dividers = true
+
+    # Stack content
+    render.slot("default")

@@ -432,7 +432,7 @@ cd python && mypy src/              # Type check
 - [x] `or` operator tokenizes, parses, and transpiles
 - [x] `join()` and `default()` builtins work
 - [x] String/array concatenation transpiles correctly
-- [ ] 5 reference .rig files transpile to valid Jinja2
+- [x] 5 reference .rig files transpile to valid Jinja2
 - [x] All unit tests pass
 
 ### Phase 2 Complete When:
