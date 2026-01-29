@@ -303,6 +303,8 @@ KDL Definition (agnostic)              RVO React (original source)
 |-----------|--------|------|
 | card | ✅ DONE | `packages/core/components/card/card.rig` |
 | table | ✅ DONE | `packages/core/components/table/table.rig` |
+| list | ✅ DONE | `packages/core/components/list/list.rig` |
+| list-item | ✅ DONE | `packages/core/components/list-item/list-item.rig` |
 | (others) | ⏳ TODO | - |
 
 ### 4.11-4.12 Completion Criteria
