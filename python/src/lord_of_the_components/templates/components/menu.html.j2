@@ -1,21 +1,32 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% set children = _component_context.get('content', '') %}
-{% set type = _component_context.get('type', 'horizontal') %}
-{% set size = _component_context.get('size', 'md') %}
 {% set aria_label = _component_context.get('aria-label', '') %}
-{% set background_classes = ['rvo-menubar__background'] %}
+{% set size = _component_context.get('size', 'md') %}
+{% set type = _component_context.get('type', 'horizontal') %}
+{% set css_classes = ['rvo-menubar__background'] %}
 {% if _component_context.get('class') %}
-    {% set background_classes = background_classes + _component_context['class'].split() %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
 {% endif %}
-{% set nav_classes = ['rvo-menubar', 'rvo-menubar--' + size] %}
 <div
-    class="{{ background_classes | join(' ') }}"
+    class="{{ css_classes | join(' ') }}"
     data-lotc-component="menu"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    <nav class="{{ nav_classes | join(' ') }}"{% if aria_label %} aria-label="{{ aria_label }}"{% endif %}>
-        <ul class="rvo-menubar__ul">
-            <li class="rvo-menubar__list{% if type == 'vertical' %} rvo-menubar__list--vertical{% endif %}">
-                <ul class="rvo-menubar__group--flex{% if type == 'vertical' %} rvo-menubar__group--vertical{% endif %}">
+    {% set css_classes = ['rvo-menubar'] %}
+    {% if size %}{% set css_classes = css_classes + ['rvo-menubar--' ~ size] %}{% endif %}
+    <nav
+        {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+        class="{{ css_classes | join(' ') }}">
+        {% set css_classes = ['rvo-menubar__ul'] %}
+        <ul
+            class="{{ css_classes | join(' ') }}">
+            {% set css_classes = ['rvo-menubar__list'] %}
+            {% if type == 'vertical' %}{% set css_classes = css_classes + ['rvo-menubar__list--vertical'] %}{% endif %}
+            <li
+                class="{{ css_classes | join(' ') }}">
+                {% set css_classes = ['rvo-menubar__group--flex'] %}
+                {% if type == 'vertical' %}{% set css_classes = css_classes + ['rvo-menubar__group--vertical'] %}{% endif %}
+                <ul
+                    class="{{ css_classes | join(' ') }}">
                     {{ children | safe }}
                 </ul>
             </li>

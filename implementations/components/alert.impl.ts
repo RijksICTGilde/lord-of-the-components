@@ -1,22 +1,16 @@
 /**
- * Alert Implementation
+ * Alert Implementation (v2 — Element Tree API)
  *
- * Maps the alert component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components alert.html.j2 (CSS class source of truth)
- *   - rvo/components/alert/src/template.tsx (React reference)
+ * Maps the alert component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
- *   - Element: div (outer wrapper)
- *   - Outer classes: rvo-alert, rvo-alert--{type}, rvo-alert--padding-{padding}
- *   - Inner container: rvo-alert__container, conditional rvo-max-width-layout--{max-width}
- *   - Status icon with Dutch name mapping
- *   - Alert text section with optional heading
+ *   - Outer div: rvo-alert, rvo-alert--{type}, rvo-alert--padding-{padding}
+ *   - Inner container: rvo-alert__container, optional rvo-max-width-layout--{max-width}
+ *   - Status icon with Dutch name mapping (info→info, warning→waarschuwing, etc.)
+ *   - Alert text section with optional heading (<strong>)
+ *   - Children content in a <div>
  *   - Optional close button when closable
- *
- * NOTE: The generated template will be heavily hand-tuned due to the complex
- * nested structure (outer div > container div > icon + text + close button).
  */
 
 import { defineImplementation } from "../implementation.js";
@@ -24,43 +18,94 @@ import { alert } from "../../definitions/components/alert.def.js";
 
 export const alertImpl = defineImplementation({
   component: alert,
-  element: "div",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-alert",
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // TYPE (pattern-based)
-    // ═══════════════════════════════════════════════════════════════════════
-    {
-      prop: "type",
-      pattern: "rvo-alert--{value}",
-      when: ["info", "success", "warning", "error"],
+  valueMaps: {
+    "status-icon": {
+      "info": "info",
+      "warning": "waarschuwing",
+      "error": "foutmelding",
+      "success": "bevestiging",
     },
+  },
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // PADDING (pattern-based)
-    // ═══════════════════════════════════════════════════════════════════════
-    {
-      prop: "padding",
-      pattern: "rvo-alert--padding-{value}",
-      when: ["xs", "sm", "md", "lg", "xl", "2xl"],
-    },
+  root: {
+    element: "div",
+    isRoot: true,
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // MAX-WIDTH LAYOUT FLAG
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "max-width", class: "rvo-alert--layout" },
-  ],
+    classes: [
+      "rvo-alert",
+      { prop: "type", pattern: "rvo-alert--{value}", when: ["info", "success", "warning", "error"] },
+      { prop: "padding", pattern: "rvo-alert--padding-{value}", when: ["xs", "sm", "md", "lg", "xl", "2xl"] },
+      { prop: "max-width", class: "rvo-alert--layout" },
+    ],
 
-  content: [
-    {
-      template: "{{ children | safe }}",
-    },
-  ],
+    children: [
+      // Container div
+      {
+        element: "div",
+        classes: [
+          "rvo-alert__container",
+          { prop: "max-width", pattern: "rvo-max-width-layout--{value}", when: ["sm", "md", "lg"] },
+        ],
+        children: [
+          // Status icon
+          {
+            element: "span",
+            classes: [
+              "utrecht-icon",
+              "rvo-icon",
+              { prop: "type", pattern: "rvo-icon-{value}", valueMap: "status-icon" },
+              "rvo-status-icon",
+              { prop: "type", pattern: "rvo-status-icon-{value}", valueMap: "status-icon" },
+              "rvo-icon--xl",
+            ],
+            attributes: [
+              { attr: "role", type: "static", value: "img" },
+              { prop: "type", attr: "aria-label", type: "value", valueMap: "status-icon", filter: "title" },
+            ],
+          },
+          // Alert text section
+          {
+            element: "div",
+            classes: ["rvo-alert-text"],
+            children: [
+              // Optional heading
+              {
+                element: "strong",
+                when: { prop: "heading" },
+                text: "{{ heading }}",
+              },
+              // Content div
+              {
+                element: "div",
+                text: "{{ children | safe }}",
+              },
+            ],
+          },
+          // Close button (when closable)
+          {
+            element: "button",
+            when: { prop: "closable" },
+            classes: ["utrecht-button", "utrecht-button--subtle", "rvo-button__close"],
+            attributes: [
+              { attr: "type", type: "static", value: "button" },
+              { attr: "aria-label", type: "static", value: "Sluiten" },
+            ],
+            children: [
+              {
+                element: "span",
+                classes: ["utrecht-icon", "rvo-icon", "rvo-icon-kruis", "rvo-icon--md"],
+                attributes: [
+                  { attr: "role", type: "static", value: "img" },
+                  { attr: "aria-label", type: "static", value: "Kruis" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
   mixins: {
     utilityClasses: true,

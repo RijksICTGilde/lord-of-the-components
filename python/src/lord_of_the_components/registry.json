@@ -129,6 +129,70 @@
       }
     },
     {
+      "name": "breadcrumbs",
+      "attributes": [
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "sm",
+          "description": "Breadcrumbs size"
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "description": "Accessible label for the breadcrumb navigation"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Breadcrumb navigation trail",
+      "category": "navigation",
+      "content": {
+        "allowed": true,
+        "description": "Breadcrumb items",
+        "allowed_children": [
+          "breadcrumbs-item"
+        ]
+      }
+    },
+    {
+      "name": "breadcrumbs-item",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Breadcrumb item label text"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link URL (omit for current page)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Individual breadcrumb item (only valid inside <c-breadcrumbs>)",
+      "events": [
+        "click"
+      ],
+      "content": {
+        "allowed": false,
+        "description": "No content — label comes from name prop"
+      }
+    },
+    {
       "name": "menu",
       "attributes": [
         {
@@ -151,6 +215,7 @@
             "lg",
             "xl"
           ],
+          "default": "md",
           "description": "Menu size"
         },
         {

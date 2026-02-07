@@ -16,11 +16,17 @@
 {% set show_link_indicator = _component_context.get('show-link-indicator', false) %}
 {% set title = _component_context.get('title', '') %}
 {% set has_link_indicator = show_link_indicator and href and full_card_link %}
+{% set has_image = image and not (inline_image) %}
+{% set has_outline = outline and not (background_image) %}
+{% set has_padding = outline or background_color %}
 {% set css_classes = ['rvo-card'] %}
-{% if image and not inline_image %}{% set css_classes = css_classes + ['rvo-card--with-image'] %}{% endif %}
-{% if image and image_size and not inline_image %}{% set css_classes = css_classes + ['rvo-card--with-image-' ~ image_size] %}{% endif %}
-{% if outline and not background_image %}{% set css_classes = css_classes + ['rvo-card--outline'] %}{% endif %}
-{% if (outline or background_color) and padding != 'none' %}{% set css_classes = css_classes + ['rvo-card--padding-' ~ padding] %}{% endif %}
+{% if has_image %}{% set css_classes = css_classes + ['rvo-card--with-image'] %}{% endif %}
+{% if has_image and image_size %}{% set css_classes = css_classes + ['rvo-card--with-image-' ~ image_size] %}{% endif %}
+{% if has_outline %}{% set css_classes = css_classes + ['rvo-card--outline'] %}{% endif %}
+{% if has_padding and padding == 'sm' %}{% set css_classes = css_classes + ['rvo-card--padding-sm'] %}{% endif %}
+{% if has_padding and padding == 'md' %}{% set css_classes = css_classes + ['rvo-card--padding-md'] %}{% endif %}
+{% if has_padding and padding == 'lg' %}{% set css_classes = css_classes + ['rvo-card--padding-lg'] %}{% endif %}
+{% if has_padding and padding == 'xl' %}{% set css_classes = css_classes + ['rvo-card--padding-xl'] %}{% endif %}
 {% if background_image %}{% set css_classes = css_classes + ['rvo-card--with-background-image'] %}{% endif %}
 {% if inverted_colors %}{% set css_classes = css_classes + ['rvo-card--inverted-colors'] %}{% endif %}
 {% set utility_classes = attributes.render_utility_classes(_component_context) %}
@@ -35,33 +41,113 @@
     data-lotc-component="card"
     {{ attrs.render_extra_attributes(_component_context) }}>
     {% if background_image %}
-    <div class="rvo-card__background-image-container">
-        <img src="{{ background_image }}" class="rvo-card__background-image" alt="" />
+    {% set css_classes = ['rvo-card__background-image-container'] %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        <img
+            src="{{ background_image }}"
+            class="rvo-card__background-image"
+            alt="">
+        </img>
     </div>
     {% endif %}
-    {% if image and not inline_image %}
-    <div class="rvo-card__image-container{% if layout == 'row' %} rvo-card__image-container--row{% endif %}">
-        <img src="{{ image }}" class="rvo-card__image{% if image_size %} rvo-card-img--{{ image_size }}{% endif %}" alt="{{ image_alt }}" />
+    {% if image and not (inline_image) %}
+    {% set css_classes = ['rvo-card__image-container'] %}
+    {% if layout == 'row' %}{% set css_classes = css_classes + ['rvo-card__image-container--row'] %}{% endif %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {% set css_classes = ['rvo-card__image'] %}
+        {% if image_size %}{% set css_classes = css_classes + ['rvo-card-img--' ~ image_size] %}{% endif %}
+        <img
+            src="{{ image }}"
+            alt="{{ image_alt }}"
+            class="{{ css_classes | join(' ') }}">
+        </img>
     </div>
     {% endif %}
     {% if has_link_indicator %}
-    <div class="rvo-card--with-link-indicator">
-    {% endif %}
-        <div class="rvo-card__content{% if layout == 'row' %} rvo-layout-row rvo-layout-align-content-center rvo-layout-gap--md{% endif %}">
+    {% set css_classes = ['rvo-card--with-link-indicator'] %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {% set css_classes = ['rvo-card__content'] %}
+        {% if layout == 'row' %}{% set css_classes = css_classes + ['rvo-layout-row'] %}{% endif %}
+        {% if layout == 'row' %}{% set css_classes = css_classes + ['rvo-layout-align-content-center'] %}{% endif %}
+        {% if layout == 'row' %}{% set css_classes = css_classes + ['rvo-layout-gap--md'] %}{% endif %}
+        <div
+            class="{{ css_classes | join(' ') }}">
             {% if image and inline_image and layout == 'row' %}
-            <img src="{{ image }}" class="rvo-card__image{% if image_size %} rvo-card-img--{{ image_size }}{% endif %}" alt="{{ image_alt }}" />
+            {% set css_classes = ['rvo-card__image'] %}
+            {% if image_size %}{% set css_classes = css_classes + ['rvo-card-img--' ~ image_size] %}{% endif %}
+            <img
+                src="{{ image }}"
+                alt="{{ image_alt }}"
+                class="{{ css_classes | join(' ') }}">
+            </img>
             {% endif %}
             {% if title %}
-            <h3 class="utrecht-heading-3">
-                {% if href %}<a href="{{ href }}" class="rvo-card__link{% if full_card_link %} rvo-card__full-card-link{% endif %}">{{ title | safe }}</a>{% else %}{{ title | safe }}{% endif %}
+            {% set css_classes = ['utrecht-heading-3'] %}
+            <h3
+                class="{{ css_classes | join(' ') }}">
+                {% if href %}
+                {% set css_classes = ['rvo-card__link'] %}
+                {% if full_card_link %}{% set css_classes = css_classes + ['rvo-card__full-card-link'] %}{% endif %}
+                <a
+                    href="{{ href }}"
+                    class="{{ css_classes | join(' ') }}">
+                    {{ title | safe }}
+                </a>
+                {% else %}
+                <span>{{ title | safe }}</span>
+                {% endif %}
             </h3>
             {% endif %}
-            {% if children %}{{ children | safe }}{% endif %}
+            {% if children %}
+            <span>{{ children | safe }}</span>
+            {% endif %}
         </div>
-        {% if has_link_indicator %}
-        <span class="rvo-icon rvo-icon--delta-naar-rechts rvo-icon--sm rvo-card__link-indicator" aria-label="Delta naar rechts" role="img"></span>
+        {% set css_classes = ['rvo-icon', 'rvo-icon--delta-naar-rechts', 'rvo-icon--sm', 'rvo-card__link-indicator'] %}
+        <span
+            aria-label="Delta naar rechts"
+            role="img"
+            class="{{ css_classes | join(' ') }}">
+        </span>
+    </div>
+    {% else %}
+    {% set css_classes = ['rvo-card__content'] %}
+    {% if layout == 'row' %}{% set css_classes = css_classes + ['rvo-layout-row'] %}{% endif %}
+    {% if layout == 'row' %}{% set css_classes = css_classes + ['rvo-layout-align-content-center'] %}{% endif %}
+    {% if layout == 'row' %}{% set css_classes = css_classes + ['rvo-layout-gap--md'] %}{% endif %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {% if image and inline_image and layout == 'row' %}
+        {% set css_classes = ['rvo-card__image'] %}
+        {% if image_size %}{% set css_classes = css_classes + ['rvo-card-img--' ~ image_size] %}{% endif %}
+        <img
+            src="{{ image }}"
+            alt="{{ image_alt }}"
+            class="{{ css_classes | join(' ') }}">
+        </img>
         {% endif %}
-    {% if has_link_indicator %}
+        {% if title %}
+        {% set css_classes = ['utrecht-heading-3'] %}
+        <h3
+            class="{{ css_classes | join(' ') }}">
+            {% if href %}
+            {% set css_classes = ['rvo-card__link'] %}
+            {% if full_card_link %}{% set css_classes = css_classes + ['rvo-card__full-card-link'] %}{% endif %}
+            <a
+                href="{{ href }}"
+                class="{{ css_classes | join(' ') }}">
+                {{ title | safe }}
+            </a>
+            {% else %}
+            <span>{{ title | safe }}</span>
+            {% endif %}
+        </h3>
+        {% endif %}
+        {% if children %}
+        <span>{{ children | safe }}</span>
+        {% endif %}
     </div>
     {% endif %}
 </div>

@@ -35,6 +35,7 @@ export interface PatternClass {
   pattern: string;
   when?: string[];
   valueMap?: string;
+  guard?: Condition;
 }
 
 export type ClassRule = string | ConditionalClass | PatternClass;
@@ -45,6 +46,8 @@ export interface AttributeMapping {
   type: "boolean" | "value" | "static";
   value?: string;
   conditional?: boolean;
+  valueMap?: string;
+  filter?: string;
 }
 
 export interface StyleMapping {
@@ -305,6 +308,20 @@ export class Jinja2Generator {
     const hasClasses = node.classes && node.classes.length > 0;
     const isRootNode = node.isRoot;
     const needsClassList = hasClasses || isRootNode;
+    const hasAttributes = node.attributes && node.attributes.length > 0;
+    const hasStyles = node.styles && node.styles.length > 0;
+
+    // ── Inline element shortcut ──────────────────────────────────────────
+    // Elements with only text content and no classes/attributes/styles
+    // render on a single line: <tag>text</tag>
+    const isInlineElement = node.text && !hasClasses && !isRootNode
+      && !hasAttributes && !hasStyles && !node.rawHtml && !node.children;
+
+    if (isInlineElement) {
+      const tagName = this.resolveTagName(node.element);
+      lines.push(`${ind}<${tagName}>${node.text}</${tagName}>`);
+      return lines;
+    }
 
     // Use a unique css_classes variable for non-root nodes to avoid collisions
     const classVar = isRootNode ? "css_classes" : `css_classes`;
@@ -337,6 +354,14 @@ export class Jinja2Generator {
     const tagParts: string[] = [];
     tagParts.push(`${ind}<${tagName}`);
 
+    // For non-root elements, render explicit attributes before class
+    // (matches hand-written template conventions where href, src, etc. precede class)
+    if (!isRootNode && node.attributes) {
+      for (const attr of node.attributes) {
+        tagParts.push(...this.emitAttribute(attr, `${ind}    `));
+      }
+    }
+
     if (needsClassList) {
       tagParts.push(`${ind}    class="{{ ${classVar} | join(' ') }}"`);
     }
@@ -345,8 +370,8 @@ export class Jinja2Generator {
       tagParts.push(`${ind}    data-lotc-component="${componentName}"`);
     }
 
-    // Attributes
-    if (node.attributes) {
+    // For root elements, render attributes after class
+    if (isRootNode && node.attributes) {
       for (const attr of node.attributes) {
         tagParts.push(...this.emitAttribute(attr, `${ind}    `));
       }
@@ -480,19 +505,19 @@ export class Jinja2Generator {
       ? `${propToVar(rule.valueMap)}_map[${varName}]`
       : varName;
 
+    // Build guard prefix/suffix if guard condition is present
+    const guardPrefix = rule.guard ? `${this.renderCondition(rule.guard)} and ` : "";
+
     if (rule.when) {
       return rule.when.map((value) => {
         // For valueMap patterns, we need to look up the mapped value
         let resolvedClass: string;
         if (rule.valueMap) {
-          // Still emit static classes per value — the valueMap translates for us
-          // We need to resolve the mapped value at generation time if possible,
-          // but since we don't have the map here, use Jinja2 lookup
           resolvedClass = rule.pattern.replace("{value}", `{{ ${propToVar(rule.valueMap)}_map['${value}'] }}`);
-          return `${ind}{% if ${varName} == '${value}' %}{% set ${classVar} = ${classVar} + ['${resolvedClass}'] %}{% endif %}`;
+          return `${ind}{% if ${guardPrefix}${varName} == '${value}' %}{% set ${classVar} = ${classVar} + ['${resolvedClass}'] %}{% endif %}`;
         } else {
           resolvedClass = rule.pattern.replace("{value}", value);
-          return `${ind}{% if ${varName} == '${value}' %}{% set ${classVar} = ${classVar} + ['${resolvedClass}'] %}{% endif %}`;
+          return `${ind}{% if ${guardPrefix}${varName} == '${value}' %}{% set ${classVar} = ${classVar} + ['${resolvedClass}'] %}{% endif %}`;
         }
       });
     }
@@ -508,8 +533,9 @@ export class Jinja2Generator {
       jinjaExpr = `'${rule.pattern}'`;
     }
 
+    const condition = guardPrefix ? `${guardPrefix}${varName}` : varName;
     return [
-      `${ind}{% if ${varName} %}{% set ${classVar} = ${classVar} + [${jinjaExpr}] %}{% endif %}`,
+      `${ind}{% if ${condition} %}{% set ${classVar} = ${classVar} + [${jinjaExpr}] %}{% endif %}`,
     ];
   }
 
@@ -527,11 +553,19 @@ export class Jinja2Generator {
       return [`${ind}{% if ${varName} %}${attr.attr}{% endif %}`];
     }
 
-    // Value attribute
-    if (attr.conditional) {
-      return [`${ind}{% if ${varName} %}${attr.attr}="{{ ${varName} }}"{% endif %}`];
+    // Value attribute — resolve value expression with optional valueMap and filter
+    let valueExpr = varName;
+    if (attr.valueMap) {
+      valueExpr = `${propToVar(attr.valueMap)}_map[${varName}]`;
     }
-    return [`${ind}${attr.attr}="{{ ${varName} }}"`];
+    if (attr.filter) {
+      valueExpr = `${valueExpr} | ${attr.filter}`;
+    }
+
+    if (attr.conditional) {
+      return [`${ind}{% if ${varName} %}${attr.attr}="{{ ${valueExpr} }}"{% endif %}`];
+    }
+    return [`${ind}${attr.attr}="{{ ${valueExpr} }}"`];
   }
 
   /**

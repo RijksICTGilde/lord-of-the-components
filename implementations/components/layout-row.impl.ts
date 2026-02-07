@@ -1,10 +1,8 @@
 /**
- * Layout-Row Implementation
+ * Layout-Row Implementation (v2 — Element Tree API)
  *
- * Maps the layout-row component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components layout-row.html.j2 (CSS class source of truth)
+ * Maps the layout-row component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: div
@@ -19,36 +17,32 @@ import { layoutRow } from "../../definitions/components/layout-row.def.js";
 
 export const layoutRowImpl = defineImplementation({
   component: layoutRow,
-  element: "div",
 
-  classes: [
-    "rvo-layout-row",
+  root: {
+    element: "div",
+    isRoot: true,
 
-    // Gap between columns
-    {
-      prop: "gap",
-      pattern: "rvo-layout-gap--{value}",
-      when: ["0", "3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl"],
-    },
+    classes: [
+      "rvo-layout-row",
+      {
+        prop: "gap",
+        pattern: "rvo-layout-gap--{value}",
+        when: ["0", "3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl"],
+      },
+      {
+        prop: "vertical-spacing",
+        pattern: "rvo-layout-vertical--{value}",
+        when: ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"],
+      },
+      {
+        prop: "vertical-spacing",
+        eq: "center",
+        class: "rvo-layout-align-content-center",
+      },
+    ],
 
-    // Vertical spacing: size values map to rvo-layout-vertical--{value}
-    {
-      prop: "vertical-spacing",
-      pattern: "rvo-layout-vertical--{value}",
-      when: ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"],
-    },
-
-    // Vertical spacing: "center" maps to a different class
-    {
-      prop: "vertical-spacing",
-      eq: "center",
-      class: "rvo-layout-align-content-center",
-    },
-  ],
-
-  attributes: [],
-
-  content: "{{ children | safe }}",
+    text: "{{ children | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,

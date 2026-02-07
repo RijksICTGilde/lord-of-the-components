@@ -1,11 +1,11 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
-{% set size = _component_context.get('size', 'md') %}
+{% set children = _component_context.get('content', '') %}
 {% set image = _component_context.get('image', '') %}
 {% set image_alt = _component_context.get('image-alt', '') %}
-{% set title = _component_context.get('title', '') %}
-{% set subtitle = _component_context.get('subtitle', '') %}
 {% set overlay = _component_context.get('overlay', false) %}
-{% set children = _component_context.get('content', '') %}
+{% set size = _component_context.get('size', 'md') %}
+{% set subtitle = _component_context.get('subtitle', '') %}
+{% set title = _component_context.get('title', '') %}
 {% set css_classes = ['rvo-hero'] %}
 {% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-hero--sm'] %}{% endif %}
 {% if size == 'md' %}{% set css_classes = css_classes + ['rvo-hero--md'] %}{% endif %}
@@ -15,17 +15,47 @@
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
 {% endif %}
-<section class="{{ css_classes | join(' ') }}" data-lotc-component="hero" {{ attrs.render_extra_attributes(_component_context) }}>
+<section
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="hero"
+    {{ attrs.render_extra_attributes(_component_context) }}>
     {% if image %}
-    <div class="rvo-hero__image-container">
-        <img src="{{ image }}" alt="{{ image_alt }}" class="rvo-hero__image"/>
+    {% set css_classes = ['rvo-hero__image-container'] %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {% set css_classes = ['rvo-hero__image'] %}
+        <img
+            src="{{ image }}"
+            alt="{{ image_alt }}"
+            class="{{ css_classes | join(' ') }}">
+        </img>
     </div>
     {% endif %}
     {% if title or subtitle or children %}
-    <div class="rvo-hero__content">
-        {% if title %}<h1 class="utrecht-heading-1 rvo-hero__title">{{ title }}</h1>{% endif %}
-        {% if subtitle %}<p class="rvo-hero__subtitle rvo-text--lg">{{ subtitle }}</p>{% endif %}
-        {% if children %}<div class="rvo-hero__text">{{ children | safe }}</div>{% endif %}
+    {% set css_classes = ['rvo-hero__content'] %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {% if title %}
+        {% set css_classes = ['utrecht-heading-1', 'rvo-hero__title'] %}
+        <h1
+            class="{{ css_classes | join(' ') }}">
+            {{ title }}
+        </h1>
+        {% endif %}
+        {% if subtitle %}
+        {% set css_classes = ['rvo-hero__subtitle', 'rvo-text--lg'] %}
+        <p
+            class="{{ css_classes | join(' ') }}">
+            {{ subtitle }}
+        </p>
+        {% endif %}
+        {% if children %}
+        {% set css_classes = ['rvo-hero__text'] %}
+        <div
+            class="{{ css_classes | join(' ') }}">
+            {{ children | safe }}
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 </section>

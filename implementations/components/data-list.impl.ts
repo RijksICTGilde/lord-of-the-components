@@ -1,11 +1,8 @@
 /**
- * Data List Implementation
+ * Data List Implementation (v2 — Element Tree API)
  *
- * Maps the data-list component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components data-list.html.j2 (CSS class source of truth)
- *   - rvo/components/data-list/src/template.tsx (React reference)
+ * Maps the data-list component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: dl (definition list)
@@ -18,20 +15,13 @@ import { dataList } from "../../definitions/components/data-list.def.js";
 
 export const dataListImpl = defineImplementation({
   component: dataList,
-  element: "dl",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-data-list",
-  ],
-
-  content: [
-    {
-      template: "{{ children | safe }}",
-    },
-  ],
+  root: {
+    element: "dl",
+    isRoot: true,
+    classes: ["rvo-data-list"],
+    text: "{{ children | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,

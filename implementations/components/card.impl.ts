@@ -1,23 +1,24 @@
 /**
- * Card Implementation
+ * Card Implementation (v2 — Element Tree API)
  *
- * Maps the card component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components card.html.j2 (CSS class source of truth)
- *   - rvo/components/card/src/template.tsx (React reference)
- *
- * Prop name mapping (LOTC kebab-case → jinja-roos camelCase):
- *   image-alt → imageAlt, image-size → imageSize, inline-image → inlineImage,
- *   full-card-link → fullCardLink, show-link-indicator → showLinkIndicator,
- *   background-color → backgroundColor, background-image → backgroundImage,
- *   inverted-colors → invertedColors
+ * Maps the card component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: div
- *   - Conditional image section (when image is truthy and not inline-image)
- *   - Content div with optional title (with optional link wrapping)
- *   - Link indicator when show-link-indicator && href && full-card-link
+ *   - Complex conditional class logic:
+ *     - rvo-card--with-image when image AND NOT inline-image
+ *     - rvo-card--with-image-{size} when image AND image-size AND NOT inline-image
+ *     - rvo-card--outline when outline AND NOT background-image
+ *     - rvo-card--padding-{value} when (outline OR background-color) AND padding != none
+ *     - rvo-card--with-background-image when background-image
+ *   - Computed var: has_link_indicator = show-link-indicator AND href AND full-card-link
+ *   - Nested structure:
+ *     1. Optional background image container
+ *     2. Optional image container (when image and not inline)
+ *     3. Optional link indicator wrapper
+ *     4. Content div with optional inline image, title, children
+ *     5. Optional link indicator icon
  */
 
 import { defineImplementation } from "../implementation.js";
@@ -25,49 +26,214 @@ import { card } from "../../definitions/components/card.def.js";
 
 export const cardImpl = defineImplementation({
   component: card,
-  element: "div",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-card",
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // IMAGE MODIFIER CLASSES
-    // Image + not inline → with-image class and image size class
-    // These are applied conditionally in the template via complex logic
-    // handled by content blocks, but we add the basic image class here
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "outline", class: "rvo-card--outline" },
-    { prop: "inverted-colors", class: "rvo-card--inverted-colors" },
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // PADDING (only when outline or background-color is set)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "padding", pattern: "rvo-card--padding-{value}", when: ["sm", "md", "lg", "xl"] },
-  ],
-
-  attributes: [],
-
-  // The card template has complex nested structure that can't be fully expressed
-  // with simple ContentBlock conditions. We use raw Jinja2 template strings
-  // that contain the conditional logic directly.
-  content: [
-    // ── Image container (not inline) ────────────────────────────────────
+  computedVars: [
     {
-      template: '\n    <div class="rvo-card__image-container{% if layout == \'row\' %} rvo-card__image-container--row{% endif %}">\n        <img src="{{ image }}" class="rvo-card__image{% if image_size %} rvo-card-img--{{ image_size }}{% endif %}" alt="{{ image_alt }}" />\n    </div>',
-      when: { prop: "image", truthy: true },
+      name: "has_link_indicator",
+      condition: { and: [{ prop: "show-link-indicator" }, { prop: "href" }, { prop: "full-card-link" }] },
     },
-    // ── Content container ────────────────────────────────────────────────
-    // The content container is always rendered. It includes:
-    // - Optional inline image (for row layout)
-    // - Optional title (with optional link wrapping)
-    // - Children content
     {
-      template: '\n    <div class="rvo-card__content{% if layout == \'row\' %} rvo-layout-row rvo-layout-align-content-center rvo-layout-gap--md{% endif %}">\n        {% if title %}\n        <h3 class="utrecht-heading-3">\n            {% if href %}<a href="{{ href }}" class="rvo-card__link{% if full_card_link %} rvo-card__full-card-link{% endif %}">{{ title | safe }}</a>{% else %}{{ title | safe }}{% endif %}\n        </h3>\n        {% endif %}\n        {% if children %}{{ children | safe }}{% endif %}\n    </div>',
+      name: "has_image",
+      condition: { and: [{ prop: "image" }, { not: { prop: "inline-image" } }] },
+    },
+    {
+      name: "has_outline",
+      condition: { and: [{ prop: "outline" }, { not: { prop: "background-image" } }] },
+    },
+    {
+      name: "has_padding",
+      condition: { or: [{ prop: "outline" }, { prop: "background-color" }] },
     },
   ],
+
+  root: {
+    element: "div",
+    isRoot: true,
+
+    classes: [
+      "rvo-card",
+      { prop: "has_image", class: "rvo-card--with-image" },
+      { prop: "image-size", pattern: "rvo-card--with-image-{value}", guard: { prop: "has_image" } },
+      { prop: "has_outline", class: "rvo-card--outline" },
+      { prop: "padding", pattern: "rvo-card--padding-{value}", when: ["sm", "md", "lg", "xl"], guard: { prop: "has_padding" } },
+      { prop: "background-image", class: "rvo-card--with-background-image" },
+      { prop: "inverted-colors", class: "rvo-card--inverted-colors" },
+    ],
+
+    children: [
+      // Background image container
+      {
+        element: "div",
+        when: { prop: "background-image" },
+        classes: ["rvo-card__background-image-container"],
+        children: [
+          {
+            element: "img",
+            attributes: [
+              { prop: "background-image", attr: "src", type: "value" },
+              { attr: "class", type: "static", value: "rvo-card__background-image" },
+              { attr: "alt", type: "static", value: "" },
+            ],
+          },
+        ],
+      },
+      // Image container (when image AND NOT inline-image)
+      {
+        element: "div",
+        when: { and: [{ prop: "image" }, { not: { prop: "inline-image" } }] },
+        classes: [
+          "rvo-card__image-container",
+          { prop: "layout", eq: "row", class: "rvo-card__image-container--row" },
+        ],
+        children: [
+          {
+            element: "img",
+            attributes: [
+              { prop: "image", attr: "src", type: "value" },
+              { prop: "image-alt", attr: "alt", type: "value" },
+            ],
+            classes: [
+              "rvo-card__image",
+              { prop: "image-size", pattern: "rvo-card-img--{value}" },
+            ],
+          },
+        ],
+      },
+      // Link indicator wrapper (open)
+      {
+        element: "div",
+        when: { prop: "has_link_indicator" },
+        classes: ["rvo-card--with-link-indicator"],
+        children: [
+          // Content div
+          {
+            element: "div",
+            classes: [
+              "rvo-card__content",
+              { prop: "layout", eq: "row", class: "rvo-layout-row" },
+              { prop: "layout", eq: "row", class: "rvo-layout-align-content-center" },
+              { prop: "layout", eq: "row", class: "rvo-layout-gap--md" },
+            ],
+            children: [
+              // Inline image (when image AND inline-image AND layout=row)
+              {
+                element: "img",
+                when: { and: [{ prop: "image" }, { prop: "inline-image" }, { prop: "layout", eq: "row" }] },
+                attributes: [
+                  { prop: "image", attr: "src", type: "value" },
+                  { prop: "image-alt", attr: "alt", type: "value" },
+                ],
+                classes: [
+                  "rvo-card__image",
+                  { prop: "image-size", pattern: "rvo-card-img--{value}" },
+                ],
+              },
+              // Title
+              {
+                element: "h3",
+                when: { prop: "title" },
+                classes: ["utrecht-heading-3"],
+                children: [
+                  {
+                    element: "a",
+                    when: { prop: "href" },
+                    classes: [
+                      "rvo-card__link",
+                      { prop: "full-card-link", class: "rvo-card__full-card-link" },
+                    ],
+                    attributes: [
+                      { prop: "href", attr: "href", type: "value" },
+                    ],
+                    text: "{{ title | safe }}",
+                    elseChildren: [
+                      {
+                        element: "span",
+                        text: "{{ title | safe }}",
+                      },
+                    ],
+                  },
+                ],
+              },
+              // Children content
+              {
+                element: "span",
+                when: { prop: "children" },
+                text: "{{ children | safe }}",
+              },
+            ],
+          },
+          // Link indicator icon
+          {
+            element: "span",
+            classes: ["rvo-icon", "rvo-icon--delta-naar-rechts", "rvo-icon--sm", "rvo-card__link-indicator"],
+            attributes: [
+              { attr: "aria-label", type: "static", value: "Delta naar rechts" },
+              { attr: "role", type: "static", value: "img" },
+            ],
+          },
+        ],
+        // When NO link indicator — render content without wrapper
+        elseChildren: [
+          {
+            element: "div",
+            classes: [
+              "rvo-card__content",
+              { prop: "layout", eq: "row", class: "rvo-layout-row" },
+              { prop: "layout", eq: "row", class: "rvo-layout-align-content-center" },
+              { prop: "layout", eq: "row", class: "rvo-layout-gap--md" },
+            ],
+            children: [
+              // Inline image (when image AND inline-image AND layout=row)
+              {
+                element: "img",
+                when: { and: [{ prop: "image" }, { prop: "inline-image" }, { prop: "layout", eq: "row" }] },
+                attributes: [
+                  { prop: "image", attr: "src", type: "value" },
+                  { prop: "image-alt", attr: "alt", type: "value" },
+                ],
+                classes: [
+                  "rvo-card__image",
+                  { prop: "image-size", pattern: "rvo-card-img--{value}" },
+                ],
+              },
+              // Title
+              {
+                element: "h3",
+                when: { prop: "title" },
+                classes: ["utrecht-heading-3"],
+                children: [
+                  {
+                    element: "a",
+                    when: { prop: "href" },
+                    classes: [
+                      "rvo-card__link",
+                      { prop: "full-card-link", class: "rvo-card__full-card-link" },
+                    ],
+                    attributes: [
+                      { prop: "href", attr: "href", type: "value" },
+                    ],
+                    text: "{{ title | safe }}",
+                    elseChildren: [
+                      {
+                        element: "span",
+                        text: "{{ title | safe }}",
+                      },
+                    ],
+                  },
+                ],
+              },
+              // Children content
+              {
+                element: "span",
+                when: { prop: "children" },
+                text: "{{ children | safe }}",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
   mixins: {
     utilityClasses: true,

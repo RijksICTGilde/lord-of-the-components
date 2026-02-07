@@ -1,22 +1,15 @@
 /**
- * Menu Implementation
+ * Menu Implementation (v2 — Element Tree API)
  *
- * Maps the menu component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components menubar.html.j2 (CSS class source of truth)
- *   - rvo/components/menubar (React reference)
+ * Maps the menu component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Outer element: div (rvo-menubar__background wrapper)
  *   - Inner nav: rvo-menubar rvo-menubar--{size}
- *   - Nested list structure: ul > li > ul.rvo-menubar__group--flex > li.rvo-menubar__item
- *   - Items rendered as links (a.rvo-link.rvo-menubar__link) or dropdown buttons
- *   - Vertical direction adds --vertical modifiers to list/group classes
+ *   - Nested list structure: ul.rvo-menubar__ul > li.rvo-menubar__list > ul.rvo-menubar__group--flex
+ *   - Vertical direction adds --vertical modifiers to list and group classes
  *   - Content pass-through for declarative <c-menu-item> children
- *
- * NOTE: The generated template will be heavily hand-tuned due to the complex
- * nested structure (background > nav > ul > li > group > items).
  */
 
 import { defineImplementation } from "../implementation.js";
@@ -24,20 +17,54 @@ import { menu } from "../../definitions/components/menu.def.js";
 
 export const menuImpl = defineImplementation({
   component: menu,
-  element: "div",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS (background wrapper)
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-menubar__background",
-  ],
+  root: {
+    element: "div",
+    isRoot: true,
+    classes: ["rvo-menubar__background"],
 
-  content: [
-    {
-      template: "{{ children | safe }}",
-    },
-  ],
+    children: [
+      // Navigation element
+      {
+        element: "nav",
+        classes: [
+          "rvo-menubar",
+          { prop: "size", pattern: "rvo-menubar--{value}" },
+        ],
+        attributes: [
+          { prop: "aria-label", attr: "aria-label", type: "value", conditional: true },
+        ],
+        children: [
+          // Outer ul
+          {
+            element: "ul",
+            classes: ["rvo-menubar__ul"],
+            children: [
+              // List item
+              {
+                element: "li",
+                classes: [
+                  "rvo-menubar__list",
+                  { prop: "type", eq: "vertical", class: "rvo-menubar__list--vertical" },
+                ],
+                children: [
+                  // Group flex ul
+                  {
+                    element: "ul",
+                    classes: [
+                      "rvo-menubar__group--flex",
+                      { prop: "type", eq: "vertical", class: "rvo-menubar__group--vertical" },
+                    ],
+                    text: "{{ children | safe }}",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
   mixins: {
     utilityClasses: false,

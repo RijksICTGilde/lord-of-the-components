@@ -1,10 +1,8 @@
 /**
- * Strong Implementation
+ * Strong Implementation (v2 — Element Tree API)
  *
- * Maps the strong component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components strong.html.j2 (CSS class source of truth)
+ * Maps the strong component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: span (not <strong>, following RVO pattern)
@@ -17,20 +15,13 @@ import { strong } from "../../definitions/components/strong.def.js";
 
 export const strongImpl = defineImplementation({
   component: strong,
-  element: "span",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-text--bold",
-  ],
-
-  content: [
-    {
-      template: "{{ children if children else name | safe }}",
-    },
-  ],
+  root: {
+    element: "span",
+    isRoot: true,
+    classes: ["rvo-text--bold"],
+    text: "{{ children if children else name | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,
