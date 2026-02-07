@@ -178,6 +178,64 @@
       }
     },
     {
+      "name": "menu-item",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Menu item label text"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link URL"
+        },
+        {
+          "name": "target",
+          "type": "enum",
+          "enum_values": [
+            "_self",
+            "_blank",
+            "_parent",
+            "_top"
+          ],
+          "description": "Link target (only used when href is set)"
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Icon name (from implementation icon set)"
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Individual menu item (only valid inside <c-menu>)",
+      "events": [
+        "click"
+      ],
+      "content": {
+        "allowed": true,
+        "description": "Nested menu items (for submenus)",
+        "allowed_children": [
+          "menu-item"
+        ]
+      }
+    },
+    {
       "name": "footer",
       "attributes": [
         {

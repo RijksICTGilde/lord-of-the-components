@@ -369,11 +369,17 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 4.4 Navigation Components
 
-**T39: Implement menubar component**
+**T39: Implement menubar component** ✅
 → depends on: T26
-- Complex: nested menu items, submenus, horizontal/vertical
-- May need child component support in implementation layer
-- Tests
+- Definition: already existed (menu.def.ts with menu-item child component)
+- Implementation: menu.impl.ts (basic, template is hand-tuned)
+- Updated generate-registry.ts to export child component definitions (menu-item) as separate registry entries
+- Hand-tuned templates: menu.html.j2 (nav structure) + menu-item.html.j2 (item rendering)
+- Menu: div.rvo-menubar__background > nav.rvo-menubar > ul/li/ul nested list structure
+- Menu-item: li.rvo-menubar__item with link (a), dropdown (button + submenu), or span
+- Supports: horizontal/vertical direction, size variants (sm/md/lg), aria-label, icons, active state, submenus
+- 49 e2e tests (all passing), visual test fixture + Playwright screenshot baseline
+- 730 total tests, 12 visual tests
 
 **T40: Implement breadcrumbs, tabs, progress-tracker**
 → depends on: T26

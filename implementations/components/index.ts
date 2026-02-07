@@ -23,3 +23,4 @@ export { alertImpl } from "./alert.impl.js";
 export { headerImpl } from "./header.impl.js";
 export { heroImpl } from "./hero.impl.js";
 export { footerImpl } from "./footer.impl.js";
+export { menuImpl } from "./menu.impl.js";

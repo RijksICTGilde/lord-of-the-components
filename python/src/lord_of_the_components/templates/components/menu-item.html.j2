@@ -1,0 +1,39 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set name = _component_context.get('name', '') %}
+{% set href = _component_context.get('href', '') %}
+{% set target = _component_context.get('target', '') %}
+{% set icon = _component_context.get('icon', '') %}
+{% set active = _component_context.get('active', false) %}
+{% set disabled = _component_context.get('disabled', false) %}
+{% set children = _component_context.get('content', '') %}
+{% set item_classes = ['rvo-menubar__item'] %}
+{% if active %}{% set item_classes = item_classes + ['rvo-menubar__item--active'] %}{% endif %}
+{% if _component_context.get('class') %}
+    {% set item_classes = item_classes + _component_context['class'].split() %}
+{% endif %}
+{% set link_classes = ['rvo-link', 'rvo-menubar__link'] %}
+{% if active %}{% set link_classes = link_classes + ['rvo-link--active'] %}{% endif %}
+<li class="{{ item_classes | join(' ') }}" data-lotc-component="menu-item"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% if children %}
+        <div class="rvo-menubar__dropdown">
+            <button class="{{ link_classes | join(' ') }}" type="button" aria-expanded="false"{% if disabled %} disabled{% endif %}>
+                {% if icon %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--md rvo-menubar__icon--before" role="img" aria-label="{{ icon }}"></span>{% endif %}
+                {{ name }}
+            </button>
+            <ul class="rvo-menubar__submenu">
+                {{ children | safe }}
+            </ul>
+        </div>
+    {% elif href %}
+        <a href="{{ href }}" class="{{ link_classes | join(' ') }}"{% if target %} target="{{ target }}"{% endif %}{% if disabled %} aria-disabled="true"{% endif %}>
+            {% if icon %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--md rvo-menubar__icon--before" role="img" aria-label="{{ icon }}"></span>{% endif %}
+            {{ name }}
+        </a>
+    {% else %}
+        <span class="{{ link_classes | join(' ') }}">
+            {% if icon %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--md rvo-menubar__icon--before" role="img" aria-label="{{ icon }}"></span>{% endif %}
+            {{ name }}
+        </span>
+    {% endif %}
+</li>
