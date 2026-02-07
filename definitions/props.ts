@@ -102,6 +102,7 @@ export const PROPS = {
   INLINE_PADDING: "inline-padding",
   CENTERED: "centered",
   UNCENTERED: "uncentered",
+  DIVISION: "division",
 
   // ═══════════════════════════════════════════════════════════════════════════
   // IMAGES

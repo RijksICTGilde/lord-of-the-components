@@ -32,6 +32,7 @@ import { layoutFlowImpl } from "../../../../implementations/components/layout-fl
 import { layoutColumnImpl } from "../../../../implementations/components/layout-column.impl.js";
 import { layoutRowImpl } from "../../../../implementations/components/layout-row.impl.js";
 import { maxWidthLayoutImpl } from "../../../../implementations/components/max-width-layout.impl.js";
+import { gridImpl } from "../../../../implementations/components/grid.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -73,6 +74,7 @@ const implementations = [
   layoutColumnImpl,
   layoutRowImpl,
   maxWidthLayoutImpl,
+  gridImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════

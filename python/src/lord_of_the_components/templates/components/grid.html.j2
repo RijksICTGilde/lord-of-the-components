@@ -1,33 +1,49 @@
-{#
-  Lord of the Components - Grid Template
-
-  CSS Grid-based layout for arranging content in rows and columns.
-#}
-{% set ctx = _component_context %}
-{% set cols = ctx.cols | default(12) %}
-{% set gap = ctx.gap | default('md') %}
-{% set gap_x = ctx.gapX | default(gap) %}
-{% set gap_y = ctx.gapY | default(gap) %}
-{% set align = ctx.align | default('stretch') %}
-{% set justify = ctx.justify | default('stretch') %}
-{% set flow = ctx.flow | default('row') %}
-
-{% set classes = ['c-grid'] %}
-
-{% set styles = [
-    'grid-template-columns: repeat(' ~ cols ~ ', 1fr)',
-    '--grid-gap-x: var(--space-' ~ gap_x ~ ')',
-    '--grid-gap-y: var(--space-' ~ gap_y ~ ')',
-    'gap: var(--grid-gap-y) var(--grid-gap-x)',
-    'align-items: ' ~ align,
-    'justify-items: ' ~ justify,
-    'grid-auto-flow: ' ~ flow
-] %}
-
-{% if ctx.rows is defined %}
-{% set styles = styles + ['grid-template-rows: repeat(' ~ ctx.rows ~ ', 1fr)'] %}
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set columns = _component_context.get('columns', 'one') %}
+{% set division = _component_context.get('division', '') %}
+{% set gap = _component_context.get('gap', 'md') %}
+{% set container_classes = ['rvo-layout-grid-container'] %}
+{% if _component_context.get('class') %}
+    {% set container_classes = container_classes + _component_context['class'].split() %}
 {% endif %}
-
-<div class="{{ classes | join(' ') }}" style="display: grid; {{ styles | join('; ') }};">
-    {{ ctx.content | safe }}
+{% set css_classes = ['rvo-layout-grid'] %}
+{% if gap == '0' %}{% set css_classes = css_classes + ['rvo-layout-gap--0'] %}{% endif %}
+{% if gap == '3xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--3xs'] %}{% endif %}
+{% if gap == '2xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--2xs'] %}{% endif %}
+{% if gap == 'xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--xs'] %}{% endif %}
+{% if gap == 'sm' %}{% set css_classes = css_classes + ['rvo-layout-gap--sm'] %}{% endif %}
+{% if gap == 'md' %}{% set css_classes = css_classes + ['rvo-layout-gap--md'] %}{% endif %}
+{% if gap == 'lg' %}{% set css_classes = css_classes + ['rvo-layout-gap--lg'] %}{% endif %}
+{% if gap == 'xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--xl'] %}{% endif %}
+{% if gap == '2xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--2xl'] %}{% endif %}
+{% if gap == '3xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--3xl'] %}{% endif %}
+{% if gap == '4xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--4xl'] %}{% endif %}
+{% if gap == '5xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--5xl'] %}{% endif %}
+{% if columns == 'one' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--one'] %}{% endif %}
+{% if columns == 'two' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--two'] %}{% endif %}
+{% if columns == 'three' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--three'] %}{% endif %}
+{% if columns == 'four' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--four'] %}{% endif %}
+{% if columns == 'five' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--five'] %}{% endif %}
+{% if columns == 'six' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--six'] %}{% endif %}
+{% if columns == 'seven' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--seven'] %}{% endif %}
+{% if columns == 'eight' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--eight'] %}{% endif %}
+{% if columns == 'nine' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--nine'] %}{% endif %}
+{% if columns == 'ten' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--ten'] %}{% endif %}
+{% if columns == 'eleven' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--eleven'] %}{% endif %}
+{% if columns == 'twelve' %}{% set css_classes = css_classes + ['rvo-layout-grid-columns--twelve'] %}{% endif %}
+{% if division %}{% set css_classes = css_classes + ['rvo-layout-grid--division'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+<div class="{{ container_classes | join(' ') }}">
+    <div
+        class="{{ css_classes | join(' ') }}"
+        data-lotc-component="grid"
+        {% if division %}style="--division: {{ division }};"{% endif %}
+        {{ attrs.render_extra_attributes(_component_context) }}>
+        {{ children | safe }}
+    </div>
 </div>
