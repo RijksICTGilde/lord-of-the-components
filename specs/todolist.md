@@ -39,7 +39,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 1.2 Jinja2 Template Generator
 
-**T4: Create Jinja2 template generator**
+**T4: Create Jinja2 template generator** ✅
 → depends on: T1
 - File: `core/src/generators/jinja2/index.ts`
 - Class: `Jinja2Generator`
