@@ -44,5 +44,30 @@
     {% if disabled %}disabled{% endif %}
     type="{{ html_type }}"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {% if show_icon == 'before' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>{% endif %}{{ children if children else name | safe }}{% if show_icon == 'after' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>{% endif %}
+    {% if show_icon == 'before' %}
+    {% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
+    {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}
+    {% if size %}{% set css_classes = css_classes + ['rvo-icon--' ~ size] %}{% endif %}
+    {% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ color] %}{% endif %}
+    <span
+        class="{{ css_classes | join(' ') }}"
+        role="img"
+        aria-label="{{ aria_label }}">
+    </span>
+    {% endif %}
+    <span>
+        {{ children if children else name | safe }}
+    </span>
+    {% if show_icon == 'after' %}
+    {% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
+    {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}
+    {% if size %}{% set css_classes = css_classes + ['rvo-icon--' ~ size] %}{% endif %}
+    {% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ color] %}{% endif %}
+    <span
+        class="{{ css_classes | join(' ') }}"
+        role="img"
+        aria-label="{{ aria_label }}">
+    </span>
+    {% endif %}
 </button>
+

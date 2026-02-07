@@ -1,7 +1,8 @@
 /**
- * Button Implementation
+ * Button Implementation (v2 — Element Tree API)
  *
- * Maps the button component definition to RVO/Utrecht CSS classes and HTML output.
+ * Maps the button component definition to RVO/Utrecht CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Reference:
  *   - jinja-roos-components button.html.j2 (CSS class source of truth)
@@ -17,83 +18,108 @@ import { button } from "../../definitions/components/button.def.js";
 
 export const buttonImpl = defineImplementation({
   component: button,
-  element: "button",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "utrecht-button",
+  root: {
+    element: "button",
+    isRoot: true,
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // TYPE VARIANT CLASSES
-    // ═══════════════════════════════════════════════════════════════════════
+    classes: [
+      // ═══════════════════════════════════════════════════════════════════════
+      // BASE CLASS
+      // ═══════════════════════════════════════════════════════════════════════
+      "utrecht-button",
 
-    // Primary and warning both get primary-action
-    { prop: "type", eq: "primary", class: "utrecht-button--primary-action" },
-    { prop: "type", eq: "warning", class: "utrecht-button--primary-action" },
+      // ═══════════════════════════════════════════════════════════════════════
+      // TYPE VARIANT CLASSES
+      // ═══════════════════════════════════════════════════════════════════════
 
-    // Secondary
-    { prop: "type", eq: "secondary", class: "utrecht-button--secondary-action" },
+      // Primary and warning both get primary-action
+      { prop: "type", eq: "primary", class: "utrecht-button--primary-action" },
+      { prop: "type", eq: "warning", class: "utrecht-button--primary-action" },
 
-    // Tertiary (RVO-specific)
-    { prop: "type", eq: "tertiary", class: "utrecht-button--rvo-tertiary-action" },
+      // Secondary
+      { prop: "type", eq: "secondary", class: "utrecht-button--secondary-action" },
 
-    // Quaternary (RVO-specific)
-    { prop: "type", eq: "quaternary", class: "utrecht-button--rvo-quaternary-action" },
+      // Tertiary (RVO-specific)
+      { prop: "type", eq: "tertiary", class: "utrecht-button--rvo-tertiary-action" },
 
-    // Subtle and warning-subtle both get subtle
-    { prop: "type", eq: ["subtle", "warning-subtle"], class: "utrecht-button--subtle" },
+      // Quaternary (RVO-specific)
+      { prop: "type", eq: "quaternary", class: "utrecht-button--rvo-quaternary-action" },
 
-    // Warning and warning-subtle both get warning hint
-    { prop: "type", eq: ["warning", "warning-subtle"], class: "utrecht-button--warning" },
+      // Subtle and warning-subtle both get subtle
+      { prop: "type", eq: ["subtle", "warning-subtle"], class: "utrecht-button--subtle" },
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // STATE CLASSES
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "active", class: "utrecht-button--active" },
-    { prop: "loading", class: "utrecht-button--busy" },
+      // Warning and warning-subtle both get warning hint
+      { prop: "type", eq: ["warning", "warning-subtle"], class: "utrecht-button--warning" },
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // SIZE (pattern-based)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "size", pattern: "utrecht-button--rvo-{value}", when: ["xs", "sm", "md"] },
+      // ═══════════════════════════════════════════════════════════════════════
+      // STATE CLASSES
+      // ═══════════════════════════════════════════════════════════════════════
+      { prop: "active", class: "utrecht-button--active" },
+      { prop: "loading", class: "utrecht-button--busy" },
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // LAYOUT
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "full-width", class: "utrecht-button--rvo-full-width" },
+      // ═══════════════════════════════════════════════════════════════════════
+      // SIZE (pattern-based)
+      // ═══════════════════════════════════════════════════════════════════════
+      { prop: "size", pattern: "utrecht-button--rvo-{value}", when: ["xs", "sm", "md"] },
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // ICON POSITION
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "show-icon", eq: "before", class: "utrecht-button--icon-before" },
-    { prop: "show-icon", eq: "after", class: "utrecht-button--icon-after" },
-  ],
+      // ═══════════════════════════════════════════════════════════════════════
+      // LAYOUT
+      // ═══════════════════════════════════════════════════════════════════════
+      { prop: "full-width", class: "utrecht-button--rvo-full-width" },
 
-  attributes: [
-    { prop: "disabled", attr: "disabled", type: "boolean" },
-    { prop: "html-type", attr: "type", type: "value" },
-  ],
+      // ═══════════════════════════════════════════════════════════════════════
+      // ICON POSITION
+      // ═══════════════════════════════════════════════════════════════════════
+      { prop: "show-icon", eq: "before", class: "utrecht-button--icon-before" },
+      { prop: "show-icon", eq: "after", class: "utrecht-button--icon-after" },
+    ],
 
-  content: [
-    // Icon before label
-    {
-      template:
-        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>',
-      when: { prop: "show-icon", eq: "before" },
-    },
-    // Label text (children override name prop)
-    {
-      template: "{{ children if children else name | safe }}",
-    },
-    // Icon after label
-    {
-      template:
-        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>',
-      when: { prop: "show-icon", eq: "after" },
-    },
-  ],
+    attributes: [
+      { prop: "disabled", attr: "disabled", type: "boolean" },
+      { prop: "html-type", attr: "type", type: "value" },
+    ],
+
+    children: [
+      // Icon before label
+      {
+        element: "span",
+        when: { prop: "show-icon", eq: "before" },
+        classes: [
+          "utrecht-icon",
+          "rvo-icon",
+          { prop: "icon", pattern: "rvo-icon-{value}" },
+          { prop: "size", pattern: "rvo-icon--{value}" },
+          { prop: "color", pattern: "rvo-icon--{value}" },
+        ],
+        attributes: [
+          { attr: "role", type: "static", value: "img" },
+          { prop: "aria-label", attr: "aria-label", type: "value" },
+        ],
+      },
+      // Label text (children override name prop)
+      {
+        element: "span",
+        text: "{{ children if children else name | safe }}",
+      },
+      // Icon after label
+      {
+        element: "span",
+        when: { prop: "show-icon", eq: "after" },
+        classes: [
+          "utrecht-icon",
+          "rvo-icon",
+          { prop: "icon", pattern: "rvo-icon-{value}" },
+          { prop: "size", pattern: "rvo-icon--{value}" },
+          { prop: "color", pattern: "rvo-icon--{value}" },
+        ],
+        attributes: [
+          { attr: "role", type: "static", value: "img" },
+          { prop: "aria-label", attr: "aria-label", type: "value" },
+        ],
+      },
+    ],
+  },
 
   mixins: {
     utilityClasses: true,
