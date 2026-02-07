@@ -1,9 +1,8 @@
 /**
- * Jinja2 Template Generator
+ * Jinja2 Template Generator — Tree-Based (v2)
  *
- * Generates `.html.j2` templates from ComponentImplementation definitions.
- * Output matches the jinja-roos-components template pattern so the forked
- * parser can render them identically.
+ * Generates `.html.j2` templates from tree-based ComponentImplementation
+ * definitions (ElementNode trees). Replaces the flat v1 generator.
  *
  * Types are defined locally (structurally compatible with implementations/)
  * so this module compiles cleanly within core/src/ without cross-boundary
@@ -18,7 +17,6 @@
 // TYPES (structurally compatible with implementations/implementation.ts)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Prop definition from a component definition. */
 export interface PropSpec {
   values?: readonly string[];
   default?: string | number | boolean;
@@ -26,62 +24,91 @@ export interface PropSpec {
   description?: string;
 }
 
-/** Conditional CSS class based on a prop value. */
 export interface ConditionalClass {
   prop: string;
   eq?: string | string[];
   class: string;
 }
 
-/** Pattern-based CSS class using the prop value. */
 export interface PatternClass {
   prop: string;
   pattern: string;
   when?: string[];
+  valueMap?: string;
 }
 
-/** Union of all class rule types. */
 export type ClassRule = string | ConditionalClass | PatternClass;
 
-/** Maps a component prop to an HTML attribute, or emits a static attribute. */
 export interface AttributeMapping {
   prop?: string;
   attr: string;
   type: "boolean" | "value" | "static";
   value?: string;
+  conditional?: boolean;
 }
 
-/** A block of inner HTML content, optionally conditional. */
-export interface ContentBlock {
-  template: string;
-  when?: {
-    prop: string;
-    eq?: string | string[];
-    truthy?: boolean;
-  };
+export interface StyleMapping {
+  property: string;
+  prop: string;
 }
 
-/** Dynamic HTML element selection based on a prop value. */
 export interface DynamicElement {
   prop: string;
   default: string;
 }
 
-/** Full implementation mapping for a component. */
+// Conditions
+export interface PropCondition {
+  prop: string;
+  eq?: string | string[];
+}
+
+export interface NotCondition {
+  not: Condition;
+}
+
+export interface AndCondition {
+  and: Condition[];
+}
+
+export interface OrCondition {
+  or: Condition[];
+}
+
+export type Condition = PropCondition | NotCondition | AndCondition | OrCondition;
+
+export interface ComputedVariable {
+  name: string;
+  condition: Condition;
+}
+
+export interface ElementNode {
+  element: string | DynamicElement;
+  classes?: ClassRule[];
+  attributes?: AttributeMapping[];
+  styles?: StyleMapping[];
+  when?: Condition;
+  text?: string;
+  children?: ElementNode[];
+  elseChildren?: ElementNode[];
+  rawHtml?: string;
+  isRoot?: boolean;
+}
+
 export interface ComponentImplementation {
   component: {
     name: string;
     props: Record<string, PropSpec | null>;
+    content?: { allowed: boolean };
     [key: string]: unknown;
   };
-  element: string | DynamicElement;
-  classes: ClassRule[];
-  attributes?: AttributeMapping[];
-  content?: string | ContentBlock[];
+  root: ElementNode;
   mixins?: {
     utilityClasses?: boolean;
     genericAttributes?: boolean;
   };
+  valueMaps?: Record<string, Record<string, string>>;
+  computedVars?: ComputedVariable[];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -96,13 +123,28 @@ function isPatternClass(rule: ClassRule): rule is PatternClass {
   return typeof rule === "object" && "pattern" in rule;
 }
 
+function isPropCondition(c: Condition): c is PropCondition {
+  return "prop" in c;
+}
+
+function isNotCondition(c: Condition): c is NotCondition {
+  return "not" in c;
+}
+
+function isAndCondition(c: Condition): c is AndCondition {
+  return "and" in c;
+}
+
+function isOrCondition(c: Condition): c is OrCondition {
+  return "or" in c;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Convert a kebab-case prop name to a valid Jinja2/Python variable name.
- * Replaces hyphens with underscores: "show-icon" → "show_icon"
  */
 function propToVar(prop: string): string {
   return prop.replace(/-/g, "_");
@@ -110,10 +152,6 @@ function propToVar(prop: string): string {
 
 /**
  * Format a default value for use in Jinja2 `_component_context.get()`.
- * - string → 'string'
- * - boolean → true/false (Jinja2 recognizes lowercase true/false)
- * - number → number
- * - undefined → '' (empty string)
  */
 function formatDefault(value: string | number | boolean | undefined): string {
   if (value === undefined) {
@@ -128,15 +166,22 @@ function formatDefault(value: string | number | boolean | undefined): string {
   return `'${value}'`;
 }
 
+/**
+ * Generate indentation string.
+ */
+function indent(level: number): string {
+  return "    ".repeat(level);
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // GENERATOR
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Jinja2 template generator.
+ * Jinja2 template generator — tree-based (v2).
  *
- * Produces `.html.j2` templates from implementation definitions that are
- * compatible with the LOTC Jinja2 extension (forked from jinja-roos).
+ * Produces `.html.j2` templates from tree-based implementation definitions
+ * by recursively walking the ElementNode tree.
  */
 export class Jinja2Generator {
   /**
@@ -144,7 +189,6 @@ export class Jinja2Generator {
    */
   generateTemplate(impl: ComponentImplementation): string {
     const lines: string[] = [];
-    const componentName = impl.component.name;
 
     // ── Imports ────────────────────────────────────────────────────────────
     if (impl.mixins?.genericAttributes) {
@@ -155,64 +199,55 @@ export class Jinja2Generator {
     }
 
     // ── Prop variables ────────────────────────────────────────────────────
-    const propVars = this.emitPropVariables(impl);
-    if (propVars.length > 0) {
-      lines.push(...propVars);
+    lines.push(...this.emitPropVariables(impl));
+
+    // ── Computed variables ────────────────────────────────────────────────
+    if (impl.computedVars) {
+      for (const cv of impl.computedVars) {
+        const cond = this.renderCondition(cv.condition);
+        lines.push(`{% set ${cv.name} = ${cond} %}`);
+      }
     }
 
-    // ── CSS class list ────────────────────────────────────────────────────
-    lines.push(...this.emitClassList(impl));
-
-    // ── Utility classes mixin ─────────────────────────────────────────────
-    if (impl.mixins?.utilityClasses) {
-      lines.push(
-        "{% set utility_classes = attributes.render_utility_classes(_component_context) %}",
-        "{% if utility_classes %}",
-        "    {% set css_classes = css_classes + utility_classes.split() %}",
-        "{% endif %}",
-      );
+    // ── Value maps ────────────────────────────────────────────────────────
+    if (impl.valueMaps) {
+      for (const [mapName, map] of Object.entries(impl.valueMaps)) {
+        const varName = propToVar(mapName);
+        const entries = Object.entries(map)
+          .map(([k, v]) => `'${k}': '${v}'`)
+          .join(", ");
+        lines.push(`{% set ${varName}_map = {${entries}} %}`);
+      }
     }
 
-    // ── Custom class attribute ────────────────────────────────────────────
-    lines.push(
-      "{% if _component_context.get('class') %}",
-      "    {% set css_classes = css_classes + _component_context['class'].split() %}",
-      "{% endif %}",
-    );
-
-    // ── HTML element ──────────────────────────────────────────────────────
-    lines.push(...this.emitElement(impl));
+    // ── Element tree ──────────────────────────────────────────────────────
+    lines.push(...this.emitElementNode(impl.root, impl, 0));
 
     return lines.join("\n") + "\n";
   }
 
   /**
-   * Emit `{% set var = _component_context.get('prop', default) %}` for each
-   * prop used in the implementation.
+   * Emit `{% set var = _component_context.get('prop', default) %}` for each prop.
    */
   private emitPropVariables(impl: ComponentImplementation): string[] {
     const lines: string[] = [];
     const props = impl.component.props;
 
-    // Always emit 'children' for content
-    if (impl.content) {
+    // Emit 'children' if the component accepts content
+    const hasContent = impl.component.content?.allowed !== false;
+    if (hasContent) {
       lines.push(
         `{% set children = _component_context.get('content', '') %}`,
       );
     }
 
-    // Emit {% set %} for ALL component props so content templates can
-    // reference any prop variable (e.g. icon, name, color in icon spans).
     const propNames = Object.keys(props).sort();
     for (const propName of propNames) {
-      // Skip 'class' — handled separately via _component_context.get('class')
       if (propName === "class") continue;
 
       const spec = props[propName];
       const varName = propToVar(propName);
       const defaultVal = spec && typeof spec === "object" ? spec.default : undefined;
-
-      // For boolean props (null spec), default to false
       const formattedDefault =
         spec === null ? "false" : formatDefault(defaultVal);
 
@@ -225,18 +260,164 @@ export class Jinja2Generator {
   }
 
   /**
-   * Emit the CSS class list construction:
-   * - Base static classes
-   * - Conditional class additions
-   * - Pattern-based class additions
+   * Recursively emit Jinja2 for an ElementNode.
    */
-  private emitClassList(impl: ComponentImplementation): string[] {
+  private emitElementNode(
+    node: ElementNode,
+    impl: ComponentImplementation,
+    indentLevel: number,
+  ): string[] {
+    const lines: string[] = [];
+    const ind = indent(indentLevel);
+
+    // ── Wrap in condition if `when` is specified ──────────────────────────
+    if (node.when) {
+      const cond = this.renderCondition(node.when);
+      lines.push(`${ind}{% if ${cond} %}`);
+      lines.push(...this.emitElementNodeInner(node, impl, indentLevel));
+      if (node.elseChildren) {
+        lines.push(`${ind}{% else %}`);
+        for (const child of node.elseChildren) {
+          lines.push(...this.emitElementNode(child, impl, indentLevel));
+        }
+      }
+      lines.push(`${ind}{% endif %}`);
+    } else {
+      lines.push(...this.emitElementNodeInner(node, impl, indentLevel));
+    }
+
+    return lines;
+  }
+
+  /**
+   * Emit the inner content of an ElementNode (the element itself, without condition wrapper).
+   */
+  private emitElementNodeInner(
+    node: ElementNode,
+    impl: ComponentImplementation,
+    indentLevel: number,
+  ): string[] {
+    const lines: string[] = [];
+    const ind = indent(indentLevel);
+    const componentName = impl.component.name;
+
+    // ── CSS classes ───────────────────────────────────────────────────────
+    const hasClasses = node.classes && node.classes.length > 0;
+    const isRootNode = node.isRoot;
+    const needsClassList = hasClasses || isRootNode;
+
+    // Use a unique css_classes variable for non-root nodes to avoid collisions
+    const classVar = isRootNode ? "css_classes" : `css_classes`;
+
+    if (needsClassList) {
+      lines.push(...this.emitClassList(node.classes || [], classVar, ind));
+
+      // Utility classes mixin (root only)
+      if (isRootNode && impl.mixins?.utilityClasses) {
+        lines.push(
+          `${ind}{% set utility_classes = attributes.render_utility_classes(_component_context) %}`,
+          `${ind}{% if utility_classes %}`,
+          `${ind}    {% set ${classVar} = ${classVar} + utility_classes.split() %}`,
+          `${ind}{% endif %}`,
+        );
+      }
+
+      // Custom class attribute (root only)
+      if (isRootNode) {
+        lines.push(
+          `${ind}{% if _component_context.get('class') %}`,
+          `${ind}    {% set ${classVar} = ${classVar} + _component_context['class'].split() %}`,
+          `${ind}{% endif %}`,
+        );
+      }
+    }
+
+    // ── Build opening tag ─────────────────────────────────────────────────
+    const tagName = this.resolveTagName(node.element);
+    const tagParts: string[] = [];
+    tagParts.push(`${ind}<${tagName}`);
+
+    if (needsClassList) {
+      tagParts.push(`${ind}    class="{{ ${classVar} | join(' ') }}"`);
+    }
+
+    if (isRootNode) {
+      tagParts.push(`${ind}    data-lotc-component="${componentName}"`);
+    }
+
+    // Attributes
+    if (node.attributes) {
+      for (const attr of node.attributes) {
+        tagParts.push(...this.emitAttribute(attr, `${ind}    `));
+      }
+    }
+
+    // Styles
+    if (node.styles && node.styles.length > 0) {
+      tagParts.push(...this.emitStyles(node.styles, `${ind}    `));
+    }
+
+    // Generic attributes mixin (root only)
+    if (isRootNode && impl.mixins?.genericAttributes) {
+      tagParts.push(
+        `${ind}    {{ attrs.render_extra_attributes(_component_context) }}`,
+      );
+    }
+
+    // Close opening tag
+    const openingTag = tagParts.join("\n") + ">";
+    lines.push(openingTag);
+
+    // ── Inner content ─────────────────────────────────────────────────────
+    if (node.rawHtml) {
+      // Raw HTML (e.g. embedded SVG) — emit as-is, indented
+      const rawLines = node.rawHtml.split("\n");
+      for (const rawLine of rawLines) {
+        lines.push(`${ind}    ${rawLine}`);
+      }
+    }
+
+    if (node.children) {
+      for (const child of node.children) {
+        lines.push(...this.emitElementNode(child, impl, indentLevel + 1));
+      }
+    }
+
+    if (node.text) {
+      lines.push(`${ind}    ${node.text}`);
+    }
+
+    // ── Closing tag ───────────────────────────────────────────────────────
+    const closeTagName = this.resolveTagName(node.element);
+    lines.push(`${ind}</${closeTagName}>`);
+
+    return lines;
+  }
+
+  /**
+   * Resolve element tag name (static or dynamic).
+   */
+  private resolveTagName(element: string | DynamicElement): string {
+    if (typeof element === "string") {
+      return element;
+    }
+    const varName = propToVar(element.prop);
+    return `{{ ${varName} }}`;
+  }
+
+  /**
+   * Emit CSS class list construction for a node.
+   */
+  private emitClassList(
+    classes: ClassRule[],
+    classVar: string,
+    ind: string,
+  ): string[] {
     const lines: string[] = [];
     const staticClasses: string[] = [];
     const dynamicRules: (ConditionalClass | PatternClass)[] = [];
 
-    // Separate static from dynamic rules
-    for (const rule of impl.classes) {
+    for (const rule of classes) {
       if (typeof rule === "string") {
         staticClasses.push(rule);
       } else {
@@ -244,16 +425,14 @@ export class Jinja2Generator {
       }
     }
 
-    // Base class list
     const baseList = staticClasses.map((c) => `'${c}'`).join(", ");
-    lines.push(`{% set css_classes = [${baseList}] %}`);
+    lines.push(`${ind}{% set ${classVar} = [${baseList}] %}`);
 
-    // Dynamic class rules
     for (const rule of dynamicRules) {
       if (isConditionalClass(rule)) {
-        lines.push(...this.emitConditionalClass(rule));
+        lines.push(...this.emitConditionalClass(rule, classVar, ind));
       } else if (isPatternClass(rule)) {
-        lines.push(...this.emitPatternClass(rule));
+        lines.push(...this.emitPatternClass(rule, classVar, ind));
       }
     }
 
@@ -262,63 +441,67 @@ export class Jinja2Generator {
 
   /**
    * Emit a conditional class rule.
-   *
-   * Boolean (no eq):
-   *   {% if prop %}{% set css_classes = css_classes + ['class'] %}{% endif %}
-   *
-   * Single eq:
-   *   {% if prop == 'value' %}{% set css_classes = css_classes + ['class'] %}{% endif %}
-   *
-   * Array eq:
-   *   {% if prop == 'v1' or prop == 'v2' %}{% set css_classes = css_classes + ['class'] %}{% endif %}
    */
-  private emitConditionalClass(rule: ConditionalClass): string[] {
+  private emitConditionalClass(
+    rule: ConditionalClass,
+    classVar: string,
+    ind: string,
+  ): string[] {
     const varName = propToVar(rule.prop);
     let condition: string;
 
     if (rule.eq === undefined) {
-      // Boolean check
       condition = varName;
     } else if (Array.isArray(rule.eq)) {
-      // Multiple values
       condition = rule.eq
         .map((v) => `${varName} == '${v}'`)
         .join(" or ");
     } else {
-      // Single value
       condition = `${varName} == '${rule.eq}'`;
     }
 
     return [
-      `{% if ${condition} %}{% set css_classes = css_classes + ['${rule.class}'] %}{% endif %}`,
+      `${ind}{% if ${condition} %}{% set ${classVar} = ${classVar} + ['${rule.class}'] %}{% endif %}`,
     ];
   }
 
   /**
-   * Emit a pattern class rule.
-   *
-   * With `when` values — emit one conditional per value:
-   *   {% if size == 'xs' %}{% set css_classes = css_classes + ['utrecht-button--rvo-xs'] %}{% endif %}
-   *   {% if size == 'sm' %}{% set css_classes = css_classes + ['utrecht-button--rvo-sm'] %}{% endif %}
-   *
-   * Without `when` — emit pattern with variable interpolation:
-   *   {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}
+   * Emit a pattern class rule (with optional valueMap support).
    */
-  private emitPatternClass(rule: PatternClass): string[] {
+  private emitPatternClass(
+    rule: PatternClass,
+    classVar: string,
+    ind: string,
+  ): string[] {
     const varName = propToVar(rule.prop);
+
+    // Resolve the value expression (with or without valueMap)
+    const valueExpr = rule.valueMap
+      ? `${propToVar(rule.valueMap)}_map[${varName}]`
+      : varName;
 
     if (rule.when) {
       return rule.when.map((value) => {
-        const resolvedClass = rule.pattern.replace("{value}", value);
-        return `{% if ${varName} == '${value}' %}{% set css_classes = css_classes + ['${resolvedClass}'] %}{% endif %}`;
+        // For valueMap patterns, we need to look up the mapped value
+        let resolvedClass: string;
+        if (rule.valueMap) {
+          // Still emit static classes per value — the valueMap translates for us
+          // We need to resolve the mapped value at generation time if possible,
+          // but since we don't have the map here, use Jinja2 lookup
+          resolvedClass = rule.pattern.replace("{value}", `{{ ${propToVar(rule.valueMap)}_map['${value}'] }}`);
+          return `${ind}{% if ${varName} == '${value}' %}{% set ${classVar} = ${classVar} + ['${resolvedClass}'] %}{% endif %}`;
+        } else {
+          resolvedClass = rule.pattern.replace("{value}", value);
+          return `${ind}{% if ${varName} == '${value}' %}{% set ${classVar} = ${classVar} + ['${resolvedClass}'] %}{% endif %}`;
+        }
       });
     }
 
-    // No `when` — use Jinja2 string concatenation for the pattern
+    // No `when` — use Jinja2 string concatenation
     const parts = rule.pattern.split("{value}");
     let jinjaExpr: string;
     if (parts.length === 2) {
-      const segments = [`'${parts[0]}'`, varName];
+      const segments = [`'${parts[0]}'`, valueExpr];
       if (parts[1]) segments.push(`'${parts[1]}'`);
       jinjaExpr = segments.join(" ~ ");
     } else {
@@ -326,129 +509,89 @@ export class Jinja2Generator {
     }
 
     return [
-      `{% if ${varName} %}{% set css_classes = css_classes + [${jinjaExpr}] %}{% endif %}`,
+      `${ind}{% if ${varName} %}{% set ${classVar} = ${classVar} + [${jinjaExpr}] %}{% endif %}`,
     ];
   }
 
   /**
-   * Emit the HTML element with class, attributes, and content.
+   * Emit an HTML attribute.
    */
-  private emitElement(impl: ComponentImplementation): string[] {
-    const lines: string[] = [];
-    const componentName = impl.component.name;
-
-    // Determine tag name
-    let openTag: string;
-    let closeTag: string;
-    if (typeof impl.element === "string") {
-      openTag = impl.element;
-      closeTag = impl.element;
-    } else {
-      // Dynamic element — use variable
-      const dynEl = impl.element as DynamicElement;
-      const varName = propToVar(dynEl.prop);
-      openTag = `{{ ${varName} }}`;
-      closeTag = `{{ ${varName} }}`;
-    }
-
-    // Build opening tag
-    const tagParts: string[] = [];
-    tagParts.push(`<${openTag}`);
-    tagParts.push(`    class="{{ css_classes | join(' ') }}"`);
-    tagParts.push(`    data-lotc-component="${componentName}"`);
-
-    // Attributes
-    if (impl.attributes) {
-      for (const attr of impl.attributes) {
-        tagParts.push(...this.emitAttribute(attr));
-      }
-    }
-
-    // Generic attributes mixin
-    if (impl.mixins?.genericAttributes) {
-      tagParts.push(`    {{ attrs.render_extra_attributes(_component_context) }}`);
-    }
-
-    // Combine into multi-line opening tag
-    const openingTag = tagParts.join("\n") + ">";
-
-    lines.push(openingTag);
-
-    // Content
-    if (impl.content) {
-      lines.push(...this.emitContent(impl.content));
-    }
-
-    // Closing tag
-    lines.push(`</${closeTag}>`);
-
-    return lines;
-  }
-
-  /**
-   * Emit an HTML attribute from an AttributeMapping.
-   *
-   * Boolean: {% if disabled %}disabled{% endif %}
-   * Value:   type="{{ html_type }}"
-   */
-  private emitAttribute(attr: AttributeMapping): string[] {
+  private emitAttribute(attr: AttributeMapping, ind: string): string[] {
     if (attr.type === "static") {
-      return [`    ${attr.attr}="${attr.value}"`];
+      return [`${ind}${attr.attr}="${attr.value}"`];
     }
 
     const varName = propToVar(attr.prop!);
 
     if (attr.type === "boolean") {
-      return [`    {% if ${varName} %}${attr.attr}{% endif %}`];
+      return [`${ind}{% if ${varName} %}${attr.attr}{% endif %}`];
     }
 
     // Value attribute
-    return [`    ${attr.attr}="{{ ${varName} }}"`];
+    if (attr.conditional) {
+      return [`${ind}{% if ${varName} %}${attr.attr}="{{ ${varName} }}"{% endif %}`];
+    }
+    return [`${ind}${attr.attr}="{{ ${varName} }}"`];
   }
 
   /**
-   * Emit content blocks.
-   *
-   * All blocks are joined on a single line to avoid unwanted whitespace
-   * in the rendered output (matching the jinja-roos template pattern).
+   * Emit inline style properties.
    */
-  private emitContent(content: string | ContentBlock[]): string[] {
-    if (typeof content === "string") {
-      return [`    ${content}`];
-    }
-
+  private emitStyles(styles: StyleMapping[], ind: string): string[] {
+    // Build a conditional style string
+    // {% if division %}style="--division: {{ division }};"{% endif %}
     const parts: string[] = [];
-    for (const block of content) {
-      if (block.when) {
-        const condition = this.buildContentCondition(block);
-        parts.push(`{% if ${condition} %}${block.template}{% endif %}`);
-      } else {
-        parts.push(block.template);
-      }
+    const conditions: string[] = [];
+
+    for (const style of styles) {
+      const varName = propToVar(style.prop);
+      parts.push(`${style.property}: {{ ${varName} }};`);
+      conditions.push(varName);
     }
-    // Join all content parts on a single line, indented once
-    return [`    ${parts.join("")}`];
+
+    const condStr = conditions.join(" or ");
+    const styleStr = parts.join(" ");
+
+    return [`${ind}{% if ${condStr} %}style="${styleStr}"{% endif %}`];
   }
 
   /**
-   * Build a Jinja2 condition string from a ContentBlock's `when` clause.
+   * Render a Condition to a Jinja2 expression string.
    */
-  private buildContentCondition(block: ContentBlock): string {
-    const when = block.when!;
-    const varName = propToVar(when.prop);
-
-    if (when.truthy) {
-      return varName;
-    }
-
-    if (when.eq !== undefined) {
-      if (Array.isArray(when.eq)) {
-        return when.eq.map((v) => `${varName} == '${v}'`).join(" or ");
+  private renderCondition(condition: Condition): string {
+    if (isPropCondition(condition)) {
+      const varName = propToVar(condition.prop);
+      if (condition.eq === undefined) {
+        return varName;
       }
-      return `${varName} == '${when.eq}'`;
+      if (Array.isArray(condition.eq)) {
+        return condition.eq
+          .map((v) => `${varName} == '${v}'`)
+          .join(" or ");
+      }
+      return `${varName} == '${condition.eq}'`;
     }
 
-    // Default: truthiness check
-    return varName;
+    if (isNotCondition(condition)) {
+      const inner = this.renderCondition(condition.not);
+      return `not (${inner})`;
+    }
+
+    if (isAndCondition(condition)) {
+      const parts = condition.and.map((c) => {
+        const rendered = this.renderCondition(c);
+        // Wrap OR expressions in parens for correct precedence
+        if (isOrCondition(c)) return `(${rendered})`;
+        return rendered;
+      });
+      return parts.join(" and ");
+    }
+
+    if (isOrCondition(condition)) {
+      const parts = condition.or.map((c) => this.renderCondition(c));
+      return parts.join(" or ");
+    }
+
+    return "true";
   }
 }
