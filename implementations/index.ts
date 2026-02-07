@@ -20,4 +20,4 @@ export {
 } from "./implementation.js";
 
 // Component implementations
-export { buttonImpl } from "./components/index.js";
+export { buttonImpl, headingImpl } from "./components/index.js";

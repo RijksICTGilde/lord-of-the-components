@@ -5,3 +5,4 @@
  */
 
 export { buttonImpl } from "./button.impl.js";
+export { headingImpl } from "./heading.impl.js";

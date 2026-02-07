@@ -335,6 +335,41 @@
         "allowed": true,
         "description": "Card body content"
       }
+    },
+    {
+      "name": "heading",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "enum",
+          "enum_values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ],
+          "default": "h1",
+          "description": "Heading level (h1-h6)"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Heading text (can be overridden by content between tags)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Semantic heading element with dynamic level",
+      "category": "typography",
+      "content": {
+        "allowed": true,
+        "description": "Heading content (overrides name prop). Can include HTML/components."
+      }
     }
   ]
 }

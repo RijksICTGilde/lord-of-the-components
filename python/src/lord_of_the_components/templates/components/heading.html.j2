@@ -1,0 +1,25 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set name = _component_context.get('name', '') %}
+{% set type = _component_context.get('type', 'h1') %}
+{% set css_classes = [] %}
+{% if type == 'h1' %}{% set css_classes = css_classes + ['utrecht-heading-1'] %}{% endif %}
+{% if type == 'h2' %}{% set css_classes = css_classes + ['utrecht-heading-2'] %}{% endif %}
+{% if type == 'h3' %}{% set css_classes = css_classes + ['utrecht-heading-3'] %}{% endif %}
+{% if type == 'h4' %}{% set css_classes = css_classes + ['utrecht-heading-4'] %}{% endif %}
+{% if type == 'h5' %}{% set css_classes = css_classes + ['utrecht-heading-5'] %}{% endif %}
+{% if type == 'h6' %}{% set css_classes = css_classes + ['utrecht-heading-6'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<{{ type }}
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="heading"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children if children else name | safe }}
+</{{ type }}>
