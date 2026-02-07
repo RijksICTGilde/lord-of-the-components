@@ -93,7 +93,7 @@ export function isPatternClass(rule: ClassRule): rule is PatternClass {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Maps a component prop to an HTML attribute.
+ * Maps a component prop to an HTML attribute, or emits a static attribute.
  *
  * @example
  * // Boolean attribute (e.g., disabled)
@@ -104,14 +104,19 @@ export function isPatternClass(rule: ClassRule): rule is PatternClass {
  *
  * // Passthrough (prop name = attr name)
  * { prop: "aria-label", attr: "aria-label", type: "value" }
+ *
+ * // Static attribute (always present with fixed value)
+ * { attr: "role", type: "static", value: "img" }
  */
 export interface AttributeMapping {
-  /** Component prop name */
-  prop: string;
+  /** Component prop name (not used when type is "static") */
+  prop?: string;
   /** HTML attribute name */
   attr: string;
-  /** "boolean" renders as presence/absence, "value" renders with value */
-  type: "boolean" | "value";
+  /** "boolean" renders as presence/absence, "value" renders with value, "static" always emits a fixed value */
+  type: "boolean" | "value" | "static";
+  /** Fixed value for static attributes */
+  value?: string;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -307,19 +312,26 @@ export function defineImplementation<T extends ComponentImplementation>(
   // Validate attribute mappings
   if (implementation.attributes) {
     for (const attr of implementation.attributes) {
-      if (!attr.prop) {
-        throw new Error(
-          `AttributeMapping in "${implementation.component.name}" must specify a prop`,
-        );
-      }
       if (!attr.attr) {
         throw new Error(
-          `AttributeMapping for prop "${attr.prop}" in "${implementation.component.name}" must specify an attr`,
+          `AttributeMapping in "${implementation.component.name}" must specify an attr`,
         );
       }
-      if (attr.type !== "boolean" && attr.type !== "value") {
+      if (attr.type === "static") {
+        if (attr.value === undefined) {
+          throw new Error(
+            `Static AttributeMapping for "${attr.attr}" in "${implementation.component.name}" must specify a value`,
+          );
+        }
+      } else if (attr.type === "boolean" || attr.type === "value") {
+        if (!attr.prop) {
+          throw new Error(
+            `AttributeMapping for "${attr.attr}" in "${implementation.component.name}" must specify a prop`,
+          );
+        }
+      } else {
         throw new Error(
-          `AttributeMapping for prop "${attr.prop}" in "${implementation.component.name}" must have type "boolean" or "value"`,
+          `AttributeMapping for "${attr.attr}" in "${implementation.component.name}" must have type "boolean", "value", or "static"`,
         );
       }
     }

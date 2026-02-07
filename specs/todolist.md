@@ -174,12 +174,12 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 2.2 Icon
 
-**T17: Create icon definition**
+**T17: Create icon definition** ✅
 - File: `definitions/components/icon.def.ts`
 - Props: icon (required), size (xs-4xl, default: md), color (optional), aria-label, class
 - No content (self-closing)
 
-**T18: Create icon implementation**
+**T18: Create icon implementation** ✅
 → depends on: T1, T17
 - File: `implementations/components/icon.impl.ts`
 - Element: `span`
@@ -187,7 +187,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - Attributes: role="img", aria-label from prop
 - No children
 
-**T19: Generate icon template and test**
+**T19: Generate icon template and test** ✅
 → depends on: T6, T18
 - Run generator
 - File: `python/tests/test_icon_e2e.py`

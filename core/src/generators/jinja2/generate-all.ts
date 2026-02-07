@@ -26,6 +26,7 @@ import { generateRegistryJSON } from "./generate-registry.js";
 // These resolve via tsx at runtime (not compiled by tsc).
 import { buttonImpl } from "../../../../implementations/components/button.impl.js";
 import { headingImpl } from "../../../../implementations/components/heading.impl.js";
+import { iconImpl } from "../../../../implementations/components/icon.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -61,6 +62,7 @@ const REGISTRY_PATH = resolve(
 const implementations = [
   buttonImpl,
   headingImpl,
+  iconImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════

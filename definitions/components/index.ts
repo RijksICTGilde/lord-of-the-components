@@ -19,12 +19,16 @@ export { card, type CardDefinition } from "./card.def.js";
 // Typography components
 export { heading, type HeadingDefinition } from "./heading.def.js";
 
+// Visual components
+export { icon, type IconDefinition } from "./icon.def.js";
+
 // Component registry (for lookups by name)
 import { button } from "./button.def.js";
 import { menu } from "./menu.def.js";
 import { header } from "./header.def.js";
 import { card } from "./card.def.js";
 import { heading } from "./heading.def.js";
+import { icon } from "./icon.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -33,6 +37,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   header,
   card,
   heading,
+  icon,
 };
 
 /**
