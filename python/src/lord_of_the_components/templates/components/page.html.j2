@@ -1,51 +1,45 @@
 {#
   Lord of the Components - Page Template
 
-  This template renders the <c-page> component, which creates the HTML
-  structure and auto-includes all CSS/JS dependencies.
+  Full HTML document wrapper with head, meta tags, and body content.
+
+  Props:
+    - title: Page title (required)
+    - lang: HTML language attribute (default: "en")
+    - charset: Document charset (default: "utf-8")
+    - description: Meta description for SEO
+    - theme: Theme name for body class (theme-{value})
+    - body-class: Additional classes for body element
+    - head: Additional content for <head> section (raw HTML)
+    - class: Additional CSS classes (applied to body)
 #}
-{% set ctx = _component_context %}
+{% set title = _component_context.get('title', '') %}
+{% set lang = _component_context.get('lang', 'en') %}
+{% set charset = _component_context.get('charset', 'utf-8') %}
+{% set description = _component_context.get('description', '') %}
+{% set theme = _component_context.get('theme', '') %}
+{% set body_class = _component_context.get('body-class', '') %}
+{% set head = _component_context.get('head', '') %}
+{% set custom_class = _component_context.get('class', '') %}
+{% set children = _component_context.get('content', '') %}
+{% set css_classes = [] %}
+{% if theme %}{% set css_classes = css_classes + ['theme-' ~ theme] %}{% endif %}
+{% if body_class %}{% set css_classes = css_classes + body_class.split() %}{% endif %}
+{% if custom_class %}{% set css_classes = css_classes + custom_class.split() %}{% endif %}
 <!DOCTYPE html>
-<html lang="{{ ctx.lang | default('en') }}">
+<html lang="{{ lang }}" data-lotc-component="page">
 <head>
-    <meta charset="{{ ctx.charset | default('utf-8') }}">
+    <meta charset="{{ charset }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ ctx.title }}</title>
-    {% if ctx.description %}
-    <meta name="description" content="{{ ctx.description }}">
+    <title>{{ title }}</title>
+    {% if description %}
+    <meta name="description" content="{{ description }}">
     {% endif %}
-
-    {# Core LOTC tokens #}
-    {% for css_url in get_component_assets().css_files %}
-    <link rel="stylesheet" href="{{ css_url }}">
-    {% endfor %}
-
-    {# User-provided additional styles #}
-    {% if ctx.styles %}
-    {% for style_url in ctx.styles %}
-    <link rel="stylesheet" href="{{ style_url }}">
-    {% endfor %}
-    {% endif %}
-
-    {# Additional head content #}
-    {% if ctx.head %}
-    {{ ctx.head | safe }}
+    {% if head %}
+    {{ head | safe }}
     {% endif %}
 </head>
-<body{% if ctx.theme %} class="theme-{{ ctx.theme }}"{% endif %}>
-    {# Page content #}
-    {{ ctx.content | safe }}
-
-    {# Package scripts #}
-    {% for js_url in get_component_assets().js_files %}
-    <script src="{{ js_url }}"></script>
-    {% endfor %}
-
-    {# User-provided additional scripts #}
-    {% if ctx.scripts %}
-    {% for script_url in ctx.scripts %}
-    <script src="{{ script_url }}"></script>
-    {% endfor %}
-    {% endif %}
+<body{% if css_classes %} class="{{ css_classes | join(' ') }}"{% endif %}>
+{{ children | safe }}
 </body>
 </html>
