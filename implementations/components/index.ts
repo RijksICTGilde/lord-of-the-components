@@ -13,3 +13,8 @@ export { layoutColumnImpl } from "./layout-column.impl.js";
 export { layoutRowImpl } from "./layout-row.impl.js";
 export { maxWidthLayoutImpl } from "./max-width-layout.impl.js";
 export { gridImpl } from "./grid.impl.js";
+export { paragraphImpl } from "./paragraph.impl.js";
+export { linkImpl } from "./link.impl.js";
+export { labelImpl } from "./label.impl.js";
+export { strongImpl } from "./strong.impl.js";
+export { emImpl } from "./em.impl.js";

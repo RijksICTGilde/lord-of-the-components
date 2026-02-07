@@ -1,0 +1,27 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set html_for = _component_context.get('for', '') %}
+{% set id = _component_context.get('id', '') %}
+{% set name = _component_context.get('name', '') %}
+{% set size = _component_context.get('size', 'md') %}
+{% set type = _component_context.get('type', 'default') %}
+{% set css_classes = ['rvo-label'] %}
+{% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-label--sm'] %}{% endif %}
+{% if type == 'optional' %}{% set css_classes = css_classes + ['rvo-label--optional'] %}{% endif %}
+{% if type == 'required' %}{% set css_classes = css_classes + ['rvo-label--required'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<label
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="label"
+    {% if id %}id="{{ id }}"{% endif %}
+    {% if html_for %}for="{{ html_for }}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children if children else name | safe }}
+</label>

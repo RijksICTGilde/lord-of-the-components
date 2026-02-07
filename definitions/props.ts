@@ -135,6 +135,18 @@ export const PROPS = {
   ROLE: "role",
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // TYPOGRAPHY
+  // ═══════════════════════════════════════════════════════════════════════════
+  WEIGHT: "weight",
+  NO_SPACING: "no-spacing",
+  NO_UNDERLINE: "no-underline",
+  FULL_CONTAINER_LINK: "full-container-link",
+  HOVER: "hover",
+  FOCUS: "focus",
+  ICON_COLOR: "icon-color",
+  ICON_ARIA_LABEL: "icon-aria-label",
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // THEME
   // ═══════════════════════════════════════════════════════════════════════════
   THEME: "theme",

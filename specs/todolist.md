@@ -322,11 +322,16 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 4.2 Typography Components
 
-**T35: Implement paragraph, label, strong, em, link**
+**T35: Implement paragraph, label, strong, em, link** ✅
 → depends on: T26
-- Simple components, mostly just wrapper elements with classes
-- Link has href, target props
-- Tests
+- Definitions: paragraph (color, size, no-spacing), link (href, color, weight, show-icon, icon, target, states), label (id, for, size, type), strong, em
+- Implementations: paragraph→p, link→a, label→label, strong→span, em→span
+- Added VALUES: PARAGRAPH_COLORS, PARAGRAPH_SIZES, LINK_COLORS, LINK_WEIGHTS, LABEL_SIZES, LABEL_TYPES
+- Added PROPS: WEIGHT, NO_SPACING, NO_UNDERLINE, FULL_CONTAINER_LINK, HOVER, FOCUS, ICON_COLOR, ICON_ARIA_LABEL
+- Link template hand-tuned: conditional href/role/target attributes
+- Label template hand-tuned: `for` is Jinja2 reserved word, uses `html_for` variable; conditional id/for
+- 91 e2e tests (25 paragraph, 31 link, 17 label, 9 strong, 9 em), all passing
+- Visual test fixture + Playwright screenshot baseline
 
 ### 4.3 Data Display Components
 
