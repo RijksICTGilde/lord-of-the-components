@@ -686,6 +686,67 @@
         "allowed": true,
         "description": "Container content"
       }
+    },
+    {
+      "name": "grid",
+      "attributes": [
+        {
+          "name": "columns",
+          "type": "enum",
+          "enum_values": [
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine",
+            "ten",
+            "eleven",
+            "twelve"
+          ],
+          "default": "one",
+          "description": "Number of grid columns (one through twelve)"
+        },
+        {
+          "name": "gap",
+          "type": "enum",
+          "enum_values": [
+            "0",
+            "3xs",
+            "2xs",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "2xl",
+            "3xl",
+            "4xl",
+            "5xl"
+          ],
+          "default": "md",
+          "description": "Gap between grid items"
+        },
+        {
+          "name": "division",
+          "type": "string",
+          "description": "Custom grid-template-columns value (e.g., '2fr 1fr')"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Auto-fill grid layout with equal-width columns",
+      "category": "layout",
+      "content": {
+        "allowed": true,
+        "description": "Grid items (children)"
+      }
     }
   ]
 }

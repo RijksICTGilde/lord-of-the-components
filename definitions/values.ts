@@ -164,6 +164,21 @@ export const VALUES = {
     "12",
   ] as const,
 
+  GRID_COLUMN_NAMES: [
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+  ] as const,
+
   // ═══════════════════════════════════════════════════════════════════════════
   // ICON POSITIONS
   // ═══════════════════════════════════════════════════════════════════════════

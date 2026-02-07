@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layout Grid Variants (layout-row, layout-column, max-width-layout)</title>
+    <title>Layout Grid Variants (grid, layout-row, layout-column, max-width-layout)</title>
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
         .fixture-container { display: flex; flex-direction: column; gap: 2rem; }
@@ -14,6 +14,42 @@
 </head>
 <body>
     <div class="fixture-container">
+        <div class="fixture-group">
+            <h3>Grid: Three Columns (default gap)</h3>
+            <c-grid columns="three">
+                <div class="demo-box">Item 1</div>
+                <div class="demo-box">Item 2</div>
+                <div class="demo-box">Item 3</div>
+            </c-grid>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Grid: Four Columns with Large Gap</h3>
+            <c-grid columns="four" gap="lg">
+                <div class="demo-box">A</div>
+                <div class="demo-box">B</div>
+                <div class="demo-box">C</div>
+                <div class="demo-box">D</div>
+            </c-grid>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Grid: Two Columns with Division (2fr 1fr)</h3>
+            <c-grid columns="two" division="2fr 1fr">
+                <div class="demo-box">Wide (2fr)</div>
+                <div class="demo-box">Narrow (1fr)</div>
+            </c-grid>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Grid: Three Columns with Cards</h3>
+            <c-grid columns="three" gap="lg">
+                <c-card title="Card 1" padding="md" outline>First card content</c-card>
+                <c-card title="Card 2" padding="md" outline>Second card content</c-card>
+                <c-card title="Card 3" padding="md" outline>Third card content</c-card>
+            </c-grid>
+        </div>
+
         <div class="fixture-group">
             <h3>Layout Row with Two Equal Columns</h3>
             <c-layout-row gap="md">
