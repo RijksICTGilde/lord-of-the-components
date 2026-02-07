@@ -1,0 +1,162 @@
+"""
+Visual test server for Lord of the Components.
+
+Renders fixture templates through the LOTC Jinja2 pipeline and serves them
+with RVO/Utrecht CSS for visual regression testing with Playwright.
+
+Usage:
+    python tests/visual/serve.py [--port 5555]
+"""
+
+import argparse
+import logging
+import sys
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+from pathlib import Path
+from urllib.parse import urlparse
+
+from jinja2 import Environment, FileSystemLoader
+
+# Add the Python package to sys.path
+PYTHON_SRC = Path(__file__).resolve().parent.parent.parent / "python" / "src"
+sys.path.insert(0, str(PYTHON_SRC))
+
+from lord_of_the_components import setup_components  # noqa: E402
+
+logger = logging.getLogger(__name__)
+
+# Paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
+TEMPLATES_DIR = PYTHON_SRC / "lord_of_the_components" / "templates"
+REGISTRY_JSON = PYTHON_SRC / "lord_of_the_components" / "registry.json"
+
+# Utrecht/RVO CSS CDN URLs
+RVO_CSS = (
+    '<link rel="stylesheet"'
+    ' href="https://unpkg.com/@utrecht/component-library-css@7/dist/index.css">'
+    "\n"
+    '<link rel="stylesheet"'
+    ' href="https://unpkg.com/@nl-rvo/assets@6/lib/cjs/index.css">'
+)
+
+
+def create_jinja_env() -> Environment:
+    """Create a Jinja2 environment with LOTC extension and fixture templates."""
+    jinja_env = Environment(
+        loader=FileSystemLoader([str(FIXTURES_DIR), str(TEMPLATES_DIR)]),
+    )
+    setup_components(jinja_env, registry_path=str(REGISTRY_JSON))
+    return jinja_env
+
+
+# Shared Jinja2 environment (created once)
+_jinja_env = create_jinja_env()
+
+
+def render_fixture(fixture_path: str) -> str:
+    """Render a fixture file through the LOTC Jinja2 pipeline.
+
+    The fixture HTML is treated as a Jinja2 template, so <c-*> tags
+    get preprocessed by the ComponentExtension into real HTML.
+    """
+    fixture_file = FIXTURES_DIR / fixture_path
+    if not fixture_file.exists():
+        return f"<h1>404</h1><p>Fixture not found: {fixture_path}</p>"
+
+    source = fixture_file.read_text(encoding="utf-8")
+
+    # Inject RVO CSS into the <head> section
+    if "</head>" in source:
+        source = source.replace("</head>", f"    {RVO_CSS}\n</head>")
+
+    template = _jinja_env.from_string(source)
+    return template.render()
+
+
+class FixtureHandler(SimpleHTTPRequestHandler):
+    """HTTP handler that renders fixture templates through the LOTC pipeline."""
+
+    def do_GET(self) -> None:
+        parsed = urlparse(self.path)
+        path = parsed.path.lstrip("/")
+
+        if not path or path == "/":
+            self._serve_index()
+            return
+
+        if path.endswith(".html"):
+            self._serve_fixture(path)
+            return
+
+        # Serve static files (images, etc.) from fixtures dir
+        self.send_error(404, f"Not found: {path}")
+
+    def _serve_fixture(self, fixture_path: str) -> None:
+        """Render and serve a fixture file."""
+        try:
+            html = render_fixture(fixture_path)
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-cache")
+            self.end_headers()
+            self.wfile.write(html.encode("utf-8"))
+        except Exception as e:
+            logger.exception("Error rendering fixture: %s", fixture_path)
+            error_html = (
+                f"<h1>500 - Render Error</h1>"
+                f"<pre>{type(e).__name__}: {e}</pre>"
+            )
+            self.send_response(500)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(error_html.encode("utf-8"))
+
+    def _serve_index(self) -> None:
+        """Serve an index page listing all available fixtures."""
+        fixtures = sorted(FIXTURES_DIR.rglob("*.html"))
+        links = []
+        for f in fixtures:
+            rel = f.relative_to(FIXTURES_DIR)
+            links.append(f'<li><a href="/{rel}">{rel}</a></li>')
+
+        html = (
+            "<!DOCTYPE html><html><head><title>LOTC Visual Test Fixtures</title></head>"
+            "<body><h1>LOTC Visual Test Fixtures</h1><ul>"
+            + "\n".join(links)
+            + "</ul></body></html>"
+        )
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(html.encode("utf-8"))
+
+    def log_message(self, format: str, *args: object) -> None:
+        """Suppress default request logging unless in verbose mode."""
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug(format, *args)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="LOTC visual test server")
+    parser.add_argument("--port", type=int, default=5555, help="Port to listen on")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
+    args = parser.parse_args()
+
+    level = logging.DEBUG if args.verbose else logging.INFO
+    logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
+
+    server = HTTPServer(("localhost", args.port), FixtureHandler)
+    print(f"Serving LOTC fixtures on http://localhost:{args.port}")
+    print(f"Fixtures dir: {FIXTURES_DIR}")
+    print("Press Ctrl+C to stop")
+
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nStopping server")
+        server.shutdown()
+
+
+if __name__ == "__main__":
+    main()

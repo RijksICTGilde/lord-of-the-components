@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright configuration for visual regression testing.
- * Compares generated component output against RVO baseline.
+ * Uses the Python serve.py to render LOTC fixtures through the Jinja2 pipeline.
  */
 export default defineConfig({
   testDir: './specs',
@@ -21,8 +21,8 @@ export default defineConfig({
 
   /* Shared settings for all the projects below */
   use: {
-    /* Base URL for page.goto() */
-    baseURL: 'http://localhost:3000',
+    /* Base URL -- serve.py runs on port 5555 */
+    baseURL: 'http://localhost:5555',
 
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -38,17 +38,11 @@ export default defineConfig({
   /* Configure visual comparison */
   expect: {
     toHaveScreenshot: {
-      /* Maximum allowed pixel difference ratio (0-1) */
       maxDiffPixelRatio: 0.01,
-
-      /* Threshold for anti-aliasing and color difference (0-1) */
       threshold: 0.2,
-
-      /* Animations can cause flakiness, disable them */
       animations: 'disabled',
     },
     toMatchSnapshot: {
-      /* Maximum allowed pixel difference ratio for image snapshots */
       maxDiffPixelRatio: 0.01,
     },
   },
@@ -59,16 +53,16 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        /* Use headless mode */
         headless: true,
       },
     },
   ],
 
-  /* Run local dev server before starting the tests (optional) */
-  // webServer: {
-  //   command: 'npm run serve:fixtures',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  /* Start the Python visual test server before running tests */
+  webServer: {
+    command: 'python serve.py --port 5555',
+    url: 'http://localhost:5555',
+    reuseExistingServer: !process.env.CI,
+    timeout: 10000,
+  },
 });

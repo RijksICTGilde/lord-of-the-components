@@ -257,7 +257,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ## Phase 3: Visual Testing
 
-**T28: Create visual test server**
+**T28: Create visual test server** ✅
 → depends on: T26
 - File: `tests/visual/serve.py`
 - Simple Python HTTP server (Flask or http.server)
@@ -265,7 +265,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - Includes RVO CSS (from npm package or CDN)
 - Serves on localhost:5555
 
-**T29: Create visual test fixtures**
+**T29: Create visual test fixtures** ✅
 → depends on: T26
 - Directory: `tests/visual/fixtures/`
 - Files:
@@ -276,17 +276,17 @@ Dependencies are marked with `→ depends on: [task-id]`.
   - `layout-flow-variants.html` - gap sizes, directions
   - `combined.html` - realistic page with multiple components nested
 
-**T30: Set up Playwright visual tests**
+**T30: Set up Playwright visual tests** ✅
 → depends on: T28, T29
 - File: `tests/visual/playwright.config.ts` (update or create)
 - File: `tests/visual/specs/components.spec.ts`
-- Screenshot tests for each fixture page
+- Screenshot tests for each fixture page (6 tests, all passing)
 - Baseline establishment
 - Ensure RVO CSS is loaded for correct visual rendering
 
-**T31: Run visual tests and establish baselines**
+**T31: Run visual tests and establish baselines** ✅
 → depends on: T30
-- Run all Playwright tests
+- Run all Playwright tests (6 tests, all passing)
 - Review screenshots manually for correctness
 - Commit baseline screenshots
 

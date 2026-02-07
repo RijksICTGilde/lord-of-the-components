@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+        .fixture-group { margin-bottom: 2rem; width: 100%; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+        .fixture-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <div class="fixture-group">
+            <h3>Sizes</h3>
+            <div class="fixture-row">
+                <c-icon icon="delta-naar-rechts" size="2xs" aria-label="2xs icon"/>
+                <c-icon icon="delta-naar-rechts" size="xs" aria-label="xs icon"/>
+                <c-icon icon="delta-naar-rechts" size="sm" aria-label="sm icon"/>
+                <c-icon icon="delta-naar-rechts" size="md" aria-label="md icon"/>
+                <c-icon icon="delta-naar-rechts" size="lg" aria-label="lg icon"/>
+                <c-icon icon="delta-naar-rechts" size="xl" aria-label="xl icon"/>
+                <c-icon icon="delta-naar-rechts" size="2xl" aria-label="2xl icon"/>
+                <c-icon icon="delta-naar-rechts" size="3xl" aria-label="3xl icon"/>
+                <c-icon icon="delta-naar-rechts" size="4xl" aria-label="4xl icon"/>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Different icons</h3>
+            <div class="fixture-row">
+                <c-icon icon="home" size="lg" aria-label="Home"/>
+                <c-icon icon="kruis" size="lg" aria-label="Close"/>
+                <c-icon icon="vinkje" size="lg" aria-label="Check"/>
+                <c-icon icon="waarschuwing" size="lg" aria-label="Warning"/>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>With color</h3>
+            <div class="fixture-row">
+                <c-icon icon="delta-naar-rechts" size="lg" color="hemelblauw" aria-label="Blue icon"/>
+                <c-icon icon="delta-naar-rechts" size="lg" color="wit" aria-label="White icon"/>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

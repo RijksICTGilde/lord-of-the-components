@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Flow Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-direction: column; gap: 2rem; }
+        .fixture-group { margin-bottom: 1rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+        .demo-box { background: #e0e7ff; padding: 1rem; border-radius: 4px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <div class="fixture-group">
+            <h3>Column (default direction)</h3>
+            <c-layout-flow gap="md">
+                <div class="demo-box">Item 1</div>
+                <div class="demo-box">Item 2</div>
+                <div class="demo-box">Item 3</div>
+            </c-layout-flow>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Row direction</h3>
+            <c-layout-flow gap="md" row>
+                <div class="demo-box">Item 1</div>
+                <div class="demo-box">Item 2</div>
+                <div class="demo-box">Item 3</div>
+            </c-layout-flow>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Gap sizes</h3>
+            <c-layout-flow gap="xs" row>
+                <div class="demo-box">XS</div>
+                <div class="demo-box">gap</div>
+            </c-layout-flow>
+            <c-layout-flow gap="md" row>
+                <div class="demo-box">MD</div>
+                <div class="demo-box">gap</div>
+            </c-layout-flow>
+            <c-layout-flow gap="xl" row>
+                <div class="demo-box">XL</div>
+                <div class="demo-box">gap</div>
+            </c-layout-flow>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Size variants</h3>
+            <c-layout-flow size="sm" gap="md">
+                <div class="demo-box">Small max-width</div>
+            </c-layout-flow>
+            <c-layout-flow size="md" gap="md">
+                <div class="demo-box">Medium max-width</div>
+            </c-layout-flow>
+            <c-layout-flow size="lg" gap="md">
+                <div class="demo-box">Large max-width</div>
+            </c-layout-flow>
+        </div>
+    </div>
+</body>
+</html>

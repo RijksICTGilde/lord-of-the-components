@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Components</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { max-width: 960px; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <c-heading type="h1" name="Component Gallery"/>
+
+        <c-layout-flow gap="lg">
+            <c-layout-flow gap="md" row>
+                <c-card title="Getting Started" href="#" show-link-indicator outline>
+                    <p>Learn how to use the component library.</p>
+                    <c-button type="primary" name="Read Docs"/>
+                </c-card>
+
+                <c-card title="Examples" href="#" show-link-indicator outline>
+                    <p>Browse example implementations.</p>
+                    <c-button type="secondary" name="View Examples"/>
+                </c-card>
+            </c-layout-flow>
+
+            <c-heading type="h2" name="Action Buttons"/>
+
+            <c-layout-flow gap="sm" row>
+                <c-button type="primary" name="Save" show-icon="before" icon="vinkje"/>
+                <c-button type="secondary" name="Cancel"/>
+                <c-button type="warning" name="Delete" show-icon="before" icon="kruis"/>
+            </c-layout-flow>
+
+            <c-heading type="h2" name="Icon Set"/>
+
+            <c-layout-flow gap="md" row>
+                <c-icon icon="home" size="xl" aria-label="Home"/>
+                <c-icon icon="delta-naar-rechts" size="xl" aria-label="Next"/>
+                <c-icon icon="vinkje" size="xl" aria-label="Check"/>
+                <c-icon icon="kruis" size="xl" aria-label="Close"/>
+                <c-icon icon="waarschuwing" size="xl" aria-label="Warning"/>
+            </c-layout-flow>
+        </c-layout-flow>
+    </div>
+</body>
+</html>
