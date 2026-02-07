@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+        .fixture-group { margin-bottom: 2rem; width: 100%; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+        .fixture-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <div class="fixture-group">
+            <h3>Basic card</h3>
+            <div class="fixture-row">
+                <c-card title="Basic Card"><p>Card body content.</p></c-card>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Card with image</h3>
+            <div class="fixture-row">
+                <c-card title="With Image" image="https://via.placeholder.com/300x200" image-alt="Placeholder"><p>Card with an image.</p></c-card>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Row layout</h3>
+            <div class="fixture-row">
+                <c-card title="Row Layout" layout="row" image="https://via.placeholder.com/200x150" image-alt="Placeholder"><p>Horizontal card layout.</p></c-card>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>With link</h3>
+            <div class="fixture-row">
+                <c-card title="Linked Card" href="https://example.com" show-link-indicator><p>Click to navigate.</p></c-card>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Full card link</h3>
+            <div class="fixture-row">
+                <c-card title="Full Link" href="https://example.com" full-card-link><p>Entire card is clickable.</p></c-card>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Outline</h3>
+            <div class="fixture-row">
+                <c-card title="Outline Card" outline><p>Card with outline border.</p></c-card>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Padding variants</h3>
+            <div class="fixture-row">
+                <c-card title="No Padding" padding="none"><p>No padding.</p></c-card>
+                <c-card title="Small" padding="sm"><p>Small padding.</p></c-card>
+                <c-card title="Large" padding="lg"><p>Large padding.</p></c-card>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+        .fixture-group { margin-bottom: 2rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <div class="fixture-group">
+            <h3>Type variants</h3>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <c-button type="primary" name="Primary"/>
+                <c-button type="secondary" name="Secondary"/>
+                <c-button type="tertiary" name="Tertiary"/>
+                <c-button type="quaternary" name="Quaternary"/>
+                <c-button type="subtle" name="Subtle"/>
+                <c-button type="warning" name="Warning"/>
+                <c-button type="warning-subtle" name="Warning Subtle"/>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Sizes</h3>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <c-button size="xs" name="Extra Small"/>
+                <c-button size="sm" name="Small"/>
+                <c-button size="md" name="Medium"/>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>States</h3>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <c-button name="Normal"/>
+                <c-button name="Disabled" disabled/>
+                <c-button name="Active" active/>
+                <c-button name="Loading" loading/>
+                <c-button name="Full Width" full-width/>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>With icons</h3>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <c-button name="Icon Before" show-icon="before" icon="delta-naar-rechts"/>
+                <c-button name="Icon After" show-icon="after" icon="delta-naar-rechts"/>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Content override</h3>
+            <div style="display: flex; gap: 0.5rem;">
+                <c-button>Custom <strong>content</strong></c-button>
+            </div>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Form submit</h3>
+            <div style="display: flex; gap: 0.5rem;">
+                <c-button html-type="submit" name="Submit"/>
+                <c-button html-type="reset" name="Reset"/>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
