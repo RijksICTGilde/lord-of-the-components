@@ -166,11 +166,11 @@ setup_components(env)
 
 | Task | Description | Depends on |
 |------|-------------|------------|
-| T-B1 | Set up `package.json` with RVO npm deps + webpack | - |
-| T-B2 | Create `webpack.config.js` (adapted from jinja-roos) | T-B1 |
-| T-B3 | Create `fe_src/` — lotc.ts + lotc.scss entry points | T-B1 |
-| T-B4 | Run npm build — verify assets in `static/lotc/dist/` | T-B2, T-B3 |
-| T-B5 | Update `page.html.j2` — include bundled CSS/JS | T-B4 |
+| T-B1 | ✅ Set up `package.json` with RVO npm deps + webpack | - |
+| T-B2 | ✅ Create `webpack.config.cjs` (adapted from jinja-roos) | T-B1 |
+| T-B3 | ✅ Create `fe_src/` — lotc.ts + lotc.scss entry points | T-B1 |
+| T-B4 | ✅ Run npm build — verify assets in `static/lotc/dist/` | T-B2, T-B3 |
+| T-B5 | ✅ Update `page.html.j2` — include bundled CSS/JS (via webpack template) | T-B4 |
 | T-B6 | Update `extension.py` — fix `_get_component_assets()` | T-B4 |
 | T-B7 | Update `__init__.py` + `pyproject.toml` — static file helpers + packaging | T-B4 |
 | T-B8 | Update `serve.py` — use bundled assets instead of CDN | T-B4 |

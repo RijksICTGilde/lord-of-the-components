@@ -36,35 +36,21 @@
     {% if description %}
     <meta name="description" content="{{ description }}">
     {% endif %}
-    
-    <link rel="stylesheet" href="/static/lotc/dist/lotc.css">
-    
-    <link rel="stylesheet" href="/static/lotc/dist/@nl-rvo/assets/fonts/index.css">
-    
-    <link rel="stylesheet" href="/static/lotc/dist/@nl-rvo/assets/icons/index.css">
-    
-    <link rel="stylesheet" href="/static/lotc/dist/@nl-rvo/assets/images/index.css">
-    
-    <link rel="stylesheet" href="/static/lotc/dist/@nl-rvo/design-tokens/index.css">
-    
-    <link rel="stylesheet" href="/static/lotc/dist/@nl-rvo/component-library-css/index.css">
-    
-    <link rel="stylesheet" href="/static/lotc/dist/@nl-rvo/css-button/index.css">
-    
+    <% for (const css of htmlWebpackPlugin.files.css) { %>
+    <link rel="stylesheet" href="<%= css %>">
+    <% } %>
     {% if head %}
     {{ head | safe }}
     {% endif %}
 </head>
 <body{% if css_classes %} class="{{ css_classes | join(' ') }}"{% endif %}>
 {{ children | safe }}
-
-    
-    <script src="/static/lotc/dist/lotc.js"></script>
-    
-
-    
-    <script type="module" src="/static/lotc/dist/@nl-rvo/design-tokens/index.mjs"></script>
-    
-
+<% for (const js of htmlWebpackPlugin.files.js) { %>
+    <% if (js.endsWith(".mjs")) { %>
+    <script type="module" src="<%= js %>"></script>
+    <% } else { %>
+    <script src="<%= js %>"></script>
+    <% } %>
+<% } %>
 </body>
 </html>
