@@ -358,10 +358,14 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - Visual test fixture (page-structure-variants.html) + Playwright screenshot baseline
 - 658 total tests (91 new tests), 10 visual tests
 
-**T38: Implement data-list component**
+**T38: Implement data-list component** ✅
 → depends on: T26
-- Key-value pair display
-- Tests
+- Definition: class prop, content allowed (dt/dd pairs passed as children)
+- Implementation: dl element, rvo-data-list base class, children pass-through
+- Generated template (no hand-tuning needed — simple structure)
+- 23 e2e tests (basic, content, attributes, custom class, structure, nesting, combined)
+- Visual test fixture (data-list-variants.html) + Playwright screenshot baseline
+- 681 total tests, 11 visual tests
 
 ### 4.4 Navigation Components
 

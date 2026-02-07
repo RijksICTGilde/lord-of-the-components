@@ -1,0 +1,17 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set css_classes = ['rvo-data-list'] %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<dl
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="data-list"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</dl>

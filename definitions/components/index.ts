@@ -23,6 +23,7 @@ export { grid, type GridDefinition } from "./grid.def.js";
 
 // Data display components
 export { card, type CardDefinition } from "./card.def.js";
+export { dataList, type DataListDefinition } from "./data-list.def.js";
 
 // Feedback components
 export { alert, type AlertDefinition } from "./alert.def.js";
@@ -46,6 +47,7 @@ import { header } from "./header.def.js";
 import { hero } from "./hero.def.js";
 import { page } from "./page.def.js";
 import { card } from "./card.def.js";
+import { dataList } from "./data-list.def.js";
 import { heading } from "./heading.def.js";
 import { icon } from "./icon.def.js";
 import { layoutFlow } from "./layout-flow.def.js";
@@ -69,6 +71,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   hero,
   page,
   card,
+  "data-list": dataList,
   heading,
   icon,
   "layout-flow": layoutFlow,
