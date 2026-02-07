@@ -32,6 +32,15 @@ export interface ContentDefinition {
   allowedChildren?: string[];
 }
 
+/** Child component definition (inline within a parent). */
+export interface ChildComponentDefinition {
+  name: string;
+  description?: string;
+  props: Record<string, PropSpec | null>;
+  events?: readonly string[];
+  content?: ContentDefinition;
+}
+
 /** Component definition (structural subset used by the exporter). */
 export interface ComponentDefinition {
   name: string;
@@ -40,6 +49,7 @@ export interface ComponentDefinition {
   props: Record<string, PropSpec | null>;
   events?: readonly string[];
   content?: ContentDefinition;
+  children?: Record<string, ChildComponentDefinition>;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -171,7 +181,48 @@ function componentToRegistryEntry(
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
+ * Convert a ChildComponentDefinition to a RegistryComponent.
+ */
+function childToRegistryEntry(
+  child: ChildComponentDefinition,
+): RegistryComponent {
+  const attributes: RegistryAttribute[] = [];
+
+  for (const [propName, propSpec] of Object.entries(child.props)) {
+    attributes.push(propSpecToAttribute(propName, propSpec));
+  }
+
+  const entry: RegistryComponent = {
+    name: child.name,
+    attributes,
+  };
+
+  if (child.description) entry.description = child.description;
+
+  if (child.events && child.events.length > 0) {
+    entry.events = [...child.events];
+  }
+
+  if (child.content) {
+    entry.content = {
+      allowed: child.content.allowed,
+    };
+    if (child.content.description) {
+      entry.content.description = child.content.description;
+    }
+    if (child.content.allowedChildren) {
+      entry.content.allowed_children = child.content.allowedChildren;
+    }
+  }
+
+  return entry;
+}
+
+/**
  * Generate a registry JSON object from an array of component definitions.
+ *
+ * Also includes child component definitions (e.g., menu-item from menu)
+ * as separate registry entries so the preprocessor can validate them.
  *
  * @param components - Array of component definitions to export
  * @returns Registry JSON structure ready to be serialized
@@ -188,8 +239,21 @@ function componentToRegistryEntry(
 export function generateRegistry(
   components: ComponentDefinition[],
 ): RegistryJSON {
+  const entries: RegistryComponent[] = [];
+
+  for (const component of components) {
+    entries.push(componentToRegistryEntry(component));
+
+    // Also export child component definitions as separate entries
+    if (component.children) {
+      for (const child of Object.values(component.children)) {
+        entries.push(childToRegistryEntry(child));
+      }
+    }
+  }
+
   return {
-    components: components.map(componentToRegistryEntry),
+    components: entries,
   };
 }
 
