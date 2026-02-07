@@ -349,11 +349,14 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - 49 e2e tests (all passing), visual test fixture + Playwright screenshot baseline
 - 567 total tests
 
-**T37: Implement hero, footer, header components**
+**T37: Implement hero, footer, header components** ✅
 → depends on: T26
-- More complex layouts
-- May need rawTemplate escape hatch
-- Tests
+- Header: updated definition (text, subtitle, link props), implementation, hand-tuned template with embedded Rijksoverheid SVG logo, 30 e2e tests
+- Hero: definition (title, subtitle, image, image-alt, size, overlay), implementation, hand-tuned template with image container + content sections, 37 e2e tests
+- Footer: definition (max-width, pay-off), implementation, hand-tuned template with container + payoff, 24 e2e tests
+- All three templates hand-tuned (complex nested structures can't be expressed by declarative ClassRule API)
+- Visual test fixture (page-structure-variants.html) + Playwright screenshot baseline
+- 658 total tests (91 new tests), 10 visual tests
 
 **T38: Implement data-list component**
 → depends on: T26

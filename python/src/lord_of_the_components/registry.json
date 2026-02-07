@@ -178,44 +178,22 @@
       }
     },
     {
-      "name": "header",
+      "name": "footer",
       "attributes": [
         {
-          "name": "title",
-          "type": "string",
-          "required": true,
-          "description": "Main heading text"
+          "name": "max-width",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "description": "Max-width of the footer container (sm, md, lg)"
         },
         {
-          "name": "subtitle",
+          "name": "pay-off",
           "type": "string",
-          "description": "Subtitle or subheading text"
-        },
-        {
-          "name": "logo",
-          "type": "string",
-          "description": "Logo image URL"
-        },
-        {
-          "name": "logo-alt",
-          "type": "string",
-          "description": "Logo alt text for accessibility"
-        },
-        {
-          "name": "logo-href",
-          "type": "string",
-          "default": "/",
-          "description": "URL the logo links to"
-        },
-        {
-          "name": "aria-label",
-          "type": "string",
-          "description": "Accessible label for the header region"
-        },
-        {
-          "name": "background-color",
-          "type": "string",
-          "description": "Background color (implementation specific)"
+          "description": "Payoff text displayed at the bottom of the footer"
         },
         {
           "name": "class",
@@ -223,11 +201,95 @@
           "description": "Additional CSS classes"
         }
       ],
-      "description": "Page header with title and optional logo",
+      "description": "Page footer with max-width container and optional payoff",
+      "category": "layout",
+      "content": {
+        "allowed": true,
+        "description": "Footer content (menu columns, links, etc.)"
+      }
+    },
+    {
+      "name": "header",
+      "attributes": [
+        {
+          "name": "text",
+          "type": "string",
+          "description": "Organization name text displayed in the logo wordmark"
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "description": "Subtitle or ministry text below the organization name"
+        },
+        {
+          "name": "link",
+          "type": "string",
+          "default": "#",
+          "description": "URL the logo links to"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Page header with government logo and organization name",
       "category": "layout",
       "content": {
         "allowed": true,
         "description": "Additional header content (navigation, actions, etc.)"
+      }
+    },
+    {
+      "name": "hero",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Hero title text (rendered as h1 heading)"
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "description": "Subtitle text below the title"
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "description": "Hero image URL"
+        },
+        {
+          "name": "image-alt",
+          "type": "string",
+          "description": "Image alt text for accessibility"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md",
+          "description": "Hero size (sm, md, lg)"
+        },
+        {
+          "name": "overlay",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Large hero/banner section with image, title, and content",
+      "category": "layout",
+      "content": {
+        "allowed": true,
+        "description": "Additional content displayed in the hero section"
       }
     },
     {

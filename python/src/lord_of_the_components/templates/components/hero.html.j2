@@ -1,0 +1,31 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set size = _component_context.get('size', 'md') %}
+{% set image = _component_context.get('image', '') %}
+{% set image_alt = _component_context.get('image-alt', '') %}
+{% set title = _component_context.get('title', '') %}
+{% set subtitle = _component_context.get('subtitle', '') %}
+{% set overlay = _component_context.get('overlay', false) %}
+{% set children = _component_context.get('content', '') %}
+{% set css_classes = ['rvo-hero'] %}
+{% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-hero--sm'] %}{% endif %}
+{% if size == 'md' %}{% set css_classes = css_classes + ['rvo-hero--md'] %}{% endif %}
+{% if size == 'lg' %}{% set css_classes = css_classes + ['rvo-hero--lg'] %}{% endif %}
+{% if image %}{% set css_classes = css_classes + ['rvo-hero--with-image'] %}{% endif %}
+{% if overlay %}{% set css_classes = css_classes + ['rvo-hero--overlay'] %}{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<section class="{{ css_classes | join(' ') }}" data-lotc-component="hero" {{ attrs.render_extra_attributes(_component_context) }}>
+    {% if image %}
+    <div class="rvo-hero__image-container">
+        <img src="{{ image }}" alt="{{ image_alt }}" class="rvo-hero__image"/>
+    </div>
+    {% endif %}
+    {% if title or subtitle or children %}
+    <div class="rvo-hero__content">
+        {% if title %}<h1 class="utrecht-heading-1 rvo-hero__title">{{ title }}</h1>{% endif %}
+        {% if subtitle %}<p class="rvo-hero__subtitle rvo-text--lg">{{ subtitle }}</p>{% endif %}
+        {% if children %}<div class="rvo-hero__text">{{ children | safe }}</div>{% endif %}
+    </div>
+    {% endif %}
+</section>

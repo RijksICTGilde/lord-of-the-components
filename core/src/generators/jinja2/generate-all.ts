@@ -39,6 +39,9 @@ import { labelImpl } from "../../../../implementations/components/label.impl.js"
 import { strongImpl } from "../../../../implementations/components/strong.impl.js";
 import { emImpl } from "../../../../implementations/components/em.impl.js";
 import { alertImpl } from "../../../../implementations/components/alert.impl.js";
+import { headerImpl } from "../../../../implementations/components/header.impl.js";
+import { heroImpl } from "../../../../implementations/components/hero.impl.js";
+import { footerImpl } from "../../../../implementations/components/footer.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -87,6 +90,9 @@ const implementations = [
   strongImpl,
   emImpl,
   alertImpl,
+  headerImpl,
+  heroImpl,
+  footerImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
