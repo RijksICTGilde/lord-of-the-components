@@ -195,12 +195,12 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 2.3 Card
 
-**T20: Update card definition for RVO alignment**
+**T20: Update card definition for RVO alignment** ✅
 - File: `definitions/components/card.def.ts` (update existing)
 - Verify props match RVO card: title, image, image-alt, image-size, layout (column/row), padding, outline, background-color, href, full-card-link, show-link-indicator, class
 - Content: allowed
 
-**T21: Create card implementation**
+**T21: Create card implementation** ✅
 → depends on: T1, T20
 - File: `implementations/components/card.impl.ts`
 - Element: `div`
@@ -211,11 +211,11 @@ Dependencies are marked with `→ depends on: [task-id]`.
   - Children slot
 - Reference: `jinja-roos-components/.../card.html.j2`
 
-**T22: Generate card template and test**
+**T22: Generate card template and test** ✅
 → depends on: T6, T21
 - Run generator
 - File: `python/tests/test_card_e2e.py`
-- Test: basic card, with image, row layout, with link, outline, padding variants
+- Test: basic card, with image, row layout, with link, outline, padding variants (45 tests)
 
 ### 2.4 Layout-flow
 

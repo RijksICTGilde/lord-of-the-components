@@ -239,11 +239,6 @@
           "description": "Card title/heading"
         },
         {
-          "name": "subtitle",
-          "type": "string",
-          "description": "Card subtitle"
-        },
-        {
           "name": "image",
           "type": "string",
           "description": "Card image URL"
@@ -254,16 +249,19 @@
           "description": "Image alt text for accessibility"
         },
         {
-          "name": "image-position",
+          "name": "image-size",
           "type": "enum",
           "enum_values": [
-            "top",
-            "bottom",
-            "left",
-            "right"
+            "sm",
+            "md"
           ],
-          "default": "top",
-          "description": "Image position relative to content"
+          "default": "md",
+          "description": "Image size (sm or md)"
+        },
+        {
+          "name": "inline-image",
+          "type": "boolean",
+          "default": false
         },
         {
           "name": "layout",
@@ -280,35 +278,38 @@
           "type": "enum",
           "enum_values": [
             "none",
-            "xs",
             "sm",
             "md",
             "lg",
-            "xl",
-            "2xl"
+            "xl"
           ],
+          "default": "md",
           "description": "Content padding size"
         },
         {
           "name": "href",
           "type": "string",
-          "description": "Link URL - makes entire card clickable"
+          "description": "Link URL for the card title"
         },
         {
-          "name": "target",
-          "type": "enum",
-          "enum_values": [
-            "_self",
-            "_blank",
-            "_parent",
-            "_top"
-          ],
-          "description": "Link target (only used when href is set)"
+          "name": "full-card-link",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "show-link-indicator",
+          "type": "boolean",
+          "default": false
         },
         {
           "name": "background-color",
           "type": "string",
-          "description": "Background color (implementation specific)"
+          "description": "Background color (named RVO color or hex value)"
+        },
+        {
+          "name": "background-image",
+          "type": "string",
+          "description": "Background image URL"
         },
         {
           "name": "outline",
@@ -316,7 +317,7 @@
           "default": false
         },
         {
-          "name": "inverted",
+          "name": "inverted-colors",
           "type": "boolean",
           "default": false
         },
