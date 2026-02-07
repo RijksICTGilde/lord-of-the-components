@@ -92,6 +92,12 @@ export const PROPS = {
   FULL_WIDTH: "full-width",
   COLUMNS: "columns",
   LAYOUT: "layout",
+  ROW: "row",
+  WRAP: "wrap",
+  ALIGN_ITEMS: "align-items",
+  ALIGN_CONTENT: "align-content",
+  JUSTIFY_ITEMS: "justify-items",
+  JUSTIFY_CONTENT: "justify-content",
 
   // ═══════════════════════════════════════════════════════════════════════════
   // IMAGES

@@ -86,6 +86,30 @@ export const VALUES = {
   ] as const,
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // LAYOUT-FLOW SPECIFIC
+  // ═══════════════════════════════════════════════════════════════════════════
+  LAYOUT_GAP_SIZES: [
+    "0",
+    "3xs",
+    "2xs",
+    "xs",
+    "sm",
+    "md",
+    "lg",
+    "xl",
+    "2xl",
+    "3xl",
+    "4xl",
+    "5xl",
+  ] as const,
+
+  LAYOUT_SIZES: ["sm", "md", "lg"] as const,
+
+  FLEX_ALIGN: ["start", "center", "end"] as const,
+
+  FLEX_JUSTIFY: ["start", "center", "end", "space-between"] as const,
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // LAYOUT
   // ═══════════════════════════════════════════════════════════════════════════
   CARD_LAYOUTS: ["column", "row"] as const,

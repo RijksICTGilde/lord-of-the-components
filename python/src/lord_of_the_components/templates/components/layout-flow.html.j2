@@ -1,0 +1,56 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set align_content = _component_context.get('align-content', '') %}
+{% set align_items = _component_context.get('align-items', '') %}
+{% set gap = _component_context.get('gap', 'md') %}
+{% set justify_content = _component_context.get('justify-content', '') %}
+{% set justify_items = _component_context.get('justify-items', '') %}
+{% set row = _component_context.get('row', false) %}
+{% set size = _component_context.get('size', 'lg') %}
+{% set wrap = _component_context.get('wrap', false) %}
+{% set css_classes = ['rvo-max-width-layout'] %}
+{% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-max-width-layout--sm'] %}{% endif %}
+{% if size == 'md' %}{% set css_classes = css_classes + ['rvo-max-width-layout--md'] %}{% endif %}
+{% if size == 'lg' %}{% set css_classes = css_classes + ['rvo-max-width-layout--lg'] %}{% endif %}
+{% if row %}{% set css_classes = css_classes + ['rvo-layout-row'] %}{% else %}{% set css_classes = css_classes + ['rvo-layout-column'] %}{% endif %}
+{% if gap == '0' %}{% set css_classes = css_classes + ['rvo-layout-gap--0'] %}{% endif %}
+{% if gap == '3xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--3xs'] %}{% endif %}
+{% if gap == '2xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--2xs'] %}{% endif %}
+{% if gap == 'xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--xs'] %}{% endif %}
+{% if gap == 'sm' %}{% set css_classes = css_classes + ['rvo-layout-gap--sm'] %}{% endif %}
+{% if gap == 'md' %}{% set css_classes = css_classes + ['rvo-layout-gap--md'] %}{% endif %}
+{% if gap == 'lg' %}{% set css_classes = css_classes + ['rvo-layout-gap--lg'] %}{% endif %}
+{% if gap == 'xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--xl'] %}{% endif %}
+{% if gap == '2xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--2xl'] %}{% endif %}
+{% if gap == '3xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--3xl'] %}{% endif %}
+{% if gap == '4xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--4xl'] %}{% endif %}
+{% if gap == '5xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--5xl'] %}{% endif %}
+{% if wrap %}{% set css_classes = css_classes + ['rvo-layout--wrap'] %}{% endif %}
+{% if align_items == 'start' %}{% set css_classes = css_classes + ['rvo-layout-align-items-start'] %}{% endif %}
+{% if align_items == 'center' %}{% set css_classes = css_classes + ['rvo-layout-align-items-center'] %}{% endif %}
+{% if align_items == 'end' %}{% set css_classes = css_classes + ['rvo-layout-align-items-end'] %}{% endif %}
+{% if align_content == 'start' %}{% set css_classes = css_classes + ['rvo-layout-align-content-start'] %}{% endif %}
+{% if align_content == 'center' %}{% set css_classes = css_classes + ['rvo-layout-align-content-center'] %}{% endif %}
+{% if align_content == 'end' %}{% set css_classes = css_classes + ['rvo-layout-align-content-end'] %}{% endif %}
+{% if align_content == 'space-between' %}{% set css_classes = css_classes + ['rvo-layout-align-content-space-between'] %}{% endif %}
+{% if justify_items == 'start' %}{% set css_classes = css_classes + ['rvo-layout-justify-items-start'] %}{% endif %}
+{% if justify_items == 'center' %}{% set css_classes = css_classes + ['rvo-layout-justify-items-center'] %}{% endif %}
+{% if justify_items == 'end' %}{% set css_classes = css_classes + ['rvo-layout-justify-items-end'] %}{% endif %}
+{% if justify_content == 'start' %}{% set css_classes = css_classes + ['rvo-layout-justify-content-start'] %}{% endif %}
+{% if justify_content == 'center' %}{% set css_classes = css_classes + ['rvo-layout-justify-content-center'] %}{% endif %}
+{% if justify_content == 'end' %}{% set css_classes = css_classes + ['rvo-layout-justify-content-end'] %}{% endif %}
+{% if justify_content == 'space-between' %}{% set css_classes = css_classes + ['rvo-layout-justify-content-space-between'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="layout-flow"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</div>

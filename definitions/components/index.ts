@@ -12,6 +12,7 @@ export { menu, type MenuDefinition } from "./menu.def.js";
 
 // Layout components
 export { header, type HeaderDefinition } from "./header.def.js";
+export { layoutFlow, type LayoutFlowDefinition } from "./layout-flow.def.js";
 
 // Data display components
 export { card, type CardDefinition } from "./card.def.js";
@@ -29,6 +30,7 @@ import { header } from "./header.def.js";
 import { card } from "./card.def.js";
 import { heading } from "./heading.def.js";
 import { icon } from "./icon.def.js";
+import { layoutFlow } from "./layout-flow.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -38,6 +40,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   card,
   heading,
   icon,
+  "layout-flow": layoutFlow,
 };
 
 /**

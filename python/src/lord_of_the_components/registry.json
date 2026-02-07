@@ -420,6 +420,105 @@
         "allowed": false,
         "description": "Icons do not accept content (self-closing)."
       }
+    },
+    {
+      "name": "layout-flow",
+      "attributes": [
+        {
+          "name": "gap",
+          "type": "enum",
+          "enum_values": [
+            "0",
+            "3xs",
+            "2xs",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "2xl",
+            "3xl",
+            "4xl",
+            "5xl"
+          ],
+          "default": "md",
+          "description": "Gap between flex items"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "lg",
+          "description": "Max-width layout size (sm, md, lg)"
+        },
+        {
+          "name": "row",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "wrap",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "align-items",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end"
+          ],
+          "description": "Flex align-items value"
+        },
+        {
+          "name": "align-content",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end",
+            "space-between"
+          ],
+          "description": "Flex align-content value"
+        },
+        {
+          "name": "justify-items",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end"
+          ],
+          "description": "Flex justify-items value"
+        },
+        {
+          "name": "justify-content",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end",
+            "space-between"
+          ],
+          "description": "Flex justify-content value"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Flexbox layout container with gap, direction, and alignment",
+      "category": "layout",
+      "content": {
+        "allowed": true,
+        "description": "Layout children"
+      }
     }
   ]
 }
