@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-direction: column; gap: 1.5rem; }
+        .fixture-group { margin-bottom: 0.5rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <!-- Alert types -->
+        <div class="fixture-group">
+            <h3>Alert - Types</h3>
+            <c-alert type="info" heading="Information">This is an informational alert.</c-alert>
+            <c-alert type="success" heading="Success">Operation completed successfully.</c-alert>
+            <c-alert type="warning" heading="Warning">Please be careful with this action.</c-alert>
+            <c-alert type="error" heading="Error">Something went wrong.</c-alert>
+        </div>
+
+        <!-- Alert without heading -->
+        <div class="fixture-group">
+            <h3>Alert - Without Heading</h3>
+            <c-alert type="info">An info alert without a heading, just content.</c-alert>
+            <c-alert type="error">An error alert without a heading.</c-alert>
+        </div>
+
+        <!-- Alert padding -->
+        <div class="fixture-group">
+            <h3>Alert - Padding Variants</h3>
+            <c-alert type="info" padding="xs" heading="XS Padding">Extra small padding.</c-alert>
+            <c-alert type="info" padding="sm" heading="SM Padding">Small padding.</c-alert>
+            <c-alert type="info" padding="md" heading="MD Padding">Medium padding (default).</c-alert>
+            <c-alert type="info" padding="lg" heading="LG Padding">Large padding.</c-alert>
+            <c-alert type="info" padding="xl" heading="XL Padding">Extra large padding.</c-alert>
+        </div>
+
+        <!-- Alert closable -->
+        <div class="fixture-group">
+            <h3>Alert - Closable</h3>
+            <c-alert type="info" heading="Closable Alert" closable>This alert can be dismissed.</c-alert>
+            <c-alert type="warning" heading="Closable Warning" closable>This warning can be dismissed.</c-alert>
+        </div>
+
+        <!-- Alert max-width -->
+        <div class="fixture-group">
+            <h3>Alert - Max Width</h3>
+            <c-alert type="success" heading="Max Width SM" max-width="sm">Constrained to small width.</c-alert>
+            <c-alert type="success" heading="Max Width MD" max-width="md">Constrained to medium width.</c-alert>
+            <c-alert type="success" heading="Max Width LG" max-width="lg">Constrained to large width.</c-alert>
+        </div>
+
+        <!-- Alert combined -->
+        <div class="fixture-group">
+            <h3>Alert - Combined</h3>
+            <c-alert type="error" heading="Critical Error" padding="lg" closable>
+                A critical error occurred. Please contact support if this persists.
+            </c-alert>
+        </div>
+    </div>
+</body>
+</html>

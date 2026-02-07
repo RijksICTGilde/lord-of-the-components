@@ -1075,6 +1075,68 @@
         "allowed": true,
         "description": "Emphasized content (overrides name prop). Can include HTML/components."
       }
+    },
+    {
+      "name": "alert",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "enum",
+          "enum_values": [
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "info",
+          "description": "Alert type: info, success, warning, error"
+        },
+        {
+          "name": "heading",
+          "type": "string",
+          "description": "Alert heading text (displayed as bold)"
+        },
+        {
+          "name": "padding",
+          "type": "enum",
+          "enum_values": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "2xl"
+          ],
+          "default": "md",
+          "description": "Alert padding size"
+        },
+        {
+          "name": "max-width",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "description": "Max width constraint (sm, md, lg)"
+        },
+        {
+          "name": "closable",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Status alert with icon, heading, and optional close button",
+      "category": "feedback",
+      "content": {
+        "allowed": true,
+        "description": "Alert content (can include HTML/components)"
+      }
     }
   ]
 }

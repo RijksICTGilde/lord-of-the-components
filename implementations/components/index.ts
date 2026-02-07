@@ -18,3 +18,4 @@ export { linkImpl } from "./link.impl.js";
 export { labelImpl } from "./label.impl.js";
 export { strongImpl } from "./strong.impl.js";
 export { emImpl } from "./em.impl.js";
+export { alertImpl } from "./alert.impl.js";

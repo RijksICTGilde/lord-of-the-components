@@ -1,0 +1,49 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set closable = _component_context.get('closable', false) %}
+{% set heading = _component_context.get('heading', '') %}
+{% set max_width = _component_context.get('max-width', '') %}
+{% set padding = _component_context.get('padding', 'md') %}
+{% set type = _component_context.get('type', 'info') %}
+{% set css_classes = ['rvo-alert'] %}
+{% if type == 'info' %}{% set css_classes = css_classes + ['rvo-alert--info'] %}{% endif %}
+{% if type == 'success' %}{% set css_classes = css_classes + ['rvo-alert--success'] %}{% endif %}
+{% if type == 'warning' %}{% set css_classes = css_classes + ['rvo-alert--warning'] %}{% endif %}
+{% if type == 'error' %}{% set css_classes = css_classes + ['rvo-alert--error'] %}{% endif %}
+{% if padding == 'xs' %}{% set css_classes = css_classes + ['rvo-alert--padding-xs'] %}{% endif %}
+{% if padding == 'sm' %}{% set css_classes = css_classes + ['rvo-alert--padding-sm'] %}{% endif %}
+{% if padding == 'md' %}{% set css_classes = css_classes + ['rvo-alert--padding-md'] %}{% endif %}
+{% if padding == 'lg' %}{% set css_classes = css_classes + ['rvo-alert--padding-lg'] %}{% endif %}
+{% if padding == 'xl' %}{% set css_classes = css_classes + ['rvo-alert--padding-xl'] %}{% endif %}
+{% if padding == '2xl' %}{% set css_classes = css_classes + ['rvo-alert--padding-2xl'] %}{% endif %}
+{% if max_width %}{% set css_classes = css_classes + ['rvo-alert--layout'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+{% set container_classes = ['rvo-alert__container'] %}
+{% if max_width %}{% set container_classes = container_classes + ['rvo-max-width-layout--' + max_width] %}{% endif %}
+{% set status_icon_map = {'info': 'info', 'warning': 'waarschuwing', 'error': 'foutmelding', 'success': 'bevestiging'} %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="alert"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    <div class="{{ container_classes | join(' ') }}">
+        <span class="utrecht-icon rvo-icon rvo-icon-{{ status_icon_map[type] }} rvo-status-icon rvo-status-icon-{{ status_icon_map[type] }} rvo-icon--xl"
+            role="img" aria-label="{{ status_icon_map[type] | title }}"></span>
+        <div class="rvo-alert-text">
+            {% if heading %}<strong>{{ heading }}</strong>{% endif %}
+            <div>{{ children | safe }}</div>
+        </div>
+        {% if closable %}
+            <button type="button" class="utrecht-button utrecht-button--subtle rvo-button__close" aria-label="Sluiten">
+                <span class="utrecht-icon rvo-icon rvo-icon-kruis rvo-icon--md"
+                    role="img" aria-label="Kruis"></span>
+            </button>
+        {% endif %}
+    </div>
+</div>

@@ -15,6 +15,7 @@ const FIXTURES = [
   'layout-flow-variants.html',
   'layout-grid-variants.html',
   'typography-variants.html',
+  'alert-variants.html',
   'combined.html',
 ] as const;
 
