@@ -154,19 +154,19 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 2.1 Heading
 
-**T14: Create heading definition**
+**T14: Create heading definition** ✅
 - File: `definitions/components/heading.def.ts`
 - Props: type (values: h1-h6, default: h1), name (text), class
 - Content: allowed (overrides name)
 
-**T15: Create heading implementation**
+**T15: Create heading implementation** ✅
 → depends on: T1, T14
 - File: `implementations/components/heading.impl.ts`
 - Dynamic element: `{ prop: 'type', default: 'h1' }`
 - Classes: pattern `utrecht-heading-{level}` (extract number from h1→1, h2→2, etc.)
 - Content: `{{ children if children else name | safe }}`
 
-**T16: Generate heading template and test**
+**T16: Generate heading template and test** ✅
 → depends on: T6, T15
 - Run generator
 - File: `python/tests/test_heading_e2e.py`
