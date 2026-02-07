@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data List Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-direction: column; gap: 1.5rem; }
+        .fixture-group { margin-bottom: 0.5rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <!-- Basic data list -->
+        <div class="fixture-group">
+            <h3>Data List - Basic</h3>
+            <c-data-list>
+                <dt class="rvo-data-list__term">Voornaam</dt>
+                <dd class="rvo-data-list__description">Mees</dd>
+                <dt class="rvo-data-list__term">Achternaam</dt>
+                <dd class="rvo-data-list__description">de Vos</dd>
+                <dt class="rvo-data-list__term">Adres</dt>
+                <dd class="rvo-data-list__description">Tweede Kamer der Staten-Generaal, Den Haag</dd>
+            </c-data-list>
+        </div>
+
+        <!-- Data list with links -->
+        <div class="fixture-group">
+            <h3>Data List - With Links</h3>
+            <c-data-list>
+                <dt class="rvo-data-list__term">Website</dt>
+                <dd class="rvo-data-list__description">
+                    <a href="#" class="rvo-link">www.rijksoverheid.nl</a>
+                </dd>
+                <dt class="rvo-data-list__term">Email</dt>
+                <dd class="rvo-data-list__description">
+                    <a href="#" class="rvo-link">info@rijksoverheid.nl</a>
+                </dd>
+                <dt class="rvo-data-list__term">Telefoon</dt>
+                <dd class="rvo-data-list__description">1400</dd>
+            </c-data-list>
+        </div>
+
+        <!-- Data list with many items -->
+        <div class="fixture-group">
+            <h3>Data List - Many Items</h3>
+            <c-data-list>
+                <dt class="rvo-data-list__term">Naam</dt>
+                <dd class="rvo-data-list__description">Jan de Groot</dd>
+                <dt class="rvo-data-list__term">Geboortedatum</dt>
+                <dd class="rvo-data-list__description">1 januari 1990</dd>
+                <dt class="rvo-data-list__term">Geboorteplaats</dt>
+                <dd class="rvo-data-list__description">Amsterdam</dd>
+                <dt class="rvo-data-list__term">Nationaliteit</dt>
+                <dd class="rvo-data-list__description">Nederlands</dd>
+                <dt class="rvo-data-list__term">BSN</dt>
+                <dd class="rvo-data-list__description">123456789</dd>
+                <dt class="rvo-data-list__term">Status</dt>
+                <dd class="rvo-data-list__description">Actief</dd>
+            </c-data-list>
+        </div>
+
+        <!-- Data list inside card -->
+        <div class="fixture-group">
+            <h3>Data List - Inside Card</h3>
+            <c-card title="Persoonsgegevens" padding="md">
+                <c-data-list>
+                    <dt class="rvo-data-list__term">Voornaam</dt>
+                    <dd class="rvo-data-list__description">Mees</dd>
+                    <dt class="rvo-data-list__term">Achternaam</dt>
+                    <dd class="rvo-data-list__description">de Vos</dd>
+                </c-data-list>
+            </c-card>
+        </div>
+    </div>
+</body>
+</html>

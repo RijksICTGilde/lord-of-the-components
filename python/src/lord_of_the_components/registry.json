@@ -454,6 +454,22 @@
       }
     },
     {
+      "name": "data-list",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Key-value pair display using a definition list",
+      "category": "data-display",
+      "content": {
+        "allowed": true,
+        "description": "Definition list content (dt/dd pairs)"
+      }
+    },
+    {
       "name": "heading",
       "attributes": [
         {
