@@ -113,7 +113,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 1.3 Shared Mixins
 
-**T8: Copy shared mixin templates**
+**T8: Copy shared mixin templates** ✅
 - Copy `jinja-roos-components/.../templates/components/_attribute_mixin.j2` → `python/src/lord_of_the_components/templates/components/_attribute_mixin.j2`
 - Copy `jinja-roos-components/.../templates/components/_generic_attributes.j2` → `python/src/lord_of_the_components/templates/components/_generic_attributes.j2`
 - No modifications needed (already kebab-case for utility attrs)
