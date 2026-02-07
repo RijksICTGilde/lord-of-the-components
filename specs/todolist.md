@@ -96,7 +96,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
   - `{ values: [...] }` → `"enum"` with `enum_values`
   - `{ description }` → `"string"`
 
-**T6: Create generate-all CLI script**
+**T6: Create generate-all CLI script** ✅
 → depends on: T4, T5
 - File: `core/src/generators/jinja2/generate-all.ts`
 - Read all implementations from `implementations/components/index.ts`
