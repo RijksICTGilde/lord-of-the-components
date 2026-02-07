@@ -28,6 +28,7 @@ import { buttonImpl } from "../../../../implementations/components/button.impl.j
 import { headingImpl } from "../../../../implementations/components/heading.impl.js";
 import { iconImpl } from "../../../../implementations/components/icon.impl.js";
 import { cardImpl } from "../../../../implementations/components/card.impl.js";
+import { layoutFlowImpl } from "../../../../implementations/components/layout-flow.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -65,6 +66,7 @@ const implementations = [
   headingImpl,
   iconImpl,
   cardImpl,
+  layoutFlowImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════

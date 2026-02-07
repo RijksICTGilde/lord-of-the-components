@@ -219,23 +219,23 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 2.4 Layout-flow
 
-**T23: Create layout-flow definition**
+**T23: Create layout-flow definition** ✅
 - File: `definitions/components/layout-flow.def.ts`
 - Props: gap (spacing sizes), direction (horizontal/vertical), align, justify, class
 - Content: allowed (children pass-through)
 
-**T24: Create layout-flow implementation**
+**T24: Create layout-flow implementation** ✅
 → depends on: T1, T23
 - File: `implementations/components/layout-flow.impl.ts`
 - Element: `div`
 - Classes: `rvo-layout-flow`, pattern `rvo-layout-gap--{gap}`, conditional direction/alignment classes
 - Content: `{{ children | safe }}`
 
-**T25: Generate layout-flow template and test**
+**T25: Generate layout-flow template and test** ✅
 → depends on: T6, T24
 - Run generator
 - File: `python/tests/test_layout_flow_e2e.py`
-- Test: renders with gap/direction classes, children passed through
+- Test: renders with gap/direction classes, children passed through (37 tests)
 
 ### 2.5 Integration Tests
 
