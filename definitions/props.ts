@@ -98,6 +98,10 @@ export const PROPS = {
   ALIGN_CONTENT: "align-content",
   JUSTIFY_ITEMS: "justify-items",
   JUSTIFY_CONTENT: "justify-content",
+  VERTICAL_SPACING: "vertical-spacing",
+  INLINE_PADDING: "inline-padding",
+  CENTERED: "centered",
+  UNCENTERED: "uncentered",
 
   // ═══════════════════════════════════════════════════════════════════════════
   // IMAGES

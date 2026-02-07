@@ -29,6 +29,9 @@ import { headingImpl } from "../../../../implementations/components/heading.impl
 import { iconImpl } from "../../../../implementations/components/icon.impl.js";
 import { cardImpl } from "../../../../implementations/components/card.impl.js";
 import { layoutFlowImpl } from "../../../../implementations/components/layout-flow.impl.js";
+import { layoutColumnImpl } from "../../../../implementations/components/layout-column.impl.js";
+import { layoutRowImpl } from "../../../../implementations/components/layout-row.impl.js";
+import { maxWidthLayoutImpl } from "../../../../implementations/components/max-width-layout.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -67,6 +70,9 @@ const implementations = [
   iconImpl,
   cardImpl,
   layoutFlowImpl,
+  layoutColumnImpl,
+  layoutRowImpl,
+  maxWidthLayoutImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════

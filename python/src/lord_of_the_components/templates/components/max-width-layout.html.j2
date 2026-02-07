@@ -1,0 +1,28 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set inline_padding = _component_context.get('inline-padding', 'none') %}
+{% set size = _component_context.get('size', 'md') %}
+{% set uncentered = _component_context.get('uncentered', false) %}
+{% set css_classes = ['rvo-max-width-layout'] %}
+{% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-max-width-layout--sm'] %}{% endif %}
+{% if size == 'md' %}{% set css_classes = css_classes + ['rvo-max-width-layout--md'] %}{% endif %}
+{% if size == 'lg' %}{% set css_classes = css_classes + ['rvo-max-width-layout--lg'] %}{% endif %}
+{% if inline_padding == 'none' %}{% set css_classes = css_classes + ['rvo-max-width-layout-inline-padding--none'] %}{% endif %}
+{% if inline_padding == 'sm' %}{% set css_classes = css_classes + ['rvo-max-width-layout-inline-padding--sm'] %}{% endif %}
+{% if inline_padding == 'md' %}{% set css_classes = css_classes + ['rvo-max-width-layout-inline-padding--md'] %}{% endif %}
+{% if inline_padding == 'lg' %}{% set css_classes = css_classes + ['rvo-max-width-layout-inline-padding--lg'] %}{% endif %}
+{% if uncentered %}{% set css_classes = css_classes + ['rvo-max-width-layout--uncentered'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="max-width-layout"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</div>
