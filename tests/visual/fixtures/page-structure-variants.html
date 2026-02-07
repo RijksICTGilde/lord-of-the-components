@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Structure Variants (Header, Hero, Footer)</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 0; margin: 0; }
+        .fixture-container { display: flex; flex-direction: column; gap: 2rem; }
+        .fixture-group { margin-bottom: 0.5rem; padding: 1rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <!-- Header variants -->
+        <div class="fixture-group">
+            <h3>Header - Basic</h3>
+            <c-header text="Rijksorganisatie voor Ontwikkeling" subtitle="Ministerie van Binnenlandse Zaken en Koninkrijksrelaties"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Header - Text only</h3>
+            <c-header text="Rijksdienst voor Ondernemend Nederland"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Header - With link</h3>
+            <c-header text="RVO" subtitle="Ministerie van EZK" link="/home"/>
+        </div>
+
+        <!-- Hero variants -->
+        <div class="fixture-group">
+            <h3>Hero - Small</h3>
+            <c-hero title="Welcome" subtitle="Discover our services" size="sm"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Hero - Medium (default)</h3>
+            <c-hero title="Welcome to RVO" subtitle="We support entrepreneurs and organisations">
+                <c-paragraph name="Find information about grants, subsidies, and more."/>
+            </c-hero>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Hero - Large</h3>
+            <c-hero title="Large Hero Section" size="lg"/>
+        </div>
+
+        <!-- Footer variants -->
+        <div class="fixture-group">
+            <h3>Footer - Basic</h3>
+            <c-footer>
+                <p>Simple footer content</p>
+            </c-footer>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Footer - With payoff</h3>
+            <c-footer pay-off="Rijksdienst voor Ondernemend Nederland">
+                <p>Footer links and information</p>
+            </c-footer>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Footer - With max-width</h3>
+            <c-footer max-width="md" pay-off="My Organization">
+                <p>Constrained footer content</p>
+            </c-footer>
+        </div>
+    </div>
+</body>
+</html>

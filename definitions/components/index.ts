@@ -11,7 +11,9 @@ export { button, type ButtonDefinition } from "./button.def.js";
 export { menu, type MenuDefinition } from "./menu.def.js";
 
 // Layout components
+export { footer, type FooterDefinition } from "./footer.def.js";
 export { header, type HeaderDefinition } from "./header.def.js";
+export { hero, type HeroDefinition } from "./hero.def.js";
 export { page, type PageDefinition } from "./page.def.js";
 export { layoutFlow, type LayoutFlowDefinition } from "./layout-flow.def.js";
 export { layoutColumn, type LayoutColumnDefinition } from "./layout-column.def.js";
@@ -39,7 +41,9 @@ export { icon, type IconDefinition } from "./icon.def.js";
 // Component registry (for lookups by name)
 import { button } from "./button.def.js";
 import { menu } from "./menu.def.js";
+import { footer } from "./footer.def.js";
 import { header } from "./header.def.js";
+import { hero } from "./hero.def.js";
 import { page } from "./page.def.js";
 import { card } from "./card.def.js";
 import { heading } from "./heading.def.js";
@@ -60,7 +64,9 @@ import type { ComponentDefinition } from "../component.js";
 export const COMPONENTS: Record<string, ComponentDefinition> = {
   button,
   menu,
+  footer,
   header,
+  hero,
   page,
   card,
   heading,
