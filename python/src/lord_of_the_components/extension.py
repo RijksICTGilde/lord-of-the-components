@@ -169,6 +169,10 @@ class ComponentExtension(Extension):
         self._current_source = source
         self._tag_occurrence_counts.clear()
 
+        # If no component tags exist, skip BeautifulSoup entirely
+        if "<c-" not in source:
+            return source
+
         try:
             soup = BeautifulSoup(source, features="html.parser")
             self._process_components_in_soup(soup)
@@ -458,12 +462,14 @@ class ComponentExtension(Extension):
         return attrs
 
     def _is_generic_html_attribute(self, attr_name: str) -> bool:
-        """Check if an attribute is a generic HTML attribute."""
+        """Check if an attribute is a generic HTML attribute or utility attribute."""
         generic_prefixes = ["data-", "aria-", "hx-"]
         for prefix in generic_prefixes:
             if attr_name.startswith(prefix):
                 return True
-        return False
+        # Utility attributes used by _attribute_mixin.j2
+        utility_attrs = {"text-style", "margin", "padding"}
+        return attr_name in utility_attrs
 
     def _build_include(
         self,
@@ -473,9 +479,13 @@ class ComponentExtension(Extension):
         named_slots: Optional[Dict[str, str]] = None,
     ) -> str:
         """Build the Jinja2 include statement."""
+        from .registry import AttributeType
+
         template_path = f"components/{component_name}.html.j2"
         context_items = []
         set_statements: List[str] = []
+
+        component_def = self.registry.get_component(component_name)
 
         for key, value in attrs.items():
             if key.startswith(":"):
@@ -488,9 +498,19 @@ class ComponentExtension(Extension):
                 escaped_value = value.replace('"', '\\"')
                 context_items.append(f"'{key}': \"{escaped_value}\"")
             else:
-                str_value = str(value) if value is not None else ""
-                escaped_value = str_value.replace('"', '\\"')
-                context_items.append(f'"{key}": "{escaped_value}"')
+                # Check if this is a boolean attribute
+                attr_def = component_def.get_attribute(key) if component_def else None
+                if attr_def and attr_def.type == AttributeType.BOOLEAN:
+                    # Boolean attribute: empty string or missing value means True
+                    str_value = str(value) if value is not None else ""
+                    if str_value.lower() in ("false", "0", "no", "off"):
+                        context_items.append(f'"{key}": False')
+                    else:
+                        context_items.append(f'"{key}": True')
+                else:
+                    str_value = str(value) if value is not None else ""
+                    escaped_value = str_value.replace('"', '\\"')
+                    context_items.append(f'"{key}": "{escaped_value}"')
 
         # Handle default content
         if content:
