@@ -314,11 +314,14 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - 47 e2e tests (all passing), visual test fixture updated
 - Added GRID_COLUMN_NAMES values, DIVISION prop
 
-**T34: Implement page component**
+**T34: Implement page component** ✅
 → depends on: T26
-- Page wrapper with title, body-class, head content
-- Includes CSS/JS assets
-- Tests
+- Definition: title (required), lang, charset, description, theme, body-class, head, class
+- Hand-tuned template: full HTML document wrapper (<!DOCTYPE html>, <html>, <head>, <body>)
+- Template uses _component_context.get() pattern, data-lotc-component="page" on <html>
+- Theme → body class "theme-{value}", body-class and class props also applied to body
+- Not in generate-all.ts (hand-tuned template, not generated)
+- 28 e2e tests (all passing), 518 total tests
 
 ### 4.2 Typography Components
 

@@ -231,6 +231,60 @@
       }
     },
     {
+      "name": "page",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Page title shown in browser tab"
+        },
+        {
+          "name": "lang",
+          "type": "string",
+          "default": "en",
+          "description": "HTML language attribute"
+        },
+        {
+          "name": "charset",
+          "type": "string",
+          "default": "utf-8",
+          "description": "Document character encoding"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Meta description for SEO"
+        },
+        {
+          "name": "theme",
+          "type": "string",
+          "description": "Theme name applied as body class"
+        },
+        {
+          "name": "body-class",
+          "type": "string",
+          "description": "Additional CSS classes for the body element"
+        },
+        {
+          "name": "head",
+          "type": "string",
+          "description": "Additional content for the <head> section (raw HTML)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Full HTML document wrapper with head, meta tags, assets, and body content",
+      "category": "layout",
+      "content": {
+        "allowed": true,
+        "description": "Page body content. Can include any components and HTML."
+      }
+    },
+    {
       "name": "card",
       "attributes": [
         {
