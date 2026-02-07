@@ -192,7 +192,6 @@ export class Jinja2Generator {
   private emitPropVariables(impl: ComponentImplementation): string[] {
     const lines: string[] = [];
     const props = impl.component.props;
-    const usedProps = this.collectUsedProps(impl);
 
     // Always emit 'children' for content
     if (impl.content) {
@@ -201,7 +200,13 @@ export class Jinja2Generator {
       );
     }
 
-    for (const propName of usedProps) {
+    // Emit {% set %} for ALL component props so content templates can
+    // reference any prop variable (e.g. icon, name, color in icon spans).
+    const propNames = Object.keys(props).sort();
+    for (const propName of propNames) {
+      // Skip 'class' — handled separately via _component_context.get('class')
+      if (propName === "class") continue;
+
       const spec = props[propName];
       const varName = propToVar(propName);
       const defaultVal = spec && typeof spec === "object" ? spec.default : undefined;
@@ -216,35 +221,6 @@ export class Jinja2Generator {
     }
 
     return lines;
-  }
-
-  /**
-   * Collect all prop names referenced by class rules, attributes, and content.
-   */
-  private collectUsedProps(impl: ComponentImplementation): string[] {
-    const propSet = new Set<string>();
-
-    // Props from class rules
-    for (const rule of impl.classes) {
-      if (typeof rule !== "string") {
-        propSet.add(rule.prop);
-      }
-    }
-
-    // Props from attributes
-    if (impl.attributes) {
-      for (const attr of impl.attributes) {
-        propSet.add(attr.prop);
-      }
-    }
-
-    // Props from dynamic element
-    if (typeof impl.element === "object") {
-      propSet.add(impl.element.prop);
-    }
-
-    // Sort for deterministic output
-    return Array.from(propSet).sort();
   }
 
   /**
@@ -423,22 +399,26 @@ export class Jinja2Generator {
 
   /**
    * Emit content blocks.
+   *
+   * All blocks are joined on a single line to avoid unwanted whitespace
+   * in the rendered output (matching the jinja-roos template pattern).
    */
   private emitContent(content: string | ContentBlock[]): string[] {
     if (typeof content === "string") {
       return [`    ${content}`];
     }
 
-    const lines: string[] = [];
+    const parts: string[] = [];
     for (const block of content) {
       if (block.when) {
         const condition = this.buildContentCondition(block);
-        lines.push(`    {% if ${condition} %}${block.template}{% endif %}`);
+        parts.push(`{% if ${condition} %}${block.template}{% endif %}`);
       } else {
-        lines.push(`    ${block.template}`);
+        parts.push(block.template);
       }
     }
-    return lines;
+    // Join all content parts on a single line, indented once
+    return [`    ${parts.join("")}`];
   }
 
   /**

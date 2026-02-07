@@ -2,12 +2,18 @@
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
 {% set active = _component_context.get('active', false) %}
+{% set aria_label = _component_context.get('aria-label', '') %}
+{% set color = _component_context.get('color', 'wit') %}
 {% set disabled = _component_context.get('disabled', false) %}
 {% set full_width = _component_context.get('full-width', false) %}
+{% set href = _component_context.get('href', '') %}
 {% set html_type = _component_context.get('html-type', 'button') %}
+{% set icon = _component_context.get('icon', '') %}
 {% set loading = _component_context.get('loading', false) %}
+{% set name = _component_context.get('name', '') %}
 {% set show_icon = _component_context.get('show-icon', 'no') %}
 {% set size = _component_context.get('size', 'md') %}
+{% set target = _component_context.get('target', '') %}
 {% set type = _component_context.get('type', 'primary') %}
 {% set css_classes = ['utrecht-button'] %}
 {% if type == 'primary' %}{% set css_classes = css_classes + ['utrecht-button--primary-action'] %}{% endif %}
@@ -38,7 +44,5 @@
     {% if disabled %}disabled{% endif %}
     type="{{ html_type }}"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {% if show_icon == 'before' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ icon_aria_label | title }}"></span>{% endif %}
-    {{ children if children else name | safe }}
-    {% if show_icon == 'after' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ icon_aria_label | title }}"></span>{% endif %}
+    {% if show_icon == 'before' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>{% endif %}{{ children if children else name | safe }}{% if show_icon == 'after' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>{% endif %}
 </button>

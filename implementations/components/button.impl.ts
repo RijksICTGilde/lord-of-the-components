@@ -80,7 +80,7 @@ export const buttonImpl = defineImplementation({
     // Icon before label
     {
       template:
-        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ icon_aria_label | title }}"></span>',
+        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>',
       when: { prop: "show-icon", eq: "before" },
     },
     // Label text (children override name prop)
@@ -90,7 +90,7 @@ export const buttonImpl = defineImplementation({
     // Icon after label
     {
       template:
-        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ icon_aria_label | title }}"></span>',
+        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ aria_label | title }}"></span>',
       when: { prop: "show-icon", eq: "after" },
     },
   ],
