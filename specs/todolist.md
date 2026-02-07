@@ -75,7 +75,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
   - With `when.truthy` → wrap in `{% if prop %}...{% endif %}`
 - Handle dynamic element: `{ prop, default }` → use prop value as tag name
 
-**T5: Create definition-to-JSON registry exporter**
+**T5: Create definition-to-JSON registry exporter** ✅
 - File: `core/src/generators/jinja2/generate-registry.ts`
 - Read all component definitions from `definitions/components/*.def.ts`
 - Export to JSON format:
