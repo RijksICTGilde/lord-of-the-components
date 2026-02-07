@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Grid Variants (layout-row, layout-column, max-width-layout)</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-direction: column; gap: 2rem; }
+        .fixture-group { margin-bottom: 1rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+        .demo-box { background: #e0e7ff; padding: 1rem; border-radius: 4px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <div class="fixture-group">
+            <h3>Layout Row with Two Equal Columns</h3>
+            <c-layout-row gap="md">
+                <c-layout-column size="md-6"><div class="demo-box">Column 1 (md-6)</div></c-layout-column>
+                <c-layout-column size="md-6"><div class="demo-box">Column 2 (md-6)</div></c-layout-column>
+            </c-layout-row>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Layout Row with Three Columns</h3>
+            <c-layout-row gap="lg">
+                <c-layout-column size="lg-4"><div class="demo-box">Col 1 (lg-4)</div></c-layout-column>
+                <c-layout-column size="lg-4"><div class="demo-box">Col 2 (lg-4)</div></c-layout-column>
+                <c-layout-column size="lg-4"><div class="demo-box">Col 3 (lg-4)</div></c-layout-column>
+            </c-layout-row>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Layout Row with Sidebar + Main</h3>
+            <c-layout-row gap="md">
+                <c-layout-column size="md-4"><div class="demo-box">Sidebar (md-4)</div></c-layout-column>
+                <c-layout-column size="md-8"><div class="demo-box">Main content (md-8)</div></c-layout-column>
+            </c-layout-row>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Layout Row gap variants</h3>
+            <c-layout-row gap="xs">
+                <c-layout-column size="md-4"><div class="demo-box">XS gap</div></c-layout-column>
+                <c-layout-column size="md-4"><div class="demo-box">XS gap</div></c-layout-column>
+                <c-layout-column size="md-4"><div class="demo-box">XS gap</div></c-layout-column>
+            </c-layout-row>
+            <c-layout-row gap="xl">
+                <c-layout-column size="md-4"><div class="demo-box">XL gap</div></c-layout-column>
+                <c-layout-column size="md-4"><div class="demo-box">XL gap</div></c-layout-column>
+                <c-layout-column size="md-4"><div class="demo-box">XL gap</div></c-layout-column>
+            </c-layout-row>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Max-Width Layout sizes</h3>
+            <c-max-width-layout size="sm"><div class="demo-box">Small max-width</div></c-max-width-layout>
+            <c-max-width-layout size="md"><div class="demo-box">Medium max-width</div></c-max-width-layout>
+            <c-max-width-layout size="lg"><div class="demo-box">Large max-width</div></c-max-width-layout>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Max-Width Layout with inline padding</h3>
+            <c-max-width-layout size="md" inline-padding="md"><div class="demo-box">Medium padding</div></c-max-width-layout>
+            <c-max-width-layout size="md" inline-padding="lg"><div class="demo-box">Large padding</div></c-max-width-layout>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Max-Width Layout containing grid</h3>
+            <c-max-width-layout size="lg">
+                <c-layout-row gap="md">
+                    <c-layout-column size="md-6"><div class="demo-box">Left</div></c-layout-column>
+                    <c-layout-column size="md-6"><div class="demo-box">Right</div></c-layout-column>
+                </c-layout-row>
+            </c-max-width-layout>
+        </div>
+    </div>
+</body>
+</html>

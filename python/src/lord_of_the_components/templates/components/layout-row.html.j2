@@ -1,0 +1,39 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set gap = _component_context.get('gap', 'md') %}
+{% set vertical_spacing = _component_context.get('vertical-spacing', 'lg') %}
+{% set css_classes = ['rvo-layout-row'] %}
+{% if gap == '0' %}{% set css_classes = css_classes + ['rvo-layout-gap--0'] %}{% endif %}
+{% if gap == '3xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--3xs'] %}{% endif %}
+{% if gap == '2xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--2xs'] %}{% endif %}
+{% if gap == 'xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--xs'] %}{% endif %}
+{% if gap == 'sm' %}{% set css_classes = css_classes + ['rvo-layout-gap--sm'] %}{% endif %}
+{% if gap == 'md' %}{% set css_classes = css_classes + ['rvo-layout-gap--md'] %}{% endif %}
+{% if gap == 'lg' %}{% set css_classes = css_classes + ['rvo-layout-gap--lg'] %}{% endif %}
+{% if gap == 'xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--xl'] %}{% endif %}
+{% if gap == '2xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--2xl'] %}{% endif %}
+{% if gap == '3xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--3xl'] %}{% endif %}
+{% if gap == '4xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--4xl'] %}{% endif %}
+{% if gap == '5xl' %}{% set css_classes = css_classes + ['rvo-layout-gap--5xl'] %}{% endif %}
+{% if vertical_spacing == 'xs' %}{% set css_classes = css_classes + ['rvo-layout-vertical--xs'] %}{% endif %}
+{% if vertical_spacing == 'sm' %}{% set css_classes = css_classes + ['rvo-layout-vertical--sm'] %}{% endif %}
+{% if vertical_spacing == 'md' %}{% set css_classes = css_classes + ['rvo-layout-vertical--md'] %}{% endif %}
+{% if vertical_spacing == 'lg' %}{% set css_classes = css_classes + ['rvo-layout-vertical--lg'] %}{% endif %}
+{% if vertical_spacing == 'xl' %}{% set css_classes = css_classes + ['rvo-layout-vertical--xl'] %}{% endif %}
+{% if vertical_spacing == '2xl' %}{% set css_classes = css_classes + ['rvo-layout-vertical--2xl'] %}{% endif %}
+{% if vertical_spacing == '3xl' %}{% set css_classes = css_classes + ['rvo-layout-vertical--3xl'] %}{% endif %}
+{% if vertical_spacing == 'center' %}{% set css_classes = css_classes + ['rvo-layout-align-content-center'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="layout-row"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</div>

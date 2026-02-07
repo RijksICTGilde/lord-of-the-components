@@ -13,6 +13,7 @@ const FIXTURES = [
   'heading-variants.html',
   'icon-variants.html',
   'layout-flow-variants.html',
+  'layout-grid-variants.html',
   'combined.html',
 ] as const;
 

@@ -296,11 +296,15 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 4.1 Layout Components
 
-**T32: Implement layout-column, layout-row, max-width-layout**
+**T32: Implement layout-column, layout-row, max-width-layout** ✅
 → depends on: T26
 - Create definitions + implementations for each
 - Generate templates
-- Unit tests
+- Unit tests (79 e2e tests, all passing)
+- Visual test fixture + Playwright screenshot baseline
+- layout-column: grid column with responsive sizes (xs-1 through lg-12)
+- layout-row: grid row container with gap and vertical-spacing props
+- max-width-layout: centered container with size, inline-padding, uncentered props
 
 **T33: Implement grid component**
 → depends on: T26
