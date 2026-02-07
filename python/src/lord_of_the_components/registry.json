@@ -1,0 +1,334 @@
+{
+  "components": [
+    {
+      "name": "button",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "enum",
+          "enum_values": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "quaternary",
+            "warning",
+            "subtle",
+            "warning-subtle"
+          ],
+          "default": "primary",
+          "description": "Visual style variant"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ],
+          "default": "md",
+          "description": "Button size"
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Icon name (from implementation icon set)"
+        },
+        {
+          "name": "show-icon",
+          "type": "enum",
+          "enum_values": [
+            "before",
+            "after",
+            "no"
+          ],
+          "default": "no",
+          "description": "Icon position: before label, after label, or hidden"
+        },
+        {
+          "name": "full-width",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Button label text (can be overridden by content between tags)"
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "description": "Accessible label (for icon-only buttons)"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "html-type",
+          "type": "enum",
+          "enum_values": [
+            "button",
+            "submit",
+            "reset"
+          ],
+          "default": "button",
+          "description": "HTML type attribute (button, submit, reset)"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link URL - if set, renders as <a> instead of <button>"
+        },
+        {
+          "name": "target",
+          "type": "enum",
+          "enum_values": [
+            "_self",
+            "_blank",
+            "_parent",
+            "_top"
+          ],
+          "description": "Link target (only used when href is set)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Interactive button for user actions",
+      "category": "actions",
+      "events": [
+        "click",
+        "focus",
+        "blur"
+      ],
+      "content": {
+        "allowed": true,
+        "description": "Button label content (overrides name prop). Can include HTML/components."
+      }
+    },
+    {
+      "name": "menu",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "enum",
+          "enum_values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "horizontal",
+          "description": "Menu layout: horizontal or vertical"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ],
+          "description": "Menu size"
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "description": "Accessible label for the navigation"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Navigation menu with items",
+      "category": "navigation",
+      "events": [
+        "select"
+      ],
+      "content": {
+        "allowed": true,
+        "description": "Menu items (alternative to :items binding)",
+        "allowed_children": [
+          "menu-item"
+        ]
+      }
+    },
+    {
+      "name": "header",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Main heading text"
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "description": "Subtitle or subheading text"
+        },
+        {
+          "name": "logo",
+          "type": "string",
+          "description": "Logo image URL"
+        },
+        {
+          "name": "logo-alt",
+          "type": "string",
+          "description": "Logo alt text for accessibility"
+        },
+        {
+          "name": "logo-href",
+          "type": "string",
+          "default": "/",
+          "description": "URL the logo links to"
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "description": "Accessible label for the header region"
+        },
+        {
+          "name": "background-color",
+          "type": "string",
+          "description": "Background color (implementation specific)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Page header with title and optional logo",
+      "category": "layout",
+      "content": {
+        "allowed": true,
+        "description": "Additional header content (navigation, actions, etc.)"
+      }
+    },
+    {
+      "name": "card",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Card title/heading"
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "description": "Card subtitle"
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "description": "Card image URL"
+        },
+        {
+          "name": "image-alt",
+          "type": "string",
+          "description": "Image alt text for accessibility"
+        },
+        {
+          "name": "image-position",
+          "type": "enum",
+          "enum_values": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "default": "top",
+          "description": "Image position relative to content"
+        },
+        {
+          "name": "layout",
+          "type": "enum",
+          "enum_values": [
+            "column",
+            "row"
+          ],
+          "default": "column",
+          "description": "Card layout: column (vertical) or row (horizontal)"
+        },
+        {
+          "name": "padding",
+          "type": "enum",
+          "enum_values": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "2xl"
+          ],
+          "description": "Content padding size"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link URL - makes entire card clickable"
+        },
+        {
+          "name": "target",
+          "type": "enum",
+          "enum_values": [
+            "_self",
+            "_blank",
+            "_parent",
+            "_top"
+          ],
+          "description": "Link target (only used when href is set)"
+        },
+        {
+          "name": "background-color",
+          "type": "string",
+          "description": "Background color (implementation specific)"
+        },
+        {
+          "name": "outline",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "inverted",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Content container with optional image and link",
+      "category": "data-display",
+      "events": [
+        "click"
+      ],
+      "content": {
+        "allowed": true,
+        "description": "Card body content"
+      }
+    }
+  ]
+}

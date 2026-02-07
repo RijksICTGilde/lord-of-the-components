@@ -1,58 +1,44 @@
-{#
-  Lord of the Components - Button Template
-
-  Interactive button for user actions.
-#}
-{% set ctx = _component_context %}
-{% set variant = ctx.variant | default('primary') %}
-{% set size = ctx.size | default('md') %}
-{% set btn_type = ctx.type | default('button') %}
-{% set disabled = ctx.disabled | default(false) %}
-{% set loading = ctx.loading | default(false) %}
-{% set full_width = ctx.fullWidth | default(false) %}
-{% set icon = ctx.icon | default(none) %}
-{% set icon_position = ctx.iconPosition | default('before') %}
-
-{# Build CSS classes - semantic, to be styled by theme #}
-{% set classes = ['c-button'] %}
-{% set classes = classes + ['c-button--' ~ variant] %}
-{% set classes = classes + ['c-button--' ~ size] %}
-{% if full_width %}{% set classes = classes + ['c-button--full-width'] %}{% endif %}
-{% if loading %}{% set classes = classes + ['c-button--loading'] %}{% endif %}
-{% if disabled %}{% set classes = classes + ['c-button--disabled'] %}{% endif %}
-
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set active = _component_context.get('active', false) %}
+{% set disabled = _component_context.get('disabled', false) %}
+{% set full_width = _component_context.get('full-width', false) %}
+{% set html_type = _component_context.get('html-type', 'button') %}
+{% set loading = _component_context.get('loading', false) %}
+{% set show_icon = _component_context.get('show-icon', 'no') %}
+{% set size = _component_context.get('size', 'md') %}
+{% set type = _component_context.get('type', 'primary') %}
+{% set css_classes = ['utrecht-button'] %}
+{% if type == 'primary' %}{% set css_classes = css_classes + ['utrecht-button--primary-action'] %}{% endif %}
+{% if type == 'warning' %}{% set css_classes = css_classes + ['utrecht-button--primary-action'] %}{% endif %}
+{% if type == 'secondary' %}{% set css_classes = css_classes + ['utrecht-button--secondary-action'] %}{% endif %}
+{% if type == 'tertiary' %}{% set css_classes = css_classes + ['utrecht-button--rvo-tertiary-action'] %}{% endif %}
+{% if type == 'quaternary' %}{% set css_classes = css_classes + ['utrecht-button--rvo-quaternary-action'] %}{% endif %}
+{% if type == 'subtle' or type == 'warning-subtle' %}{% set css_classes = css_classes + ['utrecht-button--subtle'] %}{% endif %}
+{% if type == 'warning' or type == 'warning-subtle' %}{% set css_classes = css_classes + ['utrecht-button--warning'] %}{% endif %}
+{% if active %}{% set css_classes = css_classes + ['utrecht-button--active'] %}{% endif %}
+{% if loading %}{% set css_classes = css_classes + ['utrecht-button--busy'] %}{% endif %}
+{% if size == 'xs' %}{% set css_classes = css_classes + ['utrecht-button--rvo-xs'] %}{% endif %}
+{% if size == 'sm' %}{% set css_classes = css_classes + ['utrecht-button--rvo-sm'] %}{% endif %}
+{% if size == 'md' %}{% set css_classes = css_classes + ['utrecht-button--rvo-md'] %}{% endif %}
+{% if full_width %}{% set css_classes = css_classes + ['utrecht-button--rvo-full-width'] %}{% endif %}
+{% if show_icon == 'before' %}{% set css_classes = css_classes + ['utrecht-button--icon-before'] %}{% endif %}
+{% if show_icon == 'after' %}{% set css_classes = css_classes + ['utrecht-button--icon-after'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
 <button
-    type="{{ btn_type }}"
-    class="{{ classes | join(' ') }}"
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="button"
     {% if disabled %}disabled{% endif %}
-    {% if loading %}aria-busy="true"{% endif %}
-    data-variant="{{ variant }}"
-    data-size="{{ size }}"
->
-    {# Icon before content #}
-    {% if icon and icon_position == 'before' and not loading %}
-    <span class="c-button__icon c-button__icon--before">
-        {# Icon component would be included here #}
-        <span data-icon="{{ icon }}"></span>
-    </span>
-    {% endif %}
-
-    {# Loading spinner #}
-    {% if loading %}
-    <span class="c-button__spinner" aria-hidden="true">
-        {# Spinner component would be included here #}
-    </span>
-    {% endif %}
-
-    {# Button content #}
-    <span class="c-button__content"{% if loading %} aria-hidden="true"{% endif %}>
-        {{ ctx.content | safe }}
-    </span>
-
-    {# Icon after content #}
-    {% if icon and icon_position == 'after' and not loading %}
-    <span class="c-button__icon c-button__icon--after">
-        <span data-icon="{{ icon }}"></span>
-    </span>
-    {% endif %}
+    type="{{ html_type }}"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% if show_icon == 'before' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ icon_aria_label | title }}"></span>{% endif %}
+    {{ children if children else name | safe }}
+    {% if show_icon == 'after' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ size }} rvo-icon--{{ color }}" role="img" aria-label="{{ icon_aria_label | title }}"></span>{% endif %}
 </button>
