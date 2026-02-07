@@ -27,6 +27,7 @@ import { generateRegistryJSON } from "./generate-registry.js";
 import { buttonImpl } from "../../../../implementations/components/button.impl.js";
 import { headingImpl } from "../../../../implementations/components/heading.impl.js";
 import { iconImpl } from "../../../../implementations/components/icon.impl.js";
+import { cardImpl } from "../../../../implementations/components/card.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -63,6 +64,7 @@ const implementations = [
   buttonImpl,
   headingImpl,
   iconImpl,
+  cardImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
