@@ -105,7 +105,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - Also run registry exporter to produce `python/src/lord_of_the_components/registry.json`
 - Make it runnable: `npx tsx core/src/generators/jinja2/generate-all.ts`
 
-**T7: Generate button template and verify**
+**T7: Generate button template and verify** ✅
 → depends on: T2, T6
 - Run the generator for button
 - Manually compare generated `button.html.j2` with `jinja-roos-components/.../button.html.j2`

@@ -48,6 +48,12 @@
           "description": "Icon position: before label, after label, or hidden"
         },
         {
+          "name": "color",
+          "type": "string",
+          "default": "wit",
+          "description": "Icon color"
+        },
+        {
           "name": "full-width",
           "type": "boolean",
           "default": false
