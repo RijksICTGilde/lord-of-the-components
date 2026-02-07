@@ -338,11 +338,16 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 4.3 Data Display Components
 
-**T36: Implement alert component**
+**T36: Implement alert component** ✅
 → depends on: T26
-- Status types (info, success, warning, error)
-- Icon + title + content
-- Tests
+- Definition: type (info/success/warning/error), heading, padding (xs-2xl), max-width (sm/md/lg), closable (boolean), class
+- Implementation: outer div (rvo-alert + type/padding/max-width classes), inner container (rvo-alert__container)
+- Status icon with Dutch name mapping (info→info, warning→waarschuwing, error→foutmelding, success→bevestiging)
+- Alert text section with optional heading (strong), content in div
+- Optional close button (utrecht-button--subtle, rvo-button__close, rvo-icon-kruis)
+- Template hand-tuned for complex nested structure (outer + container + icon + text + close button)
+- 49 e2e tests (all passing), visual test fixture + Playwright screenshot baseline
+- 567 total tests
 
 **T37: Implement hero, footer, header components**
 → depends on: T26

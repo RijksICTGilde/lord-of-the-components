@@ -22,6 +22,9 @@ export { grid, type GridDefinition } from "./grid.def.js";
 // Data display components
 export { card, type CardDefinition } from "./card.def.js";
 
+// Feedback components
+export { alert, type AlertDefinition } from "./alert.def.js";
+
 // Typography components
 export { heading, type HeadingDefinition } from "./heading.def.js";
 export { paragraph, type ParagraphDefinition } from "./paragraph.def.js";
@@ -51,6 +54,7 @@ import { link } from "./link.def.js";
 import { label } from "./label.def.js";
 import { strong } from "./strong.def.js";
 import { em } from "./em.def.js";
+import { alert } from "./alert.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -71,6 +75,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   label,
   strong,
   em,
+  alert,
 };
 
 /**

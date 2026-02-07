@@ -38,6 +38,7 @@ import { linkImpl } from "../../../../implementations/components/link.impl.js";
 import { labelImpl } from "../../../../implementations/components/label.impl.js";
 import { strongImpl } from "../../../../implementations/components/strong.impl.js";
 import { emImpl } from "../../../../implementations/components/em.impl.js";
+import { alertImpl } from "../../../../implementations/components/alert.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -85,6 +86,7 @@ const implementations = [
   labelImpl,
   strongImpl,
   emImpl,
+  alertImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
