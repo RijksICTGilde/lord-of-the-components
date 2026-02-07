@@ -16,7 +16,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - Export everything
 - Reference: `definitions/component.ts` for the pattern to follow
 
-**T2: Create button implementation**
+**T2: Create button implementation** ✅
 → depends on: T1
 - File: `implementations/components/button.impl.ts`
 - Import button definition from `definitions/components/button.def.ts`
@@ -32,7 +32,7 @@ Dependencies are marked with `→ depends on: [task-id]`.
   - `show-icon` before/after → `utrecht-button--icon-before`, `--icon-after`
 - Content: icon-before span + `{{ children if children else name | safe }}` + icon-after span
 
-**T3: Create implementations index files**
+**T3: Create implementations index files** ✅
 → depends on: T2
 - File: `implementations/components/index.ts` -- exports all implementations
 - File: `implementations/index.ts` -- re-exports from components + helper
