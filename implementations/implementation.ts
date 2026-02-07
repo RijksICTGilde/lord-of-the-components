@@ -75,6 +75,8 @@ export interface PatternClass {
   when?: string[];
   /** Name of a value map to translate the prop value before substitution. */
   valueMap?: string;
+  /** Additional guard condition — pattern is only applied when this condition is also met. */
+  guard?: Condition;
 }
 
 /**
@@ -130,6 +132,10 @@ export interface AttributeMapping {
   value?: string;
   /** When true for "value" type, only render the attribute when the prop is truthy */
   conditional?: boolean;
+  /** Name of a value map to translate the prop value before rendering */
+  valueMap?: string;
+  /** Jinja2 filter to apply to the value (e.g., "title" for Title Case) */
+  filter?: string;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

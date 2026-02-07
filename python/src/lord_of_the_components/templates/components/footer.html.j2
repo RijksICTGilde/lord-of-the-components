@@ -1,18 +1,30 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
 {% set max_width = _component_context.get('max-width', '') %}
 {% set pay_off = _component_context.get('pay-off', '') %}
-{% set children = _component_context.get('content', '') %}
 {% set css_classes = ['rvo-footer'] %}
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
 {% endif %}
-{% set container_classes = ['rvo-footer__container'] %}
-{% if max_width == 'sm' %}{% set container_classes = container_classes + ['rvo-footer__container--sm'] %}{% endif %}
-{% if max_width == 'md' %}{% set container_classes = container_classes + ['rvo-footer__container--md'] %}{% endif %}
-{% if max_width == 'lg' %}{% set container_classes = container_classes + ['rvo-footer__container--lg'] %}{% endif %}
-<footer class="{{ css_classes | join(' ') }}" data-lotc-component="footer" {{ attrs.render_extra_attributes(_component_context) }}>
-    <div class="{{ container_classes | join(' ') }}">
-        {% if children %}{{ children | safe }}{% endif %}
-        {% if pay_off %}<div class="rvo-footer__payoff">{{ pay_off }}</div>{% endif %}
+<footer
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="footer"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% set css_classes = ['rvo-footer__container'] %}
+    {% if max_width == 'sm' %}{% set css_classes = css_classes + ['rvo-footer__container--sm'] %}{% endif %}
+    {% if max_width == 'md' %}{% set css_classes = css_classes + ['rvo-footer__container--md'] %}{% endif %}
+    {% if max_width == 'lg' %}{% set css_classes = css_classes + ['rvo-footer__container--lg'] %}{% endif %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {% if children %}
+        <span>{{ children | safe }}</span>
+        {% endif %}
+        {% if pay_off %}
+        {% set css_classes = ['rvo-footer__payoff'] %}
+        <div
+            class="{{ css_classes | join(' ') }}">
+            {{ pay_off }}
+        </div>
+        {% endif %}
     </div>
 </footer>

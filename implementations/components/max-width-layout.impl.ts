@@ -1,11 +1,8 @@
 /**
- * Max-Width-Layout Implementation
+ * Max-Width-Layout Implementation (v2 — Element Tree API)
  *
- * Maps the max-width-layout component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components max-width-layout.html.j2 (CSS class source of truth)
- *   - rvo/components/max-width-layout/src/template.tsx (React reference)
+ * Maps the max-width-layout component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: div
@@ -21,32 +18,20 @@ import { maxWidthLayout } from "../../definitions/components/max-width-layout.de
 
 export const maxWidthLayoutImpl = defineImplementation({
   component: maxWidthLayout,
-  element: "div",
 
-  classes: [
-    "rvo-max-width-layout",
+  root: {
+    element: "div",
+    isRoot: true,
 
-    // Size variants
-    {
-      prop: "size",
-      pattern: "rvo-max-width-layout--{value}",
-      when: ["sm", "md", "lg"],
-    },
+    classes: [
+      "rvo-max-width-layout",
+      { prop: "size", pattern: "rvo-max-width-layout--{value}", when: ["sm", "md", "lg"] },
+      { prop: "inline-padding", pattern: "rvo-max-width-layout-inline-padding--{value}", when: ["none", "sm", "md", "lg"] },
+      { prop: "uncentered", class: "rvo-max-width-layout--uncentered" },
+    ],
 
-    // Inline padding
-    {
-      prop: "inline-padding",
-      pattern: "rvo-max-width-layout-inline-padding--{value}",
-      when: ["none", "sm", "md", "lg"],
-    },
-
-    // Uncentered: when the uncentered boolean prop is present
-    { prop: "uncentered", class: "rvo-max-width-layout--uncentered" },
-  ],
-
-  attributes: [],
-
-  content: "{{ children | safe }}",
+    text: "{{ children | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,

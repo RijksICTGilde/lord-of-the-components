@@ -9,11 +9,13 @@
 {% set row = _component_context.get('row', false) %}
 {% set size = _component_context.get('size', 'lg') %}
 {% set wrap = _component_context.get('wrap', false) %}
+{% set is_column = not (row) %}
 {% set css_classes = ['rvo-max-width-layout'] %}
 {% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-max-width-layout--sm'] %}{% endif %}
 {% if size == 'md' %}{% set css_classes = css_classes + ['rvo-max-width-layout--md'] %}{% endif %}
 {% if size == 'lg' %}{% set css_classes = css_classes + ['rvo-max-width-layout--lg'] %}{% endif %}
-{% if row %}{% set css_classes = css_classes + ['rvo-layout-row'] %}{% else %}{% set css_classes = css_classes + ['rvo-layout-column'] %}{% endif %}
+{% if row %}{% set css_classes = css_classes + ['rvo-layout-row'] %}{% endif %}
+{% if is_column %}{% set css_classes = css_classes + ['rvo-layout-column'] %}{% endif %}
 {% if gap == '0' %}{% set css_classes = css_classes + ['rvo-layout-gap--0'] %}{% endif %}
 {% if gap == '3xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--3xs'] %}{% endif %}
 {% if gap == '2xs' %}{% set css_classes = css_classes + ['rvo-layout-gap--2xs'] %}{% endif %}

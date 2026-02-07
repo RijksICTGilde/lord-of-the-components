@@ -1,18 +1,15 @@
 /**
- * Label Implementation
+ * Label Implementation (v2 — Element Tree API)
  *
- * Maps the label component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components label.html.j2 (CSS class source of truth)
- *   - rvo/components/form-field-label/src/template.tsx (React reference)
+ * Maps the label component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: label
  *   - Base class: rvo-label
  *   - Size: rvo-label--sm (only sm gets a class; md is default)
  *   - Type: rvo-label--optional, rvo-label--required (default gets no class)
- *   - Attributes: id, for (HTML for attribute)
+ *   - Attributes: id (conditional), for (conditional — Jinja2 reserved word)
  *   - Content between tags overrides name prop
  */
 
@@ -21,36 +18,25 @@ import { label } from "../../definitions/components/label.def.js";
 
 export const labelImpl = defineImplementation({
   component: label,
-  element: "label",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-label",
+  root: {
+    element: "label",
+    isRoot: true,
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // SIZE (only sm gets a modifier; md is default)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "size", eq: "sm", class: "rvo-label--sm" },
+    classes: [
+      "rvo-label",
+      { prop: "size", eq: "sm", class: "rvo-label--sm" },
+      { prop: "type", eq: "optional", class: "rvo-label--optional" },
+      { prop: "type", eq: "required", class: "rvo-label--required" },
+    ],
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // TYPE (optional and required get modifiers; default gets none)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "type", eq: "optional", class: "rvo-label--optional" },
-    { prop: "type", eq: "required", class: "rvo-label--required" },
-  ],
+    attributes: [
+      { prop: "id", attr: "id", type: "value", conditional: true },
+      { prop: "for", attr: "for", type: "value", conditional: true },
+    ],
 
-  attributes: [
-    { prop: "id", attr: "id", type: "value" },
-    { prop: "for", attr: "for", type: "value" },
-  ],
-
-  content: [
-    {
-      template: "{{ children if children else name | safe }}",
-    },
-  ],
+    text: "{{ children if children else name | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,

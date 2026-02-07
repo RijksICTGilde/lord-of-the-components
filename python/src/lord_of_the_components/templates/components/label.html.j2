@@ -1,7 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
-{% set html_for = _component_context.get('for', '') %}
+{% set for = _component_context.get('for', '') %}
 {% set id = _component_context.get('id', '') %}
 {% set name = _component_context.get('name', '') %}
 {% set size = _component_context.get('size', 'md') %}
@@ -21,7 +21,7 @@
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="label"
     {% if id %}id="{{ id }}"{% endif %}
-    {% if html_for %}for="{{ html_for }}"{% endif %}
+    {% if for %}for="{{ for }}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children if children else name | safe }}
 </label>

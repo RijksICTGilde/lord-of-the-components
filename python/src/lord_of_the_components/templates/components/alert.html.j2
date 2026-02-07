@@ -6,6 +6,7 @@
 {% set max_width = _component_context.get('max-width', '') %}
 {% set padding = _component_context.get('padding', 'md') %}
 {% set type = _component_context.get('type', 'info') %}
+{% set status_icon_map = {'info': 'info', 'warning': 'waarschuwing', 'error': 'foutmelding', 'success': 'bevestiging'} %}
 {% set css_classes = ['rvo-alert'] %}
 {% if type == 'info' %}{% set css_classes = css_classes + ['rvo-alert--info'] %}{% endif %}
 {% if type == 'success' %}{% set css_classes = css_classes + ['rvo-alert--success'] %}{% endif %}
@@ -25,25 +26,45 @@
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
 {% endif %}
-{% set container_classes = ['rvo-alert__container'] %}
-{% if max_width %}{% set container_classes = container_classes + ['rvo-max-width-layout--' + max_width] %}{% endif %}
-{% set status_icon_map = {'info': 'info', 'warning': 'waarschuwing', 'error': 'foutmelding', 'success': 'bevestiging'} %}
 <div
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="alert"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    <div class="{{ container_classes | join(' ') }}">
-        <span class="utrecht-icon rvo-icon rvo-icon-{{ status_icon_map[type] }} rvo-status-icon rvo-status-icon-{{ status_icon_map[type] }} rvo-icon--xl"
-            role="img" aria-label="{{ status_icon_map[type] | title }}"></span>
-        <div class="rvo-alert-text">
-            {% if heading %}<strong>{{ heading }}</strong>{% endif %}
+    {% set css_classes = ['rvo-alert__container'] %}
+    {% if max_width == 'sm' %}{% set css_classes = css_classes + ['rvo-max-width-layout--sm'] %}{% endif %}
+    {% if max_width == 'md' %}{% set css_classes = css_classes + ['rvo-max-width-layout--md'] %}{% endif %}
+    {% if max_width == 'lg' %}{% set css_classes = css_classes + ['rvo-max-width-layout--lg'] %}{% endif %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {% set css_classes = ['utrecht-icon', 'rvo-icon', 'rvo-status-icon', 'rvo-icon--xl'] %}
+        {% if type %}{% set css_classes = css_classes + ['rvo-icon-' ~ status_icon_map[type]] %}{% endif %}
+        {% if type %}{% set css_classes = css_classes + ['rvo-status-icon-' ~ status_icon_map[type]] %}{% endif %}
+        <span
+            role="img"
+            aria-label="{{ status_icon_map[type] | title }}"
+            class="{{ css_classes | join(' ') }}">
+        </span>
+        {% set css_classes = ['rvo-alert-text'] %}
+        <div
+            class="{{ css_classes | join(' ') }}">
+            {% if heading %}
+            <strong>{{ heading }}</strong>
+            {% endif %}
             <div>{{ children | safe }}</div>
         </div>
         {% if closable %}
-            <button type="button" class="utrecht-button utrecht-button--subtle rvo-button__close" aria-label="Sluiten">
-                <span class="utrecht-icon rvo-icon rvo-icon-kruis rvo-icon--md"
-                    role="img" aria-label="Kruis"></span>
-            </button>
+        {% set css_classes = ['utrecht-button', 'utrecht-button--subtle', 'rvo-button__close'] %}
+        <button
+            type="button"
+            aria-label="Sluiten"
+            class="{{ css_classes | join(' ') }}">
+            {% set css_classes = ['utrecht-icon', 'rvo-icon', 'rvo-icon-kruis', 'rvo-icon--md'] %}
+            <span
+                role="img"
+                aria-label="Kruis"
+                class="{{ css_classes | join(' ') }}">
+            </span>
+        </button>
         {% endif %}
     </div>
 </div>

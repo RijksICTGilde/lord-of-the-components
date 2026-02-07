@@ -1,10 +1,8 @@
 /**
- * Em Implementation
+ * Em Implementation (v2 — Element Tree API)
  *
- * Maps the em component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components em.html.j2 (CSS class source of truth)
+ * Maps the em component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: span (not <em>, following RVO pattern)
@@ -17,20 +15,13 @@ import { em } from "../../definitions/components/em.def.js";
 
 export const emImpl = defineImplementation({
   component: em,
-  element: "span",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-text--italic",
-  ],
-
-  content: [
-    {
-      template: "{{ children if children else name | safe }}",
-    },
-  ],
+  root: {
+    element: "span",
+    isRoot: true,
+    classes: ["rvo-text--italic"],
+    text: "{{ children if children else name | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,

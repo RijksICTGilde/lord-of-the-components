@@ -1,10 +1,8 @@
 /**
- * Layout-Column Implementation
+ * Layout-Column Implementation (v2 — Element Tree API)
  *
- * Maps the layout-column component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components layout-column.html.j2 (CSS class source of truth)
+ * Maps the layout-column component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: div
@@ -19,20 +17,22 @@ import { VALUES } from "../../definitions/values.js";
 
 export const layoutColumnImpl = defineImplementation({
   component: layoutColumn,
-  element: "div",
 
-  classes: [
-    "rvo-layout-column",
-    {
-      prop: "size",
-      pattern: "rvo-layout-column--{value}",
-      when: [...VALUES.COLUMN_SIZES],
-    },
-  ],
+  root: {
+    element: "div",
+    isRoot: true,
 
-  attributes: [],
+    classes: [
+      "rvo-layout-column",
+      {
+        prop: "size",
+        pattern: "rvo-layout-column--{value}",
+        when: [...VALUES.COLUMN_SIZES],
+      },
+    ],
 
-  content: "{{ children | safe }}",
+    text: "{{ children | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,

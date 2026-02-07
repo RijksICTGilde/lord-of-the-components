@@ -158,9 +158,9 @@ setup_components(env)
 | T-A1 | ✅ Redesign `implementation.ts` — ElementNode tree API | - |
 | T-A2 | ✅ Redesign Jinja2 generator — recursive tree walker | T-A1 |
 | T-A3 | ✅ Rewrite `button.impl.ts` using tree API (reference pattern) | T-A1 |
-| T-A4 | Rewrite all remaining `*.impl.ts` using tree API | T-A3 |
-| T-A5 | Re-generate all templates — verify zero hand-tuning needed | T-A2, T-A4 |
-| T-A6 | Run full test suite — all 681+ tests pass | T-A5 |
+| T-A4 | ✅ Rewrite all remaining `*.impl.ts` using tree API | T-A3 |
+| T-A5 | ✅ Re-generate all templates — verify zero hand-tuning needed | T-A2, T-A4 |
+| T-A6 | ✅ Run full test suite — all 730 tests pass | T-A5 |
 
 ### Part B: Frontend Asset Build Pipeline
 

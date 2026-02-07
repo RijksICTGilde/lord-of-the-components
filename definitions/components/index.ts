@@ -8,6 +8,7 @@
 export { button, type ButtonDefinition } from "./button.def.js";
 
 // Navigation components
+export { breadcrumbs, type BreadcrumbsDefinition } from "./breadcrumbs.def.js";
 export { menu, type MenuDefinition } from "./menu.def.js";
 
 // Layout components
@@ -41,6 +42,7 @@ export { icon, type IconDefinition } from "./icon.def.js";
 
 // Component registry (for lookups by name)
 import { button } from "./button.def.js";
+import { breadcrumbs } from "./breadcrumbs.def.js";
 import { menu } from "./menu.def.js";
 import { footer } from "./footer.def.js";
 import { header } from "./header.def.js";
@@ -65,6 +67,7 @@ import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
   button,
+  breadcrumbs,
   menu,
   footer,
   header,

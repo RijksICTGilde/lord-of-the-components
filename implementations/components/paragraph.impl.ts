@@ -1,11 +1,8 @@
 /**
- * Paragraph Implementation
+ * Paragraph Implementation (v2 — Element Tree API)
  *
- * Maps the paragraph component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components paragraph.html.j2 (CSS class source of truth)
- *   - rvo/components/paragraph/src/template.tsx (React reference)
+ * Maps the paragraph component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: p
@@ -21,39 +18,20 @@ import { paragraph } from "../../definitions/components/paragraph.def.js";
 
 export const paragraphImpl = defineImplementation({
   component: paragraph,
-  element: "p",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-paragraph",
+  root: {
+    element: "p",
+    isRoot: true,
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // COLOR (pattern-based)
-    // ═══════════════════════════════════════════════════════════════════════
-    {
-      prop: "color",
-      pattern: "rvo-paragraph--{value}",
-      when: ["logoblauw", "wit", "zwart", "grijs-500", "grijs-900"],
-    },
+    classes: [
+      "rvo-paragraph",
+      { prop: "color", pattern: "rvo-paragraph--{value}", when: ["logoblauw", "wit", "zwart", "grijs-500", "grijs-900"] },
+      { prop: "size", pattern: "rvo-paragraph--{value}", when: ["sm", "md", "lg"] },
+      { prop: "no-spacing", class: "rvo-paragraph--no-spacing" },
+    ],
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // SIZE (pattern-based)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "size", pattern: "rvo-paragraph--{value}", when: ["sm", "md", "lg"] },
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // NO SPACING (boolean)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "no-spacing", class: "rvo-paragraph--no-spacing" },
-  ],
-
-  content: [
-    {
-      template: "{{ children if children else name | safe }}",
-    },
-  ],
+    text: "{{ children if children else name | safe }}",
+  },
 
   mixins: {
     utilityClasses: true,

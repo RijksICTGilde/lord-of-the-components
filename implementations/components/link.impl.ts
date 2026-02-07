@@ -1,22 +1,20 @@
 /**
- * Link Implementation
+ * Link Implementation (v2 — Element Tree API)
  *
- * Maps the link component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components link.html.j2 (CSS class source of truth)
- *   - rvo/components/link/src/template.tsx (React reference)
+ * Maps the link component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Element: a
  *   - Base class: rvo-link
  *   - State classes: rvo-link--active, rvo-link--hover, rvo-link--focus
- *   - With icon: rvo-link--with-icon (when show-icon != "no")
+ *   - With icon: rvo-link--with-icon (when show-icon is "before" or "after")
  *   - No underline: rvo-link--no-underline (boolean)
- *   - Color: rvo-link--{color} for non-default colors
+ *   - Color: rvo-link--{color} for non-default colors (hemelblauw is default)
  *   - Weight: rvo-link--normal (only for normal weight, bold is default)
  *   - Full container: rvo-link--full-card-link (boolean)
- *   - Content blocks for icon before/after with nested c-icon
+ *   - Icon before/after: inline span with icon classes
+ *   - href/role/target: conditional attributes (only rendered when truthy)
  */
 
 import { defineImplementation } from "../implementation.js";
@@ -24,73 +22,68 @@ import { link } from "../../definitions/components/link.def.js";
 
 export const linkImpl = defineImplementation({
   component: link,
-  element: "a",
 
-  classes: [
-    // ═══════════════════════════════════════════════════════════════════════
-    // BASE CLASS
-    // ═══════════════════════════════════════════════════════════════════════
-    "rvo-link",
+  root: {
+    element: "a",
+    isRoot: true,
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // STATE CLASSES (boolean)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "active", class: "rvo-link--active" },
-    { prop: "hover", class: "rvo-link--hover" },
-    { prop: "focus", class: "rvo-link--focus" },
+    classes: [
+      "rvo-link",
+      { prop: "active", class: "rvo-link--active" },
+      { prop: "hover", class: "rvo-link--hover" },
+      { prop: "focus", class: "rvo-link--focus" },
+      { prop: "show-icon", eq: "before", class: "rvo-link--with-icon" },
+      { prop: "show-icon", eq: "after", class: "rvo-link--with-icon" },
+      { prop: "no-underline", class: "rvo-link--no-underline" },
+      { prop: "color", eq: "donkerblauw", class: "rvo-link--donkerblauw" },
+      { prop: "color", eq: "lintblauw", class: "rvo-link--lintblauw" },
+      { prop: "color", eq: "wit", class: "rvo-link--wit" },
+      { prop: "color", eq: "zwart", class: "rvo-link--zwart" },
+      { prop: "color", eq: "grijs-700", class: "rvo-link--grijs-700" },
+      { prop: "weight", eq: "normal", class: "rvo-link--normal" },
+      { prop: "full-container-link", class: "rvo-link--full-card-link" },
+    ],
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // WITH ICON (when show-icon is "before" or "after")
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "show-icon", eq: "before", class: "rvo-link--with-icon" },
-    { prop: "show-icon", eq: "after", class: "rvo-link--with-icon" },
+    attributes: [
+      { prop: "href", attr: "href", type: "value", conditional: true },
+      { prop: "role", attr: "role", type: "value", conditional: true },
+      { prop: "target", attr: "target", type: "value", conditional: true },
+    ],
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // NO UNDERLINE (boolean)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "no-underline", class: "rvo-link--no-underline" },
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // COLOR (conditional, non-default colors only; hemelblauw is default)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "color", eq: "donkerblauw", class: "rvo-link--donkerblauw" },
-    { prop: "color", eq: "lintblauw", class: "rvo-link--lintblauw" },
-    { prop: "color", eq: "wit", class: "rvo-link--wit" },
-    { prop: "color", eq: "zwart", class: "rvo-link--zwart" },
-    { prop: "color", eq: "grijs-700", class: "rvo-link--grijs-700" },
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // WEIGHT (only 'normal' gets a class; 'bold' is default)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "weight", eq: "normal", class: "rvo-link--normal" },
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // FULL CONTAINER LINK (boolean)
-    // ═══════════════════════════════════════════════════════════════════════
-    { prop: "full-container-link", class: "rvo-link--full-card-link" },
-  ],
-
-  attributes: [
-    { prop: "href", attr: "href", type: "value" },
-    { prop: "role", attr: "role", type: "value" },
-    { prop: "target", attr: "target", type: "value" },
-  ],
-
-  content: [
-    {
-      template:
-        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ icon_size }} rvo-icon--{{ icon_color }} rvo-link__icon--before"></span>',
-      when: { prop: "show-icon", eq: "before" },
-    },
-    {
-      template: "{{ children if children else name | safe }}",
-    },
-    {
-      template:
-        '<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ icon_size }} rvo-icon--{{ icon_color }} rvo-link__icon--after"></span>',
-      when: { prop: "show-icon", eq: "after" },
-    },
-  ],
+    children: [
+      // Icon before label
+      {
+        element: "span",
+        when: { prop: "show-icon", eq: "before" },
+        classes: [
+          "utrecht-icon",
+          "rvo-icon",
+          { prop: "icon", pattern: "rvo-icon-{value}" },
+          { prop: "icon-size", pattern: "rvo-icon--{value}" },
+          { prop: "icon-color", pattern: "rvo-icon--{value}" },
+          "rvo-link__icon--before",
+        ],
+      },
+      // Label text (children override name prop) — no wrapper element, inline text
+      {
+        element: "span",
+        text: "{{ children if children else name | safe }}",
+      },
+      // Icon after label
+      {
+        element: "span",
+        when: { prop: "show-icon", eq: "after" },
+        classes: [
+          "utrecht-icon",
+          "rvo-icon",
+          { prop: "icon", pattern: "rvo-icon-{value}" },
+          { prop: "icon-size", pattern: "rvo-icon--{value}" },
+          { prop: "icon-color", pattern: "rvo-icon--{value}" },
+          "rvo-link__icon--after",
+        ],
+      },
+    ],
+  },
 
   mixins: {
     utilityClasses: true,

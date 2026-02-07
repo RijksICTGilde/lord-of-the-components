@@ -1,21 +1,17 @@
 /**
- * Grid Implementation
+ * Grid Implementation (v2 — Element Tree API)
  *
- * Maps the grid component definition to RVO CSS classes and HTML output.
- *
- * Reference:
- *   - jinja-roos-components grid.html.j2 (CSS class source of truth)
- *   - rvo/components/grid/src/template.tsx (React reference)
+ * Maps the grid component definition to RVO CSS classes and HTML output
+ * using the recursive ElementNode tree API.
  *
  * Key behavior:
  *   - Two nested divs: outer rvo-layout-grid-container + inner rvo-layout-grid
  *   - Columns: rvo-layout-grid-columns--{name} (word-based: one, two, ..., twelve)
  *   - Gap: rvo-layout-gap--{value}
  *   - Division: rvo-layout-grid--division class + style="--division: {value}"
+ *   - Custom class applies to outer container
+ *   - data-lotc-component on inner grid div (isRoot)
  *   - Content: children pass-through
- *
- * NOTE: Generated template will be hand-tuned to add the outer container div.
- * The generator produces a single-element template; the grid needs a wrapper.
  */
 
 import { defineImplementation } from "../implementation.js";
@@ -24,36 +20,34 @@ import { VALUES } from "../../definitions/values.js";
 
 export const gridImpl = defineImplementation({
   component: grid,
-  element: "div",
 
-  classes: [
-    // Inner grid div base class
-    "rvo-layout-grid",
+  root: {
+    element: "div",
+    classes: [
+      "rvo-layout-grid-container",
+    ],
 
-    // Gap between items
-    {
-      prop: "gap",
-      pattern: "rvo-layout-gap--{value}",
-      when: [...VALUES.LAYOUT_GAP_SIZES],
-    },
+    children: [
+      // Inner grid div (is the "root" for data-lotc-component tracking)
+      {
+        element: "div",
+        isRoot: true,
 
-    // Column count (word-based names)
-    {
-      prop: "columns",
-      pattern: "rvo-layout-grid-columns--{value}",
-      when: [...VALUES.GRID_COLUMN_NAMES],
-    },
+        classes: [
+          "rvo-layout-grid",
+          { prop: "gap", pattern: "rvo-layout-gap--{value}", when: [...VALUES.LAYOUT_GAP_SIZES] },
+          { prop: "columns", pattern: "rvo-layout-grid-columns--{value}", when: [...VALUES.GRID_COLUMN_NAMES] },
+          { prop: "division", class: "rvo-layout-grid--division" },
+        ],
 
-    // Division override adds a special class
-    {
-      prop: "division",
-      class: "rvo-layout-grid--division",
-    },
-  ],
+        styles: [
+          { property: "--division", prop: "division" },
+        ],
 
-  attributes: [],
-
-  content: "{{ children | safe }}",
+        text: "{{ children | safe }}",
+      },
+    ],
+  },
 
   mixins: {
     utilityClasses: true,
