@@ -239,19 +239,19 @@ Dependencies are marked with `→ depends on: [task-id]`.
 
 ### 2.5 Integration Tests
 
-**T26: Update component registry and run all generators**
+**T26: Update component registry and run all generators** ✅
 → depends on: T16, T19, T22, T25
 - Update `implementations/components/index.ts` to export all 5 implementations
 - Run generate-all to produce all templates + registry.json
 - Verify all templates exist
 
-**T27: Create nesting integration test**
+**T27: Create nesting integration test** ✅
 → depends on: T26
 - File: `python/tests/test_nesting_e2e.py`
 - Test: `<c-layout-flow gap="lg"><c-card title="Test"><c-button name="Click"/></c-card></c-layout-flow>`
 - Test: heading inside card
 - Test: icon inside button content
-- Verify correct HTML nesting
+- Verify correct HTML nesting (30 tests, all passing)
 
 ---
 
