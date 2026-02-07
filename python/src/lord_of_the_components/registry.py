@@ -87,13 +87,20 @@ class ComponentRegistry:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        for name, comp_data in data.get("components", {}).items():
-            self._register_from_dict(name, comp_data)
+        components = data.get("components", [])
+        if isinstance(components, list):
+            for comp_data in components:
+                name = comp_data.get("name", "")
+                if name:
+                    self._register_from_dict(name, comp_data)
+        else:
+            for name, comp_data in components.items():
+                self._register_from_dict(name, comp_data)
 
     def _register_from_dict(self, name: str, data: Dict[str, Any]) -> None:
         """Register a component from a dictionary."""
         attributes = []
-        for attr_data in data.get("props", []):
+        for attr_data in data.get("attributes", data.get("props", [])):
             attr_type_str = attr_data.get("type", "string")
             try:
                 attr_type = AttributeType(attr_type_str)
@@ -107,7 +114,7 @@ class ComponentRegistry:
                     required=attr_data.get("required", False),
                     default=attr_data.get("default"),
                     description=attr_data.get("description", ""),
-                    enum_values=attr_data.get("enumValues"),
+                    enum_values=attr_data.get("enum_values", attr_data.get("enumValues")),
                 )
             )
 
