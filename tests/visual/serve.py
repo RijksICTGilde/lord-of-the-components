@@ -10,6 +10,7 @@ Usage:
 
 import argparse
 import logging
+import mimetypes
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
@@ -30,14 +31,20 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 TEMPLATES_DIR = PYTHON_SRC / "lord_of_the_components" / "templates"
 REGISTRY_JSON = PYTHON_SRC / "lord_of_the_components" / "registry.json"
+STATIC_DIR = PYTHON_SRC / "lord_of_the_components" / "static"
 
-# Utrecht/RVO CSS CDN URLs
-RVO_CSS = (
-    '<link rel="stylesheet"'
-    ' href="https://unpkg.com/@utrecht/component-library-css@7/dist/index.css">'
-    "\n"
-    '<link rel="stylesheet"'
-    ' href="https://unpkg.com/@nl-rvo/assets@6/lib/cjs/index.css">'
+# Bundled CSS from webpack build (served from /static/lotc/dist/)
+BUNDLED_CSS = "\n".join(
+    f'    <link rel="stylesheet" href="/static/lotc/dist/{path}">'
+    for path in [
+        "lotc.css",
+        "@nl-rvo/assets/fonts/index.css",
+        "@nl-rvo/assets/icons/index.css",
+        "@nl-rvo/assets/images/index.css",
+        "@nl-rvo/design-tokens/index.css",
+        "@nl-rvo/component-library-css/index.css",
+        "@nl-rvo/css-button/index.css",
+    ]
 )
 
 
@@ -66,9 +73,9 @@ def render_fixture(fixture_path: str) -> str:
 
     source = fixture_file.read_text(encoding="utf-8")
 
-    # Inject RVO CSS into the <head> section
+    # Inject bundled CSS into the <head> section
     if "</head>" in source:
-        source = source.replace("</head>", f"    {RVO_CSS}\n</head>")
+        source = source.replace("</head>", f"{BUNDLED_CSS}\n</head>")
 
     template = _jinja_env.from_string(source)
     return template.render()
@@ -85,12 +92,32 @@ class FixtureHandler(SimpleHTTPRequestHandler):
             self._serve_index()
             return
 
+        if path.startswith("static/lotc/"):
+            self._serve_static(path)
+            return
+
         if path.endswith(".html"):
             self._serve_fixture(path)
             return
 
-        # Serve static files (images, etc.) from fixtures dir
         self.send_error(404, f"Not found: {path}")
+
+    def _serve_static(self, url_path: str) -> None:
+        """Serve a static file from the bundled assets directory."""
+        # url_path is "static/lotc/..." → map to STATIC_DIR / "lotc/..."
+        rel = url_path[len("static/"):]
+        file_path = STATIC_DIR / rel
+        if not file_path.is_file():
+            self.send_error(404, f"Static file not found: {url_path}")
+            return
+        content_type, _ = mimetypes.guess_type(str(file_path))
+        if content_type is None:
+            content_type = "application/octet-stream"
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Cache-Control", "public, max-age=3600")
+        self.end_headers()
+        self.wfile.write(file_path.read_bytes())
 
     def _serve_fixture(self, fixture_path: str) -> None:
         """Render and serve a fixture file."""
