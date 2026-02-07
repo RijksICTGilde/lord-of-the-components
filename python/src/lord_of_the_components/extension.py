@@ -644,9 +644,24 @@ def _get_component_assets(
     user_css_files: Optional[List[str]] = None,
     user_js_files: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
-    """Get the URLs for component CSS and JS assets."""
-    css_files = [f"{static_url_prefix}tokens.css"]
-    js_files: List[str] = []
+    """Get the URLs for component CSS and JS assets.
+
+    Returns all bundled CSS and JS file URLs produced by the webpack build pipeline.
+    The assets include the main lotc bundle plus all @nl-rvo package CSS files.
+    """
+    dist = f"{static_url_prefix}dist/"
+    css_files = [
+        f"{dist}lotc.css",
+        f"{dist}@nl-rvo/assets/fonts/index.css",
+        f"{dist}@nl-rvo/assets/icons/index.css",
+        f"{dist}@nl-rvo/assets/images/index.css",
+        f"{dist}@nl-rvo/design-tokens/index.css",
+        f"{dist}@nl-rvo/component-library-css/index.css",
+        f"{dist}@nl-rvo/css-button/index.css",
+    ]
+    js_files = [
+        f"{dist}lotc.js",
+    ]
 
     if htmx:
         js_files.insert(0, "https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js")
