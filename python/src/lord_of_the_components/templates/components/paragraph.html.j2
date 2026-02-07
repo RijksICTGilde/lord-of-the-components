@@ -1,0 +1,30 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set color = _component_context.get('color', 'grijs-900') %}
+{% set name = _component_context.get('name', '') %}
+{% set no_spacing = _component_context.get('no-spacing', false) %}
+{% set size = _component_context.get('size', 'md') %}
+{% set css_classes = ['rvo-paragraph'] %}
+{% if color == 'logoblauw' %}{% set css_classes = css_classes + ['rvo-paragraph--logoblauw'] %}{% endif %}
+{% if color == 'wit' %}{% set css_classes = css_classes + ['rvo-paragraph--wit'] %}{% endif %}
+{% if color == 'zwart' %}{% set css_classes = css_classes + ['rvo-paragraph--zwart'] %}{% endif %}
+{% if color == 'grijs-500' %}{% set css_classes = css_classes + ['rvo-paragraph--grijs-500'] %}{% endif %}
+{% if color == 'grijs-900' %}{% set css_classes = css_classes + ['rvo-paragraph--grijs-900'] %}{% endif %}
+{% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-paragraph--sm'] %}{% endif %}
+{% if size == 'md' %}{% set css_classes = css_classes + ['rvo-paragraph--md'] %}{% endif %}
+{% if size == 'lg' %}{% set css_classes = css_classes + ['rvo-paragraph--lg'] %}{% endif %}
+{% if no_spacing %}{% set css_classes = css_classes + ['rvo-paragraph--no-spacing'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<p
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="paragraph"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children if children else name | safe }}
+</p>

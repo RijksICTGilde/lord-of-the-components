@@ -1,0 +1,49 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set children = _component_context.get('content', '') %}
+{% set active = _component_context.get('active', false) %}
+{% set color = _component_context.get('color', 'hemelblauw') %}
+{% set focus = _component_context.get('focus', false) %}
+{% set full_container_link = _component_context.get('full-container-link', false) %}
+{% set hover = _component_context.get('hover', false) %}
+{% set href = _component_context.get('href', '') %}
+{% set icon = _component_context.get('icon', '') %}
+{% set icon_aria_label = _component_context.get('icon-aria-label', '') %}
+{% set icon_color = _component_context.get('icon-color', '') %}
+{% set icon_size = _component_context.get('icon-size', 'md') %}
+{% set name = _component_context.get('name', '') %}
+{% set no_underline = _component_context.get('no-underline', false) %}
+{% set role = _component_context.get('role', '') %}
+{% set show_icon = _component_context.get('show-icon', 'no') %}
+{% set target = _component_context.get('target', '') %}
+{% set weight = _component_context.get('weight', 'bold') %}
+{% set css_classes = ['rvo-link'] %}
+{% if active %}{% set css_classes = css_classes + ['rvo-link--active'] %}{% endif %}
+{% if hover %}{% set css_classes = css_classes + ['rvo-link--hover'] %}{% endif %}
+{% if focus %}{% set css_classes = css_classes + ['rvo-link--focus'] %}{% endif %}
+{% if show_icon == 'before' %}{% set css_classes = css_classes + ['rvo-link--with-icon'] %}{% endif %}
+{% if show_icon == 'after' %}{% set css_classes = css_classes + ['rvo-link--with-icon'] %}{% endif %}
+{% if no_underline %}{% set css_classes = css_classes + ['rvo-link--no-underline'] %}{% endif %}
+{% if color == 'donkerblauw' %}{% set css_classes = css_classes + ['rvo-link--donkerblauw'] %}{% endif %}
+{% if color == 'lintblauw' %}{% set css_classes = css_classes + ['rvo-link--lintblauw'] %}{% endif %}
+{% if color == 'wit' %}{% set css_classes = css_classes + ['rvo-link--wit'] %}{% endif %}
+{% if color == 'zwart' %}{% set css_classes = css_classes + ['rvo-link--zwart'] %}{% endif %}
+{% if color == 'grijs-700' %}{% set css_classes = css_classes + ['rvo-link--grijs-700'] %}{% endif %}
+{% if weight == 'normal' %}{% set css_classes = css_classes + ['rvo-link--normal'] %}{% endif %}
+{% if full_container_link %}{% set css_classes = css_classes + ['rvo-link--full-card-link'] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<a
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="link"
+    {% if href %}href="{{ href }}"{% endif %}
+    {% if role %}role="{{ role }}"{% endif %}
+    {% if target %}target="{{ target }}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% if show_icon == 'before' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ icon_size }} rvo-icon--{{ icon_color }} rvo-link__icon--before"></span>{% endif %}{{ children if children else name | safe }}{% if show_icon == 'after' %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--{{ icon_size }} rvo-icon--{{ icon_color }} rvo-link__icon--after"></span>{% endif %}
+</a>

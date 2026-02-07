@@ -33,6 +33,11 @@ import { layoutColumnImpl } from "../../../../implementations/components/layout-
 import { layoutRowImpl } from "../../../../implementations/components/layout-row.impl.js";
 import { maxWidthLayoutImpl } from "../../../../implementations/components/max-width-layout.impl.js";
 import { gridImpl } from "../../../../implementations/components/grid.impl.js";
+import { paragraphImpl } from "../../../../implementations/components/paragraph.impl.js";
+import { linkImpl } from "../../../../implementations/components/link.impl.js";
+import { labelImpl } from "../../../../implementations/components/label.impl.js";
+import { strongImpl } from "../../../../implementations/components/strong.impl.js";
+import { emImpl } from "../../../../implementations/components/em.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -75,6 +80,11 @@ const implementations = [
   layoutRowImpl,
   maxWidthLayoutImpl,
   gridImpl,
+  paragraphImpl,
+  linkImpl,
+  labelImpl,
+  strongImpl,
+  emImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════

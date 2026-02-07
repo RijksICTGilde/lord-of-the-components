@@ -23,6 +23,11 @@ export { card, type CardDefinition } from "./card.def.js";
 
 // Typography components
 export { heading, type HeadingDefinition } from "./heading.def.js";
+export { paragraph, type ParagraphDefinition } from "./paragraph.def.js";
+export { link, type LinkDefinition } from "./link.def.js";
+export { label, type LabelDefinition } from "./label.def.js";
+export { strong, type StrongDefinition } from "./strong.def.js";
+export { em, type EmDefinition } from "./em.def.js";
 
 // Visual components
 export { icon, type IconDefinition } from "./icon.def.js";
@@ -39,6 +44,11 @@ import { layoutColumn } from "./layout-column.def.js";
 import { layoutRow } from "./layout-row.def.js";
 import { maxWidthLayout } from "./max-width-layout.def.js";
 import { grid } from "./grid.def.js";
+import { paragraph } from "./paragraph.def.js";
+import { link } from "./link.def.js";
+import { label } from "./label.def.js";
+import { strong } from "./strong.def.js";
+import { em } from "./em.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -53,6 +63,11 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   "layout-row": layoutRow,
   "max-width-layout": maxWidthLayout,
   grid,
+  paragraph,
+  link,
+  label,
+  strong,
+  em,
 };
 
 /**

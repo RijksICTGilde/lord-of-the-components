@@ -747,6 +747,280 @@
         "allowed": true,
         "description": "Grid items (children)"
       }
+    },
+    {
+      "name": "paragraph",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Paragraph text (can be overridden by content between tags)"
+        },
+        {
+          "name": "color",
+          "type": "enum",
+          "enum_values": [
+            "logoblauw",
+            "wit",
+            "zwart",
+            "grijs-500",
+            "grijs-900"
+          ],
+          "default": "grijs-900",
+          "description": "Text color"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md",
+          "description": "Text size"
+        },
+        {
+          "name": "no-spacing",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Text paragraph with color, size, and spacing options",
+      "category": "typography",
+      "content": {
+        "allowed": true,
+        "description": "Paragraph content (overrides name prop). Can include HTML/components."
+      }
+    },
+    {
+      "name": "link",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Link text (can be overridden by content between tags)"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link URL"
+        },
+        {
+          "name": "color",
+          "type": "enum",
+          "enum_values": [
+            "hemelblauw",
+            "donkerblauw",
+            "lintblauw",
+            "wit",
+            "zwart",
+            "grijs-700"
+          ],
+          "default": "hemelblauw",
+          "description": "Link color"
+        },
+        {
+          "name": "weight",
+          "type": "enum",
+          "enum_values": [
+            "normal",
+            "bold"
+          ],
+          "default": "bold",
+          "description": "Font weight"
+        },
+        {
+          "name": "show-icon",
+          "type": "enum",
+          "enum_values": [
+            "before",
+            "after",
+            "no"
+          ],
+          "default": "no",
+          "description": "Icon position (before, after, or no)"
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Icon name (from the RVO icon set)"
+        },
+        {
+          "name": "icon-size",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md"
+          ],
+          "default": "md",
+          "description": "Icon size"
+        },
+        {
+          "name": "icon-color",
+          "type": "string",
+          "description": "Icon color (RVO color name)"
+        },
+        {
+          "name": "icon-aria-label",
+          "type": "string",
+          "description": "Accessible label for the icon"
+        },
+        {
+          "name": "target",
+          "type": "enum",
+          "enum_values": [
+            "_self",
+            "_blank",
+            "_parent",
+            "_top"
+          ],
+          "description": "Link target"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "description": "ARIA role attribute"
+        },
+        {
+          "name": "hover",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "focus",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "no-underline",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "full-container-link",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Styled anchor link with optional icon",
+      "category": "typography",
+      "events": [
+        "click"
+      ],
+      "content": {
+        "allowed": true,
+        "description": "Link content (overrides name prop). Can include HTML/components."
+      }
+    },
+    {
+      "name": "label",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Label text (can be overridden by content between tags)"
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": "HTML id attribute"
+        },
+        {
+          "name": "for",
+          "type": "string",
+          "description": "Associates label with a form control (for attribute)"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "sm",
+            "md"
+          ],
+          "default": "md",
+          "description": "Label size"
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "enum_values": [
+            "default",
+            "optional",
+            "required"
+          ],
+          "default": "default",
+          "description": "Label type (default, optional, required)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Form field label with size and type variants",
+      "category": "typography",
+      "content": {
+        "allowed": true,
+        "description": "Label content (overrides name prop). Can include HTML/components."
+      }
+    },
+    {
+      "name": "strong",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Text content (can be overridden by content between tags)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Semantic bold text wrapper",
+      "category": "typography",
+      "content": {
+        "allowed": true,
+        "description": "Bold content (overrides name prop). Can include HTML/components."
+      }
+    },
+    {
+      "name": "em",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Text content (can be overridden by content between tags)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Semantic emphasized (italic) text wrapper",
+      "category": "typography",
+      "content": {
+        "allowed": true,
+        "description": "Emphasized content (overrides name prop). Can include HTML/components."
+      }
     }
   ]
 }

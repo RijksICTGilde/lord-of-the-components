@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typography Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-direction: column; gap: 1.5rem; }
+        .fixture-group { margin-bottom: 0.5rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <!-- Paragraph variants -->
+        <div class="fixture-group">
+            <h3>Paragraph - Sizes</h3>
+            <c-paragraph size="sm" name="Small paragraph text"/>
+            <c-paragraph size="md" name="Medium paragraph text (default)"/>
+            <c-paragraph size="lg" name="Large paragraph text"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Paragraph - Colors</h3>
+            <c-paragraph color="grijs-900" name="grijs-900 (default)"/>
+            <c-paragraph color="logoblauw" name="logoblauw"/>
+            <c-paragraph color="zwart" name="zwart"/>
+            <c-paragraph color="grijs-500" name="grijs-500"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Paragraph - No Spacing</h3>
+            <c-paragraph name="Normal paragraph with spacing"/>
+            <c-paragraph no-spacing name="Paragraph without spacing"/>
+            <c-paragraph name="Another normal paragraph"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Paragraph - Content Override</h3>
+            <c-paragraph>Paragraph with <c-strong name="bold"/> and <c-em name="italic"/> text</c-paragraph>
+        </div>
+
+        <!-- Link variants -->
+        <div class="fixture-group">
+            <h3>Link - Basic</h3>
+            <c-link href="#" name="Default link (hemelblauw, bold)"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Link - Colors</h3>
+            <c-link href="#" color="hemelblauw" name="hemelblauw (default)"/>
+            <c-link href="#" color="donkerblauw" name="donkerblauw"/>
+            <c-link href="#" color="lintblauw" name="lintblauw"/>
+            <c-link href="#" color="zwart" name="zwart"/>
+            <c-link href="#" color="grijs-700" name="grijs-700"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Link - Weight</h3>
+            <c-link href="#" weight="bold" name="Bold weight (default)"/>
+            <c-link href="#" weight="normal" name="Normal weight"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Link - States</h3>
+            <c-link href="#" hover name="Hover state"/>
+            <c-link href="#" active name="Active state"/>
+            <c-link href="#" focus name="Focus state"/>
+            <c-link href="#" no-underline name="No underline"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Link - With Icon</h3>
+            <c-link href="#" show-icon="before" icon="home" name="Icon before"/>
+            <c-link href="#" show-icon="after" icon="chevron-right" name="Icon after"/>
+        </div>
+
+        <!-- Label variants -->
+        <div class="fixture-group">
+            <h3>Label - Sizes</h3>
+            <c-label size="md" name="Medium label (default)"/>
+            <c-label size="sm" name="Small label"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Label - Types</h3>
+            <c-label type="default" name="Default label"/>
+            <c-label type="optional" name="Optional label"/>
+            <c-label type="required" name="Required label"/>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Label - With For Attribute</h3>
+            <c-label for="email-input" name="Email address"/>
+        </div>
+
+        <!-- Strong and Em -->
+        <div class="fixture-group">
+            <h3>Strong</h3>
+            <c-paragraph><c-strong name="Bold text"/> within a paragraph</c-paragraph>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Em</h3>
+            <c-paragraph><c-em name="Italic text"/> within a paragraph</c-paragraph>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Mixed Typography</h3>
+            <c-paragraph>This paragraph has <c-strong name="bold"/>, <c-em name="italic"/>, and a <c-link href="#" name="link"/> all together.</c-paragraph>
+        </div>
+    </div>
+</body>
+</html>
