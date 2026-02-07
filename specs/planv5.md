@@ -172,7 +172,7 @@ setup_components(env)
 | T-B4 | ✅ Run npm build — verify assets in `static/lotc/dist/` | T-B2, T-B3 |
 | T-B5 | ✅ Update `page.html.j2` — include bundled CSS/JS (via webpack template) | T-B4 |
 | T-B6 | ✅ Update `extension.py` — fix `_get_component_assets()` | T-B4 |
-| T-B7 | Update `__init__.py` + `pyproject.toml` — static file helpers + packaging | T-B4 |
+| T-B7 | ✅ Update `__init__.py` + `pyproject.toml` — static file helpers + packaging | T-B4 |
 | T-B8 | Update `serve.py` — use bundled assets instead of CDN | T-B4 |
 | T-B9 | Run visual tests — verify CSS loads from bundle | T-B8 |
 
