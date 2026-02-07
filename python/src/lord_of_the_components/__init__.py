@@ -44,4 +44,19 @@ __all__ = [
     "validate_generic_color",
     "validate_expression",
     "validate_dynamic_attribute",
+    # Path helpers
+    "get_static_files_path",
+    "get_templates_path",
 ]
+
+
+def get_static_files_path() -> str:
+    """Get the path to static files for serving assets."""
+    import os
+    return os.path.join(os.path.dirname(__file__), "static")
+
+
+def get_templates_path() -> str:
+    """Get the path to component templates."""
+    import os
+    return os.path.join(os.path.dirname(__file__), "templates")
