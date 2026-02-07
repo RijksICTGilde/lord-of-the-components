@@ -43,11 +43,12 @@ export interface PatternClass {
 /** Union of all class rule types. */
 export type ClassRule = string | ConditionalClass | PatternClass;
 
-/** Maps a component prop to an HTML attribute. */
+/** Maps a component prop to an HTML attribute, or emits a static attribute. */
 export interface AttributeMapping {
-  prop: string;
+  prop?: string;
   attr: string;
-  type: "boolean" | "value";
+  type: "boolean" | "value" | "static";
+  value?: string;
 }
 
 /** A block of inner HTML content, optionally conditional. */
@@ -315,10 +316,14 @@ export class Jinja2Generator {
 
     // No `when` — use Jinja2 string concatenation for the pattern
     const parts = rule.pattern.split("{value}");
-    const jinjaExpr =
-      parts.length === 2
-        ? `'${parts[0]}' ~ ${varName} ~ '${parts[1]}'`
-        : `'${rule.pattern}'`;
+    let jinjaExpr: string;
+    if (parts.length === 2) {
+      const segments = [`'${parts[0]}'`, varName];
+      if (parts[1]) segments.push(`'${parts[1]}'`);
+      jinjaExpr = segments.join(" ~ ");
+    } else {
+      jinjaExpr = `'${rule.pattern}'`;
+    }
 
     return [
       `{% if ${varName} %}{% set css_classes = css_classes + [${jinjaExpr}] %}{% endif %}`,
@@ -387,7 +392,11 @@ export class Jinja2Generator {
    * Value:   type="{{ html_type }}"
    */
   private emitAttribute(attr: AttributeMapping): string[] {
-    const varName = propToVar(attr.prop);
+    if (attr.type === "static") {
+      return [`    ${attr.attr}="${attr.value}"`];
+    }
+
+    const varName = propToVar(attr.prop!);
 
     if (attr.type === "boolean") {
       return [`    {% if ${varName} %}${attr.attr}{% endif %}`];

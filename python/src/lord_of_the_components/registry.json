@@ -370,6 +370,55 @@
         "allowed": true,
         "description": "Heading content (overrides name prop). Can include HTML/components."
       }
+    },
+    {
+      "name": "icon",
+      "attributes": [
+        {
+          "name": "icon",
+          "type": "string",
+          "required": true,
+          "description": "Icon name (from the RVO icon set)"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "2xs",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "2xl",
+            "3xl",
+            "4xl"
+          ],
+          "default": "md",
+          "description": "Icon size"
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "description": "Icon color (RVO color name)"
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "description": "Accessible label for the icon"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Decorative or informative icon",
+      "category": "visual",
+      "content": {
+        "allowed": false,
+        "description": "Icons do not accept content (self-closing)."
+      }
     }
   ]
 }

@@ -1,0 +1,32 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_attribute_mixin.j2' as attributes %}
+{% set aria_label = _component_context.get('aria-label', '') %}
+{% set color = _component_context.get('color', '') %}
+{% set icon = _component_context.get('icon', '') %}
+{% set size = _component_context.get('size', 'md') %}
+{% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
+{% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}
+{% if size == '2xs' %}{% set css_classes = css_classes + ['rvo-icon--2xs'] %}{% endif %}
+{% if size == 'xs' %}{% set css_classes = css_classes + ['rvo-icon--xs'] %}{% endif %}
+{% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-icon--sm'] %}{% endif %}
+{% if size == 'md' %}{% set css_classes = css_classes + ['rvo-icon--md'] %}{% endif %}
+{% if size == 'lg' %}{% set css_classes = css_classes + ['rvo-icon--lg'] %}{% endif %}
+{% if size == 'xl' %}{% set css_classes = css_classes + ['rvo-icon--xl'] %}{% endif %}
+{% if size == '2xl' %}{% set css_classes = css_classes + ['rvo-icon--2xl'] %}{% endif %}
+{% if size == '3xl' %}{% set css_classes = css_classes + ['rvo-icon--3xl'] %}{% endif %}
+{% if size == '4xl' %}{% set css_classes = css_classes + ['rvo-icon--4xl'] %}{% endif %}
+{% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ color] %}{% endif %}
+{% set utility_classes = attributes.render_utility_classes(_component_context) %}
+{% if utility_classes %}
+    {% set css_classes = css_classes + utility_classes.split() %}
+{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<span
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="icon"
+    role="img"
+    aria-label="{{ aria_label }}"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+</span>
