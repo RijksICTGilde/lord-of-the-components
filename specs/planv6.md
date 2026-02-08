@@ -108,7 +108,7 @@ Replaced by webpack-bundled RVO/Utrecht CSS in `python/src/lord_of_the_component
 
 ## Part C: Update Documentation
 
-### T-C1: Rewrite `README.md`
+### T-C1: Rewrite `README.md` ✅
 
 **File:** `README.md`
 
@@ -163,3 +163,5 @@ Open `http://localhost:8080` and confirm:
 1. **Commit 1:** Part A -- Fix getting-started example (static serving + expanded showcase)
 2. **Commit 2:** Part B -- Remove all legacy files (single big deletion commit)
 3. **Commit 3:** Part C -- Rewrite README + create planv6.md
+
+BUILD_COMPLETE_MARKER

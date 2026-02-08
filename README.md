@@ -1,329 +1,193 @@
 # Lord of the Components
 
-An **implementation-agnostic** component system with `c-` prefixed tagnames that supports multiple output targets (Jinja2, React, raw HTML, Web Components) through a layered architecture.
+A component system for Jinja2 that lets you use `<c-*>` custom tags in your templates. Components render to fully styled HTML using the RVO/Utrecht design system.
 
-## Core Principles
-
-1. **Pure abstraction**: The system defines WHAT components do, not HOW they look. No CSS provided.
-2. **Auto-documented**: Every component is fully documented with rich examples
-3. **Generic-first**: Use generic sizing (sm/md/lg), colors (primary/secondary), and data structures
-4. **Implementation-agnostic**: Themes/connectors provide actual CSS and rendering
+```html
+<c-page title="My App" theme="rvo">
+  <c-heading type="h1">Welcome</c-heading>
+  <c-button type="primary" name="Get started" />
+</c-page>
+```
 
 ## Quick Start
 
-### TypeScript (Build Tooling)
+### Install
 
 ```bash
-# Install dependencies
+# Python package (Jinja2 integration)
+pip install -e python/
+
+# Node dependencies (for generators and visual tests)
 npm install
-
-# Build the core tooling
-cd core && npm run build
-
-# Run the CLI
-npx lotc build          # Build tokens and components
-npx lotc validate       # Validate definitions
-npx lotc docs           # Generate documentation
-npx lotc registry       # Generate Python registry
-npx lotc ide            # Generate IDE autocomplete
 ```
 
-### Python (Jinja2 Integration)
+### Run the Getting-Started Example
 
 ```bash
-# Install the package
-pip install -e .
+cd examples/getting-started
+python app.py --serve
+# Open http://localhost:8080
 ```
+
+This serves a fully styled page showcasing all 22 components with bundled RVO CSS.
+
+### Use in Your Own Project
 
 ```python
-from jinja2 import Environment, FileSystemLoader
-from lord_of_the_components import setup_components
+from jinja2 import Environment, FileSystemLoader, ChoiceLoader
+from lord_of_the_components import setup_components, get_templates_path, get_static_files_path
 
-env = Environment(loader=FileSystemLoader('templates'))
-setup_components(env, theme='default', htmx=True)
-
-# Now use in templates:
-# <c-page title="Home">
-#   <c-layout>
-#     <c-stack gap="md">
-#       <h1>Welcome</h1>
-#       <c-button variant="primary">Click me</c-button>
-#     </c-stack>
-#   </c-layout>
-# </c-page>
+env = Environment(loader=ChoiceLoader([
+    FileSystemLoader('your/templates'),
+    FileSystemLoader(get_templates_path()),
+]))
+setup_components(env, registry_path='path/to/registry.json')
 ```
+
+The registry file is at `python/src/lord_of_the_components/registry.json`.
+
+### Frontend Assets
+
+`<c-page>` automatically injects `<link href="/static/lotc/dist/lotc.css">`. Your server needs to serve the bundled CSS:
+
+```python
+from lord_of_the_components import get_static_files_path
+
+STATIC_DIR = get_static_files_path()  # Serve this directory at /static/lotc/
+```
+
+The CSS is built from RVO/Utrecht packages via webpack:
+
+```bash
+npm run build:fe
+```
+
+## Components
+
+### Page Structure
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| Page | `<c-page>` | Full HTML document with `<head>`, theme, and CSS injection |
+| Header | `<c-header>` | Site header with Rijksoverheid logo |
+| Hero | `<c-hero>` | Hero banner with title, subtitle, and optional image |
+| Footer | `<c-footer>` | Page footer with optional pay-off text |
+
+### Layout
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| Layout Flow | `<c-layout-flow>` | Flexbox flow with gap, direction, alignment |
+| Layout Row | `<c-layout-row>` | Grid row container |
+| Layout Column | `<c-layout-column>` | Grid column with responsive sizing (xs/sm/md/lg) |
+| Max Width Layout | `<c-max-width-layout>` | Centered container with max-width |
+| Grid | `<c-grid>` | CSS grid with named column counts and gap |
+
+### Typography
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| Heading | `<c-heading>` | `<h1>` through `<h6>` |
+| Paragraph | `<c-paragraph>` | Styled paragraph |
+| Link | `<c-link>` | Anchor with color, weight, icon options |
+| Label | `<c-label>` | Form label |
+| Strong | `<c-strong>` | Bold emphasis |
+| Em | `<c-em>` | Italic emphasis |
+
+### Actions
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| Button | `<c-button>` | Button with type, size, icon, loading, disabled states |
+
+### Data Display
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| Card | `<c-card>` | Card with optional image, link, outline, padding |
+| Icon | `<c-icon>` | RVO icon with size and color |
+| Data List | `<c-data-list>` | Definition list (`<dl>`) wrapper |
+| Alert | `<c-alert>` | Info/success/warning/error messages |
+
+### Navigation
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| Menu | `<c-menu>` + `<c-menu-item>` | Menubar with dropdowns and submenus |
+| Breadcrumbs | `<c-breadcrumbs>` + `<c-breadcrumbs-item>` | Breadcrumb trail |
 
 ## Project Structure
 
 ```
 lord-of-the-components/
-├── lotc.config.kdl           # Main configuration
-├── package.json              # NPM workspace
-├── pyproject.toml            # Python package
+├── definitions/              # Component definitions (.def.ts)
+│   ├── components/           #   button.def.ts, heading.def.ts, ...
+│   ├── props.ts              #   Shared prop definitions
+│   └── values.ts             #   Shared value enums
 │
-├── core/                     # TypeScript build tooling
-│   └── src/
-│       ├── cli/              # CLI commands (build, validate, docs, ide)
-│       ├── parser/           # KDL parsing
-│       ├── loader/           # Token/component/theme loading
-│       ├── resolver/         # Token + adapter resolution
-│       ├── rigscript/        # RigScript DSL (lexer, parser, transpilers)
-│       ├── validators/       # Accessibility validation
-│       ├── generators/       # Output generators (docs, registry, IDE)
-│       └── build.ts          # Build orchestration
+├── implementations/          # HTML/CSS mappings (.impl.ts)
+│   └── components/           #   button.impl.ts, heading.impl.ts, ...
 │
-├── tokens/                   # Design tokens (3 layers)
-│   ├── primitives/           # Raw values (colors, spacing)
-│   └── semantic/             # Purpose-driven schema
+├── core/                     # TypeScript workspace
+│   └── src/generators/       #   Jinja2 template generator
+│       └── jinja2/
+│           ├── index.ts      #   Jinja2Generator class
+│           ├── generate-all.ts    # Generate all templates + registry
+│           └── generate-registry.ts
 │
-├── themes/                   # Theme implementations
-│   └── default/
-│       ├── theme.kdl         # Token mappings
-│       └── jinja2/           # Jinja2 templates
-│
-├── packages/                 # Component packages
-│   ├── core/                 # Core components (c-page, c-button)
-│   └── layout/               # Layout (c-layout, c-grid, c-stack)
-│
-├── python/                   # Python runtime
+├── python/                   # Python package
 │   └── src/lord_of_the_components/
-│       ├── extension.py      # Jinja2 extension
-│       ├── registry.py       # Component registry
-│       └── validation.py     # Data validation
+│       ├── extension.py      #   Jinja2 extension (BeautifulSoup-based)
+│       ├── registry.py       #   Component registry
+│       ├── registry.json     #   Generated component metadata
+│       ├── templates/        #   Generated .html.j2 templates
+│       └── static/lotc/dist/ #   Bundled RVO/Utrecht CSS
 │
-└── docs/                     # Documentation
-    ├── features/             # Feature specifications
-    └── generated/            # Auto-generated docs
+├── examples/                 # Usage examples
+│   └── getting-started/      #   Fully working example app
+│
+├── tests/visual/             # Playwright visual regression tests
+│   ├── serve.py              #   Test server (port 5555)
+│   ├── fixtures/             #   HTML fixture files
+│   └── specs/                #   Playwright test specs
+│
+└── specs/                    # Project plans and progress tracking
 ```
 
-## CLI Commands
+## How to Add a New Component
 
-| Command | Description |
-|---------|-------------|
-| `lotc build` | Build tokens and components |
-| `lotc build --watch` | Watch mode - rebuild on changes |
-| `lotc build --tokens` | Build only tokens |
-| `lotc validate` | Validate component definitions |
-| `lotc docs` | Generate documentation site |
-| `lotc registry` | Generate Python registry |
-| `lotc ide` | Generate IDE autocomplete files |
+1. **Define it** in `definitions/components/{name}.def.ts` using `defineComponent()`
+2. **Implement it** in `implementations/components/{name}.impl.ts` using `defineImplementation()` with the Element Tree API
+3. **Export it** from `implementations/components/index.ts`
+4. **Add it** to the `implementations` array in `core/src/generators/jinja2/generate-all.ts`
+5. **Generate** the template and registry:
+   ```bash
+   npx tsx core/src/generators/jinja2/generate-all.ts
+   ```
+6. **Test** with e2e tests in `python/tests/test_{name}_e2e.py`
+7. **Add visual test** fixture in `tests/visual/fixtures/{name}-variants.html`
 
-## Token System (3 Layers)
-
-### Layer 1: Primitives
-Raw values that form the foundation:
-```kdl
-// tokens/primitives/colors.kdl
-colors {
-    blue {
-        "500" (color)"#3b82f6"
-        "600" (color)"#2563eb"
-    }
-}
-```
-
-### Layer 2: Semantic
-Purpose-driven vocabulary:
-```kdl
-// tokens/semantic/schema.kdl
-semantic {
-    color {
-        primary
-        primary-hover
-        on-primary
-    }
-}
-```
-
-### Layer 3: Implementation (Theme)
-Maps semantic to primitives:
-```kdl
-// themes/default/theme.kdl
-theme "default" {
-    tokens {
-        color {
-            primary       "{primitives.colors.blue.500}"
-            primary-hover "{primitives.colors.blue.600}"
-        }
-    }
-}
-```
-
-## Component Syntax
-
-### Basic Usage
-```html
-<c-button variant="primary">Click me</c-button>
-<c-stack direction="horizontal" gap="md">
-    <span>Item 1</span>
-    <span>Item 2</span>
-</c-stack>
-```
-
-### Attribute Prefixes
-
-| Prefix | Meaning | Example |
-|--------|---------|---------|
-| (none) | Static string | `variant="primary"` |
-| `:` | Dynamic expression | `:items="menu_items"` |
-| `@` | Event handler | `@click="handleClick()"` |
-
-### Generic Values
-
-Components use generic values that adapt to implementations:
-- **Sizes**: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`
-- **Colors**: `primary`, `secondary`, `success`, `warning`, `error`, `info`
-
-## Available Components
-
-### Core Package
-- `<c-page>` - HTML document structure with auto-includes
-- `<c-button>` - Interactive button for user actions
-
-### Layout Package
-- `<c-layout>` - Main layout with header/footer/sidebar regions
-- `<c-grid>` - CSS Grid-based layout
-- `<c-stack>` - Flexbox-based stacking
-
-## RigScript
-
-RigScript is a Python-like DSL for component rendering logic:
-
-```python
-# components/button/button.rig
-render.element("button"):
-    attrs.type = props.type
-    attrs.class = "btn btn-" + props.variant
-
-    if props.icon and props.icon_position == "before":
-        render.component("icon", name=props.icon)
-
-    render.slot("default")
-```
-
-Compiles to Jinja2:
-```jinja2
-<button type="{{ type }}" class="btn btn-{{ variant }}">
-  {% if icon and icon_position == "before" %}
-    {% include "components/icon.html.j2" %}
-  {% endif %}
-  {{ content | safe }}
-</button>
-```
-
-Or to React:
-```jsx
-<button type={props.type} className={`btn btn-${props.variant}`}>
-  {props.icon && props.iconPosition === "before" && <Icon name={props.icon} />}
-  {children}
-</button>
-```
-
-## Documentation System
-
-Auto-generated documentation with live examples:
-
-```bash
-lotc docs
-# Open dist/docs/index.html
-```
-
-Features:
-- Live component previews using Web Components
-- Auto-generated props/slots tables
-- Interactive playground
-- Search functionality
-- Works as static files (no server needed)
-
-## IDE Support
-
-Generate autocomplete for your IDE:
-
-```bash
-# VS Code
-lotc ide --format vscode
-# Add to settings.json: "html.customData": ["./dist/ide/lotc.html-data.json"]
-
-# WebStorm
-lotc ide --format webstorm
-# Add to package.json: "web-types": "./dist/ide/web-types.json"
-```
-
-## Python Features
-
-### Data Validation
-
-```python
-from lord_of_the_components import validate_items, validate_steps
-
-# Validate menu items
-result = validate_items([
-    {"label": "Home", "href": "/"},
-    {"label": "About", "href": "/about"}
-])
-print(result.valid)  # True
-
-# Validate progress steps
-result = validate_steps([
-    {"label": "Start", "state": "complete"},
-    {"label": "Review", "state": "current"}
-])
-```
-
-### Loading Custom Registry
-
-```python
-from pathlib import Path
-from lord_of_the_components import setup_components
-from lord_of_the_components.registry import ComponentRegistry
-
-# Load generated registry
-registry = ComponentRegistry(Path("dist/registry.json"))
-setup_components(env, registry=registry)
-```
-
-## Accessibility
-
-Built-in accessibility validation:
-
-```bash
-lotc validate --verbose
-# Reports accessibility issues in component definitions
-```
-
-Rules include:
-- Interactive elements need labels
-- Form inputs need label association
-- Images need alt text
-- Modals need focus management
+For components with complex nested structure that can't be expressed declaratively (e.g., header, hero, alert), the template may need hand-tuning after generation.
 
 ## Development
 
+### Generate Templates
+
 ```bash
-# Build TypeScript
-cd core && npm run build
-
-# Run in watch mode
-cd core && npm run dev
-
-# Test Python
-pip install -e ".[dev]"
-pytest
-
-# Generate all outputs
-npx lotc build && npx lotc docs && npx lotc ide
+npx tsx core/src/generators/jinja2/generate-all.ts
 ```
 
-## Documentation
+### Run E2E Tests
 
-See `docs/features/` for detailed documentation:
-- [RigScript Language](docs/features/rigscript.md)
-- [Generic Values](docs/features/generic-values.md)
-- [Documentation System](docs/features/documentation-system.md)
-- [Python Integration](docs/features/python-integration.md)
-- [Accessibility](docs/features/accessibility.md)
-- [IDE Support](docs/features/ide-support.md)
-- [Namespace Imports](docs/features/namespace-imports.md) (future)
+```bash
+cd python && pytest
+```
+
+### Run Visual Tests
+
+```bash
+npx playwright test --config tests/visual/playwright.config.ts
+```
+
+### Build Frontend Assets
+
+```bash
+npm run build:fe
+```
 
 ## License
 
