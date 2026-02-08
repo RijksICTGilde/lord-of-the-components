@@ -397,10 +397,8 @@ class ComponentExtension(Extension):
         for attr_name, attr_value in tag.attrs.items():
             if isinstance(attr_value, list):
                 attr_value = " ".join(attr_value)
-            elif attr_value is None:
-                attr_value = ""
             else:
-                attr_value = str(attr_value)
+                attr_value = str(attr_value) if attr_value is not None else ""
 
             if attr_name.startswith(":"):
                 # Validate dynamic attribute expression

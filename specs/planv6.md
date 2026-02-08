@@ -246,3 +246,9 @@ Added `python/tests/test_extension_unit.py` with 105 tests covering all helper f
 - `SourceLocation` and `ComponentError` edge cases
 
 Total test count: 889 → 994.
+
+### E-6: Tighten mypy configuration for stricter type checking ✅
+
+Enhanced `python/pyproject.toml` mypy settings with 7 additional strict flags: `disallow_untyped_defs`, `check_untyped_defs`, `warn_redundant_casts`, `warn_unused_ignores`, `warn_no_return`, `warn_unreachable`, `strict_equality`. All 4 source files pass cleanly.
+
+Fixed one `warn-unreachable` false positive in `extension.py:398-401` where BeautifulSoup's type stubs declare `tag.attrs` values as `str | list[str]` but at runtime can also return `None` for valueless HTML attributes. Restructured the None check into the else branch to satisfy mypy while preserving runtime safety.
