@@ -18,6 +18,7 @@ const FIXTURES = [
   'alert-variants.html',
   'data-list-variants.html',
   'menu-variants.html',
+  'breadcrumbs-variants.html',
   'page-structure-variants.html',
   'combined.html',
 ] as const;

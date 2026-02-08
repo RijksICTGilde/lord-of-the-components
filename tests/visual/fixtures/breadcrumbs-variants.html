@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breadcrumbs Variants</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 1rem; margin: 0; }
+        .fixture-container { display: flex; flex-direction: column; gap: 1.5rem; }
+        .fixture-group { margin-bottom: 0.5rem; }
+        .fixture-group h3 { margin: 0 0 0.5rem; font-size: 0.875rem; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="fixture-container">
+        <!-- Basic breadcrumbs -->
+        <div class="fixture-group">
+            <h3>Breadcrumbs - Basic (default size sm)</h3>
+            <c-breadcrumbs>
+                <c-breadcrumbs-item name="Home" href="/"/>
+                <c-breadcrumbs-item name="Products" href="/products"/>
+                <c-breadcrumbs-item name="Widget A"/>
+            </c-breadcrumbs>
+        </div>
+
+        <!-- Size variants -->
+        <div class="fixture-group">
+            <h3>Breadcrumbs - Size sm</h3>
+            <c-breadcrumbs size="sm">
+                <c-breadcrumbs-item name="Home" href="/"/>
+                <c-breadcrumbs-item name="Category" href="/category"/>
+                <c-breadcrumbs-item name="Current page"/>
+            </c-breadcrumbs>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Breadcrumbs - Size md</h3>
+            <c-breadcrumbs size="md">
+                <c-breadcrumbs-item name="Home" href="/"/>
+                <c-breadcrumbs-item name="Category" href="/category"/>
+                <c-breadcrumbs-item name="Current page"/>
+            </c-breadcrumbs>
+        </div>
+
+        <div class="fixture-group">
+            <h3>Breadcrumbs - Size lg</h3>
+            <c-breadcrumbs size="lg">
+                <c-breadcrumbs-item name="Home" href="/"/>
+                <c-breadcrumbs-item name="Category" href="/category"/>
+                <c-breadcrumbs-item name="Current page"/>
+            </c-breadcrumbs>
+        </div>
+
+        <!-- With aria-label -->
+        <div class="fixture-group">
+            <h3>Breadcrumbs - With aria-label</h3>
+            <c-breadcrumbs aria-label="Broodkruimelpad">
+                <c-breadcrumbs-item name="Rijksoverheid" href="/"/>
+                <c-breadcrumbs-item name="Onderwerpen" href="/onderwerpen"/>
+                <c-breadcrumbs-item name="Belastingen" href="/onderwerpen/belastingen"/>
+                <c-breadcrumbs-item name="Inkomstenbelasting"/>
+            </c-breadcrumbs>
+        </div>
+
+        <!-- Single item -->
+        <div class="fixture-group">
+            <h3>Breadcrumbs - Single item (current page)</h3>
+            <c-breadcrumbs>
+                <c-breadcrumbs-item name="Home"/>
+            </c-breadcrumbs>
+        </div>
+
+        <!-- Two items -->
+        <div class="fixture-group">
+            <h3>Breadcrumbs - Two items</h3>
+            <c-breadcrumbs>
+                <c-breadcrumbs-item name="Home" href="/"/>
+                <c-breadcrumbs-item name="About"/>
+            </c-breadcrumbs>
+        </div>
+
+        <!-- Long breadcrumb trail -->
+        <div class="fixture-group">
+            <h3>Breadcrumbs - Long trail</h3>
+            <c-breadcrumbs size="sm">
+                <c-breadcrumbs-item name="Home" href="/"/>
+                <c-breadcrumbs-item name="Onderwerpen" href="/onderwerpen"/>
+                <c-breadcrumbs-item name="Economie" href="/onderwerpen/economie"/>
+                <c-breadcrumbs-item name="Subsidies" href="/onderwerpen/economie/subsidies"/>
+                <c-breadcrumbs-item name="Aanvragen" href="/onderwerpen/economie/subsidies/aanvragen"/>
+                <c-breadcrumbs-item name="Details"/>
+            </c-breadcrumbs>
+        </div>
+    </div>
+</body>
+</html>

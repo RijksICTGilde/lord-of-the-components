@@ -381,7 +381,15 @@ Dependencies are marked with `→ depends on: [task-id]`.
 - 49 e2e tests (all passing), visual test fixture + Playwright screenshot baseline
 - 730 total tests, 12 visual tests
 
-**T40: Implement breadcrumbs, tabs, progress-tracker**
+**T40a: Implement breadcrumbs** ✅
+→ depends on: T26
+- Definition: breadcrumbs (size, aria-label, class) with child component breadcrumbs-item (name, href, class)
+- Implementation: ol element, rvo-breadcrumbs base class, size pattern classes
+- Hand-tuned breadcrumbs-item template: li with divider icon (delta-naar-rechts), conditional link/span rendering
+- 37 e2e tests (all passing), visual test fixture + Playwright screenshot baseline
+- 767 total tests, 13 visual tests
+
+**T40b: Implement tabs, progress-tracker**
 → depends on: T26
 - Each with items/children pattern
 - Tests

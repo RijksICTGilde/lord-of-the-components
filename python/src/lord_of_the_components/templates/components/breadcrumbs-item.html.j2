@@ -1,0 +1,16 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set name = _component_context.get('name', '') %}
+{% set href = _component_context.get('href', '') %}
+{% set item_classes = ['rvo-breadcrumbs-item'] %}
+{% if _component_context.get('class') %}
+    {% set item_classes = item_classes + _component_context['class'].split() %}
+{% endif %}
+<li class="{{ item_classes | join(' ') }}" data-lotc-component="breadcrumbs-item"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    <span class="rvo-icon rvo-icon-delta-naar-rechts rvo-icon--hemelblauw rvo-icon--xs" role="img" aria-hidden="true"></span>
+    {% if href %}
+        <a href="{{ href }}" class="rvo-link rvo-link--no-underline">{{ name }}</a>
+    {% else %}
+        <span class="rvo-breadcrumb-current-page">{{ name }}</span>
+    {% endif %}
+</li>

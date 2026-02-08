@@ -24,3 +24,4 @@ export { headerImpl } from "./header.impl.js";
 export { heroImpl } from "./hero.impl.js";
 export { footerImpl } from "./footer.impl.js";
 export { menuImpl } from "./menu.impl.js";
+export { breadcrumbsImpl } from "./breadcrumbs.impl.js";
