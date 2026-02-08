@@ -227,3 +227,22 @@ Added `python/tests/test_validation.py` with 91 tests covering `DataValidator`, 
 - Validator reuse: errors reset between calls across different methods
 
 Total test count: 798 → 889.
+
+### E-5: Add unit tests for `extension.py` ✅
+
+Added `python/tests/test_extension_unit.py` with 105 tests covering all helper functions and public API of `extension.py`. Previously only tested indirectly via integration tests (`test_extension.py` — 20 error/location tests). Tests cover:
+- `_find_tag_location()`: single/multi-line, occurrences, case-insensitive, deep indentation, edge cases (empty source, not found, beyond matches)
+- `_find_attribute_location()`: same-line, multi-line, colon/at-prefixed attrs, occurrence tracking, fallback search, not-found paths
+- `_is_generic_html_attribute()`: data-*, aria-*, hx-* prefixes, utility attrs (text-style, margin, padding), non-generic attrs
+- `_extract_slots()`: no slots, default content only, named slots, multiple named slots, mixed slots+content, HTML in slots, template-without-slot
+- `_build_include()`: string/dynamic/boolean/event attributes, content capture vars, named slot vars, escaped quotes, template paths
+- `_generate_id()`: 8-char hex output, determinism, sequential uniqueness, template-dependent uniqueness
+- `_restore_jinja_tags()`: no placeholders, single/multiple/nested placeholders, HTML entity unescaping, max-iteration safety
+- `_calculate_nesting_depth()`: depth 0/1/2, non-component wrappers not counted
+- `_is_component_tag()`: valid tags, regular HTML, NavigableString, None, non-Tag objects
+- `_get_component_assets()`: default/custom prefix, htmx on/off, user CSS/JS files, RVO bundle coverage
+- `setup_components()`: extension registration, theme/htmx/validate_data globals, return value, custom registry, searchpath append, no-loader safety
+- Preprocess edge cases: no-component early return, empty source, generic/utility/id/class attrs, multiple components, state reset between calls
+- `SourceLocation` and `ComponentError` edge cases
+
+Total test count: 889 → 994.
