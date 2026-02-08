@@ -39,6 +39,7 @@ lord_of_the_components = [
     "templates/**/*.j2",
     "static/**/*",
     "*.json",
+    "py.typed",
 ]
 
 [tool.pytest.ini_options]

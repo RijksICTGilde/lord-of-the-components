@@ -272,3 +272,11 @@ Total test count: 994 → 1012.
 ### E-9: Remove tracked build artifacts and harden `.gitignore` ✅
 
 Eight TypeScript build outputs (`*.js`, `*.d.ts`, `*.js.map`, `*.d.ts.map` for `definitions/components/index` and `definitions/components/page.def`) were committed before `.gitignore` rules were added, causing git to continue tracking them despite the ignore patterns. Ran `git rm --cached` on all 8 files so they are no longer tracked while remaining on disk for local builds. Also added `.env` / `.env.*` (security best practice) and `*.tgz` (npm pack output) patterns to `.gitignore`.
+
+### E-10: Add PEP 561 `py.typed` marker for type-checking consumers ✅
+
+The package has strict mypy configuration (7 additional strict flags), full type annotations across all 4 source files, and passes cleanly — but was missing the PEP 561 `py.typed` marker file. Without this marker, downstream packages using mypy or pyright cannot benefit from the inline type stubs when importing `lord_of_the_components`. Added:
+- Empty `python/src/lord_of_the_components/py.typed` marker file
+- `"py.typed"` entry in `[tool.setuptools.package-data]` so it's included in wheel distributions
+
+This completes the type-safety story: strict mypy config + full annotations + PEP 561 compliance.
