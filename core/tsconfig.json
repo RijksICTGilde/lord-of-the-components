@@ -18,5 +18,5 @@
     "composite": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "src/generators/jinja2/generate-all.ts"]
+  "exclude": ["node_modules", "dist", "src/generators/jinja2/generate-all.ts", "src/generators/jinja2/generate-showcase.ts"]
 }
