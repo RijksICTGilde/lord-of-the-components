@@ -67,7 +67,9 @@ def render_fixture(fixture_path: str) -> str:
     The fixture HTML is treated as a Jinja2 template, so <c-*> tags
     get preprocessed by the ComponentExtension into real HTML.
     """
-    fixture_file = FIXTURES_DIR / fixture_path
+    fixture_file = (FIXTURES_DIR / fixture_path).resolve()
+    if not fixture_file.is_relative_to(FIXTURES_DIR.resolve()):
+        return "<h1>403</h1><p>Forbidden</p>"
     if not fixture_file.exists():
         return f"<h1>404</h1><p>Fixture not found: {fixture_path}</p>"
 
@@ -76,6 +78,10 @@ def render_fixture(fixture_path: str) -> str:
     # Inject bundled CSS into the <head> section
     if "</head>" in source:
         source = source.replace("</head>", f"{BUNDLED_CSS}\n</head>")
+
+    # Add rvo-theme class to <body> so design tokens activate
+    if "<body" in source and "rvo-theme" not in source:
+        source = source.replace("<body>", '<body class="rvo-theme">')
 
     template = _jinja_env.from_string(source)
     return template.render()
@@ -106,7 +112,10 @@ class FixtureHandler(SimpleHTTPRequestHandler):
         """Serve a static file from the bundled assets directory."""
         # url_path is "static/lotc/..." → map to STATIC_DIR / "lotc/..."
         rel = url_path[len("static/"):]
-        file_path = STATIC_DIR / rel
+        file_path = (STATIC_DIR / rel).resolve()
+        if not file_path.is_relative_to(STATIC_DIR.resolve()):
+            self.send_error(403, "Forbidden")
+            return
         if not file_path.is_file():
             self.send_error(404, f"Static file not found: {url_path}")
             return

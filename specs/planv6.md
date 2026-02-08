@@ -280,3 +280,13 @@ The package has strict mypy configuration (7 additional strict flags), full type
 - `"py.typed"` entry in `[tool.setuptools.package-data]` so it's included in wheel distributions
 
 This completes the type-safety story: strict mypy config + full annotations + PEP 561 compliance.
+
+### E-11: Add path traversal guards to HTTP servers ✅
+
+Both `tests/visual/serve.py` and `examples/getting-started/app.py` had path traversal vulnerabilities: a request like `/static/lotc/../../etc/passwd` could read arbitrary files outside the intended static directory because `pathlib.Path` resolves `..` segments without checking containment. Added `resolve()` + `is_relative_to()` guards to all file-serving paths:
+- `serve.py:_serve_static()` — static asset serving now rejects paths outside `STATIC_DIR`
+- `serve.py:render_fixture()` — fixture rendering now rejects paths outside `FIXTURES_DIR`
+- `app.py:do_GET()` — template serving now rejects paths outside `TEMPLATES_DIR`
+- `app.py:_serve_static()` — static asset serving now rejects paths outside `STATIC_DIR`
+
+All guards use `Path.is_relative_to()` (available since Python 3.9, matching `requires-python = ">=3.9"`) and return 403 Forbidden for traversal attempts.

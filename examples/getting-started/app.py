@@ -87,7 +87,11 @@ def serve(env: Environment, port: int) -> None:
                 return
 
             template_name = path if path.endswith(".html") else "index.html"
-            template_file = TEMPLATES_DIR / template_name
+            template_file = (TEMPLATES_DIR / template_name).resolve()
+
+            if not template_file.is_relative_to(TEMPLATES_DIR.resolve()):
+                self.send_error(403, "Forbidden")
+                return
 
             if not template_file.exists():
                 self.send_error(404, f"Not found: {template_name}")
@@ -111,7 +115,10 @@ def serve(env: Environment, port: int) -> None:
         def _serve_static(self, url_path: str) -> None:
             """Serve static files from the LOTC bundled assets directory."""
             rel = url_path[len("static/"):]
-            file_path = STATIC_DIR / rel
+            file_path = (STATIC_DIR / rel).resolve()
+            if not file_path.is_relative_to(STATIC_DIR.resolve()):
+                self.send_error(403, "Forbidden")
+                return
             if not file_path.is_file():
                 self.send_error(404, f"Static file not found: {url_path}")
                 return
