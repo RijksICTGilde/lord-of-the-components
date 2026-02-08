@@ -290,3 +290,13 @@ Both `tests/visual/serve.py` and `examples/getting-started/app.py` had path trav
 - `app.py:_serve_static()` — static asset serving now rejects paths outside `STATIC_DIR`
 
 All guards use `Path.is_relative_to()` (available since Python 3.9, matching `requires-python = ">=3.9"`) and return 403 Forbidden for traversal attempts.
+
+### E-12: Remove unused imports and variables from test files ✅
+
+Cleaned up 9 unused imports and 1 unused variable across 4 test files, identified by `ruff check --select F401,F841`:
+- `test_errors.py`: Removed unused `ExpressionError`, `ValidationError`, `ValidationResult` imports; removed unused `exc_info` variable assignment (kept `pytest.raises` context manager)
+- `test_extension_unit.py`: Removed unused `pathlib.Path` import
+- `test_registry.py`: Removed unused `tempfile` and `SlotDefinition` imports
+- `test_validation.py`: Removed unused `pytest` and `ExpressionError` imports
+
+All 1012 tests continue to pass. Ruff F401/F841 now reports zero issues.

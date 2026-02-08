@@ -1,7 +1,6 @@
 """Unit tests for ComponentRegistry, component definitions, and JSON loading."""
 
 import json
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -11,7 +10,6 @@ from lord_of_the_components.registry import (
     AttributeType,
     ComponentDefinition,
     ComponentRegistry,
-    SlotDefinition,
 )
 
 

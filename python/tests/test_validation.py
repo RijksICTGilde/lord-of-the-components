@@ -4,12 +4,9 @@ Covers DataValidator class methods, custom schema support, convenience functions
 expression validation edge cases, and validate_dynamic_attribute.
 """
 
-import pytest
-
 from lord_of_the_components.validation import (
     ColumnSchema,
     DataValidator,
-    ExpressionError,
     ItemSchema,
     StepSchema,
     ValidationError,
