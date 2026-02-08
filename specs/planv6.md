@@ -190,3 +190,9 @@ Open `http://localhost:8080` and confirm:
 
 BUILD_COMPLETE_MARKER
 VERIFY_COMPLETE_MARKER
+
+## Enhancements
+
+### E-1: Add TypeScript build artifacts to `.gitignore` ✅
+
+Added gitignore rules for ~120 TypeScript compilation outputs (`.js`, `.d.ts`, `.js.map`, `.d.ts.map`) in `definitions/`, `implementations/`, `core/src/generators/jinja2/`, and `tests/visual/`. Also ignores the duplicate `tests/visual/snapshots/components.spec.js/` snapshot directory. Prevents accidental commits of build artifacts while keeping all source `.ts` files tracked.
