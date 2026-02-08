@@ -10,9 +10,6 @@ from jinja2 import Environment
 
 from lord_of_the_components import ComponentExtension, ComponentError, SourceLocation
 from lord_of_the_components.validation import (
-    ExpressionError,
-    ValidationError,
-    ValidationResult,
     validate_expression,
     validate_items,
     validate_columns,
@@ -115,7 +112,7 @@ class TestSuggestionQuality:
         """Should not suggest when name is too different from any valid option."""
         source = '<c-xyz123abc>Content</c-xyz123abc>'
 
-        with pytest.raises(ComponentError) as exc_info:
+        with pytest.raises(ComponentError):
             extension.preprocess(source, "test.html")
 
         # Suggestion might be None when there's no close match
