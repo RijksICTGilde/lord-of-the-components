@@ -252,3 +252,10 @@ Total test count: 889 → 994.
 Enhanced `python/pyproject.toml` mypy settings with 7 additional strict flags: `disallow_untyped_defs`, `check_untyped_defs`, `warn_redundant_casts`, `warn_unused_ignores`, `warn_no_return`, `warn_unreachable`, `strict_equality`. All 4 source files pass cleanly.
 
 Fixed one `warn-unreachable` false positive in `extension.py:398-401` where BeautifulSoup's type stubs declare `tag.attrs` values as `str | list[str]` but at runtime can also return `None` for valueless HTML attributes. Restructured the None check into the else branch to satisfy mypy while preserving runtime safety.
+
+### E-7: Add pytest coverage configuration with 95% enforcement ✅
+
+Added `[tool.coverage.run]`, `[tool.coverage.report]`, and pytest `addopts` to `python/pyproject.toml` so that every `pytest` run automatically collects coverage, reports missing lines, and fails if coverage drops below 95%. Current coverage: 97.58% (660 statements, 16 missed). This protects the investment in the 994 existing tests by catching coverage regressions early. Configuration:
+- `addopts`: `--cov=lord_of_the_components --cov-report=term-missing --cov-fail-under=95`
+- `source`: `lord_of_the_components` (excludes test files from coverage)
+- `exclude_lines`: standard pragmas (`no cover`, `__main__`, `TYPE_CHECKING`)
