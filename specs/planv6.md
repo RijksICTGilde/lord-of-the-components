@@ -209,3 +209,7 @@ Added `python/tests/test_registry.py` with 31 tests covering `ComponentRegistry`
 - Integration smoke test against the real `registry.json` (≥20 components load correctly)
 
 Total test count: 767 → 798.
+
+### E-3: Fix TypeScript build by excluding `generate-showcase.ts` from tsc ✅
+
+The `tsc` build in `core/` was broken with 10 errors because `generate-showcase.ts` imports from `definitions/` and `implementations/` (outside `rootDir`). Added it to the tsconfig `exclude` list alongside `generate-all.ts` — both files are run via `npx tsx`, not through the compiled build. Build now passes cleanly; generator and all 798 tests unaffected.
