@@ -213,3 +213,17 @@ Total test count: 767 → 798.
 ### E-3: Fix TypeScript build by excluding `generate-showcase.ts` from tsc ✅
 
 The `tsc` build in `core/` was broken with 10 errors because `generate-showcase.ts` imports from `definitions/` and `implementations/` (outside `rootDir`). Added it to the tsconfig `exclude` list alongside `generate-all.ts` — both files are run via `npx tsx`, not through the compiled build. Build now passes cleanly; generator and all 798 tests unaffected.
+
+### E-4: Add unit tests for `validation.py` ✅
+
+Added `python/tests/test_validation.py` with 91 tests covering `DataValidator`, all three schema types (`ItemSchema`, `ColumnSchema`, `StepSchema`), convenience functions, expression validation, and `validate_dynamic_attribute`. Previously only tested indirectly via `test_errors.py` (error message quality). Tests cover:
+- `DataValidator.validate_items()`: default schema, custom label/required keys, nested children (valid, invalid, deeply nested, non-list), empty list, custom path, multiple errors with correct indices
+- `DataValidator.validate_columns()`: dict format, string shorthand, custom schema, mixed valid/invalid
+- `DataValidator.validate_steps()`: valid states, custom states, custom label/state keys, optional state, error paths
+- `DataValidator.validate_type()`: single type, tuple of types, None, bool-as-int, custom path
+- Convenience functions: all valid sizes/colors, custom key parameters
+- Expression validation: valid expressions (attribute access, function calls, comparisons, list/dict literals, ternary), empty/whitespace/None, Jinja delimiter/control tag rejection, bracket balance (unclosed, unmatched, mismatched, strings), syntax error suggestions (&&→and, ||→or, !→not, =→==)
+- `validate_dynamic_attribute()`: colon prefix handling, error expression formatting
+- Validator reuse: errors reset between calls across different methods
+
+Total test count: 798 → 889.
