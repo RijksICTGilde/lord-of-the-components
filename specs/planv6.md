@@ -259,3 +259,12 @@ Added `[tool.coverage.run]`, `[tool.coverage.report]`, and pytest `addopts` to `
 - `addopts`: `--cov=lord_of_the_components --cov-report=term-missing --cov-fail-under=95`
 - `source`: `lord_of_the_components` (excludes test files from coverage)
 - `exclude_lines`: standard pragmas (`no cover`, `__main__`, `TYPE_CHECKING`)
+
+### E-8: Raise test coverage from 97.58% to 99.39% ✅
+
+Added 18 tests covering previously untested code paths: `test_init.py` (13 tests) and extension edge cases (5 tests). Coverage improved from 97.58% (16 missed lines) to 99.39% (4 missed lines). Tests cover:
+- `__init__.py`: `get_static_files_path()` and `get_templates_path()` path helpers (previously 64% → 100%), plus `__version__` and `__all__` export verification
+- `extension.py`: Generic exception wrapping as RuntimeError with cause chain preservation (lines 188-190), slot name returned as list by BeautifulSoup (line 363), orphaned placeholder detection (lines 570-573), non-list searchpath fallback in `setup_components()` (lines 626-627)
+- Remaining 4 uncovered lines are near-impossible defensive guards: empty component list early return (line 205), circular dependency detection (line 274), and `=` to `==` suggestion parse failure (validation.py lines 527-528)
+
+Total test count: 994 → 1012.

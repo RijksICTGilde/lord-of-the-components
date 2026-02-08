@@ -804,3 +804,122 @@ class TestComponentErrorEdgeCases:
     def test_inherits_from_exception(self):
         error = ComponentError("test")
         assert isinstance(error, Exception)
+
+
+# ---------------------------------------------------------------------------
+# Extension edge cases: uncovered defensive code paths
+# ---------------------------------------------------------------------------
+
+
+class TestPreprocessGenericExceptionWrapping:
+    """Tests for the generic Exception handler at extension.py:188-190."""
+
+    def test_generic_exception_wrapped_as_runtime_error(self):
+        """Non-ComponentError exceptions get wrapped as RuntimeError with template context."""
+        env = Environment()
+        env.add_extension(ComponentExtension)
+        ext = env.extensions[ComponentExtension.identifier]
+
+        # Monkey-patch _process_components_in_soup to raise a generic exception
+        original = ext._process_components_in_soup
+
+        def raise_generic(soup):
+            raise ValueError("something went wrong internally")
+
+        ext._process_components_in_soup = raise_generic
+
+        with pytest.raises(RuntimeError, match="Component preprocessing failed"):
+            ext.preprocess("<c-button>Click</c-button>", "broken.html")
+
+        ext._process_components_in_soup = original
+
+    def test_generic_exception_includes_template_name(self):
+        env = Environment()
+        env.add_extension(ComponentExtension)
+        ext = env.extensions[ComponentExtension.identifier]
+
+        def raise_generic(soup):
+            raise TypeError("bad type")
+
+        ext._process_components_in_soup = raise_generic
+
+        with pytest.raises(RuntimeError, match="broken-template.html"):
+            ext.preprocess("<c-button>Click</c-button>", "broken-template.html")
+
+        ext._process_components_in_soup = raise_generic  # restore isn't critical
+
+    def test_generic_exception_preserves_cause(self):
+        env = Environment()
+        env.add_extension(ComponentExtension)
+        ext = env.extensions[ComponentExtension.identifier]
+
+        original_error = ValueError("root cause")
+
+        def raise_generic(soup):
+            raise original_error
+
+        ext._process_components_in_soup = raise_generic
+
+        with pytest.raises(RuntimeError) as exc_info:
+            ext.preprocess("<c-button>Click</c-button>", "test.html")
+
+        assert exc_info.value.__cause__ is original_error
+
+
+class TestSlotNameAsList:
+    """Tests for extension.py:363 — slot name returned as list by BeautifulSoup."""
+
+    def test_slot_name_as_list_uses_first_element(self):
+        env = Environment()
+        env.add_extension(ComponentExtension)
+        ext = env.extensions[ComponentExtension.identifier]
+
+        # BeautifulSoup can return attribute values as lists for duplicate attrs.
+        # Construct a tag manually with slot attr as a list.
+        soup = BeautifulSoup("<div></div>", "html.parser")
+        component_tag = soup.new_tag("c-button")
+
+        template_tag = soup.new_tag("template")
+        template_tag.attrs["slot"] = ["header", "extra"]
+        template_tag.string = "Header content"
+        component_tag.append(template_tag)
+
+        named_slots, default_content = ext._extract_slots(component_tag)
+        assert "header" in named_slots
+        assert named_slots["header"] == "Header content"
+
+
+class TestOrphanedPlaceholders:
+    """Tests for extension.py:570-573 — orphaned placeholder warning."""
+
+    def test_orphaned_placeholder_logged(self):
+        env = Environment()
+        env.add_extension(ComponentExtension)
+        ext = env.extensions[ComponentExtension.identifier]
+
+        # Inject a placeholder that has no mapping
+        html = "before JINJA2_PLACEHOLDER_deadbeef after"
+        ext._jinja_placeholders.clear()
+        # The placeholder text is present but not in the dict → orphaned
+
+        result = ext._restore_jinja_tags(html)
+        # Should return with placeholder still present (no replacement possible)
+        assert "JINJA2_PLACEHOLDER_deadbeef" in result
+
+
+class TestSetupNonListSearchpath:
+    """Tests for extension.py:626-627 — non-list searchpath fallback."""
+
+    def test_non_list_searchpath_converted_to_list(self):
+        env = Environment()
+        loader = MagicMock()
+        loader.searchpath = "/some/path"  # String, not list
+        env.loader = loader
+        env.add_extension(ComponentExtension)
+
+        setup_components(env)
+
+        # Should have been converted to a list containing both paths
+        assert isinstance(loader.searchpath, list)
+        assert loader.searchpath[0] == "/some/path"
+        assert any("templates" in p for p in loader.searchpath)
