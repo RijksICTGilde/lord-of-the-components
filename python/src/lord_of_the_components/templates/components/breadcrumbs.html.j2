@@ -1,0 +1,16 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set aria_label = _component_context.get('aria-label', '') %}
+{% set size = _component_context.get('size', 'sm') %}
+{% set css_classes = ['rvo-breadcrumbs'] %}
+{% if size %}{% set css_classes = css_classes + ['rvo-breadcrumbs--' ~ size] %}{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<ol
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="breadcrumbs"
+    {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</ol>

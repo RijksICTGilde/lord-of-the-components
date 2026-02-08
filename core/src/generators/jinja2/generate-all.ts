@@ -44,6 +44,7 @@ import { headerImpl } from "../../../../implementations/components/header.impl.j
 import { heroImpl } from "../../../../implementations/components/hero.impl.js";
 import { footerImpl } from "../../../../implementations/components/footer.impl.js";
 import { menuImpl } from "../../../../implementations/components/menu.impl.js";
+import { breadcrumbsImpl } from "../../../../implementations/components/breadcrumbs.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -97,6 +98,7 @@ const implementations = [
   heroImpl,
   footerImpl,
   menuImpl,
+  breadcrumbsImpl,
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
