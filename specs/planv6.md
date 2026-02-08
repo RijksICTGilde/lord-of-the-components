@@ -268,3 +268,7 @@ Added 18 tests covering previously untested code paths: `test_init.py` (13 tests
 - Remaining 4 uncovered lines are near-impossible defensive guards: empty component list early return (line 205), circular dependency detection (line 274), and `=` to `==` suggestion parse failure (validation.py lines 527-528)
 
 Total test count: 994 → 1012.
+
+### E-9: Remove tracked build artifacts and harden `.gitignore` ✅
+
+Eight TypeScript build outputs (`*.js`, `*.d.ts`, `*.js.map`, `*.d.ts.map` for `definitions/components/index` and `definitions/components/page.def`) were committed before `.gitignore` rules were added, causing git to continue tracking them despite the ignore patterns. Ran `git rm --cached` on all 8 files so they are no longer tracked while remaining on disk for local builds. Also added `.env` / `.env.*` (security best practice) and `*.tgz` (npm pack output) patterns to `.gitignore`.
