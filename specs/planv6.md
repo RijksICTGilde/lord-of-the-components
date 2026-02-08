@@ -196,3 +196,16 @@ VERIFY_COMPLETE_MARKER
 ### E-1: Add TypeScript build artifacts to `.gitignore` ✅
 
 Added gitignore rules for ~120 TypeScript compilation outputs (`.js`, `.d.ts`, `.js.map`, `.d.ts.map`) in `definitions/`, `implementations/`, `core/src/generators/jinja2/`, and `tests/visual/`. Also ignores the duplicate `tests/visual/snapshots/components.spec.js/` snapshot directory. Prevents accidental commits of build artifacts while keeping all source `.ts` files tracked.
+
+### E-2: Add unit tests for `registry.py` ✅
+
+Added `python/tests/test_registry.py` with 31 tests covering `ComponentRegistry`, `ComponentDefinition`, `AttributeDefinition`, and `SlotDefinition`. Previously had zero test coverage despite being critical infrastructure. Tests cover:
+- All `AttributeType` enum values and the enum-without-values validation
+- `ComponentDefinition.get_attribute()` / `has_attribute()` lookup
+- Default registry (built-in components loaded on init)
+- JSON loading: array format, dict format, `props` key fallback, `enumValues` camelCase fallback
+- Edge cases: unknown attribute types fall back to STRING, empty component lists, nameless components skipped, `dependsOn` mapping
+- Error paths: missing file raises `FileNotFoundError`, malformed JSON raises `JSONDecodeError`
+- Integration smoke test against the real `registry.json` (≥20 components load correctly)
+
+Total test count: 767 → 798.
