@@ -4,6 +4,11 @@ node_modules/
 # Build output
 dist/
 *.tsbuildinfo
+*.tgz
+
+# Environment / secrets
+.env
+.env.*
 
 # TypeScript compilation output (in-place builds)
 # These directories contain .ts source files; tsc emits .js/.d.ts/.map alongside them
