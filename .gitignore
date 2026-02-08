@@ -43,6 +43,8 @@ __pycache__/
 *.pyc
 .venv/
 *.egg-info/
+.coverage
+htmlcov/
 
 # Playwright
 playwright-report/
