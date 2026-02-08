@@ -1,13 +1,22 @@
-# Plan v6: Lord of the Components -- Cleanup & Working Usage Example
+# Plan v6: Lord of the Components -- Fix CSS Theming & Cleanup
 
 ## Context
 
-Plans v1-v5 are complete. The project has 21 components, 767 e2e tests, 13 visual tests, a recursive Element Tree API, and webpack-bundled RVO/Utrecht CSS. However, two problems remain:
+Plans v1-v5 are complete. The project has 21 components, 767 e2e tests, 13 visual tests, a recursive Element Tree API, and webpack-bundled RVO/Utrecht CSS. However, **all components render without any styling** because of a critical theme class mismatch, plus legacy file debris.
 
-1. **The getting-started example doesn't work** -- `examples/getting-started/app.py` has no route for `/static/` files, so when `<c-page>` renders `<link href="/static/lotc/dist/lotc.css">`, the CSS never loads. Result: unstyled HTML. The template also has redundant CDN links in its `head` prop.
-2. **~170 legacy files** from abandoned architectures (KDL definitions, RigScript implementations, old docs, tokens, themes) clutter the repo and confuse contributors.
+### Root Cause: Wrong theme class on `<body>`
 
-**Goal:** Make `<c-page>` produce a fully styled RVO page out of the box, clean up all legacy debris, and update documentation to reflect the current architecture.
+The design tokens CSS (`@nl-rvo/design-tokens/index.css`) defines ALL CSS custom properties inside `.rvo-theme { }`. Every component's colors, spacing, fonts, etc. depend on these tokens. But `page.html.j2` generated `class="theme-rvo"` instead of `class="rvo-theme"`:
+
+| Source | Body class | Works? |
+|--------|-----------|--------|
+| jinja-roos (reference) | `class="rvo-theme"` | Yes |
+| LOTC page.html.j2 (before fix) | `class="theme-rvo"` | **No** |
+| Design tokens CSS expects | `.rvo-theme { ... }` | -- |
+
+**Result:** None of the ~500 CSS custom properties activated, so every component rendered unstyled.
+
+**Goal:** Fix the theme class, fix the visual test server, clean up legacy debris, and update documentation.
 
 **Pipeline (unchanged):**
 ```
@@ -20,7 +29,23 @@ definitions/*.def.ts → implementations/*.impl.ts → Jinja2 Generator → .htm
 
 ---
 
-## Part A: Fix Getting-Started Example
+## Part A: Fix Theme Class (CRITICAL)
+
+### T-A0: Fix body class in `page.html.j2` ✅
+
+**File:** `python/src/lord_of_the_components/templates/components/page.html.j2`
+
+Changed `'theme-' ~ theme` to `theme ~ '-theme'` so that `theme="rvo"` produces `class="rvo-theme"`, matching what the design tokens CSS expects.
+
+### T-A0b: Add `rvo-theme` class in visual test server ✅
+
+**File:** `tests/visual/serve.py`
+
+The visual test server injects CSS but never added the `rvo-theme` class to the body. Added body class injection so visual tests also render with proper theming.
+
+---
+
+## Part B: Fix Getting-Started Example
 
 ### T-A1: Add static file serving to `app.py` ✅
 
@@ -64,7 +89,7 @@ Expand to demonstrate all 21 components with proper sections:
 
 ---
 
-## Part B: Remove Legacy Files
+## Part C: Remove Legacy Files
 
 All deletions in one commit. Total: ~170 files.
 
@@ -106,7 +131,7 @@ Replaced by webpack-bundled RVO/Utrecht CSS in `python/src/lord_of_the_component
 
 ---
 
-## Part C: Update Documentation
+## Part D: Update Documentation
 
 ### T-C1: Rewrite `README.md` ✅
 
@@ -160,8 +185,7 @@ Open `http://localhost:8080` and confirm:
 
 ## Commit Strategy
 
-1. **Commit 1:** Part A -- Fix getting-started example (static serving + expanded showcase)
-2. **Commit 2:** Part B -- Remove all legacy files (single big deletion commit)
-3. **Commit 3:** Part C -- Rewrite README + create planv6.md
+1. **Commit 1:** Part A -- Fix theme class in page.html.j2 + visual test server
+2. **Commit 2:** Parts B-D -- Getting-started example, legacy cleanup, README (already done in previous sessions)
 
 BUILD_COMPLETE_MARKER
