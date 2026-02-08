@@ -68,17 +68,17 @@ Expand to demonstrate all 21 components with proper sections:
 
 All deletions in one commit. Total: ~170 files.
 
-### T-B1: Remove KDL definitions
+### T-B1: Remove KDL definitions ✅
 
 **Delete:** All `.kdl` files in `definitions/components/` subdirectories (90 files across 9 subdirectories: `actions/`, `data-display/`, `feedback/`, `inputs/`, `layout/`, `navigation/`, `overlay/`, `typography/`, `utility/`) + `definitions/props.kdl`.
 
 These are superseded by the flat `.def.ts` files in `definitions/components/` (e.g., `button.def.ts`, `heading.def.ts`).
 
-### T-B2: Remove `packages/` directory
+### T-B2: Remove `packages/` directory ✅
 
 **Delete:** Entire `packages/` directory (~60 `.rig` + `.kdl` files). These contain the abandoned RigScript implementations from v1/v2, replaced by `.impl.ts` TypeScript implementations.
 
-### T-B3: Remove `tokens/` and `themes/` directories
+### T-B3: Remove `tokens/` and `themes/` directories ✅
 
 **Delete:**
 - `tokens/` (3 KDL files: colors.kdl, spacing.kdl, schema.kdl)
@@ -86,21 +86,21 @@ These are superseded by the flat `.def.ts` files in `definitions/components/` (e
 
 Replaced by webpack-bundled RVO/Utrecht CSS in `python/src/lord_of_the_components/static/lotc/dist/`.
 
-### T-B4: Remove `docs/`, `lotc.config.kdl`, `specs_old/`
+### T-B4: Remove `docs/`, `lotc.config.kdl`, `specs_old/` ✅
 
 **Delete:**
 - `docs/` (11 markdown files describing old RigScript/KDL architecture)
 - `lotc.config.kdl` (legacy root config for KDL build pipeline)
 - `specs_old/` (plans v1-v3 + implementation-spec, superseded by `specs/planv4.md` and `specs/planv5.md`)
 
-### T-B5: Remove legacy templates
+### T-B5: Remove legacy templates ✅
 
 **Delete** from `python/src/lord_of_the_components/templates/components/`:
 - `layout.html.j2` -- old `<c-layout>` template, not in registry
 - `stack.html.j2` -- old `<c-stack>` template, not in registry
 - `page.html.j2.webpack` -- webpack build source template, not needed at runtime
 
-### T-B6: Remove `dist/` at project root
+### T-B6: Remove `dist/` at project root ✅
 
 **Delete from disk:** `dist/` directory (old build output: tokens.css, tokens.json, old registry.json). Already in `.gitignore`, so no git tracking changes needed.
 

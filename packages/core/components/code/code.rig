@@ -1,9 +1,0 @@
-# Lord of the Components - Code Component Logic
-# Inline code snippet styled for inline display
-
-render.element("code"):
-    # Apply base CSS class
-    attrs.class = "c-code"
-
-    # Render code content
-    render.slot("default")
