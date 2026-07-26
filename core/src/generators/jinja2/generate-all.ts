@@ -48,6 +48,7 @@ import { footerImpl } from "../../../../implementations/components/footer.impl.j
 import { menuImpl } from "../../../../implementations/components/menu.impl.js";
 import { breadcrumbsImpl } from "../../../../implementations/components/breadcrumbs.impl.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
+import * as nlddImpls from "../../../../themes/nldd/components/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CONFIGURATION
@@ -155,6 +156,17 @@ function main(): void {
   mkdirSync(dirname(renderersPath), { recursive: true });
   writeFileSync(renderersPath, renderersPy, "utf-8");
   console.log(`  ✓ themes/rvo/renderers.py (${pythonImpls.length} renderer(s))\n`);
+
+  // ── Generate the NLDD theme renderers ──────────────────────────────────
+  const nlddList = Object.values(nlddImpls) as unknown as CompImpl[];
+  const nlddPy = generatePythonRenderers(nlddList);
+  const nlddPath = resolve(
+    PROJECT_ROOT,
+    "python/src/lord_of_the_components/themes/nldd/renderers.py",
+  );
+  mkdirSync(dirname(nlddPath), { recursive: true });
+  writeFileSync(nlddPath, nlddPy, "utf-8");
+  console.log(`  ✓ themes/nldd/renderers.py (${nlddList.length} renderer(s))\n`);
 
   // ── Generate showcase.html ───────────────────────────────────────────
   console.log("Generating showcase.html...\n");

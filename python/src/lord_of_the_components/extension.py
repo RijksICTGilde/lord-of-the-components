@@ -120,6 +120,23 @@ def _py_string(value: str) -> str:
     return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'"
 
 
+#: Known design-system themes (each has a themes/<id>/renderers.py).
+KNOWN_THEMES = ("rvo", "nldd")
+
+
+def _resolve_theme(theme: Optional[str]) -> str:
+    """Resolve the theme name to a known theme id, or raise with a suggestion."""
+    if theme is None or theme == "default":
+        return "rvo"
+    if theme in KNOWN_THEMES:
+        return theme
+    suggestion = get_close_matches(theme, KNOWN_THEMES, n=1, cutoff=0.4)
+    hint = f" Did you mean '{suggestion[0]}'?" if suggestion else ""
+    raise RuntimeError(
+        f"Unknown theme '{theme}'. Known themes: {', '.join(KNOWN_THEMES)}.{hint}"
+    )
+
+
 def _register_theme_renderers(jinja_env: Environment, theme: str) -> None:
     """Register the generated Python renderers as `_lotc_<theme>_<name>` globals."""
     import importlib
@@ -615,13 +632,15 @@ def setup_components(
         elif searchpath is not None:
             setattr(loader, "searchpath", [searchpath, component_templates_path])
 
+    # Resolve the design-system theme (rvo default). nlds -> helpful error (D2).
+    render_theme = _resolve_theme(theme)
+
     # Register the generated Python renderers (the fast backend) as globals.
     ext = jinja_env.extensions.get(ComponentExtension.identifier)
-    render_theme = "rvo"
     if isinstance(ext, ComponentExtension):
         ext.fold = fold
         ext.validate_data = validate_data
-        render_theme = ext.render_theme
+        ext.render_theme = render_theme
     _register_theme_renderers(jinja_env, render_theme)
 
     # Render-time data-binding validation (:items, :columns, ...).
