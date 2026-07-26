@@ -48,6 +48,7 @@ export interface ComponentDefinition {
   category?: string;
   props: Record<string, PropSpec | null>;
   events?: readonly string[];
+  bindings?: Record<string, string>;
   content?: ContentDefinition;
   children?: Record<string, ChildComponentDefinition>;
 }
@@ -77,6 +78,7 @@ export interface RegistryComponent {
   backend?: "python" | "jinja";
   attributes: RegistryAttribute[];
   events?: string[];
+  bindings?: Record<string, string>;
   content?: {
     allowed: boolean;
     description?: string;
@@ -162,6 +164,10 @@ function componentToRegistryEntry(
 
   if (component.events && component.events.length > 0) {
     entry.events = [...component.events];
+  }
+
+  if (component.bindings && Object.keys(component.bindings).length > 0) {
+    entry.bindings = { ...component.bindings };
   }
 
   if (component.content) {

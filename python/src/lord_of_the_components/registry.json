@@ -237,6 +237,9 @@
       "events": [
         "select"
       ],
+      "bindings": {
+        "items": "MenuItem[]"
+      },
       "content": {
         "allowed": true,
         "description": "Menu items (alternative to :items binding)",
