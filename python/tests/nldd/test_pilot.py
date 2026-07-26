@@ -62,7 +62,7 @@ def test_paragraph_is_native_p(render):
 def test_icon_maps_to_nldd_icon(render):
     html = render('<c-icon icon="home" size="md"/>')
     assert "<nldd-icon" in html
-    assert 'name="home"' in html
+    assert 'name="house"' in html  # home -> house (semantic alias)
 
 
 def test_link_maps_to_nldd_link(render):

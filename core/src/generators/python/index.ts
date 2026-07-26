@@ -353,10 +353,20 @@ export class PythonGenerator {
     for (const rule of rules) {
       if (typeof rule === "string") continue;
       if (isPattern(rule)) {
-        if (rule.valueMap || rule.guard) {
-          throw new UnsupportedIR(`pattern valueMap/guard not yet supported (${impl.component.name})`);
+        if (rule.guard) {
+          throw new UnsupportedIR(`pattern guard not yet supported (${impl.component.name})`);
         }
         const v = pyName(rule.prop);
+        // Resolve the prop value through a valueMap first (e.g. semantic icon
+        // name -> theme-specific name), else use the value verbatim.
+        let resolved = v;
+        if (rule.valueMap) {
+          const dictName = `_${this.compName.replace(/-/g, "_").toUpperCase()}_${rule.valueMap.replace(/-/g, "_").toUpperCase()}_MAP`;
+          if (!this.dicts.some((d) => d.name === dictName)) {
+            this.dicts.push({ name: dictName, entries: Object.entries(this.valueMaps[rule.valueMap] ?? {}) });
+          }
+          resolved = `${dictName}.get(${v}, ${v})`;
+        }
         if (rule.when && rule.when.length) {
           const dictName = `_${impl.component.name.replace(/-/g, "_").toUpperCase()}_${rule.prop.replace(/-/g, "_").toUpperCase()}`;
           if (!this.dicts.some((d) => d.name === dictName)) {
@@ -368,7 +378,7 @@ export class PythonGenerator {
           lines.push(`${"    ".repeat(ind)}${clsVar} += ${dictName}.get(${v}, '')`);
         } else {
           const [prefix, suffix] = rule.pattern.split("{value}");
-          const parts = [pyStr(" " + (prefix ?? "")), v];
+          const parts = [pyStr(" " + (prefix ?? "")), resolved];
           if (suffix) parts.push(pyStr(suffix));
           lines.push(`${"    ".repeat(ind)}if ${v}:`);
           lines.push(`${"    ".repeat(ind + 1)}${clsVar} += ${parts.join(" + ")}`);

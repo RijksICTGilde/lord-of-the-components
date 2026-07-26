@@ -31,8 +31,9 @@ class TestIconBasic:
         assert "rvo-icon-home" in html
 
     def test_different_icon_name(self, render):
+        # `search` is a semantic alias -> RVO icon `zoek` (definitions/icons.ts).
         html = render('<c-icon icon="search"/>')
-        assert "rvo-icon-search" in html
+        assert "rvo-icon-zoek" in html
 
     def test_data_lotc_component_attribute(self, render):
         html = render('<c-icon icon="home"/>')

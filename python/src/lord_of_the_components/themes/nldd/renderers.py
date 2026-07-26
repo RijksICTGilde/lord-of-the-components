@@ -83,6 +83,17 @@ def heading(*, type='h1', label='', content=None, _extra=None, _class=''):
     parts.append('</nldd-title>')
     return Markup(''.join(parts))
 
+_ICON_ICONS_MAP = {
+    'home': 'house',
+    'settings': 'gear',
+    'notification': 'bell',
+    'info': 'info-circle',
+    'favorite': 'star',
+    'mail': 'envelope',
+    'calendar': 'calendar-event',
+    'search': 'magnifier',
+}
+
 def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
@@ -93,7 +104,7 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
     parts.append(' data-lotc-component="icon"')
     if icon:
         parts.append(' name="')
-        parts.append(esc(icon))
+        parts.append(esc(_ICON_ICONS_MAP.get(icon, icon)))
         parts.append('"')
     if size:
         parts.append(' size="')
