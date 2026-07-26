@@ -5369,6 +5369,351 @@
       "covers": [
         "content=nested"
       ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-text-input></c-text-input>",
+      "props": {},
+      "content": null,
+      "covers": [
+        "type=text"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--text",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"text\"></c-text-input>",
+      "props": {
+        "type": "text"
+      },
+      "content": null,
+      "covers": [
+        "type=text"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--password",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"password\"></c-text-input>",
+      "props": {
+        "type": "password"
+      },
+      "content": null,
+      "covers": [
+        "type=password"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--email",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"email\"></c-text-input>",
+      "props": {
+        "type": "email"
+      },
+      "content": null,
+      "covers": [
+        "type=email"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--tel",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"tel\"></c-text-input>",
+      "props": {
+        "type": "tel"
+      },
+      "content": null,
+      "covers": [
+        "type=tel"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--url",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"url\"></c-text-input>",
+      "props": {
+        "type": "url"
+      },
+      "content": null,
+      "covers": [
+        "type=url"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--search",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"search\"></c-text-input>",
+      "props": {
+        "type": "search"
+      },
+      "content": null,
+      "covers": [
+        "type=search"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--number",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"number\"></c-text-input>",
+      "props": {
+        "type": "number"
+      },
+      "content": null,
+      "covers": [
+        "type=number"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--date",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"date\"></c-text-input>",
+      "props": {
+        "type": "date"
+      },
+      "content": null,
+      "covers": [
+        "type=date"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--time",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"time\"></c-text-input>",
+      "props": {
+        "type": "time"
+      },
+      "content": null,
+      "covers": [
+        "type=time"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--datetime-local",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"datetime-local\"></c-text-input>",
+      "props": {
+        "type": "datetime-local"
+      },
+      "content": null,
+      "covers": [
+        "type=datetime-local"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "type--file",
+      "theme": "rvo",
+      "markup": "<c-text-input type=\"file\"></c-text-input>",
+      "props": {
+        "type": "file"
+      },
+      "content": null,
+      "covers": [
+        "type=file"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "disabled",
+      "theme": "rvo",
+      "markup": "<c-text-input disabled></c-text-input>",
+      "props": {
+        "disabled": true
+      },
+      "content": null,
+      "covers": [
+        "disabled=true"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "required",
+      "theme": "rvo",
+      "markup": "<c-text-input required></c-text-input>",
+      "props": {
+        "required": true
+      },
+      "content": null,
+      "covers": [
+        "required=true"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "readonly",
+      "theme": "rvo",
+      "markup": "<c-text-input readonly></c-text-input>",
+      "props": {
+        "readonly": true
+      },
+      "content": null,
+      "covers": [
+        "readonly=true"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "value--text",
+      "theme": "rvo",
+      "markup": "<c-text-input value=\"Voorbeeld\"></c-text-input>",
+      "props": {
+        "value": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "value=set"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "placeholder--text",
+      "theme": "rvo",
+      "markup": "<c-text-input placeholder=\"Voorbeeld\"></c-text-input>",
+      "props": {
+        "placeholder": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "placeholder=set"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "autocomplete--text",
+      "theme": "rvo",
+      "markup": "<c-text-input autocomplete=\"Voorbeeld\"></c-text-input>",
+      "props": {
+        "autocomplete": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "autocomplete=set"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-text-input name=\"Tom &amp; Jerry\"></c-text-input>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "text-input",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-text-input name=\"<script>alert(1)</script>\"></c-text-input>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "textarea",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-textarea></c-textarea>",
+      "props": {},
+      "content": null,
+      "covers": []
+    },
+    {
+      "component": "textarea",
+      "case_id": "disabled",
+      "theme": "rvo",
+      "markup": "<c-textarea disabled></c-textarea>",
+      "props": {
+        "disabled": true
+      },
+      "content": null,
+      "covers": [
+        "disabled=true"
+      ]
+    },
+    {
+      "component": "textarea",
+      "case_id": "required",
+      "theme": "rvo",
+      "markup": "<c-textarea required></c-textarea>",
+      "props": {
+        "required": true
+      },
+      "content": null,
+      "covers": [
+        "required=true"
+      ]
+    },
+    {
+      "component": "textarea",
+      "case_id": "readonly",
+      "theme": "rvo",
+      "markup": "<c-textarea readonly></c-textarea>",
+      "props": {
+        "readonly": true
+      },
+      "content": null,
+      "covers": [
+        "readonly=true"
+      ]
+    },
+    {
+      "component": "textarea",
+      "case_id": "placeholder--text",
+      "theme": "rvo",
+      "markup": "<c-textarea placeholder=\"Voorbeeld\"></c-textarea>",
+      "props": {
+        "placeholder": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "placeholder=set"
+      ]
+    },
+    {
+      "component": "textarea",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-textarea name=\"Tom &amp; Jerry\"></c-textarea>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "textarea",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-textarea name=\"<script>alert(1)</script>\"></c-textarea>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
     }
   ]
 }

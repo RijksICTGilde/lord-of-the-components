@@ -72,6 +72,8 @@ import { i } from "./i.def.js";
 import { code } from "./code.def.js";
 import { blockquote } from "./blockquote.def.js";
 import { hr } from "./hr.def.js";
+import { textInput } from "./text-input.def.js";
+import { textarea } from "./textarea.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -105,6 +107,8 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   code,
   blockquote,
   hr,
+  "text-input": textInput,
+  textarea,
 };
 
 /**

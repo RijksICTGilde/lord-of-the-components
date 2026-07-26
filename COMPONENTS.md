@@ -33,6 +33,8 @@
 | small | html | 1 | 0 | 0 | ✅ | — |
 | span | html | 1 | 0 | 0 | ✅ | — |
 | strong | typography | 2 | 0 | 0 | ✅ | — |
+| text-input | forms | 9 | 0 | 0 | ✅ | — |
+| textarea | forms | 7 | 0 | 0 | ✅ | — |
 
 ## alert  (feedback)
 
@@ -451,3 +453,39 @@ Semantic bold text wrapper
 
 events: —    bindings: —
 content: yes
+
+## text-input  (forms)
+
+Single-line text input
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| type | enum | text password email tel url search number date time datetime-local file | text |  |
+| name | string | — |  |  |
+| value | string | — |  |  |
+| placeholder | string | — |  |  |
+| autocomplete | string | — |  |  |
+| disabled | boolean | — |  |  |
+| required | boolean | — |  |  |
+| readonly | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: no
+
+## textarea  (forms)
+
+Multi-line text input
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| name | string | — |  |  |
+| value | string | — |  |  |
+| placeholder | string | — |  |  |
+| disabled | boolean | — |  |  |
+| required | boolean | — |  |  |
+| readonly | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: no

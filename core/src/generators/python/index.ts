@@ -103,6 +103,8 @@ export const PYTHON_BACKEND = new Set<string>([
   "layout-flow",
   "link",
   "button",
+  "text-input",
+  "textarea",
 ]);
 
 // ── helpers ───────────────────────────────────────────────────────────────────
