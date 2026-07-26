@@ -13,6 +13,36 @@ from lord_of_the_components.runtime import (
     render_utility,
 )
 
+_BADGE_COLOR_MAP = {
+    'default': 'neutral',
+    'info': 'accent',
+    'success': 'success',
+    'warning': 'warning',
+    'error': 'critical',
+}
+
+def badge(*, type='default', label='', content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-badge')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="badge"')
+    if type:
+        parts.append(' color="')
+        parts.append(esc(_BADGE_COLOR_MAP.get(type, type)))
+        parts.append('"')
+    if label:
+        parts.append(' text="')
+        parts.append(esc(label))
+        parts.append('"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-badge>')
+    return Markup(''.join(parts))
+
 _BUTTON_VARIANT_MAP = {
     'primary': 'primary',
     'secondary': 'secondary',
@@ -302,6 +332,36 @@ def select(*, name='', value='', placeholder='', disabled=False, required=False,
     parts.append((content or ''))
     parts.append('</nldd-menu>')
     parts.append('</nldd-combo-box>')
+    return Markup(''.join(parts))
+
+_TAG_COLOR_MAP = {
+    'default': 'neutral',
+    'info': 'accent',
+    'success': 'success',
+    'warning': 'warning',
+    'error': 'critical',
+}
+
+def tag(*, type='default', label='', content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-tag')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="tag"')
+    if type:
+        parts.append(' color="')
+        parts.append(esc(_TAG_COLOR_MAP.get(type, type)))
+        parts.append('"')
+    if label:
+        parts.append(' text="')
+        parts.append(esc(label))
+        parts.append('"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-tag>')
     return Markup(''.join(parts))
 
 def text_input(*, type='text', name='', value='', placeholder='', autocomplete='', disabled=False, required=False, readonly=False, content=None, _extra=None, _class=''):

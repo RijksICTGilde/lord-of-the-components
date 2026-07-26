@@ -11,3 +11,5 @@ export { checkboxImpl } from "./checkbox.impl.js";
 export { radioImpl } from "./radio.impl.js";
 export { selectImpl } from "./select.impl.js";
 export { optionImpl } from "./option.impl.js";
+export { tagImpl } from "./tag.impl.js";
+export { badgeImpl } from "./badge.impl.js";
