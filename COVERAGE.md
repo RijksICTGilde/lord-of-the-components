@@ -34,5 +34,7 @@
 | small | rvo | 5 | ✅ | pending | — |
 | span | rvo | 5 | ✅ | pending | — |
 | strong | rvo | 7 | ✅ | pending | — |
+| text-input | rvo | 20 | ✅ | pending | — |
+| textarea | rvo | 7 | ✅ | pending | — |
 
 **All enum values, booleans and IR-distinguished values are covered by a case.**

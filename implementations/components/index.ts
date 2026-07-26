@@ -35,3 +35,7 @@ export { iImpl } from "./i.impl.js";
 export { codeImpl } from "./code.impl.js";
 export { blockquoteImpl } from "./blockquote.impl.js";
 export { hrImpl } from "./hr.impl.js";
+
+// Form inputs (F9, batch B)
+export { textInputImpl } from "./text-input.impl.js";
+export { textareaImpl } from "./textarea.impl.js";

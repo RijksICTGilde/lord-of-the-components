@@ -364,3 +364,72 @@ def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, conte
     parts.append(((content or '') if content else esc(label)))
     parts.append('</p>')
     return Markup(''.join(parts))
+
+def text_input(*, type='text', name='', value='', placeholder='', autocomplete='', disabled=False, required=False, readonly=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'utrecht-textbox utrecht-textbox--html-input'
+    if disabled:
+        cls0 += ' utrecht-textbox--disabled'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<input')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="text-input"')
+    parts.append(' type="')
+    parts.append(esc(type))
+    parts.append('"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if placeholder:
+        parts.append(' placeholder="')
+        parts.append(esc(placeholder))
+        parts.append('"')
+    if autocomplete:
+        parts.append(' autocomplete="')
+        parts.append(esc(autocomplete))
+        parts.append('"')
+    if disabled:
+        parts.append(' disabled')
+    if required:
+        parts.append(' required')
+    if readonly:
+        parts.append(' readonly')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    return Markup(''.join(parts))
+
+def textarea(*, name='', value='', placeholder='', disabled=False, required=False, readonly=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'utrecht-textbox utrecht-textbox--html-textarea'
+    if disabled:
+        cls0 += ' utrecht-textbox--disabled'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<textarea')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="textarea"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if placeholder:
+        parts.append(' placeholder="')
+        parts.append(esc(placeholder))
+        parts.append('"')
+    if disabled:
+        parts.append(' disabled')
+    if required:
+        parts.append(' required')
+    if readonly:
+        parts.append(' readonly')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append(esc(value))
+    parts.append('</textarea>')
+    return Markup(''.join(parts))
