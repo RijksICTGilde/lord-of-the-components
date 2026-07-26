@@ -175,6 +175,8 @@ export class PythonGenerator {
   private dicts: DictDef[] = [];
   private clsCounter = 0;
   private elCounter = 0;
+  private valueMaps: Record<string, Record<string, string>> = {};
+  private compName = "";
 
   /** Generate a full renderers.py module for the given implementations. */
   generateModule(impls: CompImpl[]): string {
@@ -201,6 +203,8 @@ export class PythonGenerator {
       this.dicts = [];
       this.clsCounter = 0;
       this.elCounter = 0;
+      this.valueMaps = impl.valueMaps ?? {};
+      this.compName = impl.component.name;
       const fn = this.generateFunction(impl);
       // Emit this component's dicts before its function.
       for (const d of this.dicts) {
@@ -300,7 +304,12 @@ export class PythonGenerator {
 
     // opening tag
     this.append(lines, ind, tagLiteral ? pyStr("<" + tagLiteral) : `'<' + ${tagExpr}`);
-    if (clsVar) this.append(lines, ind, `' class="' + ${clsVar} + '"'`);
+    if (clsVar) {
+      // Only emit class when non-empty (themes without CSS classes, e.g. NLDD,
+      // produce no class attribute unless the user passed one).
+      lines.push(`${"    ".repeat(ind)}if ${clsVar}:`);
+      this.append(lines, ind + 1, `' class="' + ${clsVar} + '"'`);
+    }
     if (node.isRoot) {
       this.append(lines, ind, pyStr(` data-lotc-component="${impl.component.name}"`));
     }
@@ -397,15 +406,27 @@ export class PythonGenerator {
     }
     // value — append the pieces separately: ''.join() does not trigger Markup
     // escaping, whereas `plain + esc(v)` would escape the surrounding quotes.
-    if (attr.valueMap || attr.filter) {
-      throw new UnsupportedIR(`attribute valueMap/filter not yet supported`);
+    if (attr.filter) {
+      throw new UnsupportedIR(`attribute filter not yet supported`);
     }
     const vind = attr.conditional ? ind + 1 : ind;
     if (attr.conditional) {
       lines.push(`${"    ".repeat(ind)}if ${v}:`);
     }
+    let valueExpr = `esc(${v})`;
+    if (attr.valueMap) {
+      const map = this.valueMaps[attr.valueMap] ?? {};
+      const dictName = `_${this.compName.replace(/-/g, "_").toUpperCase()}_${attr.valueMap.replace(/-/g, "_").toUpperCase()}_MAP`;
+      if (!this.dicts.some((d) => d.name === dictName)) {
+        this.dicts.push({
+          name: dictName,
+          entries: Object.entries(map),
+        });
+      }
+      valueExpr = `esc(${dictName}.get(${v}, ${v}))`;
+    }
     this.append(lines, vind, pyStr(` ${attr.attr}="`));
-    this.append(lines, vind, `esc(${v})`);
+    this.append(lines, vind, valueExpr);
     this.append(lines, vind, pyStr('"'));
   }
 }

@@ -50,7 +50,8 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
     cls0 = merge_class(cls0, render_utility(_extra))
     cls0 = merge_class(cls0, _class)
     parts.append('<button')
-    parts.append(' class="' + cls0 + '"')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="button"')
     if disabled:
         parts.append(' disabled')
@@ -68,7 +69,8 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
         if color:
             cls1 += ' rvo-icon--' + color
         parts.append('<span')
-        parts.append(' class="' + cls1 + '"')
+        if cls1:
+            parts.append(' class="' + cls1 + '"')
         parts.append(' role="img"')
         parts.append(' aria-label="')
         parts.append(esc(aria_label))
@@ -88,7 +90,8 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
         if color:
             cls2 += ' rvo-icon--' + color
         parts.append('<span')
-        parts.append(' class="' + cls2 + '"')
+        if cls2:
+            parts.append(' class="' + cls2 + '"')
         parts.append(' role="img"')
         parts.append(' aria-label="')
         parts.append(esc(aria_label))
@@ -117,7 +120,8 @@ def heading(*, type='h1', label='', content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, render_utility(_extra))
     cls0 = merge_class(cls0, _class)
     parts.append('<' + _el0)
-    parts.append(' class="' + cls0 + '"')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="heading"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -148,7 +152,8 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
     cls0 = merge_class(cls0, render_utility(_extra))
     cls0 = merge_class(cls0, _class)
     parts.append('<span')
-    parts.append(' class="' + cls0 + '"')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="icon"')
     parts.append(' role="img"')
     parts.append(' aria-label="')
@@ -225,7 +230,8 @@ def layout_flow(*, gap='md', size='lg', row=False, wrap=False, align_items='', a
     cls0 = merge_class(cls0, render_utility(_extra))
     cls0 = merge_class(cls0, _class)
     parts.append('<div')
-    parts.append(' class="' + cls0 + '"')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="layout-flow"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -265,7 +271,8 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
     cls0 = merge_class(cls0, render_utility(_extra))
     cls0 = merge_class(cls0, _class)
     parts.append('<a')
-    parts.append(' class="' + cls0 + '"')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="link"')
     if href:
         parts.append(' href="')
@@ -290,7 +297,8 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
         if icon_color:
             cls1 += ' rvo-icon--' + icon_color
         parts.append('<span')
-        parts.append(' class="' + cls1 + '"')
+        if cls1:
+            parts.append(' class="' + cls1 + '"')
         parts.append('>')
         parts.append('</span>')
     parts.append('<span')
@@ -306,7 +314,8 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
         if icon_color:
             cls2 += ' rvo-icon--' + icon_color
         parts.append('<span')
-        parts.append(' class="' + cls2 + '"')
+        if cls2:
+            parts.append(' class="' + cls2 + '"')
         parts.append('>')
         parts.append('</span>')
     parts.append('</a>')
@@ -336,7 +345,8 @@ def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, conte
     cls0 = merge_class(cls0, render_utility(_extra))
     cls0 = merge_class(cls0, _class)
     parts.append('<p')
-    parts.append(' class="' + cls0 + '"')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="paragraph"')
     parts.append(render_extra(_extra))
     parts.append('>')
