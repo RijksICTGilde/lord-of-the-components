@@ -19,6 +19,11 @@ pip install -e python/
 
 # Node dependencies (for generators and visual tests)
 npm install
+
+# Build the bundled frontend assets (RVO/Utrecht CSS + JS).
+# Required: the output lives under python/src/lord_of_the_components/static/
+# which is git-ignored, so a fresh clone has no CSS until this runs.
+npm run build:fe
 ```
 
 ### Run the Getting-Started Example
