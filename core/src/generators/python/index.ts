@@ -105,6 +105,10 @@ export const PYTHON_BACKEND = new Set<string>([
   "button",
   "text-input",
   "textarea",
+  "checkbox",
+  "radio",
+  "select",
+  "option",
 ]);
 
 // ── helpers ───────────────────────────────────────────────────────────────────

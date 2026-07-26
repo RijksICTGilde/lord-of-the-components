@@ -39,3 +39,9 @@ export { hrImpl } from "./hr.impl.js";
 // Form inputs (F9, batch B)
 export { textInputImpl } from "./text-input.impl.js";
 export { textareaImpl } from "./textarea.impl.js";
+
+// Form controls (F9, batch C)
+export { checkboxImpl } from "./checkbox.impl.js";
+export { radioImpl } from "./radio.impl.js";
+export { selectImpl } from "./select.impl.js";
+export { optionImpl } from "./option.impl.js";

@@ -37,6 +37,14 @@ export { label, type LabelDefinition } from "./label.def.js";
 export { strong, type StrongDefinition } from "./strong.def.js";
 export { em, type EmDefinition } from "./em.def.js";
 
+// Form components (F9)
+export { textInput, type TextInputDefinition } from "./text-input.def.js";
+export { textarea, type TextareaDefinition } from "./textarea.def.js";
+export { checkbox, type CheckboxDefinition } from "./checkbox.def.js";
+export { radio, type RadioDefinition } from "./radio.def.js";
+export { select, type SelectDefinition } from "./select.def.js";
+export { option, type OptionDefinition } from "./option.def.js";
+
 // Visual components
 export { icon, type IconDefinition } from "./icon.def.js";
 
@@ -74,6 +82,10 @@ import { blockquote } from "./blockquote.def.js";
 import { hr } from "./hr.def.js";
 import { textInput } from "./text-input.def.js";
 import { textarea } from "./textarea.def.js";
+import { checkbox } from "./checkbox.def.js";
+import { radio } from "./radio.def.js";
+import { select } from "./select.def.js";
+import { option } from "./option.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -109,6 +121,10 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   hr,
   "text-input": textInput,
   textarea,
+  checkbox,
+  radio,
+  select,
+  option,
 };
 
 /**

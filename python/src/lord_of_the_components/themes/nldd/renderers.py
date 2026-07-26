@@ -63,6 +63,35 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
     parts.append('</nldd-button>')
     return Markup(''.join(parts))
 
+def checkbox(*, name='', value='', label='', checked=False, disabled=False, required=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-checkbox-field')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="checkbox"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if label:
+        parts.append(' label="')
+        parts.append(esc(label))
+        parts.append('"')
+    if checked:
+        parts.append(' checked')
+    if disabled:
+        parts.append(' disabled')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append('</nldd-checkbox-field>')
+    return Markup(''.join(parts))
+
 _HEADING_SIZE_MAP = {
     'h1': '1',
     'h2': '2',
@@ -173,6 +202,32 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
     parts.append('</nldd-link>')
     return Markup(''.join(parts))
 
+def option(*, value='', label='', selected=False, disabled=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-menu-item')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="option"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if label:
+        parts.append(' text="')
+        parts.append(esc(label))
+        parts.append('"')
+    if selected:
+        parts.append(' selected')
+    if disabled:
+        parts.append(' disabled')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-menu-item>')
+    return Markup(''.join(parts))
+
 def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
@@ -185,6 +240,68 @@ def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, conte
     parts.append('>')
     parts.append(((content or '') if content else esc(label)))
     parts.append('</p>')
+    return Markup(''.join(parts))
+
+def radio(*, name='', value='', label='', checked=False, disabled=False, required=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-radio-button-field')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="radio"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if label:
+        parts.append(' label="')
+        parts.append(esc(label))
+        parts.append('"')
+    if checked:
+        parts.append(' checked')
+    if disabled:
+        parts.append(' disabled')
+    if required:
+        parts.append(' required')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append('</nldd-radio-button-field>')
+    return Markup(''.join(parts))
+
+def select(*, name='', value='', placeholder='', disabled=False, required=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-combo-box')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="select"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if placeholder:
+        parts.append(' placeholder="')
+        parts.append(esc(placeholder))
+        parts.append('"')
+    if disabled:
+        parts.append(' disabled')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append('<nldd-menu')
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-menu>')
+    parts.append('</nldd-combo-box>')
     return Markup(''.join(parts))
 
 def text_input(*, type='text', name='', value='', placeholder='', autocomplete='', disabled=False, required=False, readonly=False, content=None, _extra=None, _class=''):

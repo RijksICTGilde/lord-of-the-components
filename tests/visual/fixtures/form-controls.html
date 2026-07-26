@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="UTF-8"><title>Form controls</title></head>
+<body>
+  <c-heading type="h2">Text</c-heading>
+  <c-layout-flow gap="md">
+    <c-text-input name="email" type="email" placeholder="naam@voorbeeld.nl"/>
+    <c-textarea name="bericht" placeholder="Typ een bericht..."/>
+  </c-layout-flow>
+
+  <c-heading type="h2">Checkbox</c-heading>
+  <c-layout-flow gap="sm">
+    <c-checkbox name="akkoord" value="ja" label="Ik ga akkoord met de voorwaarden" checked/>
+    <c-checkbox name="nieuwsbrief" value="ja" label="Stuur mij de nieuwsbrief"/>
+    <c-checkbox name="uit" value="ja" label="Uitgeschakelde optie" disabled/>
+  </c-layout-flow>
+
+  <c-heading type="h2">Radio</c-heading>
+  <c-layout-flow gap="sm">
+    <c-radio name="keuze" value="a" label="Optie A" checked/>
+    <c-radio name="keuze" value="b" label="Optie B"/>
+    <c-radio name="keuze" value="c" label="Optie C"/>
+  </c-layout-flow>
+
+  <c-heading type="h2">Select</c-heading>
+  <c-select name="provincie" placeholder="Kies een provincie...">
+    <c-option value="ut" label="Utrecht"/>
+    <c-option value="nh" label="Noord-Holland"/>
+    <c-option value="zh" label="Zuid-Holland"/>
+  </c-select>
+</body></html>

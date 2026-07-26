@@ -7,3 +7,7 @@ export { paragraphImpl } from "./paragraph.impl.js";
 export { layoutFlowImpl } from "./layout-flow.impl.js";
 export { textInputImpl } from "./text-input.impl.js";
 export { textareaImpl } from "./textarea.impl.js";
+export { checkboxImpl } from "./checkbox.impl.js";
+export { radioImpl } from "./radio.impl.js";
+export { selectImpl } from "./select.impl.js";
+export { optionImpl } from "./option.impl.js";

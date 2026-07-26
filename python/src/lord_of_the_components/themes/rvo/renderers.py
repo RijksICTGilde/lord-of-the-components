@@ -101,6 +101,45 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
     parts.append('</button>')
     return Markup(''.join(parts))
 
+def checkbox(*, name='', value='', label='', checked=False, disabled=False, required=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-checkbox'
+    if disabled:
+        cls0 += ' rvo-checkbox--disabled'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<label')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="checkbox"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    cls1 = 'rvo-checkbox__input'
+    parts.append('<input')
+    if cls1:
+        parts.append(' class="' + cls1 + '"')
+    parts.append(' type="checkbox"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if checked:
+        parts.append(' checked')
+    if disabled:
+        parts.append(' disabled')
+    if required:
+        parts.append(' required')
+    parts.append('>')
+    parts.append('<span')
+    parts.append('>')
+    parts.append(esc(label))
+    parts.append('</span>')
+    parts.append('</label>')
+    return Markup(''.join(parts))
+
 def heading(*, type='h1', label='', content=None, _extra=None, _class=''):
     parts = []
     _el0 = type or 'h1'
@@ -332,6 +371,28 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
     parts.append('</a>')
     return Markup(''.join(parts))
 
+def option(*, value='', label='', selected=False, disabled=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<option')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="option"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if selected:
+        parts.append(' selected')
+    if disabled:
+        parts.append(' disabled')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append(((content or '') if content else esc(label)))
+    parts.append('</option>')
+    return Markup(''.join(parts))
+
 _PARAGRAPH_COLOR = {
     'logoblauw': ' rvo-paragraph--logoblauw',
     'wit': ' rvo-paragraph--wit',
@@ -363,6 +424,73 @@ def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, conte
     parts.append('>')
     parts.append(((content or '') if content else esc(label)))
     parts.append('</p>')
+    return Markup(''.join(parts))
+
+def radio(*, name='', value='', label='', checked=False, disabled=False, required=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-radio-button__label'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<label')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="radio"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    cls1 = 'rvo-radio-button'
+    parts.append('<input')
+    if cls1:
+        parts.append(' class="' + cls1 + '"')
+    parts.append(' type="radio"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if value:
+        parts.append(' value="')
+        parts.append(esc(value))
+        parts.append('"')
+    if checked:
+        parts.append(' checked')
+    if disabled:
+        parts.append(' disabled')
+    if required:
+        parts.append(' required')
+    parts.append('>')
+    parts.append('<span')
+    parts.append('>')
+    parts.append(esc(label))
+    parts.append('</span>')
+    parts.append('</label>')
+    return Markup(''.join(parts))
+
+def select(*, name='', value='', placeholder='', disabled=False, required=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-select-wrapper'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<div')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="select"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    cls1 = 'utrecht-select utrecht-select--html-select'
+    if disabled:
+        cls1 += ' utrecht-select--disabled'
+    parts.append('<select')
+    if cls1:
+        parts.append(' class="' + cls1 + '"')
+    if name:
+        parts.append(' name="')
+        parts.append(esc(name))
+        parts.append('"')
+    if disabled:
+        parts.append(' disabled')
+    if required:
+        parts.append(' required')
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</select>')
+    parts.append('</div>')
     return Markup(''.join(parts))
 
 def text_input(*, type='text', name='', value='', placeholder='', autocomplete='', disabled=False, required=False, readonly=False, content=None, _extra=None, _class=''):
