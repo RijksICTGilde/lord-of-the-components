@@ -23,13 +23,9 @@ def test_attribute_name_casing_preserved(render):
     assert "data-testId" in html
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="A prop value goes through `| safe`, so raw HTML in it is not escaped "
-    "— an XSS hole (F3 escapes prop values with markupsafe.escape).",
-)
 def test_raw_html_in_prop_value_is_escaped(render):
-    html = render('<c-button label="<img src=x onerror=alert(1)>">x</c-button>')
+    # FIXED in F3: the Python renderer escapes prop values (button is python-backed).
+    html = render('<c-button label="<img src=x onerror=alert(1)>"></c-button>')
     assert "<img src=x onerror=alert(1)>" not in html
     assert "&lt;img" in html
 

@@ -11,7 +11,7 @@ from typing import Any, Mapping, Optional
 
 from markupsafe import Markup, escape
 
-__all__ = ["Markup", "esc", "render_extra", "merge_class"]
+__all__ = ["Markup", "esc", "render_extra", "render_utility", "merge_class"]
 
 # Generic HTML attributes passed through verbatim (besides data-/aria-/hx-*).
 _PASSTHROUGH = ("id", "title", "style", "role", "tabindex")
@@ -42,6 +42,34 @@ def render_extra(extra: Optional[Mapping[str, Any]]) -> Markup:
         elif key.startswith(_PREFIXES) or key in _PASSTHROUGH:
             parts.append(f' {key}="{escape(value)}"')
     return Markup("".join(parts))
+
+
+def render_utility(extra: Optional[Mapping[str, Any]]) -> str:
+    """Build utility CSS classes from text-style / margin / padding inputs.
+
+    Mirrors the render_utility_classes Jinja macro: text-style -> rvo-text--{v};
+    margin/padding -> rvo-{margin|padding}--{v}, or a 3-part
+    rvo-{margin|padding}-{a}-{b}--{c}. Multiple values may be space/comma separated.
+    """
+    if not extra:
+        return ""
+    classes = []
+    text_style = extra.get("text-style")
+    if text_style:
+        for value in str(text_style).replace(",", " ").split():
+            classes.append(f"rvo-text--{value}")
+    for key, prefix in (("margin", "rvo-margin"), ("padding", "rvo-padding")):
+        raw = extra.get(key)
+        if not raw:
+            continue
+        for value in str(raw).replace(",", " ").split():
+            if value.count("-") >= 2:
+                parts = value.split("-")
+                if len(parts) == 3:
+                    classes.append(f"{prefix}-{parts[0]}-{parts[1]}--{parts[2]}")
+            else:
+                classes.append(f"{prefix}--{value}")
+    return " ".join(classes)
 
 
 def merge_class(base: str, extra_class: Optional[str]) -> str:

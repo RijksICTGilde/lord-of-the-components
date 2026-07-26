@@ -85,17 +85,59 @@ export interface ComputedVariable {
   condition: Condition;
 }
 
+export type TextExpr =
+  | { literal: string }
+  | { prop: string }
+  | { content: true }
+  | { coalesce: TextExpr[] }
+  | { raw: string };
+
 export interface ElementNode {
   element: string | DynamicElement;
   classes?: ClassRule[];
   attributes?: AttributeMapping[];
   styles?: StyleMapping[];
   when?: Condition;
-  text?: string;
+  text?: string | TextExpr;
   children?: ElementNode[];
   elseChildren?: ElementNode[];
   rawHtml?: string;
   isRoot?: boolean;
+}
+
+/**
+ * Convert leaf text (string or TextExpr) to the Jinja2 expression the Jinja
+ * backend emits. Reproduces the pre-TextExpr strings exactly so regenerated
+ * templates stay byte-identical.
+ */
+export function textToJinjaString(text: string | TextExpr): string {
+  if (typeof text === "string") return text;
+  if ("literal" in text) return text.literal;
+  if ("raw" in text) return text.raw;
+  if ("content" in text) return "{{ children | safe }}";
+  if ("prop" in text) return `{{ ${text.prop} | safe }}`;
+  // coalesce: content-then-prop is the only shape used today.
+  const parts = text.coalesce;
+  if (
+    parts.length === 2 &&
+    "content" in parts[0] &&
+    "prop" in parts[1]
+  ) {
+    return `{{ children if children else ${(parts[1] as { prop: string }).prop} | safe }}`;
+  }
+  // Generic fallback: nested ternary of the parts.
+  const exprs = parts.map((p) => {
+    if ("content" in p) return "children";
+    if ("prop" in p) return (p as { prop: string }).prop;
+    if ("literal" in p) return JSON.stringify((p as { literal: string }).literal);
+    if ("raw" in p) return JSON.stringify((p as { raw: string }).raw);
+    return "''";
+  });
+  let expr = exprs[exprs.length - 1];
+  for (let i = exprs.length - 2; i >= 0; i--) {
+    expr = `${exprs[i]} if ${exprs[i]} else ${expr}`;
+  }
+  return `{{ ${expr} | safe }}`;
 }
 
 export interface ComponentImplementation {
@@ -319,7 +361,7 @@ export class Jinja2Generator {
 
     if (isInlineElement) {
       const tagName = this.resolveTagName(node.element);
-      lines.push(`${ind}<${tagName}>${node.text}</${tagName}>`);
+      lines.push(`${ind}<${tagName}>${textToJinjaString(node.text!)}</${tagName}>`);
       return lines;
     }
 
@@ -409,7 +451,7 @@ export class Jinja2Generator {
     }
 
     if (node.text) {
-      lines.push(`${ind}    ${node.text}`);
+      lines.push(`${ind}    ${textToJinjaString(node.text)}`);
     }
 
     // ── Closing tag ───────────────────────────────────────────────────────

@@ -55,6 +55,7 @@ class ComponentDefinition:
     description: str
     category: str = "utility"
     status: str = "experimental"
+    backend: str = "jinja"
     attributes: List[AttributeDefinition] = field(default_factory=list)
     slots: List[SlotDefinition] = field(default_factory=list)
     depends_on: Optional[List[str]] = None
@@ -159,6 +160,7 @@ class ComponentRegistry:
             description=data.get("description", ""),
             category=data.get("category", "utility"),
             status=data.get("status", "experimental"),
+            backend=data.get("backend", "jinja"),
             attributes=attributes,
             slots=slots,
             depends_on=data.get("dependsOn"),

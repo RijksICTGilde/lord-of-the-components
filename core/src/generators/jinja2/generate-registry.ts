@@ -74,6 +74,7 @@ export interface RegistryComponent {
   name: string;
   description?: string;
   category?: string;
+  backend?: "python" | "jinja";
   attributes: RegistryAttribute[];
   events?: string[];
   content?: {
@@ -142,6 +143,7 @@ function propSpecToAttribute(
  */
 function componentToRegistryEntry(
   component: ComponentDefinition,
+  pythonBackend?: Set<string>,
 ): RegistryComponent {
   const attributes: RegistryAttribute[] = [];
 
@@ -156,6 +158,7 @@ function componentToRegistryEntry(
 
   if (component.description) entry.description = component.description;
   if (component.category) entry.category = component.category;
+  entry.backend = pythonBackend?.has(component.name) ? "python" : "jinja";
 
   if (component.events && component.events.length > 0) {
     entry.events = [...component.events];
@@ -238,11 +241,12 @@ function childToRegistryEntry(
  */
 export function generateRegistry(
   components: ComponentDefinition[],
+  pythonBackend?: Set<string>,
 ): RegistryJSON {
   const entries: RegistryComponent[] = [];
 
   for (const component of components) {
-    entries.push(componentToRegistryEntry(component));
+    entries.push(componentToRegistryEntry(component, pythonBackend));
 
     // Also export child component definitions as separate entries
     if (component.children) {
@@ -265,6 +269,7 @@ export function generateRegistry(
  */
 export function generateRegistryJSON(
   components: ComponentDefinition[],
+  pythonBackend?: Set<string>,
 ): string {
-  return JSON.stringify(generateRegistry(components), null, 2) + "\n";
+  return JSON.stringify(generateRegistry(components, pythonBackend), null, 2) + "\n";
 }
