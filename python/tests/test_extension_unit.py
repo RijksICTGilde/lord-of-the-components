@@ -356,33 +356,34 @@ class TestPreprocessEdgeCases:
         assert "data-testid" in result
         assert "aria-label" in result
 
+    # button is on the Python backend, so it emits _lotc_rvo_button(...) calls.
     def test_utility_attributes_accepted(self, extension):
         source = '<c-button margin="md" padding="lg">Click</c-button>'
         result = extension.preprocess(source, "test.html")
-        assert '"margin"' in result
-        assert '"padding"' in result
+        assert "'margin'" in result
+        assert "'padding'" in result
 
     def test_id_attribute_accepted(self, extension):
         source = '<c-button id="main-btn">Click</c-button>'
         result = extension.preprocess(source, "test.html")
-        assert '"id": "main-btn"' in result
+        assert "'id': 'main-btn'" in result
 
     def test_class_attribute_accepted(self, extension):
         source = '<c-button class="extra-class">Click</c-button>'
         result = extension.preprocess(source, "test.html")
-        assert '"class": "extra-class"' in result
+        assert "_class='extra-class'" in result
 
     def test_multiple_components_processed(self, extension):
         source = '<c-button type="primary">A</c-button><c-button type="secondary">B</c-button>'
         result = extension.preprocess(source, "test.html")
-        assert result.count("components/button.html.j2") == 2
+        assert result.count("_lotc_rvo_button") == 2
 
     def test_preprocessor_state_resets_between_calls(self, extension):
         # First call
         extension.preprocess('<c-button type="primary">A</c-button>', "test1.html")
         # Second call should start fresh
         result = extension.preprocess('<c-button type="secondary">B</c-button>', "test2.html")
-        assert "components/button.html.j2" in result
+        assert "_lotc_rvo_button" in result
 
 
 # ---------------------------------------------------------------------------

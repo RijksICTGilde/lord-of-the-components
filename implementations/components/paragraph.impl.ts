@@ -30,7 +30,7 @@ export const paragraphImpl = defineImplementation({
       { prop: "no-spacing", class: "rvo-paragraph--no-spacing" },
     ],
 
-    text: "{{ children if children else label | safe }}",
+    text: { coalesce: [{ content: true }, { prop: "label" }] },
   },
 
   mixins: {

@@ -48,7 +48,7 @@ export const layoutFlowImpl = defineImplementation({
       { prop: "justify-content", pattern: "rvo-layout-justify-content-{value}", when: ["start", "center", "end", "space-between"] },
     ],
 
-    text: "{{ children | safe }}",
+    text: { content: true },
   },
 
   mixins: {

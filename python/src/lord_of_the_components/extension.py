@@ -89,6 +89,32 @@ class _CompileState:
     counter: int = 0
 
 
+def _py_ident(name: str) -> str:
+    """Component/prop name to a Python identifier (kebab -> snake)."""
+    return name.replace("-", "_")
+
+
+def _py_string(value: str) -> str:
+    """A single-quoted Jinja/Python string literal for *value*."""
+    return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'"
+
+
+def _register_theme_renderers(jinja_env: Environment, theme: str) -> None:
+    """Register the generated Python renderers as `_lotc_<theme>_<name>` globals."""
+    import importlib
+
+    try:
+        module = importlib.import_module(f"lord_of_the_components.themes.{theme}.renderers")
+    except ModuleNotFoundError:
+        return
+    for attr_name in dir(module):
+        if attr_name.startswith("_"):
+            continue
+        fn = getattr(module, attr_name)
+        if callable(fn) and getattr(fn, "__module__", "") == module.__name__:
+            jinja_env.globals[f"_lotc_{theme}_{attr_name}"] = fn
+
+
 def _slot_name(node: TemplateNode) -> Optional[str]:
     """Return the value of a <template>'s `slot` attribute if it is non-empty.
 
@@ -107,6 +133,8 @@ class ComponentExtension(Extension):
     def __init__(self, environment: Environment) -> None:
         super().__init__(environment)
         self.registry = ComponentRegistry()
+        # Design-system theme bound to the Python renderers (F6 generalizes this).
+        self.render_theme = "rvo"
 
     def preprocess(
         self, source: str, name: Optional[str], filename: Optional[str] = None
@@ -175,6 +203,10 @@ class ComponentExtension(Extension):
 
         named_slots, default_content = self._extract_slots(source, node, state, depth + 1)
 
+        if getattr(component_def, "backend", "jinja") == "python" and not named_slots:
+            return self._build_python_call(
+                component_name, component_def, attrs, default_content, state
+            )
         return self._build_include(component_name, attrs, default_content, state, named_slots)
 
     def _extract_slots(
@@ -354,6 +386,77 @@ class ComponentExtension(Extension):
         state.counter += 1
         return str(state.counter)
 
+    # ── Python renderer backend (F3) ─────────────────────────────────────────
+    _GENERIC_PREFIXES = ("data-", "aria-", "hx-")
+    _GENERIC_NAMES = frozenset({"id", "title", "style", "role", "tabindex"})
+
+    def _build_python_call(
+        self,
+        component_name: str,
+        component_def: Any,
+        attrs: Dict[str, Any],
+        content: Optional[str],
+        state: "_CompileState",
+    ) -> str:
+        """Emit `{{ _lotc_<theme>_<name>(...) }}` for a Python-backend component."""
+        kwargs: List[str] = []
+        extra_items: List[str] = []
+        class_expr: Optional[str] = None
+        set_stmts: List[str] = []
+
+        def value_expr(raw: str) -> str:
+            # Interpolated / block values are captured (rendered) into a Markup var;
+            # plain literals become Jinja string literals.
+            if "{{" in raw or "{%" in raw:
+                var = f"_lotc_a{self._generate_id(state)}"
+                set_stmts.append(f"{{% set {var} %}}{raw}{{% endset %}}")
+                return var
+            return _py_string(raw)
+
+        for key, value in attrs.items():
+            if key.startswith(":"):
+                clean = key[1:]
+                if clean == "class":
+                    class_expr = value
+                elif component_def.get_attribute(clean):
+                    kwargs.append(f"{_py_ident(clean)}={value}")
+                else:
+                    extra_items.append(f"{_py_string(clean)}: ({value})")
+            elif key.startswith("@"):
+                extra_items.append(f"{_py_string(key)}: {_py_string(value)}")
+            elif key == "class":
+                class_expr = _py_string(value)
+            else:
+                attr_def = component_def.get_attribute(key)
+                is_generic = key.startswith(self._GENERIC_PREFIXES) or key in self._GENERIC_NAMES
+                if attr_def is not None:
+                    from .registry import AttributeType
+
+                    if attr_def.type == AttributeType.BOOLEAN:
+                        falsy = str(value).lower() in ("false", "0", "no", "off")
+                        kwargs.append(f"{_py_ident(key)}={'False' if falsy else 'True'}")
+                    else:
+                        kwargs.append(f"{_py_ident(key)}={value_expr(value)}")
+                    if is_generic:
+                        # A def prop that is also a passthrough attribute is rendered
+                        # on the root too (matches the old generic-attributes macro).
+                        extra_items.append(f"{_py_string(key)}: {value_expr(value)}")
+                else:
+                    extra_items.append(f"{_py_string(key)}: {value_expr(value)}")
+
+        if content:
+            var = f"_lotc_c{self._generate_id(state)}"
+            set_stmts.append(f"{{% set {var} %}}{content}{{% endset %}}")
+            kwargs.append(f"content={var}")
+        if extra_items:
+            kwargs.append("_extra={" + ", ".join(extra_items) + "}")
+        if class_expr:
+            kwargs.append(f"_class={class_expr}")
+
+        global_name = f"_lotc_{self.render_theme}_{_py_ident(component_name)}"
+        call = f"{{{{ {global_name}({', '.join(kwargs)}) }}}}"
+        return "".join(set_stmts) + call
+
 
 def setup_components(
     jinja_env: Environment,
@@ -410,6 +513,11 @@ def setup_components(
             searchpath.append(component_templates_path)
         elif searchpath is not None:
             setattr(loader, "searchpath", [searchpath, component_templates_path])
+
+    # Register the generated Python renderers (the fast backend) as globals.
+    ext = jinja_env.extensions.get(ComponentExtension.identifier)
+    render_theme = ext.render_theme if isinstance(ext, ComponentExtension) else "rvo"
+    _register_theme_renderers(jinja_env, render_theme)
 
     jinja_env.globals["get_component_assets"] = lambda: _get_component_assets(
         static_url_prefix, htmx, user_css_files, user_js_files

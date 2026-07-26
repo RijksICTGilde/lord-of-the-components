@@ -29,7 +29,7 @@ export const headingImpl = defineImplementation({
       { prop: "type", eq: "h6", class: "utrecht-heading-6" },
     ],
 
-    text: "{{ children if children else label | safe }}",
+    text: { coalesce: [{ content: true }, { prop: "label" }] },
   },
 
   mixins: {

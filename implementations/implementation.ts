@@ -250,6 +250,26 @@ export interface DynamicElement {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// TEXT EXPRESSION — structured, target-independent leaf text
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Structured leaf text, so each backend can escape correctly.
+ *
+ * - `{ literal }` — a literal string
+ * - `{ prop }`    — a prop value, HTML-escaped
+ * - `{ content: true }` — the component's content (children), already Markup
+ * - `{ coalesce }` — first truthy of a list (e.g. content, else label)
+ * - `{ raw }`     — an explicitly trusted string (rarely; e.g. `head`)
+ */
+export type TextExpr =
+  | { literal: string }
+  | { prop: string }
+  | { content: true }
+  | { coalesce: TextExpr[] }
+  | { raw: string };
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // ELEMENT NODE — THE TREE API
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -318,14 +338,18 @@ export interface ElementNode {
   when?: Condition;
 
   /**
-   * Leaf text content (Jinja2 template expression).
-   * Mutually exclusive with children — use text for leaf nodes,
-   * children for container nodes.
+   * Leaf text content. Mutually exclusive with children.
    *
+   * Either a raw Jinja2 expression string (legacy) or a structured TextExpr.
+   * TextExpr is target-independent: the Jinja backend renders it to the same
+   * expression it used before, and the Python backend renders it with proper
+   * escaping (prop values escaped, content already Markup). New impls should
+   * use TextExpr; string is kept for components not yet on the Python backend.
+   *
+   * @example { coalesce: [{ content: true }, { prop: "label" }] }
    * @example "{{ children | safe }}"
-   * @example "{{ heading }}"
    */
-  text?: string;
+  text?: string | TextExpr;
 
   /**
    * Child elements (recursive tree).

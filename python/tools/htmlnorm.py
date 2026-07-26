@@ -18,12 +18,17 @@ import re
 
 from bs4 import BeautifulSoup
 
-_BETWEEN_TAGS = re.compile(r">\s+<")
 _WHITESPACE = re.compile(r"\s+")
 
 
 def normalize(html: str) -> str:
-    """Return a canonical form of *html* for whitespace-insensitive comparison."""
+    """Return a canonical form of *html* for whitespace-insensitive comparison.
+
+    Collapses whitespace runs and strips whitespace adjacent to tags, so the
+    current 4-space-indented templates and the compact HTML the Python renderer
+    emits compare equal. Whitespace *between* text (e.g. inside "Tom & Jerry") is
+    preserved; only incidental whitespace around tags is removed.
+    """
     soup = BeautifulSoup(html, "html.parser")
 
     for tag in soup.find_all(True):
@@ -36,6 +41,6 @@ def normalize(html: str) -> str:
         tag.attrs = dict(sorted(tag.attrs.items()))
 
     out = soup.decode()
-    out = _BETWEEN_TAGS.sub("><", out)
     out = _WHITESPACE.sub(" ", out)
+    out = out.replace("> ", ">").replace(" <", "<")
     return out.strip()

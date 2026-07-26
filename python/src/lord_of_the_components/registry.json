@@ -118,6 +118,7 @@
       ],
       "description": "Interactive button for user actions",
       "category": "actions",
+      "backend": "python",
       "events": [
         "click",
         "focus",
@@ -155,6 +156,7 @@
       ],
       "description": "Breadcrumb navigation trail",
       "category": "navigation",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Breadcrumb items",
@@ -231,6 +233,7 @@
       ],
       "description": "Navigation menu with items",
       "category": "navigation",
+      "backend": "jinja",
       "events": [
         "select"
       ],
@@ -326,6 +329,7 @@
       ],
       "description": "Page footer with max-width container and optional payoff",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Footer content (menu columns, links, etc.)"
@@ -358,6 +362,7 @@
       ],
       "description": "Page header with government logo and organization name",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Additional header content (navigation, actions, etc.)"
@@ -410,6 +415,7 @@
       ],
       "description": "Large hero/banner section with image, title, and content",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Additional content displayed in the hero section"
@@ -464,6 +470,7 @@
       ],
       "description": "Full HTML document wrapper with head, meta tags, assets, and body content",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Page body content. Can include any components and HTML."
@@ -568,6 +575,7 @@
       ],
       "description": "Content container with optional image and link",
       "category": "data-display",
+      "backend": "jinja",
       "events": [
         "click"
       ],
@@ -587,6 +595,7 @@
       ],
       "description": "Key-value pair display using a definition list",
       "category": "data-display",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Definition list content (dt/dd pairs)"
@@ -622,6 +631,7 @@
       ],
       "description": "Semantic heading element with dynamic level",
       "category": "typography",
+      "backend": "python",
       "content": {
         "allowed": true,
         "description": "Heading content (overrides name prop). Can include HTML/components."
@@ -671,6 +681,7 @@
       ],
       "description": "Decorative or informative icon",
       "category": "visual",
+      "backend": "python",
       "content": {
         "allowed": false,
         "description": "Icons do not accept content (self-closing)."
@@ -770,6 +781,7 @@
       ],
       "description": "Flexbox layout container with gap, direction, and alignment",
       "category": "layout",
+      "backend": "python",
       "content": {
         "allowed": true,
         "description": "Layout children"
@@ -841,6 +853,7 @@
       ],
       "description": "Grid column with responsive sizing (12-column grid)",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Column content"
@@ -893,6 +906,7 @@
       ],
       "description": "Grid row container with gap and vertical spacing",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Layout columns"
@@ -937,6 +951,7 @@
       ],
       "description": "Centered container with max-width constraints",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Container content"
@@ -998,6 +1013,7 @@
       ],
       "description": "Auto-fill grid layout with equal-width columns",
       "category": "layout",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Grid items (children)"
@@ -1048,6 +1064,7 @@
       ],
       "description": "Text paragraph with color, size, and spacing options",
       "category": "typography",
+      "backend": "python",
       "content": {
         "allowed": true,
         "description": "Paragraph content (overrides name prop). Can include HTML/components."
@@ -1175,6 +1192,7 @@
       ],
       "description": "Styled anchor link with optional icon",
       "category": "typography",
+      "backend": "python",
       "events": [
         "click"
       ],
@@ -1230,6 +1248,7 @@
       ],
       "description": "Form field label with size and type variants",
       "category": "typography",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Label content (overrides name prop). Can include HTML/components."
@@ -1251,6 +1270,7 @@
       ],
       "description": "Semantic bold text wrapper",
       "category": "typography",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Bold content (overrides name prop). Can include HTML/components."
@@ -1272,6 +1292,7 @@
       ],
       "description": "Semantic emphasized (italic) text wrapper",
       "category": "typography",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Emphasized content (overrides name prop). Can include HTML/components."
@@ -1334,6 +1355,7 @@
       ],
       "description": "Status alert with icon, heading, and optional close button",
       "category": "feedback",
+      "backend": "jinja",
       "content": {
         "allowed": true,
         "description": "Alert content (can include HTML/components)"

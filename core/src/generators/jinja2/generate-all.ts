@@ -22,6 +22,7 @@ import { fileURLToPath } from "node:url";
 import { Jinja2Generator } from "./index.js";
 import { generateRegistryJSON } from "./generate-registry.js";
 import { generateShowcase } from "./generate-showcase.js";
+import { generatePythonRenderers, PYTHON_BACKEND, type CompImpl } from "../python/index.js";
 
 // ── Imports from project root workspaces ─────────────────────────────────────
 // These resolve via tsx at runtime (not compiled by tsc).
@@ -135,11 +136,25 @@ function main(): void {
   console.log("Generating registry.json...\n");
 
   const allDefinitions = Object.values(COMPONENTS);
-  const registryJSON = generateRegistryJSON(allDefinitions);
+  const registryJSON = generateRegistryJSON(allDefinitions, PYTHON_BACKEND);
 
   mkdirSync(dirname(REGISTRY_PATH), { recursive: true });
   writeFileSync(REGISTRY_PATH, registryJSON, "utf-8");
   console.log(`  ✓ registry.json (${allDefinitions.length} component(s))\n`);
+
+  // ── Generate the Python renderers for the python-backend components ────
+  console.log("Generating Python renderers...\n");
+  const pythonImpls = implementations.filter((impl) =>
+    PYTHON_BACKEND.has(impl.component.name),
+  ) as unknown as CompImpl[];
+  const renderersPy = generatePythonRenderers(pythonImpls);
+  const renderersPath = resolve(
+    PROJECT_ROOT,
+    "python/src/lord_of_the_components/themes/rvo/renderers.py",
+  );
+  mkdirSync(dirname(renderersPath), { recursive: true });
+  writeFileSync(renderersPath, renderersPy, "utf-8");
+  console.log(`  ✓ themes/rvo/renderers.py (${pythonImpls.length} renderer(s))\n`);
 
   // ── Generate showcase.html ───────────────────────────────────────────
   console.log("Generating showcase.html...\n");
