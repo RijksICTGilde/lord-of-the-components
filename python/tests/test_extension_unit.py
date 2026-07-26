@@ -12,6 +12,7 @@ from lord_of_the_components.extension import (
     ComponentError,
     ComponentExtension,
     SourceLocation,
+    _CompileState,
     _find_attribute_location,
     _find_tag_location,
     _get_component_assets,
@@ -289,55 +290,56 @@ class TestBuildInclude:
     def extension(self):
         env = Environment()
         env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
-        ext._current_template_id = "test.html"
-        ext._placeholder_counter = 0
-        return ext
+        return env.extensions[ComponentExtension.identifier]
 
-    def test_simple_component_no_attrs(self, extension):
-        result = extension._build_include("button", {}, None)
+    @pytest.fixture
+    def state(self):
+        return _CompileState(template_id="test.html", source="")
+
+    def test_simple_component_no_attrs(self, extension, state):
+        result = extension._build_include("button", {}, None, state)
         assert '{% include "components/button.html.j2" with context %}' in result
         assert "_component_context" in result
 
-    def test_string_attribute(self, extension):
-        result = extension._build_include("button", {"variant": "primary"}, None)
+    def test_string_attribute(self, extension, state):
+        result = extension._build_include("button", {"variant": "primary"}, None, state)
         assert '"variant": "primary"' in result
 
-    def test_dynamic_attribute(self, extension):
-        result = extension._build_include("button", {":variant": "item.variant"}, None)
+    def test_dynamic_attribute(self, extension, state):
+        result = extension._build_include("button", {":variant": "item.variant"}, None, state)
         assert '"variant": item.variant' in result
 
-    def test_dynamic_boolean_true(self, extension):
-        result = extension._build_include("button", {":disabled": "true"}, None)
+    def test_dynamic_boolean_true(self, extension, state):
+        result = extension._build_include("button", {":disabled": "true"}, None, state)
         assert '"disabled": True' in result
 
-    def test_dynamic_boolean_false(self, extension):
-        result = extension._build_include("button", {":disabled": "false"}, None)
+    def test_dynamic_boolean_false(self, extension, state):
+        result = extension._build_include("button", {":disabled": "false"}, None, state)
         assert '"disabled": False' in result
 
-    def test_event_attribute(self, extension):
-        result = extension._build_include("button", {"@click": "handleClick()"}, None)
+    def test_event_attribute(self, extension, state):
+        result = extension._build_include("button", {"@click": "handleClick()"}, None, state)
         assert "'@click'" in result
         assert "handleClick()" in result
 
-    def test_boolean_attribute_true(self, extension):
-        result = extension._build_include("button", {"disabled": ""}, None)
+    def test_boolean_attribute_true(self, extension, state):
+        result = extension._build_include("button", {"disabled": ""}, None, state)
         assert '"disabled": True' in result
 
-    def test_boolean_attribute_false_string(self, extension):
-        result = extension._build_include("button", {"disabled": "false"}, None)
+    def test_boolean_attribute_false_string(self, extension, state):
+        result = extension._build_include("button", {"disabled": "false"}, None, state)
         assert '"disabled": False' in result
 
-    def test_content_creates_capture_var(self, extension):
-        result = extension._build_include("button", {}, "Click me")
+    def test_content_creates_capture_var(self, extension, state):
+        result = extension._build_include("button", {}, "Click me", state)
         assert "{% set _captured_content_" in result
         assert "Click me" in result
         assert "{% endset %}" in result
         assert '"content":' in result
 
-    def test_named_slots(self, extension):
+    def test_named_slots(self, extension, state):
         result = extension._build_include(
-            "card", {}, None, named_slots={"header": "Title", "footer": "End"}
+            "card", {}, None, state, named_slots={"header": "Title", "footer": "End"}
         )
         assert "{% set _slot_header_" in result
         assert "{% set _slot_footer_" in result
@@ -345,12 +347,12 @@ class TestBuildInclude:
         assert '"header":' in result
         assert '"footer":' in result
 
-    def test_escaped_double_quotes_in_value(self, extension):
-        result = extension._build_include("button", {"title": 'Say "hello"'}, None)
+    def test_escaped_double_quotes_in_value(self, extension, state):
+        result = extension._build_include("button", {"title": 'Say "hello"'}, None, state)
         assert 'Say \\"hello\\"' in result
 
-    def test_template_path_is_correct(self, extension):
-        result = extension._build_include("alert", {}, None)
+    def test_template_path_is_correct(self, extension, state):
+        result = extension._build_include("alert", {}, None, state)
         assert 'components/alert.html.j2' in result
 
 
@@ -364,50 +366,30 @@ class TestGenerateId:
     def extension(self):
         env = Environment()
         env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
-        ext._current_template_id = "test.html"
-        ext._placeholder_counter = 0
-        return ext
+        return env.extensions[ComponentExtension.identifier]
 
     def test_returns_8_char_hex(self, extension):
-        result = extension._generate_id()
+        state = _CompileState(template_id="test.html", source="")
+        result = extension._generate_id(state)
         assert len(result) == 8
         int(result, 16)  # should not raise
 
-    def test_deterministic_for_same_input(self):
-        env1 = Environment()
-        env1.add_extension(ComponentExtension)
-        ext1 = env1.extensions[ComponentExtension.identifier]
-        ext1._current_template_id = "same.html"
-        ext1._placeholder_counter = 0
-
-        env2 = Environment()
-        env2.add_extension(ComponentExtension)
-        ext2 = env2.extensions[ComponentExtension.identifier]
-        ext2._current_template_id = "same.html"
-        ext2._placeholder_counter = 0
-
-        assert ext1._generate_id() == ext2._generate_id()
+    def test_deterministic_for_same_input(self, extension):
+        # Two fresh states with the same template id and counter must agree.
+        state1 = _CompileState(template_id="same.html", source="")
+        state2 = _CompileState(template_id="same.html", source="")
+        assert extension._generate_id(state1) == extension._generate_id(state2)
 
     def test_different_for_sequential_calls(self, extension):
-        id1 = extension._generate_id()
-        id2 = extension._generate_id()
+        state = _CompileState(template_id="test.html", source="")
+        id1 = extension._generate_id(state)
+        id2 = extension._generate_id(state)
         assert id1 != id2
 
-    def test_different_for_different_templates(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-
-        ext = env.extensions[ComponentExtension.identifier]
-        ext._current_template_id = "a.html"
-        ext._placeholder_counter = 0
-        id_a = ext._generate_id()
-
-        ext._current_template_id = "b.html"
-        ext._placeholder_counter = 0
-        id_b = ext._generate_id()
-
-        assert id_a != id_b
+    def test_different_for_different_templates(self, extension):
+        state_a = _CompileState(template_id="a.html", source="")
+        state_b = _CompileState(template_id="b.html", source="")
+        assert extension._generate_id(state_a) != extension._generate_id(state_b)
 
 
 # ---------------------------------------------------------------------------
@@ -420,43 +402,45 @@ class TestRestoreJinjaTags:
     def extension(self):
         env = Environment()
         env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
-        ext._jinja_placeholders = {}
-        return ext
+        return env.extensions[ComponentExtension.identifier]
 
-    def test_no_placeholders(self, extension):
-        result = extension._restore_jinja_tags("<div>Hello</div>")
+    @pytest.fixture
+    def state(self):
+        return _CompileState(template_id="test.html", source="")
+
+    def test_no_placeholders(self, extension, state):
+        result = extension._restore_jinja_tags("<div>Hello</div>", state)
         assert result == "<div>Hello</div>"
 
-    def test_single_placeholder(self, extension):
-        extension._jinja_placeholders["JINJA2_PLACEHOLDER_abc"] = '{% include "x.html.j2" %}'
-        result = extension._restore_jinja_tags("<div>JINJA2_PLACEHOLDER_abc</div>")
+    def test_single_placeholder(self, extension, state):
+        state.placeholders["JINJA2_PLACEHOLDER_abc"] = '{% include "x.html.j2" %}'
+        result = extension._restore_jinja_tags("<div>JINJA2_PLACEHOLDER_abc</div>", state)
         assert '{% include "x.html.j2" %}' in result
 
-    def test_multiple_placeholders(self, extension):
-        extension._jinja_placeholders["JINJA2_PLACEHOLDER_1"] = "{% block a %}"
-        extension._jinja_placeholders["JINJA2_PLACEHOLDER_2"] = "{% block b %}"
-        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_1 JINJA2_PLACEHOLDER_2")
+    def test_multiple_placeholders(self, extension, state):
+        state.placeholders["JINJA2_PLACEHOLDER_1"] = "{% block a %}"
+        state.placeholders["JINJA2_PLACEHOLDER_2"] = "{% block b %}"
+        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_1 JINJA2_PLACEHOLDER_2", state)
         assert "{% block a %}" in result
         assert "{% block b %}" in result
 
-    def test_html_entities_unescaped(self, extension):
-        result = extension._restore_jinja_tags("&amp; &lt; &gt;")
+    def test_html_entities_unescaped(self, extension, state):
+        result = extension._restore_jinja_tags("&amp; &lt; &gt;", state)
         assert "& < >" == result
 
-    def test_nested_placeholders(self, extension):
+    def test_nested_placeholders(self, extension, state):
         # Placeholder that, when expanded, contains another placeholder
-        extension._jinja_placeholders["JINJA2_PLACEHOLDER_outer"] = "before JINJA2_PLACEHOLDER_inner after"
-        extension._jinja_placeholders["JINJA2_PLACEHOLDER_inner"] = "RESOLVED"
-        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_outer")
+        state.placeholders["JINJA2_PLACEHOLDER_outer"] = "before JINJA2_PLACEHOLDER_inner after"
+        state.placeholders["JINJA2_PLACEHOLDER_inner"] = "RESOLVED"
+        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_outer", state)
         assert "RESOLVED" in result
 
-    def test_max_iterations_prevents_infinite_loop(self, extension):
+    def test_max_iterations_prevents_infinite_loop(self, extension, state):
         # Circular placeholders (pathological case) - should not hang
-        extension._jinja_placeholders["JINJA2_PLACEHOLDER_a"] = "JINJA2_PLACEHOLDER_b"
-        extension._jinja_placeholders["JINJA2_PLACEHOLDER_b"] = "JINJA2_PLACEHOLDER_a"
+        state.placeholders["JINJA2_PLACEHOLDER_a"] = "JINJA2_PLACEHOLDER_b"
+        state.placeholders["JINJA2_PLACEHOLDER_b"] = "JINJA2_PLACEHOLDER_a"
         # Should complete without hanging (max 10 iterations)
-        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_a")
+        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_a", state)
         assert isinstance(result, str)
 
 
@@ -821,7 +805,7 @@ class TestPreprocessGenericExceptionWrapping:
         # Monkey-patch _process_components_in_soup to raise a generic exception
         original = ext._process_components_in_soup
 
-        def raise_generic(soup):
+        def raise_generic(soup, state):
             raise ValueError("something went wrong internally")
 
         ext._process_components_in_soup = raise_generic
@@ -836,7 +820,7 @@ class TestPreprocessGenericExceptionWrapping:
         env.add_extension(ComponentExtension)
         ext = env.extensions[ComponentExtension.identifier]
 
-        def raise_generic(soup):
+        def raise_generic(soup, state):
             raise TypeError("bad type")
 
         ext._process_components_in_soup = raise_generic
@@ -853,7 +837,7 @@ class TestPreprocessGenericExceptionWrapping:
 
         original_error = ValueError("root cause")
 
-        def raise_generic(soup):
+        def raise_generic(soup, state):
             raise original_error
 
         ext._process_components_in_soup = raise_generic
@@ -897,10 +881,10 @@ class TestOrphanedPlaceholders:
 
         # Inject a placeholder that has no mapping
         html = "before JINJA2_PLACEHOLDER_deadbeef after"
-        ext._jinja_placeholders.clear()
-        # The placeholder text is present but not in the dict → orphaned
+        state = _CompileState(template_id="test.html", source="")
+        # The placeholder text is present but not in state.placeholders → orphaned
 
-        result = ext._restore_jinja_tags(html)
+        result = ext._restore_jinja_tags(html, state)
         # Should return with placeholder still present (no replacement possible)
         assert "JINJA2_PLACEHOLDER_deadbeef" in result
 
@@ -921,3 +905,42 @@ class TestSetupNonListSearchpath:
         assert isinstance(loader.searchpath, list)
         assert loader.searchpath[0] == "/some/path"
         assert any("templates" in p for p in loader.searchpath)
+
+
+class TestConcurrentPreprocess:
+    """Regression test for the stateless-per-compile refactor (plan v7 D8/T0.3).
+
+    The extension instance is shared across the whole Environment, so two
+    templates compiling at the same time (a threaded server) must not corrupt
+    each other's placeholders/counters. Before the refactor these lived on the
+    instance; now they live in a per-call _CompileState.
+    """
+
+    def test_concurrent_compiles_are_isolated(self):
+        from concurrent.futures import ThreadPoolExecutor
+
+        env = Environment()
+        env.add_extension(ComponentExtension)
+        ext = env.extensions[ComponentExtension.identifier]
+
+        source_a = '<c-card><c-button type="primary">Alpha</c-button></c-card>'
+        source_b = (
+            '<c-button type="secondary">Bravo</c-button>'
+            '<c-button type="tertiary">Charlie</c-button>'
+        )
+
+        # Reference output, computed serially.
+        expected_a = ext.preprocess(source_a, "a.html")
+        expected_b = ext.preprocess(source_b, "b.html")
+        assert expected_a != expected_b
+
+        def compile_one(i):
+            if i % 2 == 0:
+                return "a", ext.preprocess(source_a, "a.html")
+            return "b", ext.preprocess(source_b, "b.html")
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            results = list(pool.map(compile_one, range(200)))
+
+        for kind, output in results:
+            assert output == (expected_a if kind == "a" else expected_b)

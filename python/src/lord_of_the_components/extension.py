@@ -10,7 +10,7 @@ import hashlib
 import logging
 import re
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from difflib import get_close_matches
 from typing import Any, Dict, List, Optional, Set
 
@@ -141,6 +141,22 @@ def _find_attribute_location(
     return SourceLocation(line=line, column=column)
 
 
+@dataclass
+class _CompileState:
+    """Per-compile state for a single preprocess() call.
+
+    Kept off the extension instance so concurrent compiles in a threaded server
+    cannot corrupt each other's placeholders/counters (the extension instance is
+    shared across the whole Environment).
+    """
+
+    template_id: str
+    source: str
+    placeholders: Dict[str, str] = field(default_factory=dict)
+    placeholder_counter: int = 0
+    tag_occurrence_counts: Dict[str, int] = field(default_factory=dict)
+
+
 class ComponentExtension(Extension):
     """
     Jinja2 extension that preprocesses component syntax using BeautifulSoup DOM parsing.
@@ -149,11 +165,6 @@ class ComponentExtension(Extension):
     def __init__(self, environment: Environment) -> None:
         super().__init__(environment)
         self.registry = ComponentRegistry()
-        self._jinja_placeholders: Dict[str, str] = {}
-        self._placeholder_counter: int = 0
-        self._current_template_id: str = ""
-        self._current_source: str = ""
-        self._tag_occurrence_counts: Dict[str, int] = {}
 
     def preprocess(
         self, source: str, name: Optional[str], filename: Optional[str] = None
@@ -162,23 +173,20 @@ class ComponentExtension(Extension):
         Preprocess the template source to convert component syntax to Jinja2 includes.
         """
         template_id = filename or name or "<unknown>"
-        logger.debug(f"Preprocessing template: {template_id}")
-        self._jinja_placeholders.clear()
-        self._placeholder_counter = 0
-        self._current_template_id = template_id
-        self._current_source = source
-        self._tag_occurrence_counts.clear()
+        logger.debug("Preprocessing template: %s", template_id)
 
         # If no component tags exist, skip BeautifulSoup entirely
         if "<c-" not in source:
             return source
 
+        state = _CompileState(template_id=template_id, source=source)
+
         try:
             soup = BeautifulSoup(source, features="html.parser")
-            self._process_components_in_soup(soup)
+            self._process_components_in_soup(soup, state)
             result = str(soup)
-            result = self._restore_jinja_tags(result)
-            logger.debug(f"Successfully processed template: {template_id}")
+            result = self._restore_jinja_tags(result, state)
+            logger.debug("Successfully processed template: %s", template_id)
             return result
 
         except ComponentError:
@@ -186,12 +194,12 @@ class ComponentExtension(Extension):
             raise
 
         except Exception as e:
-            logger.error(f"Component preprocessing failed for template {template_id}: {e}")
+            logger.error("Component preprocessing failed for template %s: %s", template_id, e)
             raise RuntimeError(
                 f"Component preprocessing failed for template '{template_id}': {e}"
             ) from e
 
-    def _process_components_in_soup(self, soup: BeautifulSoup) -> None:
+    def _process_components_in_soup(self, soup: BeautifulSoup, state: "_CompileState") -> None:
         """
         Process all component tags in the BeautifulSoup tree using topological sort.
 
@@ -235,9 +243,9 @@ class ComponentExtension(Extension):
             depth = self._calculate_nesting_depth(tag, tag_to_id)
             if depth > MAX_NESTING_DEPTH:
                 location = _find_tag_location(
-                    self._current_source,
+                    state.source,
                     tag.name,
-                    self._tag_occurrence_counts.get(tag.name, 0),
+                    state.tag_occurrence_counts.get(tag.name, 0),
                 )
                 raise ComponentError(
                     f"Component nesting depth ({depth}) exceeds maximum allowed ({MAX_NESTING_DEPTH})",
@@ -277,7 +285,7 @@ class ComponentExtension(Extension):
 
         # Process components in topological order (leaves first, then their parents)
         for tag in processing_order:
-            self._process_single_component(tag)
+            self._process_single_component(tag, state)
 
     def _calculate_nesting_depth(self, tag: Tag, tag_to_id: Dict[int, Tag]) -> int:
         """
@@ -299,7 +307,7 @@ class ComponentExtension(Extension):
             return False
         return bool(tag.name and tag.name.startswith("c-"))
 
-    def _process_single_component(self, tag: Tag) -> None:
+    def _process_single_component(self, tag: Tag, state: "_CompileState") -> None:
         """
         Process a single component tag and replace it with Jinja2 include.
         """
@@ -307,11 +315,11 @@ class ComponentExtension(Extension):
         tag_name = tag.name
 
         # Track occurrence count for this tag type
-        occurrence = self._tag_occurrence_counts.get(tag_name, 0)
-        self._tag_occurrence_counts[tag_name] = occurrence + 1
+        occurrence = state.tag_occurrence_counts.get(tag_name, 0)
+        state.tag_occurrence_counts[tag_name] = occurrence + 1
 
         # Get location for this tag
-        location = _find_tag_location(self._current_source, tag_name, occurrence)
+        location = _find_tag_location(state.source, tag_name, occurrence)
 
         if not self.registry.has_component(component_name):
             available = sorted(self.registry.get_all_component_names())
@@ -328,16 +336,16 @@ class ComponentExtension(Extension):
             )
 
         component_def = self.registry.get_component(component_name)
-        attrs = self._parse_component_attributes(tag, component_def, location, occurrence)
+        attrs = self._parse_component_attributes(tag, component_def, state, location, occurrence)
 
         # Extract named slots and default content
         named_slots, default_content = self._extract_slots(tag)
 
-        include_str = self._build_include(component_name, attrs, default_content, named_slots)
+        include_str = self._build_include(component_name, attrs, default_content, state, named_slots)
 
-        placeholder = f"JINJA2_PLACEHOLDER_{self._generate_id()}"
+        placeholder = f"JINJA2_PLACEHOLDER_{self._generate_id(state)}"
         tag.replace_with(placeholder)
-        self._jinja_placeholders[placeholder] = include_str
+        state.placeholders[placeholder] = include_str
 
     def _extract_slots(self, tag: Tag) -> tuple[Dict[str, str], Optional[str]]:
         """
@@ -381,6 +389,7 @@ class ComponentExtension(Extension):
         self,
         tag: Tag,
         component_def: Any,
+        state: "_CompileState",
         tag_location: Optional[SourceLocation] = None,
         tag_occurrence: int = 0,
     ) -> Dict[str, Any]:
@@ -405,7 +414,7 @@ class ComponentExtension(Extension):
                 is_valid, expr_error = validate_expression(attr_value)
                 if not is_valid and expr_error:
                     attr_location = _find_attribute_location(
-                        self._current_source, tag.name, attr_name, tag_occurrence
+                        state.source, tag.name, attr_name, tag_occurrence
                     )
                     location = attr_location or tag_location
 
@@ -434,7 +443,7 @@ class ComponentExtension(Extension):
 
                     # Find location of the attribute
                     attr_location = _find_attribute_location(
-                        self._current_source, tag.name, attr_name, tag_occurrence
+                        state.source, tag.name, attr_name, tag_occurrence
                     )
                     # Fall back to tag location if attribute not found
                     location = attr_location or tag_location
@@ -474,6 +483,7 @@ class ComponentExtension(Extension):
         component_name: str,
         attrs: Dict[str, Any],
         content: Optional[str],
+        state: "_CompileState",
         named_slots: Optional[Dict[str, str]] = None,
     ) -> str:
         """Build the Jinja2 include statement."""
@@ -512,7 +522,7 @@ class ComponentExtension(Extension):
 
         # Handle default content
         if content:
-            var_suffix = self._generate_id()
+            var_suffix = self._generate_id(state)
             capture_var = f"_captured_content_{var_suffix}"
             set_statements.append(f"{{% set {capture_var} %}}{content}{{% endset %}}")
             context_items.append(f'"content": {capture_var}')
@@ -521,7 +531,7 @@ class ComponentExtension(Extension):
         slot_items: List[str] = []
         if named_slots:
             for slot_name, slot_content in named_slots.items():
-                var_suffix = self._generate_id()
+                var_suffix = self._generate_id(state)
                 slot_var = f"_slot_{slot_name}_{var_suffix}"
                 set_statements.append(f"{{% set {slot_var} %}}{slot_content}{{% endset %}}")
                 slot_items.append(f'"{slot_name}": {slot_var}')
@@ -540,19 +550,19 @@ class ComponentExtension(Extension):
             f'{{% include "{template_path}" with context %}}'
         )
 
-    def _generate_id(self) -> str:
+    def _generate_id(self, state: "_CompileState") -> str:
         """
         Generate a deterministic unique ID for variable names.
 
-        Uses a position-based hash combining the template ID and a counter,
-        ensuring reproducible output for the same input template.
+        Uses a position-based hash combining the template ID and a per-compile
+        counter, ensuring reproducible output for the same input template.
         """
-        self._placeholder_counter += 1
-        hash_input = f"{self._current_template_id}:{self._placeholder_counter}"
+        state.placeholder_counter += 1
+        hash_input = f"{state.template_id}:{state.placeholder_counter}"
         hash_bytes = hashlib.sha256(hash_input.encode()).hexdigest()[:8]
         return hash_bytes
 
-    def _restore_jinja_tags(self, html: str) -> str:
+    def _restore_jinja_tags(self, html: str, state: "_CompileState") -> str:
         """Restore Jinja2 placeholders with actual Jinja2 tags."""
         import html as html_module
 
@@ -561,15 +571,13 @@ class ComponentExtension(Extension):
 
         while "JINJA2_PLACEHOLDER_" in html and iteration < max_iterations:
             replaced_any = False
-            for placeholder, jinja_code in self._jinja_placeholders.items():
+            for placeholder, jinja_code in state.placeholders.items():
                 if placeholder in html:
                     html = html.replace(placeholder, jinja_code)
                     replaced_any = True
 
             if not replaced_any:
-                logger.warning(
-                    f"Orphaned placeholders found after {iteration} iterations"
-                )
+                logger.warning("Orphaned placeholders found after %d iterations", iteration)
                 break
 
             iteration += 1
