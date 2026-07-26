@@ -10,6 +10,7 @@
   "scripts": {
     "build": "npm run build -w core",
     "build:fe": "webpack --config webpack.config.cjs --mode=development",
+    "build:fe:nldd": "webpack --config webpack.nldd.cjs",
     "build:fe:watch": "webpack --config webpack.config.cjs --watch --mode=development",
     "dev": "npm run dev -w core",
     "test": "npm run test -w core",
@@ -47,6 +48,7 @@
     "@nl-rvo/component-library-css": "4.7.0",
     "@nl-rvo/css-button": "^1.1.5",
     "@nl-rvo/design-tokens": "1.8.0",
+    "@nldd/design-system": "0.8.70",
     "reset-css": "^5.0.2"
   }
 }
