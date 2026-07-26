@@ -71,15 +71,19 @@ def _nldd_head() -> str:
 def _make_transform(theme: str) -> Callable[[str], str]:
     """Return a fixture transform that injects the CSS/JS for the given theme."""
 
+    # Theme-agnostic layout primitives (app-shell, auto-grid) render the same in
+    # both themes, so their structural CSS is injected everywhere.
+    layout_css = '    <link rel="stylesheet" href="/static/lotc/layout.css">'
+
     def _transform(source: str) -> str:
         if theme == "nldd":
-            head = _nldd_head()
+            head = f"{_nldd_head()}\n{layout_css}"
             if "</head>" in source:
                 source = source.replace("</head>", f"{head}\n</head>")
             return source
         # RVO (default): bundled CSS + rvo-theme body class for design tokens.
         if "</head>" in source:
-            source = source.replace("</head>", f"{BUNDLED_CSS}\n</head>")
+            source = source.replace("</head>", f"{BUNDLED_CSS}\n{layout_css}\n</head>")
         if "<body" in source and "rvo-theme" not in source:
             source = source.replace("<body>", '<body class="rvo-theme">')
         return source

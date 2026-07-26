@@ -1,0 +1,81 @@
+"""Theme-agnostic layout primitives — app-shell and auto-grid (plan v7 F9, layout).
+
+These are pure structural CSS-grid layouts (static/lotc/layout.css). One jinja
+template serves BOTH themes, so the same markup lays out identically under RVO
+and NLDD — the tests assert that.
+"""
+
+from pathlib import Path
+
+import pytest
+from jinja2 import Environment, FileSystemLoader
+
+from lord_of_the_components import setup_components
+
+PKG = Path(__file__).resolve().parent.parent / "src" / "lord_of_the_components"
+
+
+def _env(theme):
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
+    setup_components(env, registry_path=str(PKG / "registry.json"), theme=theme)
+    return env
+
+
+SHELL = (
+    '<c-app-shell width="12rem">'
+    '<template slot="header">Kop</template>'
+    '<template slot="sidebar">Menu</template>'
+    "Hoofdinhoud"
+    '<template slot="footer">Voet</template>'
+    "</c-app-shell>"
+)
+
+
+@pytest.mark.parametrize("theme", ["rvo", "nldd"])
+def test_app_shell_regions(theme):
+    html = _env(theme).from_string(SHELL).render()
+    assert 'class="lotc-app-shell"' in html
+    assert '<header\n        class="lotc-app-shell__header">' in html or "lotc-app-shell__header" in html
+    assert "lotc-app-shell__sidebar" in html
+    assert "lotc-app-shell__main" in html
+    assert "lotc-app-shell__footer" in html
+    # Slot content and body land in the right regions.
+    assert "Kop" in html and "Menu" in html and "Voet" in html
+    assert "Hoofdinhoud" in html
+    # Sidebar width becomes a CSS custom property.
+    assert "--lotc-sidebar-width: 12rem;" in html
+
+
+def test_app_shell_identical_across_themes():
+    # Layout is theme-agnostic: RVO and NLDD produce byte-identical output.
+    rvo = _env("rvo").from_string(SHELL).render()
+    nldd = _env("nldd").from_string(SHELL).render()
+    assert rvo == nldd
+
+
+def test_app_shell_sidebar_right():
+    html = _env("rvo").from_string("<c-app-shell direction=\"right\">x</c-app-shell>").render()
+    assert "lotc-app-shell--sidebar-right" in html
+
+
+def test_app_shell_omits_absent_regions():
+    html = _env("rvo").from_string("<c-app-shell>only main</c-app-shell>").render()
+    assert "lotc-app-shell__main" in html
+    assert "lotc-app-shell__header" not in html
+    assert "lotc-app-shell__sidebar" not in html
+
+
+@pytest.mark.parametrize("theme", ["rvo", "nldd"])
+def test_auto_grid(theme):
+    html = _env(theme).from_string(
+        '<c-auto-grid min="20rem" gap="2rem">cells</c-auto-grid>'
+    ).render()
+    assert 'class="lotc-auto-grid"' in html
+    assert "--lotc-col-min: 20rem;" in html and "--lotc-grid-gap: 2rem;" in html
+    assert "cells" in html
+
+
+def test_auto_grid_defaults_without_style():
+    html = _env("rvo").from_string("<c-auto-grid>cells</c-auto-grid>").render()
+    assert 'class="lotc-auto-grid"' in html
+    assert "style=" not in html  # no CSS vars set -> CSS defaults apply
