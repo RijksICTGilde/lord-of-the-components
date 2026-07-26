@@ -2,7 +2,7 @@
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
 {% set color = _component_context.get('color', 'grijs-900') %}
-{% set name = _component_context.get('name', '') %}
+{% set label = _component_context.get('label', '') %}
 {% set no_spacing = _component_context.get('no-spacing', false) %}
 {% set size = _component_context.get('size', 'md') %}
 {% set css_classes = ['rvo-paragraph'] %}
@@ -26,5 +26,5 @@
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="paragraph"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {{ children if children else name | safe }}
+    {{ children if children else label | safe }}
 </p>

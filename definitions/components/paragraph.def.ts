@@ -22,7 +22,7 @@ export const paragraph = defineComponent({
      * Paragraph text content
      * Can be overridden by content between tags
      */
-    [PROPS.NAME]: {
+    [PROPS.LABEL]: {
       description: "Paragraph text (can be overridden by content between tags)",
     },
 

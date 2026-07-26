@@ -1,5 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
-{% set name = _component_context.get('name', '') %}
+{% set label = _component_context.get('label', '') %}
 {% set href = _component_context.get('href', '') %}
 {% set target = _component_context.get('target', '') %}
 {% set icon = _component_context.get('icon', '') %}
@@ -19,7 +19,7 @@
         <div class="rvo-menubar__dropdown">
             <button class="{{ link_classes | join(' ') }}" type="button" aria-expanded="false"{% if disabled %} disabled{% endif %}>
                 {% if icon %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--md rvo-menubar__icon--before" role="img" aria-label="{{ icon }}"></span>{% endif %}
-                {{ name }}
+                {{ label }}
             </button>
             <ul class="rvo-menubar__submenu">
                 {{ children | safe }}
@@ -28,12 +28,12 @@
     {% elif href %}
         <a href="{{ href }}" class="{{ link_classes | join(' ') }}"{% if target %} target="{{ target }}"{% endif %}{% if disabled %} aria-disabled="true"{% endif %}>
             {% if icon %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--md rvo-menubar__icon--before" role="img" aria-label="{{ icon }}"></span>{% endif %}
-            {{ name }}
+            {{ label }}
         </a>
     {% else %}
         <span class="{{ link_classes | join(' ') }}">
             {% if icon %}<span class="utrecht-icon rvo-icon rvo-icon-{{ icon }} rvo-icon--md rvo-menubar__icon--before" role="img" aria-label="{{ icon }}"></span>{% endif %}
-            {{ name }}
+            {{ label }}
         </span>
     {% endif %}
 </li>

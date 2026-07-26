@@ -450,15 +450,20 @@ class ComponentExtension(Extension):
 
                     # Try to find a suggestion
                     suggestion = None
-                    close_matches = get_close_matches(
-                        clean_name, [a.lower() for a in available], n=1, cutoff=0.6
-                    )
-                    if close_matches:
-                        # Map back to original casing
-                        for avail in available:
-                            if avail.lower() == close_matches[0]:
-                                suggestion = avail
-                                break
+                    # `name` was renamed to `label` for visible text (plan v7 T1.2);
+                    # they are not close enough for get_close_matches, so hint explicitly.
+                    if clean_name == "name" and "label" in {a.lower() for a in available}:
+                        suggestion = "label"
+                    else:
+                        close_matches = get_close_matches(
+                            clean_name, [a.lower() for a in available], n=1, cutoff=0.6
+                        )
+                        if close_matches:
+                            # Map back to original casing
+                            for avail in available:
+                                if avail.lower() == close_matches[0]:
+                                    suggestion = avail
+                                    break
 
                     raise ComponentError(
                         f"Unknown attribute '{attr_name}' on component '{tag.name}'",

@@ -91,7 +91,7 @@ export const breadcrumbs = defineComponent({
         /**
          * Item label (required)
          */
-        [PROPS.NAME]: {
+        [PROPS.LABEL]: {
           required: true,
           description: "Breadcrumb item label text",
         },

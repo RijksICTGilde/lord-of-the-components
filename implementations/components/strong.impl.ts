@@ -20,7 +20,7 @@ export const strongImpl = defineImplementation({
     element: "span",
     isRoot: true,
     classes: ["rvo-text--bold"],
-    text: "{{ children if children else name | safe }}",
+    text: "{{ children if children else label | safe }}",
   },
 
   mixins: {

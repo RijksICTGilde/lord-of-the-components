@@ -3,7 +3,7 @@
 {% set children = _component_context.get('content', '') %}
 {% set for = _component_context.get('for', '') %}
 {% set id = _component_context.get('id', '') %}
-{% set name = _component_context.get('name', '') %}
+{% set label = _component_context.get('label', '') %}
 {% set size = _component_context.get('size', 'md') %}
 {% set type = _component_context.get('type', 'default') %}
 {% set css_classes = ['rvo-label'] %}
@@ -23,5 +23,5 @@
     {% if id %}id="{{ id }}"{% endif %}
     {% if for %}for="{{ for }}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {{ children if children else name | safe }}
+    {{ children if children else label | safe }}
 </label>

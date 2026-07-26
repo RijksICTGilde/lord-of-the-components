@@ -72,7 +72,7 @@ def generic_registry():
             description="",
             category="actions",
             attributes=_attrs(
-                ("variant", S), ("size", S), ("type", S), ("icon", S),
+                ("variant", S), ("size", S), ("type", S), ("icon", S), ("label", S),
                 ("iconPosition", S), ("disabled", B), ("loading", B), ("fullWidth", B),
             ),
         ),

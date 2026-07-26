@@ -13,7 +13,7 @@ class TestLayoutFlowWithCardAndButton:
     TEMPLATE = (
         '<c-layout-flow gap="lg">'
         '<c-card title="Test">'
-        '<c-button name="Click"/>'
+        '<c-button label="Click"/>'
         "</c-card>"
         "</c-layout-flow>"
     )
@@ -76,7 +76,7 @@ class TestHeadingInsideCard:
 
     TEMPLATE = (
         '<c-card title="Card Title">'
-        '<c-heading type="h2" name="Section Title"/>'
+        '<c-heading type="h2" label="Section Title"/>'
         "</c-card>"
     )
 
@@ -206,7 +206,7 @@ class TestComponentsWithHTMLSiblings:
     TEMPLATE = (
         '<c-layout-flow gap="sm">'
         "<p>Some plain text</p>"
-        '<c-button name="Action"/>'
+        '<c-button label="Action"/>'
         "<p>More plain text</p>"
         "</c-layout-flow>"
     )
@@ -229,13 +229,13 @@ class TestDeeplyNestedStructure:
 
     TEMPLATE = (
         '<c-layout-flow gap="lg" size="md">'
-        '<c-heading type="h1" name="Page Title"/>'
+        '<c-heading type="h1" label="Page Title"/>'
         '<c-layout-flow gap="md" row>'
         '<c-card title="Feature A">'
-        '<c-button type="primary" name="Learn More"/>'
+        '<c-button type="primary" label="Learn More"/>'
         "</c-card>"
         '<c-card title="Feature B">'
-        '<c-button type="secondary" name="Details"/>'
+        '<c-button type="secondary" label="Details"/>'
         "</c-card>"
         "</c-layout-flow>"
         "</c-layout-flow>"

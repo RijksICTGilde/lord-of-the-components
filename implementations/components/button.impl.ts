@@ -100,7 +100,7 @@ export const buttonImpl = defineImplementation({
       // Label text (children override name prop)
       {
         element: "span",
-        text: "{{ children if children else name | safe }}",
+        text: "{{ children if children else label | safe }}",
       },
       // Icon after label
       {

@@ -9,8 +9,8 @@
 {% set href = _component_context.get('href', '') %}
 {% set html_type = _component_context.get('html-type', 'button') %}
 {% set icon = _component_context.get('icon', '') %}
+{% set label = _component_context.get('label', '') %}
 {% set loading = _component_context.get('loading', false) %}
-{% set name = _component_context.get('name', '') %}
 {% set show_icon = _component_context.get('show-icon', 'no') %}
 {% set size = _component_context.get('size', 'md') %}
 {% set target = _component_context.get('target', '') %}
@@ -55,7 +55,7 @@
         class="{{ css_classes | join(' ') }}">
     </span>
     {% endif %}
-    <span>{{ children if children else name | safe }}</span>
+    <span>{{ children if children else label | safe }}</span>
     {% if show_icon == 'after' %}
     {% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
     {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}

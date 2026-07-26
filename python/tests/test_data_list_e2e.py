@@ -261,7 +261,7 @@ class TestDataListNesting:
             "<c-data-list>"
             '<dt class="rvo-data-list__term">Action</dt>'
             '<dd class="rvo-data-list__description">'
-            '<c-button name="Edit"/>'
+            '<c-button label="Edit"/>'
             "</dd>"
             "</c-data-list>"
         )

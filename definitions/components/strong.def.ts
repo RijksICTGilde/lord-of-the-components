@@ -21,7 +21,7 @@ export const strong = defineComponent({
      * Text content
      * Can be overridden by content between tags
      */
-    [PROPS.NAME]: {
+    [PROPS.LABEL]: {
       description: "Text content (can be overridden by content between tags)",
     },
 
