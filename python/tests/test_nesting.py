@@ -8,10 +8,11 @@ from lord_of_the_components.extension import MAX_NESTING_DEPTH, ComponentError
 
 
 @pytest.fixture
-def env():
+def env(generic_registry):
     """Create a Jinja2 environment with the component extension."""
     environment = Environment()
     environment.add_extension(ComponentExtension)
+    environment.extensions[ComponentExtension.identifier].registry = generic_registry
     return environment
 
 
