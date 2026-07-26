@@ -8,14 +8,14 @@ get helpful feedback to fix their issues quickly.
 import pytest
 from jinja2 import Environment
 
-from lord_of_the_components import ComponentExtension, ComponentError, SourceLocation
+from lord_of_the_components import ComponentError, ComponentExtension, SourceLocation
 from lord_of_the_components.validation import (
-    validate_expression,
-    validate_items,
     validate_columns,
-    validate_steps,
-    validate_generic_size,
+    validate_expression,
     validate_generic_color,
+    validate_generic_size,
+    validate_items,
+    validate_steps,
 )
 
 

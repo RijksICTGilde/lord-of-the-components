@@ -29,7 +29,7 @@ python app.py --serve
 # Open http://localhost:8080
 ```
 
-This serves a fully styled page showcasing all 22 components with bundled RVO CSS.
+This serves a fully styled page showcasing all 21 components with bundled RVO CSS.
 
 ### Use in Your Own Project
 

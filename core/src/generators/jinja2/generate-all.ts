@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 // ── Imports from sibling modules (within core/src/) ──────────────────────────
 import { Jinja2Generator } from "./index.js";
 import { generateRegistryJSON } from "./generate-registry.js";
+import { generateShowcase } from "./generate-showcase.js";
 
 // ── Imports from project root workspaces ─────────────────────────────────────
 // These resolve via tsx at runtime (not compiled by tsc).
@@ -140,10 +141,23 @@ function main(): void {
   writeFileSync(REGISTRY_PATH, registryJSON, "utf-8");
   console.log(`  ✓ registry.json (${allDefinitions.length} component(s))\n`);
 
+  // ── Generate showcase.html ───────────────────────────────────────────
+  console.log("Generating showcase.html...\n");
+
+  const showcaseHTML = generateShowcase(implementations);
+  const showcasePath = resolve(
+    PROJECT_ROOT,
+    "examples/getting-started/templates/showcase.html",
+  );
+  mkdirSync(dirname(showcasePath), { recursive: true });
+  writeFileSync(showcasePath, showcaseHTML, "utf-8");
+  console.log(`  ✓ showcase.html\n`);
+
   // ── Summary ────────────────────────────────────────────────────────────
   console.log("Done.");
   console.log(`  Templates: ${TEMPLATES_DIR}`);
   console.log(`  Registry:  ${REGISTRY_PATH}`);
+  console.log(`  Showcase:  ${showcasePath}`);
 }
 
 main();
