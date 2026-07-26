@@ -1,0 +1,4994 @@
+{
+  "theme": "rvo",
+  "cases": [
+    {
+      "component": "alert",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-alert>Voorbeeld</c-alert>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "type=info",
+        "padding=md"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "type--info",
+      "theme": "rvo",
+      "markup": "<c-alert type=\"info\">Voorbeeld</c-alert>",
+      "props": {
+        "type": "info"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=info"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "type--success",
+      "theme": "rvo",
+      "markup": "<c-alert type=\"success\">Voorbeeld</c-alert>",
+      "props": {
+        "type": "success"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=success"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "type--warning",
+      "theme": "rvo",
+      "markup": "<c-alert type=\"warning\">Voorbeeld</c-alert>",
+      "props": {
+        "type": "warning"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=warning"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "type--error",
+      "theme": "rvo",
+      "markup": "<c-alert type=\"error\">Voorbeeld</c-alert>",
+      "props": {
+        "type": "error"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=error"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "padding--xs",
+      "theme": "rvo",
+      "markup": "<c-alert padding=\"xs\">Voorbeeld</c-alert>",
+      "props": {
+        "padding": "xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=xs"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "padding--sm",
+      "theme": "rvo",
+      "markup": "<c-alert padding=\"sm\">Voorbeeld</c-alert>",
+      "props": {
+        "padding": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=sm"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "padding--md",
+      "theme": "rvo",
+      "markup": "<c-alert padding=\"md\">Voorbeeld</c-alert>",
+      "props": {
+        "padding": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=md"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "padding--lg",
+      "theme": "rvo",
+      "markup": "<c-alert padding=\"lg\">Voorbeeld</c-alert>",
+      "props": {
+        "padding": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=lg"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "padding--xl",
+      "theme": "rvo",
+      "markup": "<c-alert padding=\"xl\">Voorbeeld</c-alert>",
+      "props": {
+        "padding": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=xl"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "padding--2xl",
+      "theme": "rvo",
+      "markup": "<c-alert padding=\"2xl\">Voorbeeld</c-alert>",
+      "props": {
+        "padding": "2xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=2xl"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "max-width--sm",
+      "theme": "rvo",
+      "markup": "<c-alert max-width=\"sm\">Voorbeeld</c-alert>",
+      "props": {
+        "max-width": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "max-width=sm"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "max-width--md",
+      "theme": "rvo",
+      "markup": "<c-alert max-width=\"md\">Voorbeeld</c-alert>",
+      "props": {
+        "max-width": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "max-width=md"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "max-width--lg",
+      "theme": "rvo",
+      "markup": "<c-alert max-width=\"lg\">Voorbeeld</c-alert>",
+      "props": {
+        "max-width": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "max-width=lg"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "closable",
+      "theme": "rvo",
+      "markup": "<c-alert closable>Voorbeeld</c-alert>",
+      "props": {
+        "closable": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "closable=true"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "heading--text",
+      "theme": "rvo",
+      "markup": "<c-alert heading=\"Voorbeeld\">Voorbeeld</c-alert>",
+      "props": {
+        "heading": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "heading=set"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-alert>Tom & Jerry</c-alert>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-alert><script>alert(1)</script></c-alert>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-alert></c-alert>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "alert",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-alert><c-strong>genest</c-strong></c-alert>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs>Voorbeeld</c-breadcrumbs>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs size=\"sm\">Voorbeeld</c-breadcrumbs>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs size=\"md\">Voorbeeld</c-breadcrumbs>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs size=\"lg\">Voorbeeld</c-breadcrumbs>",
+      "props": {
+        "size": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "aria-label--text",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs aria-label=\"Voorbeeld\">Voorbeeld</c-breadcrumbs>",
+      "props": {
+        "aria-label": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "aria-label=set"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs>Tom & Jerry</c-breadcrumbs>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs><script>alert(1)</script></c-breadcrumbs>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs></c-breadcrumbs>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-breadcrumbs><c-strong>genest</c-strong></c-breadcrumbs>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-button>Voorbeeld</c-button>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "type=primary",
+        "size=md",
+        "show-icon=no",
+        "html-type=button"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "type--primary",
+      "theme": "rvo",
+      "markup": "<c-button type=\"primary\">Voorbeeld</c-button>",
+      "props": {
+        "type": "primary"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=primary"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "type--secondary",
+      "theme": "rvo",
+      "markup": "<c-button type=\"secondary\">Voorbeeld</c-button>",
+      "props": {
+        "type": "secondary"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=secondary"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "type--tertiary",
+      "theme": "rvo",
+      "markup": "<c-button type=\"tertiary\">Voorbeeld</c-button>",
+      "props": {
+        "type": "tertiary"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=tertiary"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "type--quaternary",
+      "theme": "rvo",
+      "markup": "<c-button type=\"quaternary\">Voorbeeld</c-button>",
+      "props": {
+        "type": "quaternary"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=quaternary"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "type--warning",
+      "theme": "rvo",
+      "markup": "<c-button type=\"warning\">Voorbeeld</c-button>",
+      "props": {
+        "type": "warning"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=warning"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "type--subtle",
+      "theme": "rvo",
+      "markup": "<c-button type=\"subtle\">Voorbeeld</c-button>",
+      "props": {
+        "type": "subtle"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=subtle"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "type--warning-subtle",
+      "theme": "rvo",
+      "markup": "<c-button type=\"warning-subtle\">Voorbeeld</c-button>",
+      "props": {
+        "type": "warning-subtle"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=warning-subtle"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "size--xs",
+      "theme": "rvo",
+      "markup": "<c-button size=\"xs\">Voorbeeld</c-button>",
+      "props": {
+        "size": "xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-button size=\"sm\">Voorbeeld</c-button>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-button size=\"md\">Voorbeeld</c-button>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-button size=\"lg\">Voorbeeld</c-button>",
+      "props": {
+        "size": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "size--xl",
+      "theme": "rvo",
+      "markup": "<c-button size=\"xl\">Voorbeeld</c-button>",
+      "props": {
+        "size": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xl"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "show-icon--before",
+      "theme": "rvo",
+      "markup": "<c-button show-icon=\"before\">Voorbeeld</c-button>",
+      "props": {
+        "show-icon": "before"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "show-icon=before"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "show-icon--after",
+      "theme": "rvo",
+      "markup": "<c-button show-icon=\"after\">Voorbeeld</c-button>",
+      "props": {
+        "show-icon": "after"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "show-icon=after"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "show-icon--no",
+      "theme": "rvo",
+      "markup": "<c-button show-icon=\"no\">Voorbeeld</c-button>",
+      "props": {
+        "show-icon": "no"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "show-icon=no"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "html-type--button",
+      "theme": "rvo",
+      "markup": "<c-button html-type=\"button\">Voorbeeld</c-button>",
+      "props": {
+        "html-type": "button"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "html-type=button"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "html-type--submit",
+      "theme": "rvo",
+      "markup": "<c-button html-type=\"submit\">Voorbeeld</c-button>",
+      "props": {
+        "html-type": "submit"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "html-type=submit"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "html-type--reset",
+      "theme": "rvo",
+      "markup": "<c-button html-type=\"reset\">Voorbeeld</c-button>",
+      "props": {
+        "html-type": "reset"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "html-type=reset"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "target--self",
+      "theme": "rvo",
+      "markup": "<c-button target=\"_self\">Voorbeeld</c-button>",
+      "props": {
+        "target": "_self"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_self"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "target--blank",
+      "theme": "rvo",
+      "markup": "<c-button target=\"_blank\">Voorbeeld</c-button>",
+      "props": {
+        "target": "_blank"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_blank"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "target--parent",
+      "theme": "rvo",
+      "markup": "<c-button target=\"_parent\">Voorbeeld</c-button>",
+      "props": {
+        "target": "_parent"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_parent"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "target--top",
+      "theme": "rvo",
+      "markup": "<c-button target=\"_top\">Voorbeeld</c-button>",
+      "props": {
+        "target": "_top"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_top"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "full-width",
+      "theme": "rvo",
+      "markup": "<c-button full-width>Voorbeeld</c-button>",
+      "props": {
+        "full-width": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "full-width=true"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "disabled",
+      "theme": "rvo",
+      "markup": "<c-button disabled>Voorbeeld</c-button>",
+      "props": {
+        "disabled": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "disabled=true"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "loading",
+      "theme": "rvo",
+      "markup": "<c-button loading>Voorbeeld</c-button>",
+      "props": {
+        "loading": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "loading=true"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "active",
+      "theme": "rvo",
+      "markup": "<c-button active>Voorbeeld</c-button>",
+      "props": {
+        "active": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "active=true"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "icon--text",
+      "theme": "rvo",
+      "markup": "<c-button icon=\"Voorbeeld\">Voorbeeld</c-button>",
+      "props": {
+        "icon": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "icon=set"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "color--text",
+      "theme": "rvo",
+      "markup": "<c-button color=\"Voorbeeld\">Voorbeeld</c-button>",
+      "props": {
+        "color": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=set"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "aria-label--text",
+      "theme": "rvo",
+      "markup": "<c-button aria-label=\"Voorbeeld\">Voorbeeld</c-button>",
+      "props": {
+        "aria-label": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "aria-label=set"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-button name=\"Tom &amp; Jerry\"></c-button>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-button name=\"<script>alert(1)</script>\"></c-button>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-button>Tom & Jerry</c-button>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-button><script>alert(1)</script></c-button>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-button></c-button>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "button",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-button><c-strong>genest</c-strong></c-button>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-card>Voorbeeld</c-card>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "image-size=md",
+        "layout=column",
+        "padding=md"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "image-size--sm",
+      "theme": "rvo",
+      "markup": "<c-card image-size=\"sm\">Voorbeeld</c-card>",
+      "props": {
+        "image-size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "image-size=sm"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "image-size--md",
+      "theme": "rvo",
+      "markup": "<c-card image-size=\"md\">Voorbeeld</c-card>",
+      "props": {
+        "image-size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "image-size=md"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "layout--column",
+      "theme": "rvo",
+      "markup": "<c-card layout=\"column\">Voorbeeld</c-card>",
+      "props": {
+        "layout": "column"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "layout=column"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "layout--row",
+      "theme": "rvo",
+      "markup": "<c-card layout=\"row\">Voorbeeld</c-card>",
+      "props": {
+        "layout": "row"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "layout=row"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "padding--none",
+      "theme": "rvo",
+      "markup": "<c-card padding=\"none\">Voorbeeld</c-card>",
+      "props": {
+        "padding": "none"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=none"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "padding--sm",
+      "theme": "rvo",
+      "markup": "<c-card padding=\"sm\">Voorbeeld</c-card>",
+      "props": {
+        "padding": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=sm"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "padding--md",
+      "theme": "rvo",
+      "markup": "<c-card padding=\"md\">Voorbeeld</c-card>",
+      "props": {
+        "padding": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=md"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "padding--lg",
+      "theme": "rvo",
+      "markup": "<c-card padding=\"lg\">Voorbeeld</c-card>",
+      "props": {
+        "padding": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=lg"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "padding--xl",
+      "theme": "rvo",
+      "markup": "<c-card padding=\"xl\">Voorbeeld</c-card>",
+      "props": {
+        "padding": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "padding=xl"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "inline-image",
+      "theme": "rvo",
+      "markup": "<c-card inline-image>Voorbeeld</c-card>",
+      "props": {
+        "inline-image": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "inline-image=true"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "full-card-link",
+      "theme": "rvo",
+      "markup": "<c-card full-card-link>Voorbeeld</c-card>",
+      "props": {
+        "full-card-link": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "full-card-link=true"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "show-link-indicator",
+      "theme": "rvo",
+      "markup": "<c-card show-link-indicator>Voorbeeld</c-card>",
+      "props": {
+        "show-link-indicator": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "show-link-indicator=true"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "outline",
+      "theme": "rvo",
+      "markup": "<c-card outline>Voorbeeld</c-card>",
+      "props": {
+        "outline": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "outline=true"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "inverted-colors",
+      "theme": "rvo",
+      "markup": "<c-card inverted-colors>Voorbeeld</c-card>",
+      "props": {
+        "inverted-colors": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "inverted-colors=true"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "title--text",
+      "theme": "rvo",
+      "markup": "<c-card title=\"Voorbeeld\">Voorbeeld</c-card>",
+      "props": {
+        "title": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "title=set"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "image--text",
+      "theme": "rvo",
+      "markup": "<c-card image=\"Voorbeeld\">Voorbeeld</c-card>",
+      "props": {
+        "image": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "image=set"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "image-alt--text",
+      "theme": "rvo",
+      "markup": "<c-card image-alt=\"Voorbeeld\">Voorbeeld</c-card>",
+      "props": {
+        "image-alt": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "image-alt=set"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "href--text",
+      "theme": "rvo",
+      "markup": "<c-card href=\"Voorbeeld\">Voorbeeld</c-card>",
+      "props": {
+        "href": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "href=set"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "background-image--text",
+      "theme": "rvo",
+      "markup": "<c-card background-image=\"Voorbeeld\">Voorbeeld</c-card>",
+      "props": {
+        "background-image": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "background-image=set"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-card>Tom & Jerry</c-card>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-card><script>alert(1)</script></c-card>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-card></c-card>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "card",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-card><c-strong>genest</c-strong></c-card>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "data-list",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-data-list>Voorbeeld</c-data-list>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "data-list",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-data-list>Tom & Jerry</c-data-list>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "data-list",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-data-list><script>alert(1)</script></c-data-list>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "data-list",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-data-list></c-data-list>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "data-list",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-data-list><c-strong>genest</c-strong></c-data-list>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "em",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-em>Voorbeeld</c-em>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "em",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-em name=\"Tom &amp; Jerry\"></c-em>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "em",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-em name=\"<script>alert(1)</script>\"></c-em>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "em",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-em>Tom & Jerry</c-em>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "em",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-em><script>alert(1)</script></c-em>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "em",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-em></c-em>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "em",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-em><c-strong>genest</c-strong></c-em>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-footer>Voorbeeld</c-footer>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "footer",
+      "case_id": "max-width--sm",
+      "theme": "rvo",
+      "markup": "<c-footer max-width=\"sm\">Voorbeeld</c-footer>",
+      "props": {
+        "max-width": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "max-width=sm"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "max-width--md",
+      "theme": "rvo",
+      "markup": "<c-footer max-width=\"md\">Voorbeeld</c-footer>",
+      "props": {
+        "max-width": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "max-width=md"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "max-width--lg",
+      "theme": "rvo",
+      "markup": "<c-footer max-width=\"lg\">Voorbeeld</c-footer>",
+      "props": {
+        "max-width": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "max-width=lg"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "pay-off--text",
+      "theme": "rvo",
+      "markup": "<c-footer pay-off=\"Voorbeeld\">Voorbeeld</c-footer>",
+      "props": {
+        "pay-off": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "pay-off=set"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-footer>Tom & Jerry</c-footer>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-footer><script>alert(1)</script></c-footer>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-footer></c-footer>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "footer",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-footer><c-strong>genest</c-strong></c-footer>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-grid>Voorbeeld</c-grid>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=one",
+        "gap=md"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--one",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"one\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "one"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=one"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--two",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"two\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "two"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=two"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--three",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"three\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "three"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=three"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--four",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"four\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "four"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=four"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--five",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"five\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "five"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=five"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--six",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"six\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "six"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=six"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--seven",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"seven\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "seven"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=seven"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--eight",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"eight\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "eight"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=eight"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--nine",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"nine\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "nine"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=nine"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--ten",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"ten\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "ten"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=ten"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--eleven",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"eleven\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "eleven"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=eleven"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "columns--twelve",
+      "theme": "rvo",
+      "markup": "<c-grid columns=\"twelve\">Voorbeeld</c-grid>",
+      "props": {
+        "columns": "twelve"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "columns=twelve"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--0",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"0\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "0"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=0"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--3xs",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"3xs\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "3xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=3xs"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--2xs",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"2xs\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "2xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=2xs"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--xs",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"xs\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=xs"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--sm",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"sm\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=sm"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--md",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"md\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=md"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--lg",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"lg\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=lg"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--xl",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"xl\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=xl"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--2xl",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"2xl\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "2xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=2xl"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--3xl",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"3xl\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "3xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=3xl"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--4xl",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"4xl\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "4xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=4xl"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "gap--5xl",
+      "theme": "rvo",
+      "markup": "<c-grid gap=\"5xl\">Voorbeeld</c-grid>",
+      "props": {
+        "gap": "5xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=5xl"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "division--text",
+      "theme": "rvo",
+      "markup": "<c-grid division=\"Voorbeeld\">Voorbeeld</c-grid>",
+      "props": {
+        "division": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "division=set"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-grid>Tom & Jerry</c-grid>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-grid><script>alert(1)</script></c-grid>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-grid></c-grid>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "grid",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-grid><c-strong>genest</c-strong></c-grid>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-header>Voorbeeld</c-header>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "header",
+      "case_id": "subtitle--text",
+      "theme": "rvo",
+      "markup": "<c-header subtitle=\"Voorbeeld\">Voorbeeld</c-header>",
+      "props": {
+        "subtitle": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "subtitle=set"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "link--text",
+      "theme": "rvo",
+      "markup": "<c-header link=\"Voorbeeld\">Voorbeeld</c-header>",
+      "props": {
+        "link": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "link=set"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "text--amp",
+      "theme": "rvo",
+      "markup": "<c-header text=\"Tom &amp; Jerry\"></c-header>",
+      "props": {
+        "text": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "text=set"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "text--script",
+      "theme": "rvo",
+      "markup": "<c-header text=\"<script>alert(1)</script>\"></c-header>",
+      "props": {
+        "text": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "text=set"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-header>Tom & Jerry</c-header>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-header><script>alert(1)</script></c-header>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-header></c-header>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "header",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-header><c-strong>genest</c-strong></c-header>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-heading>Voorbeeld</c-heading>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "type=h1"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "type--h1",
+      "theme": "rvo",
+      "markup": "<c-heading type=\"h1\">Voorbeeld</c-heading>",
+      "props": {
+        "type": "h1"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=h1"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "type--h2",
+      "theme": "rvo",
+      "markup": "<c-heading type=\"h2\">Voorbeeld</c-heading>",
+      "props": {
+        "type": "h2"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=h2"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "type--h3",
+      "theme": "rvo",
+      "markup": "<c-heading type=\"h3\">Voorbeeld</c-heading>",
+      "props": {
+        "type": "h3"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=h3"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "type--h4",
+      "theme": "rvo",
+      "markup": "<c-heading type=\"h4\">Voorbeeld</c-heading>",
+      "props": {
+        "type": "h4"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=h4"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "type--h5",
+      "theme": "rvo",
+      "markup": "<c-heading type=\"h5\">Voorbeeld</c-heading>",
+      "props": {
+        "type": "h5"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=h5"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "type--h6",
+      "theme": "rvo",
+      "markup": "<c-heading type=\"h6\">Voorbeeld</c-heading>",
+      "props": {
+        "type": "h6"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=h6"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-heading name=\"Tom &amp; Jerry\"></c-heading>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-heading name=\"<script>alert(1)</script>\"></c-heading>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-heading>Tom & Jerry</c-heading>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-heading><script>alert(1)</script></c-heading>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-heading></c-heading>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "heading",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-heading><c-strong>genest</c-strong></c-heading>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-hero>Voorbeeld</c-hero>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-hero size=\"sm\">Voorbeeld</c-hero>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-hero size=\"md\">Voorbeeld</c-hero>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-hero size=\"lg\">Voorbeeld</c-hero>",
+      "props": {
+        "size": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "overlay",
+      "theme": "rvo",
+      "markup": "<c-hero overlay>Voorbeeld</c-hero>",
+      "props": {
+        "overlay": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "overlay=true"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "title--text",
+      "theme": "rvo",
+      "markup": "<c-hero title=\"Voorbeeld\">Voorbeeld</c-hero>",
+      "props": {
+        "title": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "title=set"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "subtitle--text",
+      "theme": "rvo",
+      "markup": "<c-hero subtitle=\"Voorbeeld\">Voorbeeld</c-hero>",
+      "props": {
+        "subtitle": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "subtitle=set"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "image--text",
+      "theme": "rvo",
+      "markup": "<c-hero image=\"Voorbeeld\">Voorbeeld</c-hero>",
+      "props": {
+        "image": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "image=set"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "image-alt--text",
+      "theme": "rvo",
+      "markup": "<c-hero image-alt=\"Voorbeeld\">Voorbeeld</c-hero>",
+      "props": {
+        "image-alt": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "image-alt=set"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-hero>Tom & Jerry</c-hero>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-hero><script>alert(1)</script></c-hero>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-hero></c-hero>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "hero",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-hero><c-strong>genest</c-strong></c-hero>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--2xs",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"2xs\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "2xs"
+      },
+      "content": null,
+      "covers": [
+        "size=2xs"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--xs",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"xs\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "xs"
+      },
+      "content": null,
+      "covers": [
+        "size=xs"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"sm\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "sm"
+      },
+      "content": null,
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"md\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "md"
+      },
+      "content": null,
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"lg\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "lg"
+      },
+      "content": null,
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--xl",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"xl\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "xl"
+      },
+      "content": null,
+      "covers": [
+        "size=xl"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--2xl",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"2xl\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "2xl"
+      },
+      "content": null,
+      "covers": [
+        "size=2xl"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--3xl",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"3xl\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "3xl"
+      },
+      "content": null,
+      "covers": [
+        "size=3xl"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "size--4xl",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" size=\"4xl\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "size": "4xl"
+      },
+      "content": null,
+      "covers": [
+        "size=4xl"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "icon--text",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "icon=set"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "color--text",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" color=\"Voorbeeld\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "color": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "color=set"
+      ]
+    },
+    {
+      "component": "icon",
+      "case_id": "aria-label--text",
+      "theme": "rvo",
+      "markup": "<c-icon icon=\"Voorbeeld\" aria-label=\"Voorbeeld\"></c-icon>",
+      "props": {
+        "icon": "Voorbeeld",
+        "aria-label": "Voorbeeld"
+      },
+      "content": null,
+      "covers": [
+        "aria-label=set"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-label>Voorbeeld</c-label>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md",
+        "type=default"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-label size=\"sm\">Voorbeeld</c-label>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-label size=\"md\">Voorbeeld</c-label>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "type--default",
+      "theme": "rvo",
+      "markup": "<c-label type=\"default\">Voorbeeld</c-label>",
+      "props": {
+        "type": "default"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=default"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "type--optional",
+      "theme": "rvo",
+      "markup": "<c-label type=\"optional\">Voorbeeld</c-label>",
+      "props": {
+        "type": "optional"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=optional"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "type--required",
+      "theme": "rvo",
+      "markup": "<c-label type=\"required\">Voorbeeld</c-label>",
+      "props": {
+        "type": "required"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=required"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "id--text",
+      "theme": "rvo",
+      "markup": "<c-label id=\"Voorbeeld\">Voorbeeld</c-label>",
+      "props": {
+        "id": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "id=set"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "for--text",
+      "theme": "rvo",
+      "markup": "<c-label for=\"Voorbeeld\">Voorbeeld</c-label>",
+      "props": {
+        "for": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "for=set"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-label name=\"Tom &amp; Jerry\"></c-label>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-label name=\"<script>alert(1)</script>\"></c-label>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-label>Tom & Jerry</c-label>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-label><script>alert(1)</script></c-label>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-label></c-label>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "label",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-label><c-strong>genest</c-strong></c-label>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-layout-column>Voorbeeld</c-layout-column>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-1",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-1\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-1"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-1"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-2",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-2\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-2"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-2"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-3",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-3\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-3"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-3"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-4",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-4\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-4"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-4"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-5",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-5\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-5"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-5"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-6",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-6\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-6"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-6"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-7",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-7\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-7"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-7"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-8",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-8\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-8"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-8"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-9",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-9\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-9"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-9"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-10",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-10\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-10"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-10"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-11",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-11\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-11"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-11"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--xs-12",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"xs-12\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "xs-12"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs-12"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-1",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-1\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-1"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-1"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-2",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-2\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-2"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-2"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-3",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-3\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-3"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-3"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-4",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-4\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-4"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-4"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-5",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-5\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-5"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-5"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-6",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-6\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-6"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-6"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-7",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-7\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-7"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-7"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-8",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-8\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-8"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-8"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-9",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-9\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-9"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-9"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-10",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-10\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-10"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-10"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-11",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-11\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-11"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-11"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--sm-12",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"sm-12\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "sm-12"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm-12"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-1",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-1\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-1"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-1"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-2",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-2\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-2"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-2"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-3",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-3\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-3"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-3"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-4",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-4\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-4"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-4"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-5",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-5\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-5"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-5"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-6",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-6\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-6"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-6"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-7",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-7\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-7"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-7"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-8",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-8\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-8"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-8"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-9",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-9\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-9"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-9"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-10",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-10\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-10"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-10"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-11",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-11\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-11"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-11"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--md-12",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"md-12\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "md-12"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md-12"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-1",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-1\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-1"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-1"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-2",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-2\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-2"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-2"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-3",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-3\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-3"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-3"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-4",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-4\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-4"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-4"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-5",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-5\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-5"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-5"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-6",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-6\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-6"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-6"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-7",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-7\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-7"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-7"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-8",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-8\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-8"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-8"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-9",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-9\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-9"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-9"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-10",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-10\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-10"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-10"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-11",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-11\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-11"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-11"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "size--lg-12",
+      "theme": "rvo",
+      "markup": "<c-layout-column size=\"lg-12\">Voorbeeld</c-layout-column>",
+      "props": {
+        "size": "lg-12"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg-12"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-layout-column>Tom & Jerry</c-layout-column>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-layout-column><script>alert(1)</script></c-layout-column>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-layout-column></c-layout-column>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "layout-column",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-layout-column><c-strong>genest</c-strong></c-layout-column>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-layout-flow>Voorbeeld</c-layout-flow>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=md",
+        "size=lg"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--0",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"0\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "0"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=0"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--3xs",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"3xs\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "3xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=3xs"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--2xs",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"2xs\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "2xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=2xs"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--xs",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"xs\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=xs"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--sm",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"sm\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=sm"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--md",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"md\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=md"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--lg",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"lg\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=lg"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--xl",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"xl\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=xl"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--2xl",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"2xl\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "2xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=2xl"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--3xl",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"3xl\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "3xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=3xl"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--4xl",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"4xl\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "4xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=4xl"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "gap--5xl",
+      "theme": "rvo",
+      "markup": "<c-layout-flow gap=\"5xl\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "gap": "5xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=5xl"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-layout-flow size=\"sm\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-layout-flow size=\"md\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-layout-flow size=\"lg\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "size": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "align-items--start",
+      "theme": "rvo",
+      "markup": "<c-layout-flow align-items=\"start\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "align-items": "start"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "align-items=start"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "align-items--center",
+      "theme": "rvo",
+      "markup": "<c-layout-flow align-items=\"center\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "align-items": "center"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "align-items=center"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "align-items--end",
+      "theme": "rvo",
+      "markup": "<c-layout-flow align-items=\"end\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "align-items": "end"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "align-items=end"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "align-content--start",
+      "theme": "rvo",
+      "markup": "<c-layout-flow align-content=\"start\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "align-content": "start"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "align-content=start"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "align-content--center",
+      "theme": "rvo",
+      "markup": "<c-layout-flow align-content=\"center\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "align-content": "center"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "align-content=center"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "align-content--end",
+      "theme": "rvo",
+      "markup": "<c-layout-flow align-content=\"end\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "align-content": "end"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "align-content=end"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "align-content--space-between",
+      "theme": "rvo",
+      "markup": "<c-layout-flow align-content=\"space-between\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "align-content": "space-between"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "align-content=space-between"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "justify-items--start",
+      "theme": "rvo",
+      "markup": "<c-layout-flow justify-items=\"start\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "justify-items": "start"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "justify-items=start"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "justify-items--center",
+      "theme": "rvo",
+      "markup": "<c-layout-flow justify-items=\"center\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "justify-items": "center"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "justify-items=center"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "justify-items--end",
+      "theme": "rvo",
+      "markup": "<c-layout-flow justify-items=\"end\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "justify-items": "end"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "justify-items=end"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "justify-content--start",
+      "theme": "rvo",
+      "markup": "<c-layout-flow justify-content=\"start\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "justify-content": "start"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "justify-content=start"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "justify-content--center",
+      "theme": "rvo",
+      "markup": "<c-layout-flow justify-content=\"center\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "justify-content": "center"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "justify-content=center"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "justify-content--end",
+      "theme": "rvo",
+      "markup": "<c-layout-flow justify-content=\"end\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "justify-content": "end"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "justify-content=end"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "justify-content--space-between",
+      "theme": "rvo",
+      "markup": "<c-layout-flow justify-content=\"space-between\">Voorbeeld</c-layout-flow>",
+      "props": {
+        "justify-content": "space-between"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "justify-content=space-between"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "row",
+      "theme": "rvo",
+      "markup": "<c-layout-flow row>Voorbeeld</c-layout-flow>",
+      "props": {
+        "row": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "row=true"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "wrap",
+      "theme": "rvo",
+      "markup": "<c-layout-flow wrap>Voorbeeld</c-layout-flow>",
+      "props": {
+        "wrap": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "wrap=true"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-layout-flow>Tom & Jerry</c-layout-flow>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-layout-flow><script>alert(1)</script></c-layout-flow>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-layout-flow></c-layout-flow>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "layout-flow",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-layout-flow><c-strong>genest</c-strong></c-layout-flow>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-layout-row>Voorbeeld</c-layout-row>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=md",
+        "vertical-spacing=lg"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--0",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"0\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "0"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=0"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--3xs",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"3xs\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "3xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=3xs"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--2xs",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"2xs\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "2xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=2xs"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--xs",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"xs\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=xs"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--sm",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"sm\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=sm"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--md",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"md\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=md"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--lg",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"lg\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=lg"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--2xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"2xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "2xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=2xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--3xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"3xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "3xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=3xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--4xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"4xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "4xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=4xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "gap--5xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row gap=\"5xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "gap": "5xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "gap=5xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--xs",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"xs\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=xs"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--sm",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"sm\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=sm"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--md",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"md\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=md"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--lg",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"lg\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=lg"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--2xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"2xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "2xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=2xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--3xl",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"3xl\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "3xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=3xl"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "vertical-spacing--center",
+      "theme": "rvo",
+      "markup": "<c-layout-row vertical-spacing=\"center\">Voorbeeld</c-layout-row>",
+      "props": {
+        "vertical-spacing": "center"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "vertical-spacing=center"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-layout-row>Tom & Jerry</c-layout-row>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-layout-row><script>alert(1)</script></c-layout-row>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-layout-row></c-layout-row>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "layout-row",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-layout-row><c-strong>genest</c-strong></c-layout-row>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-link>Voorbeeld</c-link>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "color=hemelblauw",
+        "weight=bold",
+        "show-icon=no",
+        "icon-size=md"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "color--hemelblauw",
+      "theme": "rvo",
+      "markup": "<c-link color=\"hemelblauw\">Voorbeeld</c-link>",
+      "props": {
+        "color": "hemelblauw"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=hemelblauw"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "color--donkerblauw",
+      "theme": "rvo",
+      "markup": "<c-link color=\"donkerblauw\">Voorbeeld</c-link>",
+      "props": {
+        "color": "donkerblauw"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=donkerblauw"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "color--lintblauw",
+      "theme": "rvo",
+      "markup": "<c-link color=\"lintblauw\">Voorbeeld</c-link>",
+      "props": {
+        "color": "lintblauw"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=lintblauw"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "color--wit",
+      "theme": "rvo",
+      "markup": "<c-link color=\"wit\">Voorbeeld</c-link>",
+      "props": {
+        "color": "wit"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=wit"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "color--zwart",
+      "theme": "rvo",
+      "markup": "<c-link color=\"zwart\">Voorbeeld</c-link>",
+      "props": {
+        "color": "zwart"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=zwart"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "color--grijs-700",
+      "theme": "rvo",
+      "markup": "<c-link color=\"grijs-700\">Voorbeeld</c-link>",
+      "props": {
+        "color": "grijs-700"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=grijs-700"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "weight--normal",
+      "theme": "rvo",
+      "markup": "<c-link weight=\"normal\">Voorbeeld</c-link>",
+      "props": {
+        "weight": "normal"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "weight=normal"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "weight--bold",
+      "theme": "rvo",
+      "markup": "<c-link weight=\"bold\">Voorbeeld</c-link>",
+      "props": {
+        "weight": "bold"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "weight=bold"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "show-icon--before",
+      "theme": "rvo",
+      "markup": "<c-link show-icon=\"before\">Voorbeeld</c-link>",
+      "props": {
+        "show-icon": "before"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "show-icon=before"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "show-icon--after",
+      "theme": "rvo",
+      "markup": "<c-link show-icon=\"after\">Voorbeeld</c-link>",
+      "props": {
+        "show-icon": "after"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "show-icon=after"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "show-icon--no",
+      "theme": "rvo",
+      "markup": "<c-link show-icon=\"no\">Voorbeeld</c-link>",
+      "props": {
+        "show-icon": "no"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "show-icon=no"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "icon-size--sm",
+      "theme": "rvo",
+      "markup": "<c-link icon-size=\"sm\">Voorbeeld</c-link>",
+      "props": {
+        "icon-size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "icon-size=sm"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "icon-size--md",
+      "theme": "rvo",
+      "markup": "<c-link icon-size=\"md\">Voorbeeld</c-link>",
+      "props": {
+        "icon-size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "icon-size=md"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "target--self",
+      "theme": "rvo",
+      "markup": "<c-link target=\"_self\">Voorbeeld</c-link>",
+      "props": {
+        "target": "_self"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_self"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "target--blank",
+      "theme": "rvo",
+      "markup": "<c-link target=\"_blank\">Voorbeeld</c-link>",
+      "props": {
+        "target": "_blank"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_blank"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "target--parent",
+      "theme": "rvo",
+      "markup": "<c-link target=\"_parent\">Voorbeeld</c-link>",
+      "props": {
+        "target": "_parent"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_parent"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "target--top",
+      "theme": "rvo",
+      "markup": "<c-link target=\"_top\">Voorbeeld</c-link>",
+      "props": {
+        "target": "_top"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "target=_top"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "hover",
+      "theme": "rvo",
+      "markup": "<c-link hover>Voorbeeld</c-link>",
+      "props": {
+        "hover": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "hover=true"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "active",
+      "theme": "rvo",
+      "markup": "<c-link active>Voorbeeld</c-link>",
+      "props": {
+        "active": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "active=true"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "focus",
+      "theme": "rvo",
+      "markup": "<c-link focus>Voorbeeld</c-link>",
+      "props": {
+        "focus": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "focus=true"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "no-underline",
+      "theme": "rvo",
+      "markup": "<c-link no-underline>Voorbeeld</c-link>",
+      "props": {
+        "no-underline": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "no-underline=true"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "full-container-link",
+      "theme": "rvo",
+      "markup": "<c-link full-container-link>Voorbeeld</c-link>",
+      "props": {
+        "full-container-link": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "full-container-link=true"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "href--text",
+      "theme": "rvo",
+      "markup": "<c-link href=\"Voorbeeld\">Voorbeeld</c-link>",
+      "props": {
+        "href": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "href=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "icon--text",
+      "theme": "rvo",
+      "markup": "<c-link icon=\"Voorbeeld\">Voorbeeld</c-link>",
+      "props": {
+        "icon": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "icon=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "icon-color--text",
+      "theme": "rvo",
+      "markup": "<c-link icon-color=\"Voorbeeld\">Voorbeeld</c-link>",
+      "props": {
+        "icon-color": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "icon-color=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "role--text",
+      "theme": "rvo",
+      "markup": "<c-link role=\"Voorbeeld\">Voorbeeld</c-link>",
+      "props": {
+        "role": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "role=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-link name=\"Tom &amp; Jerry\"></c-link>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-link name=\"<script>alert(1)</script>\"></c-link>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-link>Tom & Jerry</c-link>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-link><script>alert(1)</script></c-link>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-link></c-link>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "link",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-link><c-strong>genest</c-strong></c-link>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout>Voorbeeld</c-max-width-layout>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md",
+        "inline-padding=none"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout size=\"sm\">Voorbeeld</c-max-width-layout>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout size=\"md\">Voorbeeld</c-max-width-layout>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout size=\"lg\">Voorbeeld</c-max-width-layout>",
+      "props": {
+        "size": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "inline-padding--none",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout inline-padding=\"none\">Voorbeeld</c-max-width-layout>",
+      "props": {
+        "inline-padding": "none"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "inline-padding=none"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "inline-padding--sm",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout inline-padding=\"sm\">Voorbeeld</c-max-width-layout>",
+      "props": {
+        "inline-padding": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "inline-padding=sm"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "inline-padding--md",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout inline-padding=\"md\">Voorbeeld</c-max-width-layout>",
+      "props": {
+        "inline-padding": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "inline-padding=md"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "inline-padding--lg",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout inline-padding=\"lg\">Voorbeeld</c-max-width-layout>",
+      "props": {
+        "inline-padding": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "inline-padding=lg"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "uncentered",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout uncentered>Voorbeeld</c-max-width-layout>",
+      "props": {
+        "uncentered": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "uncentered=true"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout>Tom & Jerry</c-max-width-layout>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout><script>alert(1)</script></c-max-width-layout>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout></c-max-width-layout>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "max-width-layout",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-max-width-layout><c-strong>genest</c-strong></c-max-width-layout>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-menu>Voorbeeld</c-menu>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "type=horizontal",
+        "size=md"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "type--horizontal",
+      "theme": "rvo",
+      "markup": "<c-menu type=\"horizontal\">Voorbeeld</c-menu>",
+      "props": {
+        "type": "horizontal"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=horizontal"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "type--vertical",
+      "theme": "rvo",
+      "markup": "<c-menu type=\"vertical\">Voorbeeld</c-menu>",
+      "props": {
+        "type": "vertical"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=vertical"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "size--xs",
+      "theme": "rvo",
+      "markup": "<c-menu size=\"xs\">Voorbeeld</c-menu>",
+      "props": {
+        "size": "xs"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xs"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-menu size=\"sm\">Voorbeeld</c-menu>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-menu size=\"md\">Voorbeeld</c-menu>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-menu size=\"lg\">Voorbeeld</c-menu>",
+      "props": {
+        "size": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "size--xl",
+      "theme": "rvo",
+      "markup": "<c-menu size=\"xl\">Voorbeeld</c-menu>",
+      "props": {
+        "size": "xl"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=xl"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "aria-label--text",
+      "theme": "rvo",
+      "markup": "<c-menu aria-label=\"Voorbeeld\">Voorbeeld</c-menu>",
+      "props": {
+        "aria-label": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "aria-label=set"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-menu>Tom & Jerry</c-menu>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-menu><script>alert(1)</script></c-menu>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-menu></c-menu>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "menu",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-menu><c-strong>genest</c-strong></c-menu>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-paragraph>Voorbeeld</c-paragraph>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": [
+        "color=grijs-900",
+        "size=md"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "color--logoblauw",
+      "theme": "rvo",
+      "markup": "<c-paragraph color=\"logoblauw\">Voorbeeld</c-paragraph>",
+      "props": {
+        "color": "logoblauw"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=logoblauw"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "color--wit",
+      "theme": "rvo",
+      "markup": "<c-paragraph color=\"wit\">Voorbeeld</c-paragraph>",
+      "props": {
+        "color": "wit"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=wit"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "color--zwart",
+      "theme": "rvo",
+      "markup": "<c-paragraph color=\"zwart\">Voorbeeld</c-paragraph>",
+      "props": {
+        "color": "zwart"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=zwart"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "color--grijs-500",
+      "theme": "rvo",
+      "markup": "<c-paragraph color=\"grijs-500\">Voorbeeld</c-paragraph>",
+      "props": {
+        "color": "grijs-500"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=grijs-500"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "color--grijs-900",
+      "theme": "rvo",
+      "markup": "<c-paragraph color=\"grijs-900\">Voorbeeld</c-paragraph>",
+      "props": {
+        "color": "grijs-900"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "color=grijs-900"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "size--sm",
+      "theme": "rvo",
+      "markup": "<c-paragraph size=\"sm\">Voorbeeld</c-paragraph>",
+      "props": {
+        "size": "sm"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=sm"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "size--md",
+      "theme": "rvo",
+      "markup": "<c-paragraph size=\"md\">Voorbeeld</c-paragraph>",
+      "props": {
+        "size": "md"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=md"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "size--lg",
+      "theme": "rvo",
+      "markup": "<c-paragraph size=\"lg\">Voorbeeld</c-paragraph>",
+      "props": {
+        "size": "lg"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "size=lg"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "no-spacing",
+      "theme": "rvo",
+      "markup": "<c-paragraph no-spacing>Voorbeeld</c-paragraph>",
+      "props": {
+        "no-spacing": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "no-spacing=true"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-paragraph name=\"Tom &amp; Jerry\"></c-paragraph>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-paragraph name=\"<script>alert(1)</script>\"></c-paragraph>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-paragraph>Tom & Jerry</c-paragraph>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-paragraph><script>alert(1)</script></c-paragraph>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-paragraph></c-paragraph>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "paragraph",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-paragraph><c-strong>genest</c-strong></c-paragraph>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "strong",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-strong>Voorbeeld</c-strong>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "strong",
+      "case_id": "name--amp",
+      "theme": "rvo",
+      "markup": "<c-strong name=\"Tom &amp; Jerry\"></c-strong>",
+      "props": {
+        "name": "Tom & Jerry"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "strong",
+      "case_id": "name--script",
+      "theme": "rvo",
+      "markup": "<c-strong name=\"<script>alert(1)</script>\"></c-strong>",
+      "props": {
+        "name": "<script>alert(1)</script>"
+      },
+      "content": null,
+      "covers": [
+        "name=set"
+      ]
+    },
+    {
+      "component": "strong",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-strong>Tom & Jerry</c-strong>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "strong",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-strong><script>alert(1)</script></c-strong>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "strong",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-strong></c-strong>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "strong",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-strong><c-strong>genest</c-strong></c-strong>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    }
+  ]
+}
