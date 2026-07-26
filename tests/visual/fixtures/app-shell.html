@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="UTF-8"><title>App shell</title>
+<style>
+  /* Demo-only: tint the shell regions so the grid areas are visible. */
+  body { margin: 0; }
+  .lotc-app-shell__header { background: #154273; color: #fff; padding: 1rem 1.5rem; }
+  .lotc-app-shell__sidebar { background: #e6eaf0; padding: 1.5rem; }
+  .lotc-app-shell__main { padding: 1.5rem; }
+  .lotc-app-shell__footer { background: #f3f3f3; padding: 1rem 1.5rem; border-top: 1px solid #ccc; }
+  .lotc-app-shell__sidebar a { display: block; margin-bottom: .5rem; }
+</style>
+</head>
+<body>
+  <c-app-shell width="14rem">
+    <template slot="header">
+      <c-heading type="h3" class="rvo-margin-block--none">Mijn Applicatie</c-heading>
+    </template>
+    <template slot="sidebar">
+      <c-link href="#">Dashboard</c-link>
+      <c-link href="#">Aanvragen</c-link>
+      <c-link href="#">Documenten</c-link>
+      <c-link href="#">Instellingen</c-link>
+    </template>
+
+    <c-heading type="h2">Overzicht</c-heading>
+    <c-auto-grid min="14rem" gap="1rem">
+      <c-card title="Aanvragen">12 open</c-card>
+      <c-card title="Documenten">34 bestanden</c-card>
+      <c-card title="Berichten">5 ongelezen</c-card>
+      <c-card title="Taken">3 vandaag</c-card>
+    </c-auto-grid>
+
+    <template slot="footer">
+      <c-paragraph no-spacing>© 2026 Mijn Organisatie</c-paragraph>
+    </template>
+  </c-app-shell>
+</body></html>

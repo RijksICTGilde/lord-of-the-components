@@ -1,0 +1,42 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set direction = _component_context.get('direction', 'left') %}
+{% set width = _component_context.get('width', '') %}
+{% set css_classes = ['lotc-app-shell'] %}
+{% if direction == 'right' %}{% set css_classes = css_classes + ['lotc-app-shell--sidebar-right'] %}{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="app-shell"
+    {% if width %}style="--lotc-sidebar-width: {{ width }};"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% if slots.header %}
+    {% set css_classes = ['lotc-app-shell__header'] %}
+    <header
+        class="{{ css_classes | join(' ') }}">
+        {{ slots.get('header', '') | safe }}
+    </header>
+    {% endif %}
+    {% if slots.sidebar %}
+    {% set css_classes = ['lotc-app-shell__sidebar'] %}
+    <aside
+        class="{{ css_classes | join(' ') }}">
+        {{ slots.get('sidebar', '') | safe }}
+    </aside>
+    {% endif %}
+    {% set css_classes = ['lotc-app-shell__main'] %}
+    <main
+        class="{{ css_classes | join(' ') }}">
+        {{ children | safe }}
+    </main>
+    {% if slots.footer %}
+    {% set css_classes = ['lotc-app-shell__footer'] %}
+    <footer
+        class="{{ css_classes | join(' ') }}">
+        {{ slots.get('footer', '') | safe }}
+    </footer>
+    {% endif %}
+</div>

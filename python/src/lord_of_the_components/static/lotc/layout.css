@@ -1,0 +1,67 @@
+/*
+ * Lord of the Components — theme-agnostic layout primitives.
+ *
+ * These classes are pure structural CSS (no colours / design tokens), so the
+ * SAME markup lays out identically under RVO and NLDD. Two techniques:
+ *
+ *   .lotc-app-shell  — application shell (header / sidebar / main / footer) via
+ *                      named grid-template-areas. The area map is redefined in a
+ *                      media query so the layout restacks on narrow screens while
+ *                      the HTML stays untouched.
+ *   .lotc-auto-grid  — responsive column grid via repeat(auto-fit, minmax(...)).
+ *                      Shows as many columns as fit at --lotc-col-min each, then
+ *                      wraps — the "2 or 3 columns depending on width" pattern.
+ *
+ * Tunables are CSS custom properties, settable inline by the components:
+ *   --lotc-sidebar-width (default 16rem), --lotc-shell-gap (default 0)
+ *   --lotc-col-min (default 16rem), --lotc-grid-gap (default 1rem)
+ */
+
+/* ── App shell ──────────────────────────────────────────────────────────── */
+.lotc-app-shell {
+  display: grid;
+  min-block-size: 100vh;
+  gap: var(--lotc-shell-gap, 0);
+  grid-template-columns: var(--lotc-sidebar-width, 16rem) 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "footer  footer";
+}
+
+.lotc-app-shell--sidebar-right {
+  grid-template-columns: 1fr var(--lotc-sidebar-width, 16rem);
+  grid-template-areas:
+    "header  header"
+    "main    sidebar"
+    "footer  footer";
+}
+
+.lotc-app-shell__header { grid-area: header; }
+.lotc-app-shell__sidebar { grid-area: sidebar; }
+.lotc-app-shell__main { grid-area: main; }
+.lotc-app-shell__footer { grid-area: footer; }
+
+/* Restack to a single column on narrow viewports; markup is unchanged. */
+@media (max-width: 48rem) {
+  .lotc-app-shell,
+  .lotc-app-shell--sidebar-right {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar"
+      "footer";
+  }
+}
+
+/* ── Responsive auto grid ───────────────────────────────────────────────── */
+.lotc-auto-grid {
+  display: grid;
+  gap: var(--lotc-grid-gap, 1rem);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--lotc-col-min, 16rem), 100%), 1fr)
+  );
+}

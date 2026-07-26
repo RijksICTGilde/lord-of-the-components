@@ -21,6 +21,8 @@ export { layoutColumn, type LayoutColumnDefinition } from "./layout-column.def.j
 export { layoutRow, type LayoutRowDefinition } from "./layout-row.def.js";
 export { maxWidthLayout, type MaxWidthLayoutDefinition } from "./max-width-layout.def.js";
 export { grid, type GridDefinition } from "./grid.def.js";
+export { autoGrid, type AutoGridDefinition } from "./auto-grid.def.js";
+export { appShell, type AppShellDefinition } from "./app-shell.def.js";
 
 // Data display components
 export { card, type CardDefinition } from "./card.def.js";
@@ -67,6 +69,8 @@ import { layoutColumn } from "./layout-column.def.js";
 import { layoutRow } from "./layout-row.def.js";
 import { maxWidthLayout } from "./max-width-layout.def.js";
 import { grid } from "./grid.def.js";
+import { autoGrid } from "./auto-grid.def.js";
+import { appShell } from "./app-shell.def.js";
 import { paragraph } from "./paragraph.def.js";
 import { link } from "./link.def.js";
 import { label } from "./label.def.js";
@@ -109,6 +113,8 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   "layout-row": layoutRow,
   "max-width-layout": maxWidthLayout,
   grid,
+  "auto-grid": autoGrid,
+  "app-shell": appShell,
   paragraph,
   link,
   label,
