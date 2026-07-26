@@ -38,9 +38,11 @@ def create_env() -> Environment:
     env = Environment(
         # Your templates first, then LOTC component templates
         loader=FileSystemLoader([str(TEMPLATES_DIR), str(LOTC_TEMPLATES)]),
+        # Required by setup_components: component renderers escape prop values.
+        autoescape=True,
         # Production mode: compile each template once and cache it. Skipping the
-        # per-request os.stat uptodate check saves the full BeautifulSoup +
-        # recompile cost that env.from_string() incurred on every request.
+        # per-request os.stat uptodate check saves the full re-parse + recompile
+        # cost that env.from_string() incurred on every request.
         auto_reload=False,
     )
     setup_components(env, registry_path=str(LOTC_REGISTRY))

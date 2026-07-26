@@ -88,6 +88,8 @@ def create_jinja_env() -> Environment:
     """Create a Jinja2 environment with LOTC extension and fixture templates."""
     jinja_env = Environment(
         loader=FixtureLoader(FIXTURES_DIR, _inject_assets),
+        # Required by setup_components: component renderers escape prop values.
+        autoescape=True,
         # Production mode: compiled templates stay in Environment.cache instead
         # of being recompiled from source on every request.
         auto_reload=False,

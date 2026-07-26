@@ -39,11 +39,9 @@ from lord_of_the_components import setup_components  # noqa: E402
 
 
 def make_env() -> Environment:
-    # autoescape=False matches the current test/example environment (conftest.py,
-    # examples/app.py, serve.py). This captures the *current* output as the golden
-    # contract. The rewrite (F3) will require autoescape=True; the escaping-related
-    # goldens change intentionally then, documented in that phase.
-    env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=False)
+    # setup_components requires autoescape=True (F3): renderers escape prop values
+    # and treat content as Markup. The golden env matches test_golden.py.
+    env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
     setup_components(env, registry_path=str(REGISTRY_JSON))
     return env
 

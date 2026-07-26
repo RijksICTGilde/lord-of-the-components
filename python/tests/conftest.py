@@ -22,6 +22,7 @@ def env():
     """
     jinja_env = Environment(
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
+        autoescape=True,
     )
     setup_components(jinja_env, registry_path=str(REGISTRY_JSON))
     return jinja_env

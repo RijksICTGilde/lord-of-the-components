@@ -52,6 +52,7 @@ from lord_of_the_components.extension import (  # noqa: E402
 def _make_env() -> Environment:
     env = Environment(
         loader=FileSystemLoader([str(EXAMPLE_TEMPLATES), str(COMPONENT_TEMPLATES)]),
+        autoescape=True,
         auto_reload=False,
     )
     setup_components(env, registry_path=str(REGISTRY_JSON))

@@ -84,9 +84,9 @@ class TestHeaderText:
         assert "rvo-logo__title" not in html
 
     def test_text_with_special_chars(self, render):
-        html = render('<c-header text="Org &amp; Dept"/>')
-        # HTML entities are decoded by the preprocessor
-        assert "Org &amp; Dept" in html or "Org & Dept" in html
+        # Write raw text; autoescape escapes it (the parser never unescapes, D5).
+        html = render('<c-header text="Org & Dept"/>')
+        assert "Org &amp; Dept" in html
 
 
 class TestHeaderSubtitle:
