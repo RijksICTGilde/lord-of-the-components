@@ -58,6 +58,8 @@ class ComponentDefinition:
     backend: str = "jinja"
     attributes: List[AttributeDefinition] = field(default_factory=list)
     slots: List[SlotDefinition] = field(default_factory=list)
+    #: Data bindings (`:name`) -> binding type string (e.g. "MenuItem[]").
+    bindings: Dict[str, str] = field(default_factory=dict)
     depends_on: Optional[List[str]] = None
     # Name -> attribute index, built from `attributes` at construction time so
     # get_attribute() is O(1) instead of a linear scan on every hot-path lookup.
@@ -163,6 +165,7 @@ class ComponentRegistry:
             backend=data.get("backend", "jinja"),
             attributes=attributes,
             slots=slots,
+            bindings=dict(data.get("bindings", {})),
             depends_on=data.get("dependsOn"),
         )
         self._components[name] = component

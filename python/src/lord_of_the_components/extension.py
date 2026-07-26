@@ -158,6 +158,18 @@ class ComponentExtension(Extension):
         self.render_theme = "rvo"
         # Constant folding: render fully-literal python components at compile time.
         self.fold = True
+        # Validate bound data structures (:items, :columns, ...) at render time.
+        self.validate_data = True
+
+    def _wrap_binding(self, clean_key: str, value: str, component_def: Any) -> str:
+        """Wrap a :binding expression in a render-time validation call, if enabled."""
+        bindings = getattr(component_def, "bindings", {})
+        if self.validate_data and clean_key in bindings:
+            return (
+                f"_lotc_validate({value}, {_py_string(bindings[clean_key])}, "
+                f"{_py_string(component_def.name)}, {_py_string(clean_key)})"
+            )
+        return value
 
     def preprocess(
         self, source: str, name: Optional[str], filename: Optional[str] = None
@@ -359,7 +371,9 @@ class ComponentExtension(Extension):
                 if value in ["true", "false"]:
                     context_items.append(f'"{clean_key}": {value.capitalize()}')
                 else:
-                    context_items.append(f'"{clean_key}": {value}')
+                    context_items.append(
+                        f'"{clean_key}": {self._wrap_binding(clean_key, value, component_def)}'
+                    )
             elif key.startswith("@"):
                 escaped_value = value.replace('"', '\\"')
                 context_items.append(f"'{key}': \"{escaped_value}\"")
@@ -443,12 +457,15 @@ class ComponentExtension(Extension):
         for key, value in attrs.items():
             if key.startswith(":"):
                 clean = key[1:]
+                wrapped = self._wrap_binding(clean, value, component_def)
                 if clean == "class":
-                    class_expr = value
+                    class_expr = wrapped
+                elif clean in getattr(component_def, "bindings", {}):
+                    kwargs.append(f"{_py_ident(clean)}={wrapped}")
                 elif component_def.get_attribute(clean):
-                    kwargs.append(f"{_py_ident(clean)}={value}")
+                    kwargs.append(f"{_py_ident(clean)}={wrapped}")
                 else:
-                    extra_items.append(f"{_py_string(clean)}: ({value})")
+                    extra_items.append(f"{_py_string(clean)}: ({wrapped})")
             elif key.startswith("@"):
                 extra_items.append(f"{_py_string(key)}: {_py_string(value)}")
             elif key == "class":
@@ -603,8 +620,14 @@ def setup_components(
     render_theme = "rvo"
     if isinstance(ext, ComponentExtension):
         ext.fold = fold
+        ext.validate_data = validate_data
         render_theme = ext.render_theme
     _register_theme_renderers(jinja_env, render_theme)
+
+    # Render-time data-binding validation (:items, :columns, ...).
+    from .validation import validate_binding
+
+    jinja_env.globals["_lotc_validate"] = validate_binding
 
     jinja_env.globals["get_component_assets"] = lambda: _get_component_assets(
         static_url_prefix, htmx, user_css_files, user_js_files

@@ -565,3 +565,47 @@ def validate_dynamic_attribute(
         error.expression = f":{clean_name}=\"{attr_value}\""
 
     return is_valid, error
+
+
+# =============================================================================
+# BINDING VALIDATION (plan v7 F5 / T5.2)
+# =============================================================================
+
+
+class DataValidationError(Exception):
+    """Raised when a bound data structure (:items, :columns, ...) is invalid."""
+
+    def __init__(self, message: str, errors: List[ValidationError]) -> None:
+        self.errors = errors
+        super().__init__(message)
+
+
+#: Binding type -> validator. TableRow[] has no required schema (free-form rows).
+_BINDING_VALIDATORS = {
+    "MenuItem[]": lambda v: validate_items(v, label_key="label", children_key="children"),
+    "SelectOption[]": lambda v: validate_items(v, label_key="label", value_key="value"),
+    "BreadcrumbItem[]": lambda v: validate_items(v, label_key="label"),
+    "TabItem[]": lambda v: validate_items(v, label_key="label"),
+    "ProgressStep[]": lambda v: validate_steps(v),
+    "TableColumn[]": lambda v: validate_columns(v),
+}
+
+
+def validate_binding(value: Any, binding_type: str, component: str = "", prop: str = "") -> Any:
+    """Validate bound data against its declared binding type; return it if valid.
+
+    Raises DataValidationError with the path/index/expected keys on invalid data.
+    Unknown binding types (e.g. TableRow[]) pass through unchecked.
+    """
+    validator = _BINDING_VALIDATORS.get(binding_type)
+    if validator is None:
+        return value
+    result = validator(value)
+    if not result.valid:
+        where = f"<c-{component} :{prop}>" if component and prop else binding_type
+        detail = "; ".join(f"{e.path}: {e.message}" for e in result.errors)
+        raise DataValidationError(
+            f"Invalid data for {where} (expected {binding_type}): {detail}",
+            result.errors,
+        )
+    return value

@@ -26,7 +26,7 @@
  */
 export interface MenuItem {
   /** Display text (required) */
-  name: string;
+  label: string;
 
   /** Link URL (optional - if omitted, renders as non-link) */
   href?: string;
