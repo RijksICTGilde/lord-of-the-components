@@ -9,14 +9,14 @@ Usage:
 """
 
 import argparse
+import json
 import logging
 import mimetypes
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
-from urllib.parse import urlparse
-
 from typing import Callable
+from urllib.parse import urlparse
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -49,18 +49,42 @@ BUNDLED_CSS = "\n".join(
     ]
 )
 
+# NLDD assets from the `npm run build:fe:nldd` bundle (served from
+# /static/lotc/nldd/dist/). The CSS list + module JS come from its manifest so
+# the head matches whatever the bundle actually produced.
+_NLDD_DIST = STATIC_DIR / "lotc" / "nldd" / "dist"
 
-def _inject_assets(source: str) -> str:
-    """Inject the bundled RVO CSS and rvo-theme body class into fixture HTML."""
-    # Inject bundled CSS into the <head> section
-    if "</head>" in source:
-        source = source.replace("</head>", f"{BUNDLED_CSS}\n</head>")
 
-    # Add rvo-theme class to <body> so design tokens activate
-    if "<body" in source and "rvo-theme" not in source:
-        source = source.replace("<body>", '<body class="rvo-theme">')
+def _nldd_head() -> str:
+    manifest = json.loads((_NLDD_DIST / "assets.json").read_text())
+    links = "\n".join(
+        f'    <link rel="stylesheet" href="/static/lotc/nldd/dist/{css}">'
+        for css in manifest.get("css", [])
+    )
+    scripts = "\n".join(
+        f'    <script type="module" src="/static/lotc/nldd/dist/{js["src"]}"></script>'
+        for js in manifest.get("js", [])
+    )
+    return f"{links}\n{scripts}"
 
-    return source
+
+def _make_transform(theme: str) -> Callable[[str], str]:
+    """Return a fixture transform that injects the CSS/JS for the given theme."""
+
+    def _transform(source: str) -> str:
+        if theme == "nldd":
+            head = _nldd_head()
+            if "</head>" in source:
+                source = source.replace("</head>", f"{head}\n</head>")
+            return source
+        # RVO (default): bundled CSS + rvo-theme body class for design tokens.
+        if "</head>" in source:
+            source = source.replace("</head>", f"{BUNDLED_CSS}\n</head>")
+        if "<body" in source and "rvo-theme" not in source:
+            source = source.replace("<body>", '<body class="rvo-theme">')
+        return source
+
+    return _transform
 
 
 class FixtureLoader(FileSystemLoader):
@@ -84,21 +108,21 @@ class FixtureLoader(FileSystemLoader):
         return source, filename, uptodate
 
 
-def create_jinja_env() -> Environment:
+def create_jinja_env(theme: str = "rvo") -> Environment:
     """Create a Jinja2 environment with LOTC extension and fixture templates."""
     jinja_env = Environment(
-        loader=FixtureLoader(FIXTURES_DIR, _inject_assets),
+        loader=FixtureLoader(FIXTURES_DIR, _make_transform(theme)),
         # Required by setup_components: component renderers escape prop values.
         autoescape=True,
         # Production mode: compiled templates stay in Environment.cache instead
         # of being recompiled from source on every request.
         auto_reload=False,
     )
-    setup_components(jinja_env, registry_path=str(REGISTRY_JSON))
+    setup_components(jinja_env, registry_path=str(REGISTRY_JSON), theme=theme)
     return jinja_env
 
 
-# Shared Jinja2 environment (created once)
+# Shared Jinja2 environment (created once, rebound in main() when --theme is set)
 _jinja_env = create_jinja_env()
 
 
@@ -207,14 +231,23 @@ class FixtureHandler(SimpleHTTPRequestHandler):
 def main() -> None:
     parser = argparse.ArgumentParser(description="LOTC visual test server")
     parser.add_argument("--port", type=int, default=5555, help="Port to listen on")
+    parser.add_argument(
+        "--theme",
+        choices=["rvo", "nldd"],
+        default="rvo",
+        help="Design-system theme to render fixtures with",
+    )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
     args = parser.parse_args()
 
     level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
 
+    global _jinja_env
+    _jinja_env = create_jinja_env(args.theme)
+
     server = HTTPServer(("localhost", args.port), FixtureHandler)
-    print(f"Serving LOTC fixtures on http://localhost:{args.port}")
+    print(f"Serving LOTC fixtures ({args.theme}) on http://localhost:{args.port}")
     print(f"Fixtures dir: {FIXTURES_DIR}")
     print("Press Ctrl+C to stop")
 

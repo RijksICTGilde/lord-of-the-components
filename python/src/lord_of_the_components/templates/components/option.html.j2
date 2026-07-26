@@ -1,0 +1,20 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set disabled = _component_context.get('disabled', false) %}
+{% set label = _component_context.get('label', '') %}
+{% set selected = _component_context.get('selected', false) %}
+{% set value = _component_context.get('value', '') %}
+{% set css_classes = [] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<option
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="option"
+    {% if value %}value="{{ value }}"{% endif %}
+    {% if selected %}selected{% endif %}
+    {% if disabled %}disabled{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children if children else label | safe }}
+</option>

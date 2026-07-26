@@ -1611,6 +1611,175 @@
       "content": {
         "allowed": false
       }
+    },
+    {
+      "name": "checkbox",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "HTML form field name"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Value submitted when checked"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible label text (content overrides)"
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Single checkbox with a label",
+      "category": "forms",
+      "backend": "python",
+      "content": {
+        "allowed": false
+      }
+    },
+    {
+      "name": "radio",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "HTML form field name (shared across a group)"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Value submitted when selected"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible label text (content overrides)"
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Single radio button with a label",
+      "category": "forms",
+      "backend": "python",
+      "content": {
+        "allowed": false
+      }
+    },
+    {
+      "name": "select",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "HTML form field name"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Currently selected value"
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": "Placeholder / prompt text"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Dropdown select; <option> elements go in the content",
+      "category": "forms",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "option",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Value submitted when this option is chosen"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible option text (content overrides)"
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "A single option for a select; label via prop or content",
+      "category": "forms",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }

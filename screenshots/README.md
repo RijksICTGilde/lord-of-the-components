@@ -20,6 +20,17 @@ byte-identical (normalized) to the golden contract.
 | `icon-variants.png` | RVO icon set |
 | `menu-variants.png` | menubar |
 | `layout-grid-variants.png` | grid / layout components |
+| `sweep-components-rvo.png` | form inputs (text/textarea) + basic HTML (bold/italic/code/blockquote/hr) |
+| `form-controls-rvo.png` | form controls: text, textarea, checkbox, radio, select |
+
+## Both themes side by side
+
+`form-controls-rvo.png` and `form-controls-nldd.png` render the **same**
+`tests/visual/fixtures/form-controls.html` — one set of `<c-*>` definitions —
+through both design systems. RVO uses native inputs styled with Utrecht/RVO CSS
+classes; NLDD renders the same fields as `<nldd-text-field>`, `<nldd-checkbox-field>`,
+`<nldd-radio-button-field>`, and `<nldd-combo-box>` web components. Regenerate the
+NLDD shots by starting the server with `--theme nldd` (see below).
 
 ## NLDD theme
 
@@ -33,4 +44,7 @@ icon/color names theme-agnostic. The NLDD HTML structure is also verified by
 
 Regenerate the RVO shots: start `python tests/visual/serve.py --port 5599 &`,
 then a Playwright script that screenshots each
-`http://localhost:5599/<fixture>.html`.
+`http://localhost:5599/<fixture>.html`. For NLDD, run the same server with
+`--theme nldd` (it injects the `@nldd/design-system` bundle and renders fixtures
+under `theme="nldd"`); wait for `:not(:defined)` to clear before screenshotting so
+the web components have upgraded.

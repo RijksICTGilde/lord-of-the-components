@@ -1,0 +1,27 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set checked = _component_context.get('checked', false) %}
+{% set disabled = _component_context.get('disabled', false) %}
+{% set label = _component_context.get('label', '') %}
+{% set name = _component_context.get('name', '') %}
+{% set required = _component_context.get('required', false) %}
+{% set value = _component_context.get('value', '') %}
+{% set css_classes = ['rvo-radio-button__label'] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<label
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="radio"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% set css_classes = ['rvo-radio-button'] %}
+    <input
+        type="radio"
+        {% if name %}name="{{ name }}"{% endif %}
+        {% if value %}value="{{ value }}"{% endif %}
+        {% if checked %}checked{% endif %}
+        {% if disabled %}disabled{% endif %}
+        {% if required %}required{% endif %}
+        class="{{ css_classes | join(' ') }}">
+    <span>{{ label | safe }}</span>
+</label>
