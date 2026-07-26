@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        # Produces python/src/lord_of_the_components/static/ (git-ignored) which
+        # test_init.py expects to exist.
+        run: npm run build:fe
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python package
+        run: pip install -e "python/[dev]"
+
+      - name: Ruff
+        working-directory: python
+        run: ruff check .
+
+      - name: Mypy
+        working-directory: python
+        run: mypy src/
+
+      - name: Pytest (coverage gate)
+        working-directory: python
+        run: pytest
+
+      - name: Benchmark harness
+        # Runs the harness end-to-end as a perf smoke test and records timings.
+        # Cross-run regression gating (--baseline) is same-machine only, so it is
+        # not enforced here; the JSON is uploaded for inspection instead.
+        working-directory: python
+        run: python benchmarks/bench.py --write-baseline
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: benchmark-results
+          path: python/benchmarks/results/
+          retention-days: 30
+
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build core package
+        run: npm run build -w core
+
+      - name: Build frontend assets
+        run: npm run build:fe

@@ -68,7 +68,9 @@ line-length = 120
 select = ["E", "F", "W", "I"]
 
 [tool.mypy]
-python_version = "3.9"
+# mypy no longer supports targeting 3.9 (it silently falls back to its minimum);
+# 3.10 matches the versions actually exercised in CI and silences the warning.
+python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
