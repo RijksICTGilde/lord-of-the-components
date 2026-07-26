@@ -47,6 +47,10 @@ jobs:
         working-directory: python
         run: pytest
 
+      - name: Coverage gate (every enum/boolean has a case + golden)
+        working-directory: python
+        run: python tools/check_coverage.py
+
       - name: Benchmark harness
         # Runs the harness end-to-end as a perf smoke test and records timings.
         # Cross-run regression gating (--baseline) is same-machine only, so it is
