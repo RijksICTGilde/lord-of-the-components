@@ -1,9 +1,9 @@
-"""Known bugs recorded as xfail tests (plan v7 T1.4).
+"""Escaping / rendering correctness — the bugs the rewrite fixes (plan v7).
 
-Each test asserts the CORRECT behavior, which the current BeautifulSoup-based
-pipeline violates. They are marked xfail(strict=True) so that when the rewrite
-(F2 parser / F3 Python renderer) fixes them, the test xpasses and turns into a
-failure — the signal to drop the xfail marker in that phase.
+F2 (the parser) fixed two of the original T1.4 bugs, so those are now plain
+passing tests. The remaining two are still marked xfail(strict=True) and flip to
+failures — the signal to drop the marker — once F3 (the Python renderer / escape
+of prop values) and the void-element generator fix land.
 """
 
 import pytest
@@ -11,35 +11,27 @@ import pytest
 pytestmark = pytest.mark.usefixtures("render")
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="_restore_jinja_tags() runs html.unescape() over the whole output, "
-    "turning &amp; into a bare & (F2 removes this).",
-)
 def test_ampersand_entity_preserved_in_content(render):
+    # FIXED in F2: preprocessing no longer runs html.unescape() over the output.
     html = render("<c-strong>Tom &amp; Jerry</c-strong>")
     assert "Tom &amp; Jerry" in html
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="The label/content text goes through `| safe`, so user data is not "
-    "escaped — an XSS hole (F3 escapes prop values).",
-)
-def test_script_in_label_is_escaped(render):
-    html = render('<c-button label="&lt;script&gt;alert(1)&lt;/script&gt;"></c-button>')
-    assert "<script>alert(1)</script>" not in html
-    assert "&lt;script&gt;" in html
-
-
-@pytest.mark.xfail(
-    strict=True,
-    reason="BeautifulSoup lowercases attribute names; the F2 parser preserves "
-    "the source casing.",
-)
 def test_attribute_name_casing_preserved(render):
+    # FIXED in F2: the parser preserves source casing (BeautifulSoup lowercased).
     html = render('<c-button data-testId="x">Hi</c-button>')
     assert "data-testId" in html
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason="A prop value goes through `| safe`, so raw HTML in it is not escaped "
+    "— an XSS hole (F3 escapes prop values with markupsafe.escape).",
+)
+def test_raw_html_in_prop_value_is_escaped(render):
+    html = render('<c-button label="<img src=x onerror=alert(1)>">x</c-button>')
+    assert "<img src=x onerror=alert(1)>" not in html
+    assert "&lt;img" in html
 
 
 @pytest.mark.xfail(

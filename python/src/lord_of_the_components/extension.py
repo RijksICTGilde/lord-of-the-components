@@ -1,23 +1,32 @@
 """
-Jinja2 Component Extension using DOM-based parsing with BeautifulSoup.
+Jinja2 Component Extension.
 
 Transforms custom component tags into standard Jinja2 includes:
-<c-button variant="primary">Click me</c-button>
--> {% include "components/button.html.j2" with context %}
+<c-button type="primary">Click me</c-button>
+-> {% set _component_context = {...} %}{% include "components/button.html.j2" with context %}
+
+Preprocessing uses the one-pass parser in parser.py (no BeautifulSoup): the node
+tree is walked once, components become includes, and all other text passes
+through as unmodified slices of the original source.
 """
 
-import hashlib
 import logging
-import re
-from collections import deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from difflib import get_close_matches
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
-from bs4 import BeautifulSoup, Tag
 from jinja2 import Environment
 from jinja2.ext import Extension
 
+from .parser import (
+    Attr,
+    ComponentNode,
+    Node,
+    ParseError,
+    TemplateNode,
+    TextNode,
+    parse,
+)
 from .registry import ComponentRegistry
 from .validation import validate_expression
 
@@ -60,84 +69,11 @@ class ComponentError(Exception):
         super().__init__(full_message)
 
 
-def _find_tag_location(source: str, tag_name: str, occurrence: int = 0) -> Optional[SourceLocation]:
-    """
-    Find the line and column of a tag in the source.
-
-    Args:
-        source: The original template source
-        tag_name: The tag name to find (e.g., 'c-button')
-        occurrence: Which occurrence to find (0-indexed)
-
-    Returns:
-        SourceLocation or None if not found
-    """
-    # Pattern to match opening tags with the given name
-    pattern = rf"<{re.escape(tag_name)}(?:\s|>|/)"
-    matches = list(re.finditer(pattern, source, re.IGNORECASE))
-
-    if occurrence >= len(matches):
-        return None
-
-    match = matches[occurrence]
-    pos = match.start()
-
-    # Calculate line and column
-    lines_before = source[:pos].split("\n")
-    line = len(lines_before)
-    column = len(lines_before[-1]) + 1 if lines_before else 1
-
-    return SourceLocation(line=line, column=column)
-
-
-def _find_attribute_location(
-    source: str, tag_name: str, attr_name: str, tag_occurrence: int = 0
-) -> Optional[SourceLocation]:
-    """
-    Find the line and column of an attribute within a tag.
-
-    Args:
-        source: The original template source
-        tag_name: The tag name containing the attribute
-        attr_name: The attribute name to find
-        tag_occurrence: Which occurrence of the tag (0-indexed)
-
-    Returns:
-        SourceLocation or None if not found
-    """
-    # First, find the tag
-    tag_pattern = rf"<{re.escape(tag_name)}[^>]*>"
-    tag_matches = list(re.finditer(tag_pattern, source, re.IGNORECASE | re.DOTALL))
-
-    if tag_occurrence >= len(tag_matches):
-        return None
-
-    tag_match = tag_matches[tag_occurrence]
-    tag_content = tag_match.group()
-    tag_start = tag_match.start()
-
-    # Find the attribute within the tag
-    # Handle both attr="value" and :attr="value" and @attr="value"
-    attr_pattern = rf'(?:^|[\s])({re.escape(attr_name)})(?:=|[\s>])'
-    attr_match = re.search(attr_pattern, tag_content, re.IGNORECASE)
-
-    if not attr_match:
-        # Fallback: try to find attribute with prefix stripped for :attr
-        clean_attr = attr_name.lstrip(":@")
-        attr_pattern = rf'(?:^|[\s])[:@]?({re.escape(clean_attr)})(?:=|[\s>])'
-        attr_match = re.search(attr_pattern, tag_content, re.IGNORECASE)
-
-    if not attr_match:
-        return None
-
-    # Calculate absolute position
-    attr_pos = tag_start + attr_match.start(1)
-
-    # Calculate line and column
-    lines_before = source[:attr_pos].split("\n")
-    line = len(lines_before)
-    column = len(lines_before[-1]) + 1 if lines_before else 1
-
+def _source_location(source: str, offset: int) -> SourceLocation:
+    """Compute a 1-based line/column for *offset* (cold path — only on errors)."""
+    line = source.count("\n", 0, offset) + 1
+    last_newline = source.rfind("\n", 0, offset)
+    column = offset - last_newline if last_newline != -1 else offset + 1
     return SourceLocation(line=line, column=column)
 
 
@@ -146,21 +82,27 @@ class _CompileState:
     """Per-compile state for a single preprocess() call.
 
     Kept off the extension instance so concurrent compiles in a threaded server
-    cannot corrupt each other's placeholders/counters (the extension instance is
-    shared across the whole Environment).
+    cannot corrupt each other's counters (the extension instance is shared
+    across the whole Environment).
     """
 
-    template_id: str
-    source: str
-    placeholders: Dict[str, str] = field(default_factory=dict)
-    placeholder_counter: int = 0
-    tag_occurrence_counts: Dict[str, int] = field(default_factory=dict)
+    counter: int = 0
+
+
+def _slot_name(node: TemplateNode) -> Optional[str]:
+    """Return the value of a <template>'s `slot` attribute if it is non-empty.
+
+    A ``<template>`` without a slot attribute, or with an empty one, is treated
+    as ordinary default content (matching the previous behavior).
+    """
+    for attr in node.attrs:
+        if attr.name == "slot" and attr.raw_value:
+            return attr.raw_value
+    return None
 
 
 class ComponentExtension(Extension):
-    """
-    Jinja2 extension that preprocesses component syntax using BeautifulSoup DOM parsing.
-    """
+    """Jinja2 extension that preprocesses component syntax via the one-pass parser."""
 
     def __init__(self, environment: Environment) -> None:
         super().__init__(environment)
@@ -169,166 +111,59 @@ class ComponentExtension(Extension):
     def preprocess(
         self, source: str, name: Optional[str], filename: Optional[str] = None
     ) -> str:
-        """
-        Preprocess the template source to convert component syntax to Jinja2 includes.
-        """
+        """Preprocess template source, converting component syntax to Jinja2 includes."""
         template_id = filename or name or "<unknown>"
         logger.debug("Preprocessing template: %s", template_id)
 
-        # If no component tags exist, skip BeautifulSoup entirely
+        # If no component tags exist, skip parsing entirely.
         if "<c-" not in source:
             return source
 
-        state = _CompileState(template_id=template_id, source=source)
-
+        state = _CompileState()
         try:
-            soup = BeautifulSoup(source, features="html.parser")
-            self._process_components_in_soup(soup, state)
-            result = str(soup)
-            result = self._restore_jinja_tags(result, state)
-            logger.debug("Successfully processed template: %s", template_id)
-            return result
-
-        except ComponentError:
-            # Re-raise ComponentError as-is (already has location info)
-            raise
-
-        except Exception as e:
-            logger.error("Component preprocessing failed for template %s: %s", template_id, e)
-            raise RuntimeError(
-                f"Component preprocessing failed for template '{template_id}': {e}"
-            ) from e
-
-    def _process_components_in_soup(self, soup: BeautifulSoup, state: "_CompileState") -> None:
-        """
-        Process all component tags in the BeautifulSoup tree using topological sort.
-
-        Uses Kahn's algorithm to build a processing order where child components
-        are always processed before their parent components (bottom-up).
-        """
-        # Find all component tags
-        all_components: List[Tag] = list(soup.find_all(self._is_component_tag))
-
-        if not all_components:
-            return
-
-        # Build dependency graph and check nesting depth
-        # For each component, track which components are its direct children
-        # A component depends on its children (must process children first)
-        tag_to_id: Dict[int, Tag] = {id(tag): tag for tag in all_components}
-        children_of: Dict[int, Set[int]] = {id(tag): set() for tag in all_components}
-        parent_of: Dict[int, Optional[int]] = {id(tag): None for tag in all_components}
-
-        for tag in all_components:
-            # Find direct child components (not nested further down)
-            for child in tag.find_all(self._is_component_tag, recursive=True):
-                child_id = id(child)
-                tag_id = id(tag)
-                if child_id in tag_to_id:
-                    # Find the immediate parent component of this child
-                    current = child.parent
-                    while current is not None:
-                        if id(current) == tag_id:
-                            # tag is the immediate component parent of child
-                            children_of[tag_id].add(child_id)
-                            parent_of[child_id] = tag_id
-                            break
-                        elif id(current) in tag_to_id:
-                            # Another component is between them
-                            break
-                        current = current.parent
-
-        # Check nesting depth
-        for tag in all_components:
-            depth = self._calculate_nesting_depth(tag, tag_to_id)
-            if depth > MAX_NESTING_DEPTH:
-                location = _find_tag_location(
-                    state.source,
-                    tag.name,
-                    state.tag_occurrence_counts.get(tag.name, 0),
-                )
-                raise ComponentError(
-                    f"Component nesting depth ({depth}) exceeds maximum allowed ({MAX_NESTING_DEPTH})",
-                    location=location,
-                )
-
-        # Topological sort using Kahn's algorithm
-        # Components with no children (leaves) have in-degree 0 and are processed first
-        in_degree: Dict[int, int] = {id(tag): len(children_of[id(tag)]) for tag in all_components}
-        queue: deque[int] = deque()
-
-        # Start with leaf components (no child components)
-        for tag_id, degree in in_degree.items():
-            if degree == 0:
-                queue.append(tag_id)
-
-        processing_order: List[Tag] = []
-
-        while queue:
-            tag_id = queue.popleft()
-            tag = tag_to_id[tag_id]
-            processing_order.append(tag)
-
-            # Find the parent of this component and decrease its in-degree
-            parent_id = parent_of.get(tag_id)
-            if parent_id is not None and parent_id in in_degree:
-                in_degree[parent_id] -= 1
-                if in_degree[parent_id] == 0:
-                    queue.append(parent_id)
-
-        # Verify all components are in the processing order (detect cycles)
-        if len(processing_order) != len(all_components):
-            # This shouldn't happen with valid HTML, but handle it gracefully
+            nodes = parse(source)
+            return "".join(self._emit(source, node, state, 0) for node in nodes)
+        except ParseError as exc:
             raise ComponentError(
-                "Circular component dependency detected. This may indicate malformed HTML."
+                exc.message, location=SourceLocation(exc.line, exc.column)
+            ) from None
+        except ComponentError:
+            raise
+        except Exception as exc:
+            logger.error("Component preprocessing failed for template %s: %s", template_id, exc)
+            raise RuntimeError(
+                f"Component preprocessing failed for template '{template_id}': {exc}"
+            ) from exc
+
+    # ── tree walk ────────────────────────────────────────────────────────────
+    def _emit(self, source: str, node: Node, state: "_CompileState", depth: int) -> str:
+        """Serialize a node: text verbatim, template re-emitted, component -> include."""
+        if isinstance(node, TextNode):
+            return source[node.span.start : node.span.end]
+        if isinstance(node, TemplateNode):
+            inner = "".join(self._emit(source, c, state, depth) for c in node.children)
+            return node.open_source + inner + "</template>"
+        return self._emit_component(source, node, state, depth)
+
+    def _emit_component(
+        self, source: str, node: ComponentNode, state: "_CompileState", depth: int
+    ) -> str:
+        if depth > MAX_NESTING_DEPTH:
+            raise ComponentError(
+                f"Component nesting depth ({depth}) exceeds maximum allowed ({MAX_NESTING_DEPTH})",
+                location=_source_location(source, node.span.start),
             )
 
-        # Process components in topological order (leaves first, then their parents)
-        for tag in processing_order:
-            self._process_single_component(tag, state)
-
-    def _calculate_nesting_depth(self, tag: Tag, tag_to_id: Dict[int, Tag]) -> int:
-        """
-        Calculate the nesting depth of a component tag.
-
-        Counts how many component ancestors this tag has.
-        """
-        depth = 0
-        current = tag.parent
-        while current is not None:
-            if id(current) in tag_to_id:
-                depth += 1
-            current = current.parent
-        return depth
-
-    def _is_component_tag(self, tag: Any) -> bool:
-        """Check if a tag is a component tag (starts with 'c-')."""
-        if not hasattr(tag, "name"):
-            return False
-        return bool(tag.name and tag.name.startswith("c-"))
-
-    def _process_single_component(self, tag: Tag, state: "_CompileState") -> None:
-        """
-        Process a single component tag and replace it with Jinja2 include.
-        """
-        component_name = tag.name[2:]  # Remove 'c-' prefix
-        tag_name = tag.name
-
-        # Track occurrence count for this tag type
-        occurrence = state.tag_occurrence_counts.get(tag_name, 0)
-        state.tag_occurrence_counts[tag_name] = occurrence + 1
-
-        # Get location for this tag
-        location = _find_tag_location(state.source, tag_name, occurrence)
+        component_name = node.name
+        tag_name = f"c-{component_name}"
+        location = _source_location(source, node.span.start)
 
         if not self.registry.has_component(component_name):
             available = sorted(self.registry.get_all_component_names())
-            # Try to find a close match for suggestion
             suggestion = None
             close_matches = get_close_matches(component_name, available, n=1, cutoff=0.6)
             if close_matches:
                 suggestion = f"c-{close_matches[0]}"
-
             raise ComponentError(
                 f"Unknown component '{tag_name}'",
                 location=location,
@@ -336,97 +171,68 @@ class ComponentExtension(Extension):
             )
 
         component_def = self.registry.get_component(component_name)
-        attrs = self._parse_component_attributes(tag, component_def, state, location, occurrence)
+        attrs = self._parse_component_attributes(source, node.attrs, component_def, tag_name)
 
-        # Extract named slots and default content
-        named_slots, default_content = self._extract_slots(tag)
+        named_slots, default_content = self._extract_slots(source, node, state, depth + 1)
 
-        include_str = self._build_include(component_name, attrs, default_content, state, named_slots)
+        return self._build_include(component_name, attrs, default_content, state, named_slots)
 
-        placeholder = f"JINJA2_PLACEHOLDER_{self._generate_id(state)}"
-        tag.replace_with(placeholder)
-        state.placeholders[placeholder] = include_str
+    def _extract_slots(
+        self, source: str, node: ComponentNode, state: "_CompileState", child_depth: int
+    ) -> tuple[Dict[str, str], Optional[str]]:
+        """Split a component's children into named slots and default content.
 
-    def _extract_slots(self, tag: Tag) -> tuple[Dict[str, str], Optional[str]]:
-        """
-        Extract named slots and default content from a component tag.
-
-        Named slots are defined using <template slot="name">content</template>.
-        All other content becomes the default content.
-
-        Args:
-            tag: The component tag to extract slots from
-
-        Returns:
-            A tuple of (named_slots dict, default_content string or None)
+        Named slots are direct-child <template slot="name"> elements; everything
+        else is default content. Child components are emitted (as includes) here,
+        so nesting composes bottom-up.
         """
         named_slots: Dict[str, str] = {}
-        default_content_parts: List[str] = []
+        default_parts: List[str] = []
 
-        for child in tag.contents:
-            if isinstance(child, Tag) and child.name == "template" and child.get("slot"):
-                # This is a named slot
-                slot_name = child.get("slot")
-                if isinstance(slot_name, list):
-                    slot_name = slot_name[0]
-                slot_name = str(slot_name)
-
-                # Get the inner content of the template tag
-                slot_content_parts = []
-                for slot_child in child.contents:
-                    slot_content_parts.append(str(slot_child))
-                slot_content = "".join(slot_content_parts).strip()
-
-                named_slots[slot_name] = slot_content
+        for child in node.children:
+            slot = _slot_name(child) if isinstance(child, TemplateNode) else None
+            if slot is not None and isinstance(child, TemplateNode):
+                content = "".join(
+                    self._emit(source, c, state, child_depth) for c in child.children
+                ).strip()
+                named_slots[slot] = content
             else:
-                # This is default content
-                default_content_parts.append(str(child))
+                default_parts.append(self._emit(source, child, state, child_depth))
 
-        default_content = "".join(default_content_parts).strip()
-        return named_slots, default_content if default_content else None
+        default_content = "".join(default_parts).strip()
+        return named_slots, (default_content or None)
 
+    # ── attribute handling ───────────────────────────────────────────────────
     def _parse_component_attributes(
         self,
-        tag: Tag,
+        source: str,
+        attr_list: List[Attr],
         component_def: Any,
-        state: "_CompileState",
-        tag_location: Optional[SourceLocation] = None,
-        tag_occurrence: int = 0,
+        tag_name: str,
     ) -> Dict[str, Any]:
-        """Parse and validate component attributes."""
-        attrs = {}
+        """Parse and validate component attributes into a name->value dict."""
+        attrs: Dict[str, Any] = {}
 
         valid_attrs = {attr.name.lower(): attr.name for attr in component_def.attributes}
         for attr in component_def.attributes:
             if any(c.isupper() for c in attr.name):
                 valid_attrs[attr.name.lower()] = attr.name
-
         valid_attrs.update({"class": "class", "id": "id", "style": "style"})
 
-        for attr_name, attr_value in tag.attrs.items():
-            if isinstance(attr_value, list):
-                attr_value = " ".join(attr_value)
-            else:
-                attr_value = str(attr_value) if attr_value is not None else ""
+        for parsed in attr_list:
+            attr_name = parsed.name
+            attr_value = parsed.raw_value if parsed.raw_value is not None else ""
 
             if attr_name.startswith(":"):
-                # Validate dynamic attribute expression
                 is_valid, expr_error = validate_expression(attr_value)
                 if not is_valid and expr_error:
-                    attr_location = _find_attribute_location(
-                        state.source, tag.name, attr_name, tag_occurrence
-                    )
-                    location = attr_location or tag_location
-
-                    suggestion = expr_error.suggestion
                     error_msg = f"Invalid expression in '{attr_name}': {expr_error.message}"
                     if expr_error.position:
                         error_msg += f" at position {expr_error.position}"
-
                     raise ComponentError(
                         error_msg,
-                        location=location,
-                        suggestion=suggestion,
+                        location=_source_location(source, parsed.span.start),
+                        suggestion=expr_error.suggestion,
                     )
                 attrs[attr_name] = attr_value
             elif attr_name.startswith("@"):
@@ -436,19 +242,9 @@ class ComponentExtension(Extension):
             else:
                 clean_name = attr_name.lower()
                 if clean_name in valid_attrs:
-                    correct_name = valid_attrs[clean_name]
-                    attrs[correct_name] = attr_value
+                    attrs[valid_attrs[clean_name]] = attr_value
                 else:
                     available = sorted(set(valid_attrs.values()))
-
-                    # Find location of the attribute
-                    attr_location = _find_attribute_location(
-                        state.source, tag.name, attr_name, tag_occurrence
-                    )
-                    # Fall back to tag location if attribute not found
-                    location = attr_location or tag_location
-
-                    # Try to find a suggestion
                     suggestion = None
                     # `name` was renamed to `label` for visible text (plan v7 T1.2);
                     # they are not close enough for get_close_matches, so hint explicitly.
@@ -459,15 +255,13 @@ class ComponentExtension(Extension):
                             clean_name, [a.lower() for a in available], n=1, cutoff=0.6
                         )
                         if close_matches:
-                            # Map back to original casing
                             for avail in available:
                                 if avail.lower() == close_matches[0]:
                                     suggestion = avail
                                     break
-
                     raise ComponentError(
-                        f"Unknown attribute '{attr_name}' on component '{tag.name}'",
-                        location=location,
+                        f"Unknown attribute '{attr_name}' on component '{tag_name}'",
+                        location=_source_location(source, parsed.span.start),
                         suggestion=suggestion,
                     )
 
@@ -475,14 +269,14 @@ class ComponentExtension(Extension):
 
     def _is_generic_html_attribute(self, attr_name: str) -> bool:
         """Check if an attribute is a generic HTML attribute or utility attribute."""
-        generic_prefixes = ["data-", "aria-", "hx-"]
+        generic_prefixes = ("data-", "aria-", "hx-")
         for prefix in generic_prefixes:
             if attr_name.startswith(prefix):
                 return True
         # Utility attributes used by _attribute_mixin.j2
-        utility_attrs = {"text-style", "margin", "padding"}
-        return attr_name in utility_attrs
+        return attr_name in {"text-style", "margin", "padding"}
 
+    # ── include building ─────────────────────────────────────────────────────
     def _build_include(
         self,
         component_name: str,
@@ -556,39 +350,9 @@ class ComponentExtension(Extension):
         )
 
     def _generate_id(self, state: "_CompileState") -> str:
-        """
-        Generate a deterministic unique ID for variable names.
-
-        Uses a position-based hash combining the template ID and a per-compile
-        counter, ensuring reproducible output for the same input template.
-        """
-        state.placeholder_counter += 1
-        hash_input = f"{state.template_id}:{state.placeholder_counter}"
-        hash_bytes = hashlib.sha256(hash_input.encode()).hexdigest()[:8]
-        return hash_bytes
-
-    def _restore_jinja_tags(self, html: str, state: "_CompileState") -> str:
-        """Restore Jinja2 placeholders with actual Jinja2 tags."""
-        import html as html_module
-
-        max_iterations = 10
-        iteration = 0
-
-        while "JINJA2_PLACEHOLDER_" in html and iteration < max_iterations:
-            replaced_any = False
-            for placeholder, jinja_code in state.placeholders.items():
-                if placeholder in html:
-                    html = html.replace(placeholder, jinja_code)
-                    replaced_any = True
-
-            if not replaced_any:
-                logger.warning("Orphaned placeholders found after %d iterations", iteration)
-                break
-
-            iteration += 1
-
-        html = html_module.unescape(html)
-        return html
+        """Return a unique-per-compile suffix for generated variable names."""
+        state.counter += 1
+        return str(state.counter)
 
 
 def setup_components(
