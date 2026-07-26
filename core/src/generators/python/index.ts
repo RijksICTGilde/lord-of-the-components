@@ -61,10 +61,12 @@ export type TextExpr =
   | { literal: string }
   | { prop: string }
   | { content: true }
+  | { slot: string }
   | { coalesce: TextExpr[] }
   | { raw: string };
 export interface ElementNode {
-  element: string | DynamicElement;
+  element?: string | DynamicElement;
+  repeat?: { binding: string; as: string };
   classes?: ClassRule[];
   attributes?: AttributeMapping[];
   styles?: StyleMapping[];
@@ -150,6 +152,7 @@ function textValue(t: TextExpr): string {
   if ("prop" in t) return `esc(${pyName(t.prop)})`;
   if ("literal" in t) return pyStr(t.literal);
   if ("raw" in t) return `Markup(${pyStr(t.raw)})`;
+  if ("slot" in t) throw new UnsupportedIR("named slots not yet supported in Python backend");
   // coalesce
   const parts = t.coalesce;
   const fold = (i: number): string => {
@@ -254,6 +257,9 @@ export class PythonGenerator {
   }
 
   private emitNode(node: ElementNode, impl: CompImpl, indent: number, lines: string[]): void {
+    if (node.repeat) {
+      throw new UnsupportedIR(`repeat not yet supported in Python backend (${impl.component.name})`);
+    }
     if (node.styles && node.styles.length) {
       throw new UnsupportedIR(`styles not yet supported in Python backend (${impl.component.name})`);
     }
@@ -273,13 +279,14 @@ export class PythonGenerator {
     // element tag (static or dynamic)
     let tagExpr: string;
     let tagLiteral: string | null = null;
-    if (typeof node.element === "string") {
-      tagLiteral = node.element;
-      tagExpr = pyStr(node.element);
+    const element = node.element!;
+    if (typeof element === "string") {
+      tagLiteral = element;
+      tagExpr = pyStr(element);
     } else {
       const el = `_el${this.elCounter++}`;
       lines.push(
-        `${"    ".repeat(ind)}${el} = ${pyName(node.element.prop)} or ${pyStr(node.element.default)}`,
+        `${"    ".repeat(ind)}${el} = ${pyName(element.prop)} or ${pyStr(element.default)}`,
       );
       tagExpr = el;
     }

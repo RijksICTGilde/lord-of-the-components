@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set image = _component_context.get('image', '') %}
 {% set image_alt = _component_context.get('image-alt', '') %}
 {% set overlay = _component_context.get('overlay', false) %}

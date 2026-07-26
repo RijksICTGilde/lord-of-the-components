@@ -266,6 +266,7 @@ export type TextExpr =
   | { literal: string }
   | { prop: string }
   | { content: true }
+  | { slot: string }
   | { coalesce: TextExpr[] }
   | { raw: string };
 
@@ -310,8 +311,18 @@ export interface ElementNode {
    * HTML element tag name.
    * - string: static tag (e.g., "div", "span", "button")
    * - DynamicElement: tag determined by a prop value
+   *
+   * Optional when `repeat` is set: a repeat node is pure control flow (a loop)
+   * with no element tag of its own.
    */
-  element: string | DynamicElement;
+  element?: string | DynamicElement;
+
+  /**
+   * Repeat this node's children once per item of a bound list (plan v7 F5).
+   * Emits `{% for {as} in {binding} %}...children...{% endfor %}`. Children can
+   * reference the loop variable via dotted props (e.g. { prop: "item.label" }).
+   */
+  repeat?: { binding: string; as: string };
 
   /**
    * CSS class rules for this element.
@@ -566,7 +577,7 @@ function validateElementNode(
   componentName: string,
   path: string,
 ): void {
-  if (!node.element) {
+  if (!node.element && !node.repeat) {
     throw new Error(
       `ElementNode at "${path}" in "${componentName}" must specify an element`,
     );

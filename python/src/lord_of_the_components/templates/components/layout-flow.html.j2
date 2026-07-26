@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set align_content = _component_context.get('align-content', '') %}
 {% set align_items = _component_context.get('align-items', '') %}
 {% set gap = _component_context.get('gap', 'md') %}

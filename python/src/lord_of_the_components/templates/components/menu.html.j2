@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set aria_label = _component_context.get('aria-label', '') %}
 {% set size = _component_context.get('size', 'md') %}
 {% set type = _component_context.get('type', 'horizontal') %}
@@ -27,6 +28,28 @@
                 {% if type == 'vertical' %}{% set css_classes = css_classes + ['rvo-menubar__group--vertical'] %}{% endif %}
                 <ul
                     class="{{ css_classes | join(' ') }}">
+                    {% for item in _component_context.get('items', []) %}
+                        {% set css_classes = ['rvo-menubar__item'] %}
+                        {% if item.active %}{% set css_classes = css_classes + ['rvo-menubar__item--active'] %}{% endif %}
+                        <li
+                            class="{{ css_classes | join(' ') }}">
+                            {% if item.href %}
+                            {% set css_classes = ['rvo-link', 'rvo-menubar__link'] %}
+                            <a
+                                href="{{ item.href }}"
+                                class="{{ css_classes | join(' ') }}">
+                                {{ item.label | safe }}
+                            </a>
+                            {% endif %}
+                            {% if not (item.href) %}
+                            {% set css_classes = ['rvo-link', 'rvo-menubar__link'] %}
+                            <span
+                                class="{{ css_classes | join(' ') }}">
+                                {{ item.label | safe }}
+                            </span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
                     {{ children | safe }}
                 </ul>
             </li>

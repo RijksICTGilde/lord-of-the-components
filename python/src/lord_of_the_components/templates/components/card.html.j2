@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set background_color = _component_context.get('background-color', '') %}
 {% set background_image = _component_context.get('background-image', '') %}
 {% set full_card_link = _component_context.get('full-card-link', false) %}
@@ -148,6 +149,13 @@
         {% if children %}
         <span>{{ children | safe }}</span>
         {% endif %}
+    </div>
+    {% endif %}
+    {% if slots.footer %}
+    {% set css_classes = ['rvo-card__footer'] %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {{ slots.get('footer', '') | safe }}
     </div>
     {% endif %}
 </div>

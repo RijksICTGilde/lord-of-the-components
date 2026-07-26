@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set max_width = _component_context.get('max-width', '') %}
 {% set pay_off = _component_context.get('pay-off', '') %}
 {% set css_classes = ['rvo-footer'] %}

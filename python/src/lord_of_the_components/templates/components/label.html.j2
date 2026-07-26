@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set for = _component_context.get('for', '') %}
 {% set id = _component_context.get('id', '') %}
 {% set label = _component_context.get('label', '') %}

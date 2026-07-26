@@ -92,3 +92,41 @@ def test_validate_binding_unknown_type_passthrough():
 def test_validate_binding_columns():
     with pytest.raises(DataValidationError):
         validate_binding([{"label": "no key"}], "TableColumn[]")
+
+
+# ── :items repeat rendering (T5.1b) ─────────────────────────────────────────────
+
+
+def test_menu_items_render():
+    env = _env()
+    html = env.from_string('<c-menu :items="items"/>').render(
+        items=[{"label": "Home", "href": "/"}, {"label": "Now"}]
+    )
+    assert 'href="/"' in html and "Home" in html
+    assert html.count("rvo-menubar__link") == 2  # one <a>, one <span>
+
+
+def test_menu_items_and_children_both_render():
+    env = _env()
+    html = env.from_string(
+        '<c-menu :items="items"><c-menu-item label="Extra" href="/x"/></c-menu>'
+    ).render(items=[{"label": "Home", "href": "/"}])
+    assert "Home" in html and "Extra" in html
+
+
+# ── named slots rendering (T5.3) ────────────────────────────────────────────────
+
+
+def test_card_footer_slot_renders():
+    env = _env()
+    html = env.from_string(
+        '<c-card title="T"><template slot="footer">FOOT</template>body</c-card>'
+    ).render()
+    assert "rvo-card__footer" in html
+    assert "FOOT" in html
+
+
+def test_card_without_footer_slot_has_no_footer():
+    env = _env()
+    html = env.from_string('<c-card title="T">body</c-card>').render()
+    assert "rvo-card__footer" not in html

@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set link = _component_context.get('link', '#') %}
 {% set subtitle = _component_context.get('subtitle', '') %}
 {% set text = _component_context.get('text', '') %}

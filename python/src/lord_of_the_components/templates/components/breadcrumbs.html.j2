@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set aria_label = _component_context.get('aria-label', '') %}
 {% set size = _component_context.get('size', 'sm') %}
 {% set css_classes = ['rvo-breadcrumbs'] %}

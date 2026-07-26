@@ -232,6 +232,14 @@ export const cardImpl = defineImplementation({
           },
         ],
       },
+      // Named-slot footer (plan v7 F5 / T5.3): rendered only when a
+      // <template slot="footer"> is supplied.
+      {
+        element: "div",
+        classes: ["rvo-card__footer"],
+        when: { prop: "slots.footer" },
+        text: { slot: "footer" },
+      },
     ],
   },
 
