@@ -191,6 +191,12 @@ function isOrCondition(c: Condition): c is OrCondition {
 // HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/** HTML void elements never get a closing tag. */
+const VOID_ELEMENTS = new Set([
+  "area", "base", "br", "col", "embed", "hr", "img", "input",
+  "link", "meta", "param", "source", "track", "wbr",
+]);
+
 /**
  * Convert a kebab-case prop name to a valid Jinja2/Python variable name.
  */
@@ -471,9 +477,11 @@ export class Jinja2Generator {
       lines.push(`${ind}    ${textToJinjaString(node.text)}`);
     }
 
-    // ── Closing tag ───────────────────────────────────────────────────────
+    // ── Closing tag (void elements have none) ─────────────────────────────
     const closeTagName = this.resolveTagName(node.element!);
-    lines.push(`${ind}</${closeTagName}>`);
+    if (!VOID_ELEMENTS.has(closeTagName)) {
+      lines.push(`${ind}</${closeTagName}>`);
+    }
 
     return lines;
   }

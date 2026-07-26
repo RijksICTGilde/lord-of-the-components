@@ -1,0 +1,13 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set css_classes = [] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<small
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="small"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</small>

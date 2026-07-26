@@ -49,7 +49,6 @@
             src="{{ background_image }}"
             class="rvo-card__background-image"
             alt="">
-        </img>
     </div>
     {% endif %}
     {% if image and not (inline_image) %}
@@ -63,7 +62,6 @@
             src="{{ image }}"
             alt="{{ image_alt }}"
             class="{{ css_classes | join(' ') }}">
-        </img>
     </div>
     {% endif %}
     {% if has_link_indicator %}
@@ -83,7 +81,6 @@
                 src="{{ image }}"
                 alt="{{ image_alt }}"
                 class="{{ css_classes | join(' ') }}">
-            </img>
             {% endif %}
             {% if title %}
             {% set css_classes = ['utrecht-heading-3'] %}
@@ -127,7 +124,6 @@
             src="{{ image }}"
             alt="{{ image_alt }}"
             class="{{ css_classes | join(' ') }}">
-        </img>
         {% endif %}
         {% if title %}
         {% set css_classes = ['utrecht-heading-3'] %}

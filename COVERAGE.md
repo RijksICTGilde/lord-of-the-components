@@ -6,16 +6,22 @@
 | component | theme | cases | golden | snapshot | uncovered |
 |---|---|---|---|---|---|
 | alert | rvo | 20 | ✅ | pending | — |
+| b | rvo | 5 | ✅ | pending | — |
+| blockquote | rvo | 5 | ✅ | pending | — |
 | breadcrumbs | rvo | 9 | ✅ | pending | — |
 | button | rvo | 36 | ✅ | pending | — |
 | card | rvo | 24 | ✅ | pending | — |
+| code | rvo | 5 | ✅ | pending | — |
 | data-list | rvo | 5 | ✅ | pending | — |
+| div | rvo | 5 | ✅ | pending | — |
 | em | rvo | 7 | ✅ | pending | — |
 | footer | rvo | 9 | ✅ | pending | — |
 | grid | rvo | 30 | ✅ | pending | — |
 | header | rvo | 9 | ✅ | pending | — |
 | heading | rvo | 13 | ✅ | pending | — |
 | hero | rvo | 13 | ✅ | pending | — |
+| hr | rvo | 1 | ✅ | pending | — |
+| i | rvo | 5 | ✅ | pending | — |
 | icon | rvo | 13 | ✅ | pending | — |
 | label | rvo | 14 | ✅ | pending | — |
 | layout-column | rvo | 53 | ✅ | pending | — |
@@ -25,6 +31,8 @@
 | max-width-layout | rvo | 13 | ✅ | pending | — |
 | menu | rvo | 13 | ✅ | pending | — |
 | paragraph | rvo | 16 | ✅ | pending | — |
+| small | rvo | 5 | ✅ | pending | — |
+| span | rvo | 5 | ✅ | pending | — |
 | strong | rvo | 7 | ✅ | pending | — |
 
 **All enum values, booleans and IR-distinguished values are covered by a case.**

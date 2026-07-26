@@ -253,6 +253,112 @@
       ]
     },
     {
+      "component": "b",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-b>Voorbeeld</c-b>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "b",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-b>Tom & Jerry</c-b>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "b",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-b><script>alert(1)</script></c-b>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "b",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-b></c-b>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "b",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-b><c-strong>genest</c-strong></c-b>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "blockquote",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-blockquote>Voorbeeld</c-blockquote>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "blockquote",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-blockquote>Tom & Jerry</c-blockquote>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "blockquote",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-blockquote><script>alert(1)</script></c-blockquote>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "blockquote",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-blockquote></c-blockquote>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "blockquote",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-blockquote><c-strong>genest</c-strong></c-blockquote>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
       "component": "breadcrumbs",
       "case_id": "default",
       "theme": "rvo",
@@ -1125,6 +1231,59 @@
       ]
     },
     {
+      "component": "code",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-code>Voorbeeld</c-code>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "code",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-code>Tom & Jerry</c-code>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "code",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-code><script>alert(1)</script></c-code>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "code",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-code></c-code>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "code",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-code><c-strong>genest</c-strong></c-code>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
       "component": "data-list",
       "case_id": "default",
       "theme": "rvo",
@@ -1171,6 +1330,59 @@
       "case_id": "content--nested",
       "theme": "rvo",
       "markup": "<c-data-list><c-strong>genest</c-strong></c-data-list>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "div",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-div>Voorbeeld</c-div>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "div",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-div>Tom & Jerry</c-div>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "div",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-div><script>alert(1)</script></c-div>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "div",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-div></c-div>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "div",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-div><c-strong>genest</c-strong></c-div>",
       "props": {},
       "content": "<c-strong>genest</c-strong>",
       "covers": [
@@ -2159,6 +2371,68 @@
       "case_id": "content--nested",
       "theme": "rvo",
       "markup": "<c-hero><c-strong>genest</c-strong></c-hero>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "hr",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-hr></c-hr>",
+      "props": {},
+      "content": null,
+      "covers": []
+    },
+    {
+      "component": "i",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-i>Voorbeeld</c-i>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "i",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-i>Tom & Jerry</c-i>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "i",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-i><script>alert(1)</script></c-i>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "i",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-i></c-i>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "i",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-i><c-strong>genest</c-strong></c-i>",
       "props": {},
       "content": "<c-strong>genest</c-strong>",
       "covers": [
@@ -4905,6 +5179,112 @@
       "case_id": "content--nested",
       "theme": "rvo",
       "markup": "<c-paragraph><c-strong>genest</c-strong></c-paragraph>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "small",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-small>Voorbeeld</c-small>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "small",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-small>Tom & Jerry</c-small>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "small",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-small><script>alert(1)</script></c-small>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "small",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-small></c-small>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "small",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-small><c-strong>genest</c-strong></c-small>",
+      "props": {},
+      "content": "<c-strong>genest</c-strong>",
+      "covers": [
+        "content=nested"
+      ]
+    },
+    {
+      "component": "span",
+      "case_id": "default",
+      "theme": "rvo",
+      "markup": "<c-span>Voorbeeld</c-span>",
+      "props": {},
+      "content": "Voorbeeld",
+      "covers": []
+    },
+    {
+      "component": "span",
+      "case_id": "content--amp",
+      "theme": "rvo",
+      "markup": "<c-span>Tom & Jerry</c-span>",
+      "props": {},
+      "content": "Tom & Jerry",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "span",
+      "case_id": "content--script",
+      "theme": "rvo",
+      "markup": "<c-span><script>alert(1)</script></c-span>",
+      "props": {},
+      "content": "<script>alert(1)</script>",
+      "covers": [
+        "content=set"
+      ]
+    },
+    {
+      "component": "span",
+      "case_id": "content--empty",
+      "theme": "rvo",
+      "markup": "<c-span></c-span>",
+      "props": {},
+      "content": "",
+      "covers": [
+        "content=empty"
+      ]
+    },
+    {
+      "component": "span",
+      "case_id": "content--nested",
+      "theme": "rvo",
+      "markup": "<c-span><c-strong>genest</c-strong></c-span>",
       "props": {},
       "content": "<c-strong>genest</c-strong>",
       "covers": [

@@ -25,28 +25,9 @@ import { generateShowcase } from "./generate-showcase.js";
 import { generatePythonRenderers, PYTHON_BACKEND, type CompImpl } from "../python/index.js";
 
 // ── Imports from project root workspaces ─────────────────────────────────────
-// These resolve via tsx at runtime (not compiled by tsc).
-import { buttonImpl } from "../../../../implementations/components/button.impl.js";
-import { headingImpl } from "../../../../implementations/components/heading.impl.js";
-import { iconImpl } from "../../../../implementations/components/icon.impl.js";
-import { cardImpl } from "../../../../implementations/components/card.impl.js";
-import { dataListImpl } from "../../../../implementations/components/data-list.impl.js";
-import { layoutFlowImpl } from "../../../../implementations/components/layout-flow.impl.js";
-import { layoutColumnImpl } from "../../../../implementations/components/layout-column.impl.js";
-import { layoutRowImpl } from "../../../../implementations/components/layout-row.impl.js";
-import { maxWidthLayoutImpl } from "../../../../implementations/components/max-width-layout.impl.js";
-import { gridImpl } from "../../../../implementations/components/grid.impl.js";
-import { paragraphImpl } from "../../../../implementations/components/paragraph.impl.js";
-import { linkImpl } from "../../../../implementations/components/link.impl.js";
-import { labelImpl } from "../../../../implementations/components/label.impl.js";
-import { strongImpl } from "../../../../implementations/components/strong.impl.js";
-import { emImpl } from "../../../../implementations/components/em.impl.js";
-import { alertImpl } from "../../../../implementations/components/alert.impl.js";
-import { headerImpl } from "../../../../implementations/components/header.impl.js";
-import { heroImpl } from "../../../../implementations/components/hero.impl.js";
-import { footerImpl } from "../../../../implementations/components/footer.impl.js";
-import { menuImpl } from "../../../../implementations/components/menu.impl.js";
-import { breadcrumbsImpl } from "../../../../implementations/components/breadcrumbs.impl.js";
+// These resolve via tsx at runtime (not compiled by tsc). All RVO impls come
+// from the index (adding a component needs no third registration here).
+import * as rvoImpls from "../../../../implementations/components/index.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 import * as nlddImpls from "../../../../themes/nldd/components/index.js";
 
@@ -77,32 +58,12 @@ const REGISTRY_PATH = resolve(
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * All available component implementations.
- * Add new implementations here as they are created.
+ * All available component implementations, discovered from the index and sorted
+ * by component name for deterministic output.
  */
-const implementations = [
-  buttonImpl,
-  headingImpl,
-  iconImpl,
-  cardImpl,
-  dataListImpl,
-  layoutFlowImpl,
-  layoutColumnImpl,
-  layoutRowImpl,
-  maxWidthLayoutImpl,
-  gridImpl,
-  paragraphImpl,
-  linkImpl,
-  labelImpl,
-  strongImpl,
-  emImpl,
-  alertImpl,
-  headerImpl,
-  heroImpl,
-  footerImpl,
-  menuImpl,
-  breadcrumbsImpl,
-];
+const implementations = (Object.values(rvoImpls) as CompImpl[])
+  .filter((impl) => impl && impl.component && impl.root)
+  .sort((a, b) => a.component.name.localeCompare(b.component.name));
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MAIN

@@ -25,3 +25,13 @@ export { heroImpl } from "./hero.impl.js";
 export { footerImpl } from "./footer.impl.js";
 export { menuImpl } from "./menu.impl.js";
 export { breadcrumbsImpl } from "./breadcrumbs.impl.js";
+
+// Basic HTML elements (F9, batch D)
+export { divImpl } from "./div.impl.js";
+export { spanImpl } from "./span.impl.js";
+export { smallImpl } from "./small.impl.js";
+export { bImpl } from "./b.impl.js";
+export { iImpl } from "./i.impl.js";
+export { codeImpl } from "./code.impl.js";
+export { blockquoteImpl } from "./blockquote.impl.js";
+export { hrImpl } from "./hr.impl.js";
