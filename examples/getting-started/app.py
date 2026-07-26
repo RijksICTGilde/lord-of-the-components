@@ -38,17 +38,22 @@ def create_env() -> Environment:
     env = Environment(
         # Your templates first, then LOTC component templates
         loader=FileSystemLoader([str(TEMPLATES_DIR), str(LOTC_TEMPLATES)]),
+        # Production mode: compile each template once and cache it. Skipping the
+        # per-request os.stat uptodate check saves the full BeautifulSoup +
+        # recompile cost that env.from_string() incurred on every request.
+        auto_reload=False,
     )
     setup_components(env, registry_path=str(LOTC_REGISTRY))
     return env
 
 
 def render_page(env: Environment, template_name: str = "index.html") -> str:
-    """Render a template through the LOTC pipeline."""
-    template = env.from_string(
-        (TEMPLATES_DIR / template_name).read_text(encoding="utf-8")
-    )
-    return template.render()
+    """Render a template through the LOTC pipeline.
+
+    Uses env.get_template() so the compiled template is served from the
+    Environment cache on repeat requests, instead of recompiling from source.
+    """
+    return env.get_template(template_name).render()
 
 
 def main() -> None:
