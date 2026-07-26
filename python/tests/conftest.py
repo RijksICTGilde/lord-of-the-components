@@ -36,3 +36,67 @@ def render(env):
         return template.render()
 
     return _render
+
+
+@pytest.fixture
+def generic_registry():
+    """A registry for generic extension-mechanics tests.
+
+    Tests in test_extension.py / test_errors.py / test_nesting.py / test_slots.py
+    exercise the extension itself — attribute validation, typo suggestions,
+    camelCase normalization, topological sort, slot extraction, nesting depth —
+    against a stable set of placeholder components (``c-button``/``c-card`` with a
+    ``variant`` attribute, ``c-stack``, ``c-layout``). These are deliberately not
+    real RVO components; defining them here keeps those mechanics tests decoupled
+    from the production registry.json instead of relying on stale registry
+    defaults.
+    """
+    from lord_of_the_components.registry import (
+        AttributeDefinition,
+        AttributeType,
+        ComponentDefinition,
+        ComponentRegistry,
+    )
+
+    S = AttributeType.STRING
+    B = AttributeType.BOOLEAN
+
+    def _attrs(*specs):
+        return [AttributeDefinition(name=n, type=t) for n, t in specs]
+
+    reg = ComponentRegistry(registry_path=str(REGISTRY_JSON))
+
+    for comp in (
+        ComponentDefinition(
+            name="button",
+            description="",
+            category="actions",
+            attributes=_attrs(
+                ("variant", S), ("size", S), ("type", S), ("icon", S),
+                ("iconPosition", S), ("disabled", B), ("loading", B), ("fullWidth", B),
+            ),
+        ),
+        ComponentDefinition(
+            name="card",
+            description="",
+            category="data-display",
+            attributes=_attrs(
+                ("variant", S), ("padding", S), ("interactive", B), ("href", S),
+            ),
+        ),
+        ComponentDefinition(
+            name="stack",
+            description="",
+            category="layout",
+            attributes=_attrs(("direction", S), ("gap", S)),
+        ),
+        ComponentDefinition(
+            name="layout",
+            description="",
+            category="layout",
+            attributes=_attrs(("variant", S)),
+        ),
+    ):
+        reg.register_component(comp)
+
+    return reg

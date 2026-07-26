@@ -58,17 +58,41 @@ class ComponentDefinition:
     attributes: List[AttributeDefinition] = field(default_factory=list)
     slots: List[SlotDefinition] = field(default_factory=list)
     depends_on: Optional[List[str]] = None
+    # Name -> attribute index, built from `attributes` at construction time so
+    # get_attribute() is O(1) instead of a linear scan on every hot-path lookup.
+    _attribute_index: Dict[str, AttributeDefinition] = field(
+        default_factory=dict, init=False, repr=False, compare=False
+    )
+
+    def __post_init__(self) -> None:
+        self._attribute_index = {attr.name: attr for attr in self.attributes}
 
     def get_attribute(self, name: str) -> Optional[AttributeDefinition]:
         """Get attribute definition by name."""
-        for attr in self.attributes:
-            if attr.name == name:
-                return attr
-        return None
+        return self._attribute_index.get(name)
 
     def has_attribute(self, name: str) -> bool:
         """Check if component has an attribute."""
-        return self.get_attribute(name) is not None
+        return name in self._attribute_index
+
+
+#: Path to the registry.json shipped inside the package (the single source of
+#: component metadata — see plan v7 D6). Loaded once and cached module-level.
+_DEFAULT_REGISTRY_PATH = Path(__file__).with_name("registry.json")
+
+#: Cache of the parsed default registry, keyed name -> ComponentDefinition.
+#: Avoids re-reading and re-parsing the ~33 kB registry.json on every
+#: ComponentRegistry() / setup_components() call.
+_default_registry_cache: Optional[Dict[str, "ComponentDefinition"]] = None
+
+
+def _load_default_registry() -> Dict[str, "ComponentDefinition"]:
+    """Load (and cache) the bundled registry.json into a name->definition map."""
+    global _default_registry_cache
+    if _default_registry_cache is None:
+        reg = ComponentRegistry(registry_path=_DEFAULT_REGISTRY_PATH)
+        _default_registry_cache = reg._components
+    return _default_registry_cache
 
 
 class ComponentRegistry:
@@ -77,10 +101,12 @@ class ComponentRegistry:
     def __init__(self, registry_path: Optional[Path] = None) -> None:
         self._components: Dict[str, ComponentDefinition] = {}
 
-        if registry_path:
-            self._load_from_file(registry_path)
+        if registry_path is not None:
+            self._load_from_file(Path(registry_path))
         else:
-            self._register_default_components()
+            # No explicit path: use the bundled registry.json (cached). Copy the
+            # map so register_component() on this instance can't mutate the cache.
+            self._components = dict(_load_default_registry())
 
     def _load_from_file(self, path: Path) -> None:
         """Load component definitions from a JSON registry file."""
@@ -138,323 +164,6 @@ class ComponentRegistry:
             depends_on=data.get("dependsOn"),
         )
         self._components[name] = component
-
-    def _register_default_components(self) -> None:
-        """Register built-in components."""
-        # Page component
-        self.register_component(
-            ComponentDefinition(
-                name="page",
-                description="Root page component",
-                category="layout",
-                status="stable",
-                attributes=[
-                    AttributeDefinition(
-                        name="title",
-                        type=AttributeType.STRING,
-                        required=True,
-                        description="Page title",
-                    ),
-                    AttributeDefinition(
-                        name="lang",
-                        type=AttributeType.STRING,
-                        default="en",
-                        description="HTML language",
-                    ),
-                    AttributeDefinition(
-                        name="charset",
-                        type=AttributeType.STRING,
-                        default="utf-8",
-                        description="Document charset",
-                    ),
-                    AttributeDefinition(
-                        name="description",
-                        type=AttributeType.STRING,
-                        description="Meta description",
-                    ),
-                    AttributeDefinition(
-                        name="theme",
-                        type=AttributeType.STRING,
-                        description="Theme name",
-                    ),
-                    AttributeDefinition(
-                        name="head",
-                        type=AttributeType.STRING,
-                        description="Additional head content",
-                    ),
-                    AttributeDefinition(
-                        name="scripts",
-                        type=AttributeType.ARRAY,
-                        description="Additional scripts",
-                    ),
-                    AttributeDefinition(
-                        name="styles",
-                        type=AttributeType.ARRAY,
-                        description="Additional styles",
-                    ),
-                ],
-                slots=[
-                    SlotDefinition(
-                        name="default", required=True, description="Page content"
-                    ),
-                ],
-            )
-        )
-
-        # Layout component
-        self.register_component(
-            ComponentDefinition(
-                name="layout",
-                description="Main layout container",
-                category="layout",
-                status="stable",
-                attributes=[
-                    AttributeDefinition(
-                        name="variant",
-                        type=AttributeType.ENUM,
-                        default="default",
-                        enum_values=["default", "sidebar-left", "sidebar-right", "holy-grail"],
-                    ),
-                    AttributeDefinition(
-                        name="maxWidth",
-                        type=AttributeType.ENUM,
-                        default="lg",
-                        enum_values=["sm", "md", "lg", "xl", "full"],
-                    ),
-                    AttributeDefinition(
-                        name="padding",
-                        type=AttributeType.GENERIC_SIZE,
-                        default="md",
-                    ),
-                    AttributeDefinition(
-                        name="gap",
-                        type=AttributeType.GENERIC_SIZE,
-                        default="md",
-                    ),
-                ],
-                slots=[
-                    SlotDefinition(name="default", required=True),
-                    SlotDefinition(name="header"),
-                    SlotDefinition(name="footer"),
-                    SlotDefinition(name="sidebar"),
-                ],
-            )
-        )
-
-        # Grid component
-        self.register_component(
-            ComponentDefinition(
-                name="grid",
-                description="CSS Grid layout",
-                category="layout",
-                status="stable",
-                attributes=[
-                    AttributeDefinition(
-                        name="cols",
-                        type=AttributeType.NUMBER,
-                        default=12,
-                    ),
-                    AttributeDefinition(
-                        name="rows",
-                        type=AttributeType.NUMBER,
-                    ),
-                    AttributeDefinition(
-                        name="gap",
-                        type=AttributeType.GENERIC_SIZE,
-                        default="md",
-                    ),
-                    AttributeDefinition(
-                        name="gapX",
-                        type=AttributeType.GENERIC_SIZE,
-                    ),
-                    AttributeDefinition(
-                        name="gapY",
-                        type=AttributeType.GENERIC_SIZE,
-                    ),
-                    AttributeDefinition(
-                        name="align",
-                        type=AttributeType.ENUM,
-                        default="stretch",
-                        enum_values=["start", "center", "end", "stretch"],
-                    ),
-                    AttributeDefinition(
-                        name="justify",
-                        type=AttributeType.ENUM,
-                        default="stretch",
-                        enum_values=["start", "center", "end", "stretch", "space-between", "space-around"],
-                    ),
-                    AttributeDefinition(
-                        name="flow",
-                        type=AttributeType.ENUM,
-                        default="row",
-                        enum_values=["row", "column", "row-dense", "column-dense"],
-                    ),
-                ],
-                slots=[
-                    SlotDefinition(name="default", required=True),
-                ],
-            )
-        )
-
-        # Stack component
-        self.register_component(
-            ComponentDefinition(
-                name="stack",
-                description="Flexbox stack layout",
-                category="layout",
-                status="stable",
-                attributes=[
-                    AttributeDefinition(
-                        name="direction",
-                        type=AttributeType.ENUM,
-                        default="vertical",
-                        enum_values=["vertical", "horizontal"],
-                    ),
-                    AttributeDefinition(
-                        name="gap",
-                        type=AttributeType.GENERIC_SIZE,
-                        default="md",
-                    ),
-                    AttributeDefinition(
-                        name="align",
-                        type=AttributeType.ENUM,
-                        default="stretch",
-                        enum_values=["start", "center", "end", "stretch", "baseline"],
-                    ),
-                    AttributeDefinition(
-                        name="justify",
-                        type=AttributeType.ENUM,
-                        default="start",
-                        enum_values=["start", "center", "end", "space-between", "space-around", "space-evenly"],
-                    ),
-                    AttributeDefinition(
-                        name="wrap",
-                        type=AttributeType.BOOLEAN,
-                        default=False,
-                    ),
-                    AttributeDefinition(
-                        name="reverse",
-                        type=AttributeType.BOOLEAN,
-                        default=False,
-                    ),
-                    AttributeDefinition(
-                        name="dividers",
-                        type=AttributeType.BOOLEAN,
-                        default=False,
-                    ),
-                ],
-                slots=[
-                    SlotDefinition(name="default", required=True),
-                ],
-            )
-        )
-
-        # Card component
-        self.register_component(
-            ComponentDefinition(
-                name="card",
-                description="Content container with optional header and footer",
-                category="data-display",
-                status="stable",
-                attributes=[
-                    AttributeDefinition(
-                        name="variant",
-                        type=AttributeType.ENUM,
-                        default="default",
-                        enum_values=["default", "outlined", "elevated", "filled"],
-                        description="Visual style of the card",
-                    ),
-                    AttributeDefinition(
-                        name="padding",
-                        type=AttributeType.GENERIC_SIZE,
-                        default="md",
-                        description="Internal padding",
-                    ),
-                    AttributeDefinition(
-                        name="interactive",
-                        type=AttributeType.BOOLEAN,
-                        default=False,
-                        description="Whether card is interactive/clickable",
-                    ),
-                    AttributeDefinition(
-                        name="href",
-                        type=AttributeType.STRING,
-                        description="Link destination for clickable card",
-                    ),
-                ],
-                slots=[
-                    SlotDefinition(name="default", required=True, description="Card body content"),
-                    SlotDefinition(name="header", description="Card header content"),
-                    SlotDefinition(name="footer", description="Card footer content"),
-                    SlotDefinition(name="media", description="Card media/image content"),
-                ],
-            )
-        )
-
-        # Button component
-        self.register_component(
-            ComponentDefinition(
-                name="button",
-                description="Interactive button for user actions",
-                category="actions",
-                status="stable",
-                attributes=[
-                    AttributeDefinition(
-                        name="variant",
-                        type=AttributeType.GENERIC_COLOR,
-                        default="primary",
-                        description="Visual style of the button",
-                    ),
-                    AttributeDefinition(
-                        name="size",
-                        type=AttributeType.GENERIC_SIZE,
-                        default="md",
-                        description="Size of the button",
-                    ),
-                    AttributeDefinition(
-                        name="type",
-                        type=AttributeType.ENUM,
-                        default="button",
-                        enum_values=["button", "submit", "reset"],
-                        description="HTML button type",
-                    ),
-                    AttributeDefinition(
-                        name="disabled",
-                        type=AttributeType.BOOLEAN,
-                        default=False,
-                        description="Whether button is disabled",
-                    ),
-                    AttributeDefinition(
-                        name="loading",
-                        type=AttributeType.BOOLEAN,
-                        default=False,
-                        description="Whether to show loading state",
-                    ),
-                    AttributeDefinition(
-                        name="icon",
-                        type=AttributeType.STRING,
-                        description="Icon name to display",
-                    ),
-                    AttributeDefinition(
-                        name="iconPosition",
-                        type=AttributeType.ENUM,
-                        default="before",
-                        enum_values=["before", "after"],
-                        description="Position of icon",
-                    ),
-                    AttributeDefinition(
-                        name="fullWidth",
-                        type=AttributeType.BOOLEAN,
-                        default=False,
-                        description="Full width button",
-                    ),
-                ],
-                slots=[
-                    SlotDefinition(name="default", required=True, description="Button label"),
-                ],
-                depends_on=["icon"],
-            )
-        )
 
     def register_component(self, component: ComponentDefinition) -> None:
         """Register a new component."""

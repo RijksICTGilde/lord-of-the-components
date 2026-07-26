@@ -747,15 +747,15 @@ class TestPreprocessEdgeCases:
         assert '"class": "extra-class"' in result
 
     def test_multiple_components_processed(self, extension):
-        source = '<c-button variant="primary">A</c-button><c-button variant="secondary">B</c-button>'
+        source = '<c-button type="primary">A</c-button><c-button type="secondary">B</c-button>'
         result = extension.preprocess(source, "test.html")
         assert result.count("components/button.html.j2") == 2
 
     def test_preprocessor_state_resets_between_calls(self, extension):
         # First call
-        extension.preprocess('<c-button variant="primary">A</c-button>', "test1.html")
+        extension.preprocess('<c-button type="primary">A</c-button>', "test1.html")
         # Second call should start fresh
-        result = extension.preprocess('<c-button variant="secondary">B</c-button>', "test2.html")
+        result = extension.preprocess('<c-button type="secondary">B</c-button>', "test2.html")
         assert "components/button.html.j2" in result
 
 
