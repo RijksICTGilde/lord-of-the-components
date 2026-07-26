@@ -12,7 +12,8 @@ export const buttonImpl = defineImplementation({
     element: "nldd-button",
     isRoot: true,
     attributes: [
-      { prop: "type", attr: "variant", type: "value", conditional: true },
+      // LOTC's semantic button type -> NLDD variant (see button.ts Variant union).
+      { prop: "type", attr: "variant", type: "value", conditional: true, valueMap: "variant" },
       { prop: "size", attr: "size", type: "value", conditional: true },
       { prop: "label", attr: "text", type: "value", conditional: true },
       { prop: "html-type", attr: "type", type: "value", conditional: true },
@@ -21,6 +22,17 @@ export const buttonImpl = defineImplementation({
       { prop: "target", attr: "target", type: "value", conditional: true },
     ],
     text: { content: true },
+  },
+  valueMaps: {
+    variant: {
+      primary: "primary",
+      secondary: "secondary",
+      tertiary: "neutral-transparent",
+      quaternary: "neutral-base",
+      warning: "destructive",
+      subtle: "neutral-tinted",
+      "warning-subtle": "critical-tinted",
+    },
   },
   mixins: { genericAttributes: true },
 });

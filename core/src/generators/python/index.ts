@@ -107,6 +107,12 @@ export const PYTHON_BACKEND = new Set<string>([
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+/** HTML void elements never get a closing tag. */
+const VOID_ELEMENTS = new Set([
+  "area", "base", "br", "col", "embed", "hr", "img", "input",
+  "link", "meta", "param", "source", "track", "wbr",
+]);
+
 /** snake_case a prop name for use as a Python identifier. */
 function pyName(prop: string): string {
   return prop.replace(/-/g, "_");
@@ -334,8 +340,10 @@ export class PythonGenerator {
       this.append(lines, ind, expr);
     }
 
-    // closing tag
-    this.append(lines, ind, tagLiteral ? pyStr(`</${tagLiteral}>`) : `'</' + ${tagExpr} + '>'`);
+    // closing tag (void elements have none)
+    if (!(tagLiteral && VOID_ELEMENTS.has(tagLiteral))) {
+      this.append(lines, ind, tagLiteral ? pyStr(`</${tagLiteral}>`) : `'</' + ${tagExpr} + '>'`);
+    }
   }
 
   private emitClassBuild(

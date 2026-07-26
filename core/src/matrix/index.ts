@@ -78,7 +78,8 @@ export interface AttrMapping {
 }
 
 export interface ElementNode {
-  element: string | { prop: string; default: string };
+  element?: string | { prop: string; default: string };
+  repeat?: { binding: string; as: string };
   classes?: ClassRule[];
   attributes?: AttrMapping[];
   when?: Condition;
@@ -145,7 +146,7 @@ function collectUsedProps(node: ElementNode, used: Set<string>): void {
   for (const style of node.styles ?? []) {
     used.add(style.prop);
   }
-  if (typeof node.element !== "string") used.add(node.element.prop);
+  if (node.element && typeof node.element !== "string") used.add(node.element.prop);
   if (node.when) collectConditionProps(node.when, used);
   for (const child of node.children ?? []) collectUsedProps(child, used);
   for (const child of node.elseChildren ?? []) collectUsedProps(child, used);

@@ -63,6 +63,15 @@ import { label } from "./label.def.js";
 import { strong } from "./strong.def.js";
 import { em } from "./em.def.js";
 import { alert } from "./alert.def.js";
+// Basic HTML elements (F9, batch D)
+import { div } from "./div.def.js";
+import { span } from "./span.def.js";
+import { small } from "./small.def.js";
+import { b } from "./b.def.js";
+import { i } from "./i.def.js";
+import { code } from "./code.def.js";
+import { blockquote } from "./blockquote.def.js";
+import { hr } from "./hr.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -88,6 +97,14 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   strong,
   em,
   alert,
+  div,
+  span,
+  small,
+  b,
+  i,
+  code,
+  blockquote,
+  hr,
 };
 
 /**

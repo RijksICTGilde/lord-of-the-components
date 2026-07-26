@@ -30,11 +30,7 @@ def test_raw_html_in_prop_value_is_escaped(render):
     assert "&lt;img" in html
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="The generator emits closing tags on void elements (e.g. <img></img>); "
-    "the new renderer omits them.",
-)
 def test_void_elements_have_no_closing_tag(render):
+    # FIXED (F9): the generators omit closing tags for void elements.
     html = render('<c-card image="/img.png" title="T">Body</c-card>')
     assert "</img>" not in html

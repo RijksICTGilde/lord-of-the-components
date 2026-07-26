@@ -5,16 +5,22 @@
 | component | category | props | events | bindings | rvo | nldd |
 |---|---|---|---|---|---|---|
 | alert | feedback | 6 | 0 | 0 | ✅ | — |
+| b | html | 1 | 0 | 0 | ✅ | — |
+| blockquote | html | 1 | 0 | 0 | ✅ | — |
 | breadcrumbs | navigation | 3 | 0 | 0 | ✅ | — |
 | button | actions | 15 | 3 | 0 | ✅ | — |
 | card | data-display | 15 | 1 | 0 | ✅ | — |
+| code | html | 1 | 0 | 0 | ✅ | — |
 | data-list | data-display | 1 | 0 | 0 | ✅ | — |
+| div | html | 1 | 0 | 0 | ✅ | — |
 | em | typography | 2 | 0 | 0 | ✅ | — |
 | footer | layout | 3 | 0 | 0 | ✅ | — |
 | grid | layout | 4 | 0 | 0 | ✅ | — |
 | header | layout | 4 | 0 | 0 | ✅ | — |
 | heading | typography | 3 | 0 | 0 | ✅ | — |
 | hero | layout | 7 | 0 | 0 | ✅ | — |
+| hr | html | 1 | 0 | 0 | ✅ | — |
+| i | html | 1 | 0 | 0 | ✅ | — |
 | icon | visual | 5 | 0 | 0 | ✅ | — |
 | label | typography | 6 | 0 | 0 | ✅ | — |
 | layout-column | layout | 2 | 0 | 0 | ✅ | — |
@@ -24,6 +30,8 @@
 | max-width-layout | layout | 4 | 0 | 0 | ✅ | — |
 | menu | navigation | 4 | 1 | 1 | ✅ | — |
 | paragraph | typography | 5 | 0 | 0 | ✅ | — |
+| small | html | 1 | 0 | 0 | ✅ | — |
+| span | html | 1 | 0 | 0 | ✅ | — |
 | strong | typography | 2 | 0 | 0 | ✅ | — |
 
 ## alert  (feedback)
@@ -37,6 +45,28 @@ Status alert with icon, heading, and optional close button
 | padding | enum | xs sm md lg xl 2xl | md |  |
 | max-width | enum | sm md lg |  |  |
 | closable | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## b  (html)
+
+Stylistically bold text
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## blockquote  (html)
+
+Block quotation
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
 | class | string | — |  |  |
 
 events: —    bindings: —
@@ -105,9 +135,31 @@ Content container with optional image and link
 events: @click    bindings: —
 content: yes
 
+## code  (html)
+
+Inline code
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
 ## data-list  (data-display)
 
 Key-value pair display using a definition list
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## div  (html)
+
+Generic block container
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
@@ -194,6 +246,28 @@ Large hero/banner section with image, title, and content
 | image-alt | string | — |  |  |
 | size | enum | sm md lg | md |  |
 | overlay | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## hr  (html)
+
+Thematic break (horizontal rule)
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: no
+
+## i  (html)
+
+Stylistically italic text
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
 | class | string | — |  |  |
 
 events: —    bindings: —
@@ -339,6 +413,28 @@ Text paragraph with color, size, and spacing options
 | color | enum | logoblauw wit zwart grijs-500 grijs-900 | grijs-900 |  |
 | size | enum | sm md lg | md |  |
 | no-spacing | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## small  (html)
+
+Small print / de-emphasized text
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## span  (html)
+
+Generic inline container
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
 | class | string | — |  |  |
 
 events: —    bindings: —

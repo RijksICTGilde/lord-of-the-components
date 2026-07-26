@@ -1363,6 +1363,138 @@
         "allowed": true,
         "description": "Alert content (can include HTML/components)"
       }
+    },
+    {
+      "name": "div",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Generic block container",
+      "category": "html",
+      "backend": "jinja",
+      "content": {
+        "allowed": true,
+        "description": "Inner content."
+      }
+    },
+    {
+      "name": "span",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Generic inline container",
+      "category": "html",
+      "backend": "jinja",
+      "content": {
+        "allowed": true,
+        "description": "Inner content."
+      }
+    },
+    {
+      "name": "small",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Small print / de-emphasized text",
+      "category": "html",
+      "backend": "jinja",
+      "content": {
+        "allowed": true,
+        "description": "Inner content."
+      }
+    },
+    {
+      "name": "b",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Stylistically bold text",
+      "category": "html",
+      "backend": "jinja",
+      "content": {
+        "allowed": true,
+        "description": "Inner content."
+      }
+    },
+    {
+      "name": "i",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Stylistically italic text",
+      "category": "html",
+      "backend": "jinja",
+      "content": {
+        "allowed": true,
+        "description": "Inner content."
+      }
+    },
+    {
+      "name": "code",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Inline code",
+      "category": "html",
+      "backend": "jinja",
+      "content": {
+        "allowed": true,
+        "description": "Inner content."
+      }
+    },
+    {
+      "name": "blockquote",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Block quotation",
+      "category": "html",
+      "backend": "jinja",
+      "content": {
+        "allowed": true,
+        "description": "Inner content."
+      }
+    },
+    {
+      "name": "hr",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Thematic break (horizontal rule)",
+      "category": "html",
+      "backend": "jinja"
     }
   ]
 }

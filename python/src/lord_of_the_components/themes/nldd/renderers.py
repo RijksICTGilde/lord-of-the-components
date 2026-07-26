@@ -13,6 +13,16 @@ from lord_of_the_components.runtime import (
     render_utility,
 )
 
+_BUTTON_VARIANT_MAP = {
+    'primary': 'primary',
+    'secondary': 'secondary',
+    'tertiary': 'neutral-transparent',
+    'quaternary': 'neutral-base',
+    'warning': 'destructive',
+    'subtle': 'neutral-tinted',
+    'warning-subtle': 'critical-tinted',
+}
+
 def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', full_width=False, label='', aria_label='', disabled=False, loading=False, active=False, html_type='button', href='', target='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
@@ -23,7 +33,7 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
     parts.append(' data-lotc-component="button"')
     if type:
         parts.append(' variant="')
-        parts.append(esc(type))
+        parts.append(esc(_BUTTON_VARIANT_MAP.get(type, type)))
         parts.append('"')
     if size:
         parts.append(' size="')

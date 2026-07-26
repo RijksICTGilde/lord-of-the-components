@@ -67,6 +67,27 @@
 
     <!-- Navigation -->
 
+    <c-heading type="h2" label="Breadcrumbs"></c-heading>
+    <c-paragraph label="Breadcrumb navigation trail"></c-paragraph>
+    <c-paragraph label="Size: sm"></c-paragraph>
+    <c-breadcrumbs size="sm" aria-label="Breadcrumbs example">
+        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
+    </c-breadcrumbs>
+    <c-paragraph label="Size: md"></c-paragraph>
+    <c-breadcrumbs size="md" aria-label="Breadcrumbs example">
+        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
+    </c-breadcrumbs>
+    <c-paragraph label="Size: lg"></c-paragraph>
+    <c-breadcrumbs size="lg" aria-label="Breadcrumbs example">
+        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
+    </c-breadcrumbs>
+
     <c-heading type="h2" label="Menu"></c-heading>
     <c-paragraph label="Navigation menu with items"></c-paragraph>
     <c-paragraph label="Menu type: horizontal"></c-paragraph>
@@ -88,27 +109,6 @@
         <c-menu-item label="Enabled" href="#"></c-menu-item>
         <c-menu-item label="Disabled" href="#" disabled></c-menu-item>
     </c-menu>
-
-    <c-heading type="h2" label="Breadcrumbs"></c-heading>
-    <c-paragraph label="Breadcrumb navigation trail"></c-paragraph>
-    <c-paragraph label="Size: sm"></c-paragraph>
-    <c-breadcrumbs size="sm" aria-label="Breadcrumbs example">
-        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
-        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
-        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
-    </c-breadcrumbs>
-    <c-paragraph label="Size: md"></c-paragraph>
-    <c-breadcrumbs size="md" aria-label="Breadcrumbs example">
-        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
-        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
-        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
-    </c-breadcrumbs>
-    <c-paragraph label="Size: lg"></c-paragraph>
-    <c-breadcrumbs size="lg" aria-label="Breadcrumbs example">
-        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
-        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
-        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
-    </c-breadcrumbs>
 
     <!-- Data Display -->
 
@@ -197,21 +197,17 @@
     <c-heading type="h5" label="Heading h5"></c-heading>
     <c-heading type="h6" label="Heading h6"></c-heading>
 
-    <c-heading type="h2" label="Paragraph"></c-heading>
-    <c-paragraph label="Text paragraph with color, size, and spacing options"></c-paragraph>
-    <c-heading type="h3" label="Paragraph colors"></c-heading>
-    <c-paragraph color="logoblauw" label="Color: logoblauw"></c-paragraph>
-    <c-paragraph color="wit" label="Color: wit"></c-paragraph>
-    <c-paragraph color="zwart" label="Color: zwart"></c-paragraph>
-    <c-paragraph color="grijs-500" label="Color: grijs-500"></c-paragraph>
-    <c-paragraph color="grijs-900" label="Color: grijs-900"></c-paragraph>
-    <c-heading type="h3" label="Paragraph sizes"></c-heading>
-    <c-paragraph size="sm" label="Size: sm"></c-paragraph>
-    <c-paragraph size="md" label="Size: md"></c-paragraph>
-    <c-paragraph size="lg" label="Size: lg"></c-paragraph>
-    <c-heading type="h3" label="No spacing"></c-heading>
-    <c-paragraph no-spacing label="This paragraph has no bottom spacing."></c-paragraph>
-    <c-paragraph label="This follows immediately."></c-paragraph>
+    <c-heading type="h2" label="Label"></c-heading>
+    <c-paragraph label="Form field label with size and type variants"></c-paragraph>
+    <c-layout-flow gap="sm">
+        <c-label label="Label (default)" type="default"></c-label>
+        <c-label label="Label (optional)" type="optional"></c-label>
+        <c-label label="Label (required)" type="required"></c-label>
+    </c-layout-flow>
+    <c-layout-flow gap="sm">
+        <c-label label="Size: sm" size="sm"></c-label>
+        <c-label label="Size: md" size="md"></c-label>
+    </c-layout-flow>
 
     <c-heading type="h2" label="Link"></c-heading>
     <c-paragraph label="Styled anchor link with optional icon"></c-paragraph>
@@ -242,17 +238,21 @@
         <c-link href="#" label="no-underline" no-underline></c-link>
     </c-layout-flow>
 
-    <c-heading type="h2" label="Label"></c-heading>
-    <c-paragraph label="Form field label with size and type variants"></c-paragraph>
-    <c-layout-flow gap="sm">
-        <c-label label="Label (default)" type="default"></c-label>
-        <c-label label="Label (optional)" type="optional"></c-label>
-        <c-label label="Label (required)" type="required"></c-label>
-    </c-layout-flow>
-    <c-layout-flow gap="sm">
-        <c-label label="Size: sm" size="sm"></c-label>
-        <c-label label="Size: md" size="md"></c-label>
-    </c-layout-flow>
+    <c-heading type="h2" label="Paragraph"></c-heading>
+    <c-paragraph label="Text paragraph with color, size, and spacing options"></c-paragraph>
+    <c-heading type="h3" label="Paragraph colors"></c-heading>
+    <c-paragraph color="logoblauw" label="Color: logoblauw"></c-paragraph>
+    <c-paragraph color="wit" label="Color: wit"></c-paragraph>
+    <c-paragraph color="zwart" label="Color: zwart"></c-paragraph>
+    <c-paragraph color="grijs-500" label="Color: grijs-500"></c-paragraph>
+    <c-paragraph color="grijs-900" label="Color: grijs-900"></c-paragraph>
+    <c-heading type="h3" label="Paragraph sizes"></c-heading>
+    <c-paragraph size="sm" label="Size: sm"></c-paragraph>
+    <c-paragraph size="md" label="Size: md"></c-paragraph>
+    <c-paragraph size="lg" label="Size: lg"></c-paragraph>
+    <c-heading type="h3" label="No spacing"></c-heading>
+    <c-paragraph no-spacing label="This paragraph has no bottom spacing."></c-paragraph>
+    <c-paragraph label="This follows immediately."></c-paragraph>
 
 </c-layout-flow>
 </c-max-width-layout>
