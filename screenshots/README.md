@@ -21,21 +21,16 @@ byte-identical (normalized) to the golden contract.
 | `menu-variants.png` | menubar |
 | `layout-grid-variants.png` | grid / layout components |
 
-## NLDD theme not shown
-
-The NLDD theme renders Lit web components (`<nldd-button>`, `<nldd-title>`, …)
-whose styling lives in client-side JavaScript (`@nldd/design-system`). That
-bundle is not installed yet (F6 / T6.5 — webpack per theme), so an NLDD
-screenshot would show unstyled, un-upgraded custom elements. The NLDD HTML
-structure is verified instead by `python/tests/nldd/`.
-
-Regenerate: start `python tests/visual/serve.py --port 5599 &`, then a Playwright
-script that screenshots each `http://localhost:5599/<fixture>.html`.
-
-## NLDD theme (now available)
+## NLDD theme
 
 `nldd-theme.png` shows the **NLDD theme** rendered in a real browser: the same
 `<c-*>` definitions render as NLDD Lit web components (`<nldd-button>`,
 `<nldd-title>`, `<nldd-icon>`, …), styled by the `@nldd/design-system` bundle
-(`npm run build:fe:nldd`). The icon set differs (house/star/gear are NLDD icons)
-— see the "semantic aliasing" phase for making icon/color names theme-agnostic.
+(`npm run build:fe:nldd`, the nldd side of T6.5). The icon set differs
+(house/star/gear are NLDD icons) — see the "semantic aliasing" phase for making
+icon/color names theme-agnostic. The NLDD HTML structure is also verified by
+`python/tests/nldd/`.
+
+Regenerate the RVO shots: start `python tests/visual/serve.py --port 5599 &`,
+then a Playwright script that screenshots each
+`http://localhost:5599/<fixture>.html`.
