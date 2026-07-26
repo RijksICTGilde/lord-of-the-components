@@ -177,7 +177,7 @@ class TestPageContent:
     def test_nested_components(self, render):
         html = render(
             '<c-page title="Test">'
-            '<c-heading type="h1" name="Welcome"/>'
+            '<c-heading type="h1" label="Welcome"/>'
             "</c-page>"
         )
         assert "Welcome" in html
@@ -186,8 +186,8 @@ class TestPageContent:
     def test_multiple_nested_components(self, render):
         html = render(
             '<c-page title="Test">'
-            '<c-heading type="h1" name="Title"/>'
-            '<c-paragraph name="Some text"/>'
+            '<c-heading type="h1" label="Title"/>'
+            '<c-paragraph label="Some text"/>'
             "</c-page>"
         )
         assert "Title" in html

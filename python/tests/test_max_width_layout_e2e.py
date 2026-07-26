@@ -118,7 +118,7 @@ class TestMaxWidthLayoutNesting:
     def test_with_nested_button(self, render):
         html = render(
             '<c-max-width-layout size="md">'
-            '<c-button name="Click me"/>'
+            '<c-button label="Click me"/>'
             '</c-max-width-layout>'
         )
         assert "rvo-max-width-layout" in html

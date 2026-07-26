@@ -22,7 +22,7 @@ class TestBreadcrumbsBasic:
     def test_renders_ol_element(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -32,7 +32,7 @@ class TestBreadcrumbsBasic:
     def test_base_class(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumbs" in html
@@ -40,7 +40,7 @@ class TestBreadcrumbsBasic:
     def test_data_lotc_component_attribute(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert 'data-lotc-component="breadcrumbs"' in html
@@ -64,7 +64,7 @@ class TestBreadcrumbsSize:
     def test_default_size_sm(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumbs--sm" in html
@@ -72,7 +72,7 @@ class TestBreadcrumbsSize:
     def test_size_md(self, render):
         html = render(
             '<c-breadcrumbs size="md">'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumbs--md" in html
@@ -80,7 +80,7 @@ class TestBreadcrumbsSize:
     def test_size_lg(self, render):
         html = render(
             '<c-breadcrumbs size="lg">'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumbs--lg" in html
@@ -97,7 +97,7 @@ class TestBreadcrumbsAccessibility:
     def test_aria_label(self, render):
         html = render(
             '<c-breadcrumbs aria-label="Broodkruimelpad">'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert 'aria-label="Broodkruimelpad"' in html
@@ -105,7 +105,7 @@ class TestBreadcrumbsAccessibility:
     def test_no_aria_label_by_default(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -123,7 +123,7 @@ class TestBreadcrumbsCustomClass:
     def test_custom_class_appended(self, render):
         html = render(
             '<c-breadcrumbs class="my-breadcrumbs">'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "my-breadcrumbs" in html
@@ -132,7 +132,7 @@ class TestBreadcrumbsCustomClass:
     def test_custom_class_does_not_replace_base(self, render):
         html = render(
             '<c-breadcrumbs class="custom">'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumbs" in html
@@ -149,7 +149,7 @@ class TestBreadcrumbsItemBasic:
     def test_renders_li_element(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -158,7 +158,7 @@ class TestBreadcrumbsItemBasic:
     def test_item_base_class(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumbs-item" in html
@@ -166,7 +166,7 @@ class TestBreadcrumbsItemBasic:
     def test_data_lotc_component_breadcrumbs_item(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert 'data-lotc-component="breadcrumbs-item"' in html
@@ -174,7 +174,7 @@ class TestBreadcrumbsItemBasic:
     def test_item_name_displayed(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Products" href="/products"/>'
+            '<c-breadcrumbs-item label="Products" href="/products"/>'
             '</c-breadcrumbs>'
         )
         assert "Products" in html
@@ -191,7 +191,7 @@ class TestBreadcrumbsItemLink:
     def test_href_produces_anchor(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -200,7 +200,7 @@ class TestBreadcrumbsItemLink:
     def test_link_has_rvo_link_class(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-link" in html
@@ -208,7 +208,7 @@ class TestBreadcrumbsItemLink:
     def test_link_has_no_underline_class(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-link--no-underline" in html
@@ -216,7 +216,7 @@ class TestBreadcrumbsItemLink:
     def test_no_href_renders_span(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Current page"/>'
+            '<c-breadcrumbs-item label="Current page"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -226,7 +226,7 @@ class TestBreadcrumbsItemLink:
     def test_no_href_does_not_render_anchor(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Current page"/>'
+            '<c-breadcrumbs-item label="Current page"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -251,7 +251,7 @@ class TestBreadcrumbsItemDivider:
     def test_divider_icon_rendered(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-icon-delta-naar-rechts" in html
@@ -259,7 +259,7 @@ class TestBreadcrumbsItemDivider:
     def test_divider_icon_color(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-icon--hemelblauw" in html
@@ -267,7 +267,7 @@ class TestBreadcrumbsItemDivider:
     def test_divider_icon_size(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-icon--xs" in html
@@ -275,7 +275,7 @@ class TestBreadcrumbsItemDivider:
     def test_divider_icon_hidden_from_accessibility(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert 'aria-hidden="true"' in html
@@ -292,9 +292,9 @@ class TestBreadcrumbsMultipleItems:
     def test_multiple_items_rendered(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
-            '<c-breadcrumbs-item name="Products" href="/products"/>'
-            '<c-breadcrumbs-item name="Widget A"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Products" href="/products"/>'
+            '<c-breadcrumbs-item label="Widget A"/>'
             '</c-breadcrumbs>'
         )
         assert "Home" in html
@@ -304,8 +304,8 @@ class TestBreadcrumbsMultipleItems:
     def test_multiple_items_each_in_li(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
-            '<c-breadcrumbs-item name="Products" href="/products"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Products" href="/products"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -315,8 +315,8 @@ class TestBreadcrumbsMultipleItems:
     def test_last_item_is_current_page(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
-            '<c-breadcrumbs-item name="Current"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Current"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumb-current-page" in html
@@ -325,9 +325,9 @@ class TestBreadcrumbsMultipleItems:
     def test_links_and_current_page_mixed(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
-            '<c-breadcrumbs-item name="Products" href="/products"/>'
-            '<c-breadcrumbs-item name="Details"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Products" href="/products"/>'
+            '<c-breadcrumbs-item label="Details"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -348,7 +348,7 @@ class TestBreadcrumbsItemCustomClass:
     def test_custom_class_on_item(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/" class="special-crumb"/>'
+            '<c-breadcrumbs-item label="Home" href="/" class="special-crumb"/>'
             '</c-breadcrumbs>'
         )
         assert "special-crumb" in html
@@ -366,7 +366,7 @@ class TestBreadcrumbsAttributes:
     def test_data_attribute_on_breadcrumbs(self, render):
         html = render(
             '<c-breadcrumbs data-testid="nav-breadcrumbs">'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
         )
         assert 'data-testid="nav-breadcrumbs"' in html
@@ -374,7 +374,7 @@ class TestBreadcrumbsAttributes:
     def test_data_attribute_on_item(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/" data-id="crumb-home"/>'
+            '<c-breadcrumbs-item label="Home" href="/" data-id="crumb-home"/>'
             '</c-breadcrumbs>'
         )
         assert 'data-id="crumb-home"' in html
@@ -392,8 +392,8 @@ class TestBreadcrumbsNesting:
         html = render(
             '<c-header text="My Site">'
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
-            '<c-breadcrumbs-item name="Page"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Page"/>'
             '</c-breadcrumbs>'
             '</c-header>'
         )
@@ -405,7 +405,7 @@ class TestBreadcrumbsNesting:
         html = render(
             '<c-layout-flow>'
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
             '</c-breadcrumbs>'
             '</c-layout-flow>'
         )
@@ -424,10 +424,10 @@ class TestBreadcrumbsCombined:
     def test_full_breadcrumb_trail(self, render):
         html = render(
             '<c-breadcrumbs size="md" aria-label="Broodkruimelpad" class="site-crumbs">'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
-            '<c-breadcrumbs-item name="Products" href="/products"/>'
-            '<c-breadcrumbs-item name="Category" href="/products/cat"/>'
-            '<c-breadcrumbs-item name="Widget A"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Products" href="/products"/>'
+            '<c-breadcrumbs-item label="Category" href="/products/cat"/>'
+            '<c-breadcrumbs-item label="Widget A"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)
@@ -443,7 +443,7 @@ class TestBreadcrumbsCombined:
     def test_single_item_breadcrumbs(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home"/>'
+            '<c-breadcrumbs-item label="Home"/>'
             '</c-breadcrumbs>'
         )
         assert "rvo-breadcrumbs" in html
@@ -453,8 +453,8 @@ class TestBreadcrumbsCombined:
     def test_breadcrumbs_with_data_attributes(self, render):
         html = render(
             '<c-breadcrumbs data-testid="nav">'
-            '<c-breadcrumbs-item name="Home" href="/" data-testid="crumb-1"/>'
-            '<c-breadcrumbs-item name="About" href="/about" data-testid="crumb-2"/>'
+            '<c-breadcrumbs-item label="Home" href="/" data-testid="crumb-1"/>'
+            '<c-breadcrumbs-item label="About" href="/about" data-testid="crumb-2"/>'
             '</c-breadcrumbs>'
         )
         assert 'data-testid="nav"' in html
@@ -464,8 +464,8 @@ class TestBreadcrumbsCombined:
     def test_structure_ol_contains_li(self, render):
         html = render(
             '<c-breadcrumbs>'
-            '<c-breadcrumbs-item name="Home" href="/"/>'
-            '<c-breadcrumbs-item name="Page"/>'
+            '<c-breadcrumbs-item label="Home" href="/"/>'
+            '<c-breadcrumbs-item label="Page"/>'
             '</c-breadcrumbs>'
         )
         norm = normalize_whitespace(html)

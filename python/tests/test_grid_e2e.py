@@ -261,8 +261,8 @@ class TestGridWithChildren:
     def test_grid_with_buttons(self, render):
         html = render(
             '<c-grid columns="two" gap="md">'
-            '<c-button name="Action 1"/>'
-            '<c-button name="Action 2"/>'
+            '<c-button label="Action 1"/>'
+            '<c-button label="Action 2"/>'
             '</c-grid>'
         )
         norm = normalize_whitespace(html)

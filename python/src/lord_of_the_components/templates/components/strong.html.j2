@@ -1,7 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
-{% set name = _component_context.get('name', '') %}
+{% set label = _component_context.get('label', '') %}
 {% set css_classes = ['rvo-text--bold'] %}
 {% set utility_classes = attributes.render_utility_classes(_component_context) %}
 {% if utility_classes %}
@@ -14,5 +14,5 @@
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="strong"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {{ children if children else name | safe }}
+    {{ children if children else label | safe }}
 </span>

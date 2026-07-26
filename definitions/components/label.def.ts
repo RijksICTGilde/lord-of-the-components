@@ -22,7 +22,7 @@ export const label = defineComponent({
      * Label text content
      * Can be overridden by content between tags
      */
-    [PROPS.NAME]: {
+    [PROPS.LABEL]: {
       description: "Label text (can be overridden by content between tags)",
     },
 

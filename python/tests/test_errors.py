@@ -116,6 +116,17 @@ class TestSuggestionQuality:
         with pytest.raises(ComponentError):
             extension.preprocess(source, "test.html")
 
+    def test_name_attribute_suggests_label(self, extension):
+        """`name` was renamed to `label` for visible text; hint explicitly."""
+        source = '<c-button name="Opslaan">Click</c-button>'
+
+        with pytest.raises(ComponentError) as exc_info:
+            extension.preprocess(source, "test.html")
+
+        error = exc_info.value
+        assert "Unknown attribute 'name'" in str(error)
+        assert error.suggestion == "label"
+
         # Suggestion might be None when there's no close match
         # This is acceptable behavior - don't suggest something irrelevant
 

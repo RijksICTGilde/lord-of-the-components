@@ -11,7 +11,7 @@
 {% set icon_aria_label = _component_context.get('icon-aria-label', '') %}
 {% set icon_color = _component_context.get('icon-color', '') %}
 {% set icon_size = _component_context.get('icon-size', 'md') %}
-{% set name = _component_context.get('name', '') %}
+{% set label = _component_context.get('label', '') %}
 {% set no_underline = _component_context.get('no-underline', false) %}
 {% set role = _component_context.get('role', '') %}
 {% set show_icon = _component_context.get('show-icon', 'no') %}
@@ -54,7 +54,7 @@
         class="{{ css_classes | join(' ') }}">
     </span>
     {% endif %}
-    <span>{{ children if children else name | safe }}</span>
+    <span>{{ children if children else label | safe }}</span>
     {% if show_icon == 'after' %}
     {% set css_classes = ['utrecht-icon', 'rvo-icon', 'rvo-link__icon--after'] %}
     {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}

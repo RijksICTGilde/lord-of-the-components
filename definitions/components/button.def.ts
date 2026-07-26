@@ -84,7 +84,7 @@ export const button = defineComponent({
      * Button label text
      * Can be overridden by content between tags
      */
-    [PROPS.NAME]: {
+    [PROPS.LABEL]: {
       description: "Button label text (can be overridden by content between tags)",
     },
 

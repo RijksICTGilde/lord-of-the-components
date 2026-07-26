@@ -752,28 +752,28 @@
     },
     {
       "component": "button",
-      "case_id": "name--amp",
+      "case_id": "label--amp",
       "theme": "rvo",
-      "markup": "<c-button name=\"Tom &amp; Jerry\"></c-button>",
+      "markup": "<c-button label=\"Tom &amp; Jerry\"></c-button>",
       "props": {
-        "name": "Tom & Jerry"
+        "label": "Tom & Jerry"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
       "component": "button",
-      "case_id": "name--script",
+      "case_id": "label--script",
       "theme": "rvo",
-      "markup": "<c-button name=\"<script>alert(1)</script>\"></c-button>",
+      "markup": "<c-button label=\"<script>alert(1)</script>\"></c-button>",
       "props": {
-        "name": "<script>alert(1)</script>"
+        "label": "<script>alert(1)</script>"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
@@ -1188,28 +1188,28 @@
     },
     {
       "component": "em",
-      "case_id": "name--amp",
+      "case_id": "label--amp",
       "theme": "rvo",
-      "markup": "<c-em name=\"Tom &amp; Jerry\"></c-em>",
+      "markup": "<c-em label=\"Tom &amp; Jerry\"></c-em>",
       "props": {
-        "name": "Tom & Jerry"
+        "label": "Tom & Jerry"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
       "component": "em",
-      "case_id": "name--script",
+      "case_id": "label--script",
       "theme": "rvo",
-      "markup": "<c-em name=\"<script>alert(1)</script>\"></c-em>",
+      "markup": "<c-em label=\"<script>alert(1)</script>\"></c-em>",
       "props": {
-        "name": "<script>alert(1)</script>"
+        "label": "<script>alert(1)</script>"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
@@ -1938,28 +1938,28 @@
     },
     {
       "component": "heading",
-      "case_id": "name--amp",
+      "case_id": "label--amp",
       "theme": "rvo",
-      "markup": "<c-heading name=\"Tom &amp; Jerry\"></c-heading>",
+      "markup": "<c-heading label=\"Tom &amp; Jerry\"></c-heading>",
       "props": {
-        "name": "Tom & Jerry"
+        "label": "Tom & Jerry"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
       "component": "heading",
-      "case_id": "name--script",
+      "case_id": "label--script",
       "theme": "rvo",
-      "markup": "<c-heading name=\"<script>alert(1)</script>\"></c-heading>",
+      "markup": "<c-heading label=\"<script>alert(1)</script>\"></c-heading>",
       "props": {
-        "name": "<script>alert(1)</script>"
+        "label": "<script>alert(1)</script>"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
@@ -2450,28 +2450,28 @@
     },
     {
       "component": "label",
-      "case_id": "name--amp",
+      "case_id": "label--amp",
       "theme": "rvo",
-      "markup": "<c-label name=\"Tom &amp; Jerry\"></c-label>",
+      "markup": "<c-label label=\"Tom &amp; Jerry\"></c-label>",
       "props": {
-        "name": "Tom & Jerry"
+        "label": "Tom & Jerry"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
       "component": "label",
-      "case_id": "name--script",
+      "case_id": "label--script",
       "theme": "rvo",
-      "markup": "<c-label name=\"<script>alert(1)</script>\"></c-label>",
+      "markup": "<c-label label=\"<script>alert(1)</script>\"></c-label>",
       "props": {
-        "name": "<script>alert(1)</script>"
+        "label": "<script>alert(1)</script>"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
@@ -4324,28 +4324,28 @@
     },
     {
       "component": "link",
-      "case_id": "name--amp",
+      "case_id": "label--amp",
       "theme": "rvo",
-      "markup": "<c-link name=\"Tom &amp; Jerry\"></c-link>",
+      "markup": "<c-link label=\"Tom &amp; Jerry\"></c-link>",
       "props": {
-        "name": "Tom & Jerry"
+        "label": "Tom & Jerry"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
       "component": "link",
-      "case_id": "name--script",
+      "case_id": "label--script",
       "theme": "rvo",
-      "markup": "<c-link name=\"<script>alert(1)</script>\"></c-link>",
+      "markup": "<c-link label=\"<script>alert(1)</script>\"></c-link>",
       "props": {
-        "name": "<script>alert(1)</script>"
+        "label": "<script>alert(1)</script>"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
@@ -4843,28 +4843,28 @@
     },
     {
       "component": "paragraph",
-      "case_id": "name--amp",
+      "case_id": "label--amp",
       "theme": "rvo",
-      "markup": "<c-paragraph name=\"Tom &amp; Jerry\"></c-paragraph>",
+      "markup": "<c-paragraph label=\"Tom &amp; Jerry\"></c-paragraph>",
       "props": {
-        "name": "Tom & Jerry"
+        "label": "Tom & Jerry"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
       "component": "paragraph",
-      "case_id": "name--script",
+      "case_id": "label--script",
       "theme": "rvo",
-      "markup": "<c-paragraph name=\"<script>alert(1)</script>\"></c-paragraph>",
+      "markup": "<c-paragraph label=\"<script>alert(1)</script>\"></c-paragraph>",
       "props": {
-        "name": "<script>alert(1)</script>"
+        "label": "<script>alert(1)</script>"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
@@ -4922,28 +4922,28 @@
     },
     {
       "component": "strong",
-      "case_id": "name--amp",
+      "case_id": "label--amp",
       "theme": "rvo",
-      "markup": "<c-strong name=\"Tom &amp; Jerry\"></c-strong>",
+      "markup": "<c-strong label=\"Tom &amp; Jerry\"></c-strong>",
       "props": {
-        "name": "Tom & Jerry"
+        "label": "Tom & Jerry"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
       "component": "strong",
-      "case_id": "name--script",
+      "case_id": "label--script",
       "theme": "rvo",
-      "markup": "<c-strong name=\"<script>alert(1)</script>\"></c-strong>",
+      "markup": "<c-strong label=\"<script>alert(1)</script>\"></c-strong>",
       "props": {
-        "name": "<script>alert(1)</script>"
+        "label": "<script>alert(1)</script>"
       },
       "content": null,
       "covers": [
-        "name=set"
+        "label=set"
       ]
     },
     {
