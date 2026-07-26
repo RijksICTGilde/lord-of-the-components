@@ -300,3 +300,11 @@ Cleaned up 9 unused imports and 1 unused variable across 4 test files, identifie
 - `test_validation.py`: Removed unused `pytest` and `ExpressionError` imports
 
 All 1012 tests continue to pass. Ruff F401/F841 now reports zero issues.
+
+### E-13: Add ruff linter configuration and fix all lint issues ✅
+
+Added `[tool.ruff]` and `[tool.ruff.lint]` sections to `python/pyproject.toml` with `target-version = "py39"`, `line-length = 120`, and `select = ["E", "F", "W", "I"]` (pycodestyle errors/warnings, pyflakes, isort). Previously ruff was used ad-hoc with no project configuration, so results varied depending on ruff's defaults. Fixed all issues found:
+- 2 unnecessary f-string prefixes in `test_nesting.py` (F541)
+- 7 unsorted import blocks across source and test files (I001), auto-fixed with `ruff check --fix`
+
+All 1012 tests pass, coverage 99.39%, mypy clean, ruff now reports zero issues across all source and test files.

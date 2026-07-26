@@ -112,15 +112,15 @@ class TestPageTheme:
         # Find the <body> tag - it should not have class
         body_match = re.search(r"<body([^>]*)>", norm)
         assert body_match is not None
-        assert "theme-" not in body_match.group(1)
+        assert "-theme" not in body_match.group(1)
 
     def test_theme_class_on_body(self, render):
         html = render('<c-page title="Test" theme="rvo"/>')
-        assert "theme-rvo" in html
+        assert "rvo-theme" in html
 
     def test_theme_default_class(self, render):
         html = render('<c-page title="Test" theme="default"/>')
-        assert "theme-default" in html
+        assert "default-theme" in html
 
 
 class TestPageBodyClass:
@@ -132,7 +132,7 @@ class TestPageBodyClass:
 
     def test_body_class_with_theme(self, render):
         html = render('<c-page title="Test" theme="rvo" body-class="extra-class"/>')
-        assert "theme-rvo" in html
+        assert "rvo-theme" in html
         assert "extra-class" in html
 
 
@@ -155,7 +155,7 @@ class TestPageCustomClass:
 
     def test_custom_class_combined_with_theme(self, render):
         html = render('<c-page title="Test" theme="rvo" class="custom-page"/>')
-        assert "theme-rvo" in html
+        assert "rvo-theme" in html
         assert "custom-page" in html
 
 

@@ -9,7 +9,7 @@
     - lang: HTML language attribute (default: "en")
     - charset: Document charset (default: "utf-8")
     - description: Meta description for SEO
-    - theme: Theme name for body class (theme-{value})
+    - theme: Theme name for body class ({value}-theme)
     - body-class: Additional classes for body element
     - head: Additional content for <head> section (raw HTML)
     - class: Additional CSS classes (applied to body)
@@ -24,7 +24,7 @@
 {% set custom_class = _component_context.get('class', '') %}
 {% set children = _component_context.get('content', '') %}
 {% set css_classes = [] %}
-{% if theme %}{% set css_classes = css_classes + ['theme-' ~ theme] %}{% endif %}
+{% if theme %}{% set css_classes = css_classes + [theme ~ '-theme'] %}{% endif %}
 {% if body_class %}{% set css_classes = css_classes + body_class.split() %}{% endif %}
 {% if custom_class %}{% set css_classes = css_classes + custom_class.split() %}{% endif %}
 <!DOCTYPE html>

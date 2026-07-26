@@ -4,7 +4,7 @@ import pytest
 from jinja2 import Environment
 
 from lord_of_the_components import ComponentExtension
-from lord_of_the_components.extension import ComponentError, MAX_NESTING_DEPTH
+from lord_of_the_components.extension import MAX_NESTING_DEPTH, ComponentError
 
 
 @pytest.fixture
@@ -169,7 +169,7 @@ class TestNestingDepthProtection:
         """Test that exceeding MAX_NESTING_DEPTH raises ComponentError."""
         # Build a deeply nested structure that exceeds the limit
         depth = MAX_NESTING_DEPTH + 5
-        opening_tags = "\n".join([f"<c-card>" for _ in range(depth)])
+        opening_tags = "\n".join(["<c-card>" for _ in range(depth)])
         content = "<c-button>Too deep</c-button>"
         closing_tags = "\n".join(["</c-card>" for _ in range(depth)])
         source = f"{opening_tags}\n{content}\n{closing_tags}"
@@ -184,7 +184,7 @@ class TestNestingDepthProtection:
     def test_error_message_includes_depth_info(self, extension):
         """Test that error message contains useful depth information."""
         depth = MAX_NESTING_DEPTH + 2
-        opening_tags = "\n".join([f"<c-card>" for _ in range(depth)])
+        opening_tags = "\n".join(["<c-card>" for _ in range(depth)])
         content = "<c-button>Deep</c-button>"
         closing_tags = "\n".join(["</c-card>" for _ in range(depth)])
         source = f"{opening_tags}\n{content}\n{closing_tags}"

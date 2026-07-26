@@ -3,7 +3,7 @@
 import pytest
 from jinja2 import Environment
 
-from lord_of_the_components import ComponentExtension, ComponentError, SourceLocation
+from lord_of_the_components import ComponentError, ComponentExtension, SourceLocation
 
 
 @pytest.fixture

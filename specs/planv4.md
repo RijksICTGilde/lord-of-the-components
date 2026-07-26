@@ -236,3 +236,15 @@ Create CLI command: `lotc generate:jinja2 [--component name]`
 2. **Parser fork divergence** → Keep fork minimal, only change registry loading logic
 3. **kebab-case in Jinja2** → Works fine: `_component_context.get('show-icon', 'no')` is valid Python dict access
 4. **Generated template quality** → Phase 1.5 tests verify output immediately; visual tests in Phase 3 catch rendering issues
+
+---
+
+## Retrospective: Hand-tuned templates
+
+During implementation, many component templates were hand-written or heavily hand-tuned by Claude rather than being fully generated from the TypeScript implementation layer. This happened because it seemed easier at the time to directly write the Jinja2 template than to extend the declarative `defineImplementation()` API to handle each component's complexity (nested structures, conditional sections, special attribute handling, etc.).
+
+Components with hand-tuned templates include: card, layout-flow, grid, link, label, alert, header, hero, footer, and page. After running `generate-all.ts`, these must be manually restored from git to avoid overwriting the hand-tuned versions.
+
+This defeats the core purpose of the project: being able to generate components to various targets (not just Jinja2) from a single declarative definition. If templates are hand-written per target, the intermediate TypeScript implementation layer adds no value for those components.
+
+**Action needed:** Review each hand-tuned template and determine what's missing from the `defineImplementation()` API that forced the hand-tuning. Extend the API (e.g., nested element support, conditional sections, attribute conditionality, static content blocks) so that these components can be fully generated, and remove the need for post-generation git restores.

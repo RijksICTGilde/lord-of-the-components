@@ -1,127 +1,43 @@
-<c-page title="My First LOTC Page" theme="rvo">
+<c-page title="Lord of the Components" theme="rvo">
 
-<c-header text="My Application" subtitle="Built with Lord of the Components"/>
+<c-header text="Lord of the Components" subtitle="Getting Started"/>
 
-<c-hero title="Lord of the Components" subtitle="A complete component showcase"/>
+<c-hero title="Lord of the Components" subtitle="Semantic component system for Jinja2 with RVO styling"/>
 
 <c-max-width-layout size="lg">
 <c-layout-flow gap="lg">
 
-    <c-breadcrumbs aria-label="You are here">
-        <c-breadcrumbs-item name="Home" href="/"/>
-        <c-breadcrumbs-item name="Examples" href="/examples"/>
-        <c-breadcrumbs-item name="Getting Started"/>
-    </c-breadcrumbs>
-
-    <c-heading type="h1" name="Component Showcase"/>
-
-    <c-alert type="info" heading="Getting Started">
-        This page demonstrates all 21 LOTC components rendered through Jinja2 with RVO styling.
-    </c-alert>
-
-    <!-- Typography -->
-
-    <c-heading type="h2" name="Typography"/>
+    <c-heading type="h2" name="Welcome"/>
 
     <c-paragraph>
-        This is a paragraph with <c-strong>bold text</c-strong>
-        and <c-em>italic text</c-em>
-        and a <c-link href="https://example.com">hyperlink</c-link>.
+        Lord of the Components (LOTC) provides a set of semantic HTML components
+        that are processed through Jinja2 and rendered with RVO/Utrecht CSS styling.
     </c-paragraph>
 
-    <c-label name="Form label" size="md"/>
+    <c-grid columns="two" gap="md">
+        <c-card title="Component Showcase" href="showcase.html" show-link-indicator full-card-link outline>
+            <c-paragraph>Browse all components with every variant — auto-generated from component definitions.</c-paragraph>
+        </c-card>
+        <c-card title="Documentation" outline>
+            <c-paragraph>Components are defined in TypeScript definitions and rendered via Jinja2 templates.</c-paragraph>
+        </c-card>
+    </c-grid>
 
-    <!-- Buttons -->
+    <c-heading type="h2" name="Quick Example"/>
 
-    <c-heading type="h2" name="Buttons"/>
+    <c-paragraph>
+        LOTC components use a simple <c-strong>&lt;c-*&gt;</c-strong> tag syntax:
+    </c-paragraph>
+
+    <c-alert type="info" heading="Sample Usage">
+        Use &lt;c-button type="primary" name="Click me"/&gt; to render a styled button.
+    </c-alert>
 
     <c-layout-flow gap="sm" row>
         <c-button type="primary" name="Primary"/>
         <c-button type="secondary" name="Secondary"/>
         <c-button type="tertiary" name="Tertiary"/>
-        <c-button type="warning" name="Warning"/>
     </c-layout-flow>
-
-    <c-layout-flow gap="sm" row>
-        <c-button type="primary" name="Save" show-icon="before" icon="vinkje"/>
-        <c-button type="secondary" name="Cancel"/>
-        <c-button type="warning" name="Delete" show-icon="before" icon="kruis"/>
-    </c-layout-flow>
-
-    <!-- Icons -->
-
-    <c-heading type="h2" name="Icons"/>
-
-    <c-layout-flow gap="md" row>
-        <c-icon icon="vinkje" size="lg" aria-label="Check"/>
-        <c-icon icon="kruis" size="lg" aria-label="Cross"/>
-        <c-icon icon="info" size="lg" aria-label="Info"/>
-        <c-icon icon="waarschuwing" size="lg" aria-label="Warning"/>
-    </c-layout-flow>
-
-    <!-- Cards -->
-
-    <c-heading type="h2" name="Cards"/>
-
-    <c-grid columns="two" gap="md">
-        <c-card title="Documentation" href="#" show-link-indicator outline>
-            <c-paragraph>Learn how to define and use LOTC components.</c-paragraph>
-        </c-card>
-        <c-card title="Examples" href="#" show-link-indicator outline>
-            <c-paragraph>Browse working examples and templates.</c-paragraph>
-        </c-card>
-    </c-grid>
-
-    <!-- Alerts -->
-
-    <c-heading type="h2" name="Alerts"/>
-
-    <c-layout-flow gap="md">
-        <c-alert type="info" heading="Information">This is an informational alert.</c-alert>
-        <c-alert type="success" heading="Success">The operation completed successfully.</c-alert>
-        <c-alert type="warning" heading="Warning">Please review before proceeding.</c-alert>
-        <c-alert type="error" heading="Error">Something went wrong.</c-alert>
-    </c-layout-flow>
-
-    <!-- Data List -->
-
-    <c-heading type="h2" name="Data List"/>
-
-    <c-data-list>
-        <dt>Component count</dt>
-        <dd>21</dd>
-        <dt>Template engine</dt>
-        <dd>Jinja2</dd>
-        <dt>CSS framework</dt>
-        <dd>RVO / Utrecht</dd>
-    </c-data-list>
-
-    <!-- Navigation: Menu -->
-
-    <c-heading type="h2" name="Menu"/>
-
-    <c-menu type="horizontal" size="md" aria-label="Example menu">
-        <c-menu-item name="Home" href="/" icon="huis" active/>
-        <c-menu-item name="About" href="/about"/>
-        <c-menu-item name="Contact" href="/contact"/>
-    </c-menu>
-
-    <!-- Layout: Row + Columns -->
-
-    <c-heading type="h2" name="Layout: Row &amp; Columns"/>
-
-    <c-layout-row gap="md">
-        <c-layout-column size="md-6">
-            <c-card title="Left Column" outline padding="md">
-                <c-paragraph>This card is in a 6-wide column.</c-paragraph>
-            </c-card>
-        </c-layout-column>
-        <c-layout-column size="md-6">
-            <c-card title="Right Column" outline padding="md">
-                <c-paragraph>This card is in a 6-wide column.</c-paragraph>
-            </c-card>
-        </c-layout-column>
-    </c-layout-row>
 
 </c-layout-flow>
 </c-max-width-layout>
