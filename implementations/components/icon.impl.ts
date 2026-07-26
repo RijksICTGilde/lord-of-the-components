@@ -15,6 +15,7 @@
 
 import { defineImplementation } from "../implementation.js";
 import { icon } from "../../definitions/components/icon.def.js";
+import { iconMapFor } from "../../definitions/icons.js";
 
 export const iconImpl = defineImplementation({
   component: icon,
@@ -26,7 +27,8 @@ export const iconImpl = defineImplementation({
     classes: [
       "utrecht-icon",
       "rvo-icon",
-      { prop: "icon", pattern: "rvo-icon-{value}" },
+      // Semantic icon name -> RVO icon name (definitions/icons.ts).
+      { prop: "icon", pattern: "rvo-icon-{value}", valueMap: "icons" },
       { prop: "size", pattern: "rvo-icon--{value}", when: ["2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl"] },
       { prop: "color", pattern: "rvo-icon--{value}" },
     ],
@@ -36,6 +38,8 @@ export const iconImpl = defineImplementation({
       { prop: "aria-label", attr: "aria-label", type: "value" },
     ],
   },
+
+  valueMaps: { icons: iconMapFor("rvo") },
 
   mixins: {
     utilityClasses: true,

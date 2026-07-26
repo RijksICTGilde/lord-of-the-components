@@ -145,7 +145,7 @@ class TestIconInsideButton:
         soup = BeautifulSoup(html, "html.parser")
         icon = soup.find("span", attrs={"data-lotc-component": "icon"})
         assert "rvo-icon" in icon["class"]
-        assert "rvo-icon-search" in icon["class"]
+        assert "rvo-icon-zoek" in icon["class"]  # search -> zoek (semantic alias)
         assert "rvo-icon--sm" in icon["class"]
 
     def test_button_contains_search_text(self, render):

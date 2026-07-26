@@ -130,3 +130,38 @@ def test_card_without_footer_slot_has_no_footer():
     env = _env()
     html = env.from_string('<c-card title="T">body</c-card>').render()
     assert "rvo-card__footer" not in html
+
+
+# ── semantic icon aliasing ──────────────────────────────────────────────────────
+
+
+def test_semantic_icon_resolves_per_theme():
+    from jinja2 import Environment, FileSystemLoader
+
+    def mk(theme):
+        env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
+        setup_components(env, registry_path=str(REGISTRY_JSON), theme=theme)
+        return env
+
+    rvo = mk("rvo").from_string('<c-icon icon="home"/>').render()
+    nldd = mk("nldd").from_string('<c-icon icon="home"/>').render()
+    assert "rvo-icon-home" in rvo
+    assert 'name="house"' in nldd  # same semantic name, NLDD icon
+
+
+def test_semantic_icon_favorite():
+    from jinja2 import Environment, FileSystemLoader
+
+    def mk(theme):
+        env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
+        setup_components(env, registry_path=str(REGISTRY_JSON), theme=theme)
+        return env
+
+    assert "rvo-icon-favoriet" in mk("rvo").from_string('<c-icon icon="favorite"/>').render()
+    assert 'name="star"' in mk("nldd").from_string('<c-icon icon="favorite"/>').render()
+
+
+def test_raw_icon_name_passes_through():
+    env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
+    setup_components(env, registry_path=str(REGISTRY_JSON), theme="rvo")
+    assert "rvo-icon-delta-naar-rechts" in env.from_string('<c-icon icon="delta-naar-rechts"/>').render()

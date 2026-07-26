@@ -129,6 +129,17 @@ def heading(*, type='h1', label='', content=None, _extra=None, _class=''):
     parts.append('</' + _el0 + '>')
     return Markup(''.join(parts))
 
+_ICON_ICONS_MAP = {
+    'home': 'home',
+    'settings': 'instellingen',
+    'notification': 'bel',
+    'info': 'info',
+    'favorite': 'favoriet',
+    'mail': 'mail',
+    'calendar': 'kalender',
+    'search': 'zoek',
+}
+
 _ICON_SIZE = {
     '2xs': ' rvo-icon--2xs',
     'xs': ' rvo-icon--xs',
@@ -145,7 +156,7 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
     parts = []
     cls0 = 'utrecht-icon rvo-icon'
     if icon:
-        cls0 += ' rvo-icon-' + icon
+        cls0 += ' rvo-icon-' + _ICON_ICONS_MAP.get(icon, icon)
     cls0 += _ICON_SIZE.get(size, '')
     if color:
         cls0 += ' rvo-icon--' + color

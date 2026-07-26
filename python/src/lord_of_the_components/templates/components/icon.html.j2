@@ -5,8 +5,9 @@
 {% set color = _component_context.get('color', '') %}
 {% set icon = _component_context.get('icon', '') %}
 {% set size = _component_context.get('size', 'md') %}
+{% set icons_map = {'home': 'home', 'settings': 'instellingen', 'notification': 'bel', 'info': 'info', 'favorite': 'favoriet', 'mail': 'mail', 'calendar': 'kalender', 'search': 'zoek'} %}
 {% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
-{% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}
+{% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icons_map[icon]] %}{% endif %}
 {% if size == '2xs' %}{% set css_classes = css_classes + ['rvo-icon--2xs'] %}{% endif %}
 {% if size == 'xs' %}{% set css_classes = css_classes + ['rvo-icon--xs'] %}{% endif %}
 {% if size == 'sm' %}{% set css_classes = css_classes + ['rvo-icon--sm'] %}{% endif %}
