@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set label = _component_context.get('label', '') %}
 {% set css_classes = ['rvo-text--italic'] %}
 {% set utility_classes = attributes.render_utility_classes(_component_context) %}

@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set inline_padding = _component_context.get('inline-padding', 'none') %}
 {% set size = _component_context.get('size', 'md') %}
 {% set uncentered = _component_context.get('uncentered', false) %}

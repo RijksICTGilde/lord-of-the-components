@@ -89,11 +89,13 @@ export type TextExpr =
   | { literal: string }
   | { prop: string }
   | { content: true }
+  | { slot: string }
   | { coalesce: TextExpr[] }
   | { raw: string };
 
 export interface ElementNode {
-  element: string | DynamicElement;
+  element?: string | DynamicElement;
+  repeat?: { binding: string; as: string };
   classes?: ClassRule[];
   attributes?: AttributeMapping[];
   styles?: StyleMapping[];
@@ -115,6 +117,7 @@ export function textToJinjaString(text: string | TextExpr): string {
   if ("literal" in text) return text.literal;
   if ("raw" in text) return text.raw;
   if ("content" in text) return "{{ children | safe }}";
+  if ("slot" in text) return `{{ slots.get('${text.slot}', '') | safe }}`;
   if ("prop" in text) return `{{ ${text.prop} | safe }}`;
   // coalesce: content-then-prop is the only shape used today.
   const parts = text.coalesce;
@@ -286,6 +289,9 @@ export class Jinja2Generator {
       );
     }
 
+    // Named slots are always available (empty dict if none supplied).
+    lines.push("{% set slots = _component_context.get('slots', {}) %}");
+
     const propNames = Object.keys(props).sort();
     for (const propName of propNames) {
       if (propName === "class") continue;
@@ -314,6 +320,17 @@ export class Jinja2Generator {
   ): string[] {
     const lines: string[] = [];
     const ind = indent(indentLevel);
+
+    // ── Repeat: loop the children over a bound list ───────────────────────
+    if (node.repeat) {
+      const { binding, as } = node.repeat;
+      lines.push(`${ind}{% for ${as} in _component_context.get('${binding}', []) %}`);
+      for (const child of node.children ?? []) {
+        lines.push(...this.emitElementNode(child, impl, indentLevel + 1));
+      }
+      lines.push(`${ind}{% endfor %}`);
+      return lines;
+    }
 
     // ── Wrap in condition if `when` is specified ──────────────────────────
     if (node.when) {
@@ -360,7 +377,7 @@ export class Jinja2Generator {
       && !hasAttributes && !hasStyles && !node.rawHtml && !node.children;
 
     if (isInlineElement) {
-      const tagName = this.resolveTagName(node.element);
+      const tagName = this.resolveTagName(node.element!);
       lines.push(`${ind}<${tagName}>${textToJinjaString(node.text!)}</${tagName}>`);
       return lines;
     }
@@ -392,7 +409,7 @@ export class Jinja2Generator {
     }
 
     // ── Build opening tag ─────────────────────────────────────────────────
-    const tagName = this.resolveTagName(node.element);
+    const tagName = this.resolveTagName(node.element!);
     const tagParts: string[] = [];
     tagParts.push(`${ind}<${tagName}`);
 
@@ -455,7 +472,7 @@ export class Jinja2Generator {
     }
 
     // ── Closing tag ───────────────────────────────────────────────────────
-    const closeTagName = this.resolveTagName(node.element);
+    const closeTagName = this.resolveTagName(node.element!);
     lines.push(`${ind}</${closeTagName}>`);
 
     return lines;

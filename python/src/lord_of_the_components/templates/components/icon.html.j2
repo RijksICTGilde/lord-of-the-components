@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set aria_label = _component_context.get('aria-label', '') %}
 {% set color = _component_context.get('color', '') %}
 {% set icon = _component_context.get('icon', '') %}

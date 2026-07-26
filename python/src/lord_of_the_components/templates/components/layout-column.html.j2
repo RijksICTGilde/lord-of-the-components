@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
 {% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
 {% set size = _component_context.get('size', '') %}
 {% set css_classes = ['rvo-layout-column'] %}
 {% if size == 'xs-1' %}{% set css_classes = css_classes + ['rvo-layout-column--xs-1'] %}{% endif %}

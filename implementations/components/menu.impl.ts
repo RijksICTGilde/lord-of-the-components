@@ -48,14 +48,46 @@ export const menuImpl = defineImplementation({
                   { prop: "type", eq: "vertical", class: "rvo-menubar__list--vertical" },
                 ],
                 children: [
-                  // Group flex ul
+                  // Group flex ul — renders :items data (repeat) plus any
+                  // declarative <c-menu-item> children.
                   {
                     element: "ul",
                     classes: [
                       "rvo-menubar__group--flex",
                       { prop: "type", eq: "vertical", class: "rvo-menubar__group--vertical" },
                     ],
-                    text: "{{ children | safe }}",
+                    children: [
+                      {
+                        repeat: { binding: "items", as: "item" },
+                        children: [
+                          {
+                            element: "li",
+                            classes: [
+                              "rvo-menubar__item",
+                              { prop: "item.active", class: "rvo-menubar__item--active" },
+                            ],
+                            children: [
+                              {
+                                element: "a",
+                                when: { prop: "item.href" },
+                                classes: ["rvo-link", "rvo-menubar__link"],
+                                attributes: [
+                                  { prop: "item.href", attr: "href", type: "value" },
+                                ],
+                                text: { prop: "item.label" },
+                              },
+                              {
+                                element: "span",
+                                when: { not: { prop: "item.href" } },
+                                classes: ["rvo-link", "rvo-menubar__link"],
+                                text: { prop: "item.label" },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                    text: { content: true },
                   },
                 ],
               },
