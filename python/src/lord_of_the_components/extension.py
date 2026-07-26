@@ -89,6 +89,27 @@ class _CompileState:
     counter: int = 0
 
 
+#: Jinja delimiters that make a folded string unsafe to embed as literal source.
+_JINJA_DELIMS = ("{{", "{%", "{#")
+
+
+def _has_jinja(text: Optional[str]) -> bool:
+    return text is not None and any(d in text for d in _JINJA_DELIMS)
+
+
+def _is_foldable(attrs: Dict[str, Any], content: Optional[str]) -> bool:
+    """A component instance can be folded when every attribute is a literal and its
+    content is already a static (Jinja-free) string."""
+    if _has_jinja(content):
+        return False
+    for key, value in attrs.items():
+        if key.startswith(":"):
+            return False  # dynamic expression
+        if _has_jinja(value):
+            return False
+    return True
+
+
 def _py_ident(name: str) -> str:
     """Component/prop name to a Python identifier (kebab -> snake)."""
     return name.replace("-", "_")
@@ -135,6 +156,8 @@ class ComponentExtension(Extension):
         self.registry = ComponentRegistry()
         # Design-system theme bound to the Python renderers (F6 generalizes this).
         self.render_theme = "rvo"
+        # Constant folding: render fully-literal python components at compile time.
+        self.fold = True
 
     def preprocess(
         self, source: str, name: Optional[str], filename: Optional[str] = None
@@ -204,6 +227,10 @@ class ComponentExtension(Extension):
         named_slots, default_content = self._extract_slots(source, node, state, depth + 1)
 
         if getattr(component_def, "backend", "jinja") == "python" and not named_slots:
+            if self.fold and _is_foldable(attrs, default_content):
+                folded = self._fold_component(component_name, component_def, attrs, default_content)
+                if folded is not None:
+                    return folded
             return self._build_python_call(
                 component_name, component_def, attrs, default_content, state
             )
@@ -457,6 +484,60 @@ class ComponentExtension(Extension):
         call = f"{{{{ {global_name}({', '.join(kwargs)}) }}}}"
         return "".join(set_stmts) + call
 
+    def _fold_component(
+        self,
+        component_name: str,
+        component_def: Any,
+        attrs: Dict[str, Any],
+        content: Optional[str],
+    ) -> Optional[str]:
+        """Render a fully-literal component at compile time to literal HTML.
+
+        Returns the rendered HTML (wrapped in {% raw %} if it happens to contain
+        Jinja delimiters), or None if the renderer function is not available.
+        """
+        from markupsafe import Markup
+
+        from .registry import AttributeType
+
+        global_name = f"_lotc_{self.render_theme}_{_py_ident(component_name)}"
+        fn: Any = self.environment.globals.get(global_name)
+        if fn is None:
+            return None
+
+        kwargs: Dict[str, Any] = {}
+        extra: Dict[str, Any] = {}
+        css_class = ""
+        for key, value in attrs.items():
+            if key.startswith("@"):
+                extra[key] = value
+            elif key == "class":
+                css_class = value
+            else:
+                attr_def = component_def.get_attribute(key)
+                is_generic = key.startswith(self._GENERIC_PREFIXES) or key in self._GENERIC_NAMES
+                if attr_def is not None:
+                    if attr_def.type == AttributeType.BOOLEAN:
+                        kwargs[_py_ident(key)] = str(value).lower() not in ("false", "0", "no", "off")
+                    else:
+                        kwargs[_py_ident(key)] = value
+                    if is_generic:
+                        extra[key] = value
+                else:
+                    extra[key] = value
+
+        if content:
+            kwargs["content"] = Markup(content)
+        if extra:
+            kwargs["_extra"] = extra
+        if css_class:
+            kwargs["_class"] = css_class
+
+        html = str(fn(**kwargs))
+        if _has_jinja(html):
+            return f"{{% raw %}}{html}{{% endraw %}}"
+        return html
+
 
 def setup_components(
     jinja_env: Environment,
@@ -467,6 +548,7 @@ def setup_components(
     static_url_prefix: str = "/static/lotc/",
     registry_path: Optional[str] = None,
     validate_data: bool = True,
+    fold: bool = True,
 ) -> Environment:
     """
     Setup Lord of the Components in a Jinja2 environment.
@@ -480,6 +562,8 @@ def setup_components(
         static_url_prefix: URL prefix for static assets
         registry_path: Optional path to generated registry.json file
         validate_data: Whether to validate dynamic data structures
+        fold: Render fully-literal python components at compile time (default True;
+            set False to debug the runtime renderer calls)
 
     Returns:
         Configured Jinja2 environment
@@ -516,7 +600,10 @@ def setup_components(
 
     # Register the generated Python renderers (the fast backend) as globals.
     ext = jinja_env.extensions.get(ComponentExtension.identifier)
-    render_theme = ext.render_theme if isinstance(ext, ComponentExtension) else "rvo"
+    render_theme = "rvo"
+    if isinstance(ext, ComponentExtension):
+        ext.fold = fold
+        render_theme = ext.render_theme
     _register_theme_renderers(jinja_env, render_theme)
 
     jinja_env.globals["get_component_assets"] = lambda: _get_component_assets(
