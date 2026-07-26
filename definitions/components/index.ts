@@ -28,6 +28,8 @@ export { dataList, type DataListDefinition } from "./data-list.def.js";
 
 // Feedback components
 export { alert, type AlertDefinition } from "./alert.def.js";
+export { tag, type TagDefinition } from "./tag.def.js";
+export { badge, type BadgeDefinition } from "./badge.def.js";
 
 // Typography components
 export { heading, type HeadingDefinition } from "./heading.def.js";
@@ -86,6 +88,8 @@ import { checkbox } from "./checkbox.def.js";
 import { radio } from "./radio.def.js";
 import { select } from "./select.def.js";
 import { option } from "./option.def.js";
+import { tag } from "./tag.def.js";
+import { badge } from "./badge.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -125,6 +129,8 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   radio,
   select,
   option,
+  tag,
+  badge,
 };
 
 /**

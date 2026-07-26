@@ -109,6 +109,8 @@ export const PYTHON_BACKEND = new Set<string>([
   "radio",
   "select",
   "option",
+  "tag",
+  "badge",
 ]);
 
 // ── helpers ───────────────────────────────────────────────────────────────────

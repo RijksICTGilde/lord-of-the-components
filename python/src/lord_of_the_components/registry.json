@@ -1780,6 +1780,74 @@
       "content": {
         "allowed": true
       }
+    },
+    {
+      "name": "tag",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "enum",
+          "enum_values": [
+            "default",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "default",
+          "description": "Semantic status"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Tag text (content overrides)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Small labelled status chip",
+      "category": "feedback",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "badge",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "enum",
+          "enum_values": [
+            "default",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "default",
+          "description": "Semantic status"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Badge text (content overrides)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Small count or notification badge",
+      "category": "feedback",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }

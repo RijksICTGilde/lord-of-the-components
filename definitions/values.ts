@@ -30,6 +30,11 @@ export const VALUES = {
   STATUS_TYPES: ["info", "success", "warning", "error"] as const,
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // TAG / BADGE TYPES (semantic status, incl. a neutral default)
+  // ═══════════════════════════════════════════════════════════════════════════
+  TAG_TYPES: ["default", "info", "success", "warning", "error"] as const,
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // SIZE SCALES
   // ═══════════════════════════════════════════════════════════════════════════
   SIZES: ["xs", "sm", "md", "lg", "xl"] as const,

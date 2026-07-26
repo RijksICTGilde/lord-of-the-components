@@ -13,6 +13,20 @@ from lord_of_the_components.runtime import (
     render_utility,
 )
 
+def badge(*, type='default', label='', content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-badge'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<span')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="badge"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append(((content or '') if content else esc(label)))
+    parts.append('</span>')
+    return Markup(''.join(parts))
+
 _BUTTON_SIZE = {
     'xs': ' utrecht-button--rvo-xs',
     'sm': ' utrecht-button--rvo-sm',
@@ -490,6 +504,22 @@ def select(*, name='', value='', placeholder='', disabled=False, required=False,
     parts.append('>')
     parts.append((content or ''))
     parts.append('</select>')
+    parts.append('</div>')
+    return Markup(''.join(parts))
+
+def tag(*, type='default', label='', content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-tag'
+    if type:
+        cls0 += ' rvo-tag--' + type
+    cls0 = merge_class(cls0, _class)
+    parts.append('<div')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="tag"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append(((content or '') if content else esc(label)))
     parts.append('</div>')
     return Markup(''.join(parts))
 
