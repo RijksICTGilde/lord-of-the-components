@@ -235,42 +235,42 @@ class TestGetComponentAssets:
 
 class TestSetupComponents:
     def test_adds_extension_to_environment(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env)
         assert ComponentExtension.identifier in env.extensions
 
     def test_sets_theme_global(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env, theme="rvo")
         assert env.globals["lotc_theme"] == "rvo"
 
     def test_default_theme(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env)
         assert env.globals["lotc_theme"] == "default"
 
     def test_htmx_global_true(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env, htmx=True)
         assert env.globals["lotc_htmx"] is True
 
     def test_htmx_global_false(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env, htmx=False)
         assert env.globals["lotc_htmx"] is False
 
     def test_validate_data_global(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env, validate_data=False)
         assert env.globals["lotc_validate_data"] is False
 
     def test_returns_environment(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         result = setup_components(env)
         assert result is env
 
     def test_get_component_assets_callable(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env)
         assets_fn = env.globals["get_component_assets"]
         assets = assets_fn()
@@ -278,7 +278,7 @@ class TestSetupComponents:
         assert "js_files" in assets
 
     def test_custom_static_url_prefix_propagated(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env, static_url_prefix="/cdn/lotc/")
         assets = env.globals["get_component_assets"]()
         assert all(
@@ -300,13 +300,13 @@ class TestSetupComponents:
             f.flush()
             registry_path = f.name
 
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env, registry_path=registry_path)
         ext = env.extensions[ComponentExtension.identifier]
         assert ext.registry.has_component("test-comp")
 
     def test_appends_templates_to_searchpath(self):
-        env = Environment(loader=FileSystemLoader("/tmp"))
+        env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         original_len = len(env.loader.searchpath)
         setup_components(env)
         # Should have added the component templates path
@@ -314,9 +314,14 @@ class TestSetupComponents:
         assert any("templates" in p for p in env.loader.searchpath)
 
     def test_no_loader_does_not_crash(self):
-        env = Environment()  # No loader
+        env = Environment(autoescape=True)  # No loader
         setup_components(env)
         assert ComponentExtension.identifier in env.extensions
+
+    def test_requires_autoescape(self):
+        env = Environment(autoescape=False)
+        with pytest.raises(RuntimeError, match="autoescape"):
+            setup_components(env)
 
 
 # ---------------------------------------------------------------------------
@@ -480,7 +485,7 @@ class TestSetupNonListSearchpath:
     """Tests for extension.py:626-627 — non-list searchpath fallback."""
 
     def test_non_list_searchpath_converted_to_list(self):
-        env = Environment()
+        env = Environment(autoescape=True)
         loader = MagicMock()
         loader.searchpath = "/some/path"  # String, not list
         env.loader = loader

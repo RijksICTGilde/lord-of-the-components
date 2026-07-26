@@ -44,8 +44,8 @@ CASES = _load_cases()
 
 @pytest.fixture(scope="module")
 def golden_env() -> Environment:
-    # Must match tools/gen_goldens.py (autoescape=False = current behavior).
-    env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=False)
+    # Must match tools/gen_goldens.py; setup_components requires autoescape=True.
+    env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
     setup_components(env, registry_path=str(REGISTRY_JSON))
     return env
 

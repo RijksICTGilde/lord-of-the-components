@@ -384,6 +384,14 @@ def setup_components(
     import os
     from pathlib import Path
 
+    if not jinja_env.autoescape:
+        raise RuntimeError(
+            "Lord of the Components requires autoescape to be enabled on the Jinja2 "
+            "environment (Environment(autoescape=True)). Component renderers escape "
+            "prop values and treat content as already-safe Markup; with autoescape "
+            "off, user data would not be escaped."
+        )
+
     jinja_env.add_extension(ComponentExtension)
 
     # Load custom registry if provided
