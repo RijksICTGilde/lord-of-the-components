@@ -139,10 +139,10 @@ function generateButtonSection(def: ComponentDefinition): string {
   // Type variants
   const types = def.props["type"];
   if (types && typeof types === "object" && types.values) {
-    lines.push(tag("paragraph", { name: "Visual style (type)" }));
+    lines.push(tag("paragraph", { label: "Visual style (type)" }));
     lines.push(tag("layout-flow", { gap: "sm", row: true },
       "\n" + types.values.map((v: string) =>
-        "    " + tag("button", { type: v, name: v })
+        "    " + tag("button", { type: v, label: v })
       ).join("\n") + "\n",
     ));
   }
@@ -150,10 +150,10 @@ function generateButtonSection(def: ComponentDefinition): string {
   // Size variants
   const sizes = def.props["size"];
   if (sizes && typeof sizes === "object" && sizes.values) {
-    lines.push(tag("paragraph", { name: "Size" }));
+    lines.push(tag("paragraph", { label: "Size" }));
     lines.push(tag("layout-flow", { gap: "sm", row: true, "align-items": "end" },
       "\n" + sizes.values.map((v: string) =>
-        "    " + tag("button", { size: v, name: v })
+        "    " + tag("button", { size: v, label: v })
       ).join("\n") + "\n",
     ));
   }
@@ -161,22 +161,22 @@ function generateButtonSection(def: ComponentDefinition): string {
   // Boolean states
   const booleanProps = getBooleanProps(def);
   if (booleanProps.length > 0) {
-    lines.push(tag("paragraph", { name: "Boolean states" }));
+    lines.push(tag("paragraph", { label: "Boolean states" }));
     lines.push(tag("layout-flow", { gap: "sm", row: true },
       "\n" + booleanProps.map((p) =>
-        "    " + tag("button", { [p]: true, name: p })
+        "    " + tag("button", { [p]: true, label: p })
       ).join("\n") + "\n",
     ));
   }
 
   // With icon
-  lines.push(tag("paragraph", { name: "With icon" }));
+  lines.push(tag("paragraph", { label: "With icon" }));
   lines.push(tag("layout-flow", { gap: "sm", row: true },
     "\n" +
-    `    ${tag("button", { type: "primary", name: "Save", "show-icon": "before", icon: "vinkje" })}\n` +
-    `    ${tag("button", { type: "secondary", name: "Search", "show-icon": "before", icon: "zoek" })}\n` +
-    `    ${tag("button", { type: "warning", name: "Delete", "show-icon": "before", icon: "kruis" })}\n` +
-    `    ${tag("button", { type: "tertiary", name: "Next", "show-icon": "after", icon: "delta-omlaag" })}\n`,
+    `    ${tag("button", { type: "primary", label: "Save", "show-icon": "before", icon: "vinkje" })}\n` +
+    `    ${tag("button", { type: "secondary", label: "Search", "show-icon": "before", icon: "zoek" })}\n` +
+    `    ${tag("button", { type: "warning", label: "Delete", "show-icon": "before", icon: "kruis" })}\n` +
+    `    ${tag("button", { type: "tertiary", label: "Next", "show-icon": "after", icon: "delta-omlaag" })}\n`,
   ));
 
   return lines.join("\n");
@@ -187,7 +187,7 @@ function generateAlertSection(def: ComponentDefinition): string {
   const types = def.props["type"];
 
   if (types && typeof types === "object" && types.values) {
-    lines.push(tag("paragraph", { name: "Alert types" }));
+    lines.push(tag("paragraph", { label: "Alert types" }));
     lines.push(tag("layout-flow", { gap: "md" },
       "\n" + types.values.map((v: string) =>
         "    " + tag("alert", { type: v, heading: v.charAt(0).toUpperCase() + v.slice(1) },
@@ -198,7 +198,7 @@ function generateAlertSection(def: ComponentDefinition): string {
   }
 
   // Closable
-  lines.push(tag("paragraph", { name: "Closable alert" }));
+  lines.push(tag("paragraph", { label: "Closable alert" }));
   lines.push(tag("alert", { type: "info", heading: "Closable", closable: true },
     "This alert can be dismissed.",
   ));
@@ -210,7 +210,7 @@ function generateIconSection(def: ComponentDefinition): string {
   const lines: string[] = [];
 
   // Icon samples
-  lines.push(tag("paragraph", { name: "Icon samples" }));
+  lines.push(tag("paragraph", { label: "Icon samples" }));
   lines.push(tag("layout-flow", { gap: "md", row: true },
     "\n" + DEMO_ICONS.map((name) =>
       "    " + tag("icon", { icon: name, size: "lg", "aria-label": name }, undefined, true)
@@ -220,7 +220,7 @@ function generateIconSection(def: ComponentDefinition): string {
   // Size variants
   const sizes = def.props["size"];
   if (sizes && typeof sizes === "object" && sizes.values) {
-    lines.push(tag("paragraph", { name: "Sizes" }));
+    lines.push(tag("paragraph", { label: "Sizes" }));
     lines.push(tag("layout-flow", { gap: "sm", row: true, "align-items": "end" },
       "\n" + sizes.values.map((v: string) =>
         "    " + tag("icon", { icon: "info", size: v, "aria-label": `${v} icon` }, undefined, true)
@@ -235,20 +235,20 @@ function generateCardSection(def: ComponentDefinition): string {
   const lines: string[] = [];
 
   // Basic cards
-  lines.push(tag("paragraph", { name: "Card variants" }));
+  lines.push(tag("paragraph", { label: "Card variants" }));
   lines.push(tag("grid", { columns: "two", gap: "md" },
     "\n" +
-    `    ${tag("card", { title: "Basic Card", outline: true }, "\n        " + tag("paragraph", { name: "A simple card with outline." }) + "\n    ")}\n` +
-    `    ${tag("card", { title: "Linked Card", href: "#", "show-link-indicator": true, "full-card-link": true, outline: true }, "\n        " + tag("paragraph", { name: "A clickable card with link indicator." }) + "\n    ")}\n`,
+    `    ${tag("card", { title: "Basic Card", outline: true }, "\n        " + tag("paragraph", { label: "A simple card with outline." }) + "\n    ")}\n` +
+    `    ${tag("card", { title: "Linked Card", href: "#", "show-link-indicator": true, "full-card-link": true, outline: true }, "\n        " + tag("paragraph", { label: "A clickable card with link indicator." }) + "\n    ")}\n`,
   ));
 
   // Layout variants
   const layouts = def.props["layout"];
   if (layouts && typeof layouts === "object" && layouts.values) {
-    lines.push(tag("paragraph", { name: "Layout direction" }));
+    lines.push(tag("paragraph", { label: "Layout direction" }));
     for (const v of layouts.values) {
       lines.push(tag("card", { title: `Layout: ${v}`, layout: v, outline: true, padding: "md" },
-        "\n    " + tag("paragraph", { name: `This card uses ${v} layout.` }) + "\n",
+        "\n    " + tag("paragraph", { label: `This card uses ${v} layout.` }) + "\n",
       ));
     }
   }
@@ -256,22 +256,22 @@ function generateCardSection(def: ComponentDefinition): string {
   // Padding variants
   const padding = def.props["padding"];
   if (padding && typeof padding === "object" && padding.values) {
-    lines.push(tag("paragraph", { name: "Padding" }));
+    lines.push(tag("paragraph", { label: "Padding" }));
     lines.push(tag("grid", { columns: "three", gap: "sm" },
       "\n" + padding.values.map((v: string) =>
         "    " + tag("card", { title: `padding: ${v}`, padding: v, outline: true },
-          tag("paragraph", { name: v }),
+          tag("paragraph", { label: v }),
         )
       ).join("\n") + "\n",
     ));
   }
 
   // Boolean props
-  lines.push(tag("paragraph", { name: "Boolean props" }));
+  lines.push(tag("paragraph", { label: "Boolean props" }));
   lines.push(tag("grid", { columns: "two", gap: "md" },
     "\n" +
-    `    ${tag("card", { title: "Outline", outline: true }, tag("paragraph", { name: "Card with outline border." }))}\n` +
-    `    ${tag("card", { title: "Inverted Colors", "inverted-colors": true, "background-color": "donkerblauw" }, tag("paragraph", { name: "Card with inverted colors." }))}\n`,
+    `    ${tag("card", { title: "Outline", outline: true }, tag("paragraph", { label: "Card with outline border." }))}\n` +
+    `    ${tag("card", { title: "Inverted Colors", "inverted-colors": true, "background-color": "donkerblauw" }, tag("paragraph", { label: "Card with inverted colors." }))}\n`,
   ));
 
   return lines.join("\n");
@@ -282,9 +282,9 @@ function generateHeadingSection(def: ComponentDefinition): string {
   const types = def.props["type"];
 
   if (types && typeof types === "object" && types.values) {
-    lines.push(tag("paragraph", { name: "Heading levels" }));
+    lines.push(tag("paragraph", { label: "Heading levels" }));
     for (const v of types.values) {
-      lines.push(tag("heading", { type: v, name: `Heading ${v}` }));
+      lines.push(tag("heading", { type: v, label: `Heading ${v}` }));
     }
   }
 
@@ -297,25 +297,25 @@ function generateParagraphSection(def: ComponentDefinition): string {
   // Color variants
   const colors = def.props["color"];
   if (colors && typeof colors === "object" && colors.values) {
-    lines.push(tag("heading", { type: "h3", name: "Paragraph colors" }));
+    lines.push(tag("heading", { type: "h3", label: "Paragraph colors" }));
     for (const v of colors.values) {
-      lines.push(tag("paragraph", { color: v, name: `Color: ${v}` }));
+      lines.push(tag("paragraph", { color: v, label: `Color: ${v}` }));
     }
   }
 
   // Size variants
   const sizes = def.props["size"];
   if (sizes && typeof sizes === "object" && sizes.values) {
-    lines.push(tag("heading", { type: "h3", name: "Paragraph sizes" }));
+    lines.push(tag("heading", { type: "h3", label: "Paragraph sizes" }));
     for (const v of sizes.values) {
-      lines.push(tag("paragraph", { size: v, name: `Size: ${v}` }));
+      lines.push(tag("paragraph", { size: v, label: `Size: ${v}` }));
     }
   }
 
   // Boolean: no-spacing
-  lines.push(tag("heading", { type: "h3", name: "No spacing" }));
-  lines.push(tag("paragraph", { "no-spacing": true, name: "This paragraph has no bottom spacing." }));
-  lines.push(tag("paragraph", { name: "This follows immediately." }));
+  lines.push(tag("heading", { type: "h3", label: "No spacing" }));
+  lines.push(tag("paragraph", { "no-spacing": true, label: "This paragraph has no bottom spacing." }));
+  lines.push(tag("paragraph", { label: "This follows immediately." }));
 
   return lines.join("\n");
 }
@@ -326,10 +326,10 @@ function generateLinkSection(def: ComponentDefinition): string {
   // Color variants
   const colors = def.props["color"];
   if (colors && typeof colors === "object" && colors.values) {
-    lines.push(tag("heading", { type: "h3", name: "Link colors" }));
+    lines.push(tag("heading", { type: "h3", label: "Link colors" }));
     lines.push(tag("layout-flow", { gap: "sm", row: true },
       "\n" + colors.values.map((v: string) =>
-        "    " + tag("link", { href: "#", color: v, name: v })
+        "    " + tag("link", { href: "#", color: v, label: v })
       ).join("\n") + "\n",
     ));
   }
@@ -337,30 +337,30 @@ function generateLinkSection(def: ComponentDefinition): string {
   // Weight variants
   const weights = def.props["weight"];
   if (weights && typeof weights === "object" && weights.values) {
-    lines.push(tag("heading", { type: "h3", name: "Link weights" }));
+    lines.push(tag("heading", { type: "h3", label: "Link weights" }));
     lines.push(tag("layout-flow", { gap: "sm", row: true },
       "\n" + weights.values.map((v: string) =>
-        "    " + tag("link", { href: "#", weight: v, name: `weight: ${v}` })
+        "    " + tag("link", { href: "#", weight: v, label: `weight: ${v}` })
       ).join("\n") + "\n",
     ));
   }
 
   // With icon
-  lines.push(tag("heading", { type: "h3", name: "Link with icon" }));
+  lines.push(tag("heading", { type: "h3", label: "Link with icon" }));
   lines.push(tag("layout-flow", { gap: "sm", row: true },
     "\n" +
-    `    ${tag("link", { href: "#", name: "Icon before", "show-icon": "before", icon: "delta-omlaag" })}\n` +
-    `    ${tag("link", { href: "#", name: "Icon after", "show-icon": "after", icon: "delta-omlaag" })}\n`,
+    `    ${tag("link", { href: "#", label: "Icon before", "show-icon": "before", icon: "delta-omlaag" })}\n` +
+    `    ${tag("link", { href: "#", label: "Icon after", "show-icon": "after", icon: "delta-omlaag" })}\n`,
   ));
 
   // Boolean states
-  lines.push(tag("heading", { type: "h3", name: "Link states" }));
+  lines.push(tag("heading", { type: "h3", label: "Link states" }));
   lines.push(tag("layout-flow", { gap: "sm", row: true },
     "\n" +
-    `    ${tag("link", { href: "#", name: "hover", hover: true })}\n` +
-    `    ${tag("link", { href: "#", name: "active", active: true })}\n` +
-    `    ${tag("link", { href: "#", name: "focus", focus: true })}\n` +
-    `    ${tag("link", { href: "#", name: "no-underline", "no-underline": true })}\n`,
+    `    ${tag("link", { href: "#", label: "hover", hover: true })}\n` +
+    `    ${tag("link", { href: "#", label: "active", active: true })}\n` +
+    `    ${tag("link", { href: "#", label: "focus", focus: true })}\n` +
+    `    ${tag("link", { href: "#", label: "no-underline", "no-underline": true })}\n`,
   ));
 
   return lines.join("\n");
@@ -374,7 +374,7 @@ function generateLabelSection(def: ComponentDefinition): string {
   if (types && typeof types === "object" && types.values) {
     lines.push(tag("layout-flow", { gap: "sm" },
       "\n" + types.values.map((v: string) =>
-        "    " + tag("label", { name: `Label (${v})`, type: v })
+        "    " + tag("label", { label: `Label (${v})`, type: v })
       ).join("\n") + "\n",
     ));
   }
@@ -384,7 +384,7 @@ function generateLabelSection(def: ComponentDefinition): string {
   if (sizes && typeof sizes === "object" && sizes.values) {
     lines.push(tag("layout-flow", { gap: "sm" },
       "\n" + sizes.values.map((v: string) =>
-        "    " + tag("label", { name: `Size: ${v}`, size: v })
+        "    " + tag("label", { label: `Size: ${v}`, size: v })
       ).join("\n") + "\n",
     ));
   }
@@ -399,23 +399,23 @@ function generateMenuSection(def: ComponentDefinition): string {
   const types = def.props["type"];
   if (types && typeof types === "object" && types.values) {
     for (const v of types.values) {
-      lines.push(tag("paragraph", { name: `Menu type: ${v}` }));
+      lines.push(tag("paragraph", { label: `Menu type: ${v}` }));
       lines.push(tag("menu", { type: v, "aria-label": `${v} menu example` },
         "\n" +
-        `    ${tag("menu-item", { name: "Home", href: "#", icon: "huis", active: true })}\n` +
-        `    ${tag("menu-item", { name: "Products", href: "#" })}\n` +
-        `    ${tag("menu-item", { name: "About", href: "#" })}\n` +
-        `    ${tag("menu-item", { name: "Contact", href: "#" })}\n`,
+        `    ${tag("menu-item", { label: "Home", href: "#", icon: "huis", active: true })}\n` +
+        `    ${tag("menu-item", { label: "Products", href: "#" })}\n` +
+        `    ${tag("menu-item", { label: "About", href: "#" })}\n` +
+        `    ${tag("menu-item", { label: "Contact", href: "#" })}\n`,
       ));
     }
   }
 
   // With disabled item
-  lines.push(tag("paragraph", { name: "With disabled item" }));
+  lines.push(tag("paragraph", { label: "With disabled item" }));
   lines.push(tag("menu", { type: "horizontal", "aria-label": "Menu with disabled item" },
     "\n" +
-    `    ${tag("menu-item", { name: "Enabled", href: "#" })}\n` +
-    `    ${tag("menu-item", { name: "Disabled", href: "#", disabled: true })}\n`,
+    `    ${tag("menu-item", { label: "Enabled", href: "#" })}\n` +
+    `    ${tag("menu-item", { label: "Disabled", href: "#", disabled: true })}\n`,
   ));
 
   return lines.join("\n");
@@ -428,12 +428,12 @@ function generateBreadcrumbsSection(def: ComponentDefinition): string {
   const sizes = def.props["size"];
   if (sizes && typeof sizes === "object" && sizes.values) {
     for (const v of sizes.values) {
-      lines.push(tag("paragraph", { name: `Size: ${v}` }));
+      lines.push(tag("paragraph", { label: `Size: ${v}` }));
       lines.push(tag("breadcrumbs", { size: v, "aria-label": "Breadcrumbs example" },
         "\n" +
-        `    ${tag("breadcrumbs-item", { name: "Home", href: "#" })}\n` +
-        `    ${tag("breadcrumbs-item", { name: "Section", href: "#" })}\n` +
-        `    ${tag("breadcrumbs-item", { name: "Current Page" })}\n`,
+        `    ${tag("breadcrumbs-item", { label: "Home", href: "#" })}\n` +
+        `    ${tag("breadcrumbs-item", { label: "Section", href: "#" })}\n` +
+        `    ${tag("breadcrumbs-item", { label: "Current Page" })}\n`,
       ));
     }
   }
@@ -484,7 +484,7 @@ function generateGenericSection(def: ComponentDefinition): string {
 
   // Enum props
   for (const [propName, spec] of getEnumProps(def)) {
-    lines.push(tag("paragraph", { name: `${propName}` }));
+    lines.push(tag("paragraph", { label: `${propName}` }));
     const items = spec.values.map((v: string) => {
       const attrs: Record<string, string | boolean> = { [propName]: v };
       // For components that use "name" for display, set it
@@ -499,7 +499,7 @@ function generateGenericSection(def: ComponentDefinition): string {
   // Boolean props
   const booleans = getBooleanProps(def);
   if (booleans.length > 0) {
-    lines.push(tag("paragraph", { name: "Boolean props" }));
+    lines.push(tag("paragraph", { label: "Boolean props" }));
     const items = booleans.map((p) => {
       const attrs: Record<string, string | boolean> = { [p]: true };
       if ("name" in def.props) attrs.name = p;
@@ -561,7 +561,7 @@ export function generateShowcase(
   // Typography inline demo (strong, em shown inside paragraph)
   sections.push("");
   sections.push("    <!-- Typography: Inline elements -->");
-  sections.push(`    ${tag("heading", { type: "h2", name: "Inline Typography" })}`);
+  sections.push(`    ${tag("heading", { type: "h2", label: "Inline Typography" })}`);
   sections.push(`    ${tag("paragraph", {},
     "\n        This paragraph contains " +
     tag("strong", {}, "bold text") + ",\n        " +
@@ -579,9 +579,9 @@ export function generateShowcase(
 
     for (const def of defs) {
       sections.push("");
-      sections.push(`    ${tag("heading", { type: "h2", name: def.name.charAt(0).toUpperCase() + def.name.slice(1) })}`);
+      sections.push(`    ${tag("heading", { type: "h2", label: def.name.charAt(0).toUpperCase() + def.name.slice(1) })}`);
       if (def.description) {
-        sections.push(`    ${tag("paragraph", { name: def.description })}`);
+        sections.push(`    ${tag("paragraph", { label: def.description })}`);
       }
 
       // Use custom generator or fall back to generic

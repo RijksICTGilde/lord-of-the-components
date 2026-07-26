@@ -1,11 +1,10 @@
-"""Unit tests for extension.py helper functions, build_include, extract_slots, and setup_components."""
+"""Unit tests for extension.py helpers, build_include, generate_id, and setup_components."""
 
 import json
 import tempfile
 from unittest.mock import MagicMock
 
 import pytest
-from bs4 import BeautifulSoup, Tag
 from jinja2 import Environment, FileSystemLoader
 
 from lord_of_the_components.extension import (
@@ -13,155 +12,9 @@ from lord_of_the_components.extension import (
     ComponentExtension,
     SourceLocation,
     _CompileState,
-    _find_attribute_location,
-    _find_tag_location,
     _get_component_assets,
     setup_components,
 )
-
-# ---------------------------------------------------------------------------
-# _find_tag_location
-# ---------------------------------------------------------------------------
-
-
-class TestFindTagLocation:
-    def test_single_tag_first_line(self):
-        source = "<c-button>Click</c-button>"
-        loc = _find_tag_location(source, "c-button")
-        assert loc is not None
-        assert loc.line == 1
-        assert loc.column == 1
-
-    def test_tag_on_second_line(self):
-        source = "<div>\n  <c-button>Click</c-button>\n</div>"
-        loc = _find_tag_location(source, "c-button")
-        assert loc is not None
-        assert loc.line == 2
-        assert loc.column == 3
-
-    def test_tag_with_attributes(self):
-        source = '<c-button variant="primary">Click</c-button>'
-        loc = _find_tag_location(source, "c-button")
-        assert loc is not None
-        assert loc.line == 1
-        assert loc.column == 1
-
-    def test_self_closing_tag(self):
-        source = '<c-icon name="home"/>'
-        loc = _find_tag_location(source, "c-icon")
-        assert loc is not None
-        assert loc.line == 1
-
-    def test_occurrence_0_of_multiple(self):
-        source = "<c-button>First</c-button>\n<c-button>Second</c-button>"
-        loc = _find_tag_location(source, "c-button", occurrence=0)
-        assert loc is not None
-        assert loc.line == 1
-
-    def test_occurrence_1_of_multiple(self):
-        source = "<c-button>First</c-button>\n<c-button>Second</c-button>"
-        loc = _find_tag_location(source, "c-button", occurrence=1)
-        assert loc is not None
-        assert loc.line == 2
-
-    def test_occurrence_beyond_matches_returns_none(self):
-        source = "<c-button>Click</c-button>"
-        loc = _find_tag_location(source, "c-button", occurrence=5)
-        assert loc is None
-
-    def test_tag_not_found_returns_none(self):
-        source = "<div>No components here</div>"
-        loc = _find_tag_location(source, "c-button")
-        assert loc is None
-
-    def test_tag_name_case_insensitive(self):
-        source = "<C-Button>Click</C-Button>"
-        loc = _find_tag_location(source, "c-button")
-        assert loc is not None
-        assert loc.line == 1
-
-    def test_deeply_indented_tag(self):
-        source = "<div>\n  <div>\n    <div>\n      <c-alert>Warning</c-alert>\n    </div>\n  </div>\n</div>"
-        loc = _find_tag_location(source, "c-alert")
-        assert loc is not None
-        assert loc.line == 4
-        assert loc.column == 7
-
-    def test_tag_preceded_by_text(self):
-        source = "Some text <c-button>Click</c-button>"
-        loc = _find_tag_location(source, "c-button")
-        assert loc is not None
-        assert loc.line == 1
-        assert loc.column == 11
-
-    def test_empty_source(self):
-        loc = _find_tag_location("", "c-button")
-        assert loc is None
-
-
-# ---------------------------------------------------------------------------
-# _find_attribute_location
-# ---------------------------------------------------------------------------
-
-
-class TestFindAttributeLocation:
-    def test_attribute_on_same_line_as_tag(self):
-        source = '<c-button variant="primary">Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", "variant")
-        assert loc is not None
-        assert loc.line == 1
-
-    def test_attribute_on_different_line(self):
-        source = '<c-button\n  variant="primary"\n>Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", "variant")
-        assert loc is not None
-        assert loc.line == 2
-
-    def test_colon_prefixed_attribute(self):
-        source = '<c-button :variant="item.variant">Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", ":variant")
-        assert loc is not None
-        assert loc.line == 1
-
-    def test_at_prefixed_attribute(self):
-        source = '<c-button @click="handle">Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", "@click")
-        assert loc is not None
-        assert loc.line == 1
-
-    def test_attribute_not_found_returns_none(self):
-        source = '<c-button variant="primary">Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", "nonexistent")
-        assert loc is None
-
-    def test_tag_not_found_returns_none(self):
-        source = "<div>No components</div>"
-        loc = _find_attribute_location(source, "c-button", "variant")
-        assert loc is None
-
-    def test_second_occurrence_of_tag(self):
-        source = '<c-button variant="primary">A</c-button>\n<c-button variant="secondary">B</c-button>'
-        loc = _find_attribute_location(source, "c-button", "variant", tag_occurrence=1)
-        assert loc is not None
-        assert loc.line == 2
-
-    def test_occurrence_beyond_tags_returns_none(self):
-        source = '<c-button variant="primary">Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", "variant", tag_occurrence=5)
-        assert loc is None
-
-    def test_multiple_attributes_finds_specific_one(self):
-        source = '<c-button variant="primary" disabled>Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", "disabled")
-        assert loc is not None
-        assert loc.line == 1
-
-    def test_fallback_to_clean_attr_for_colon_prefix(self):
-        # When searching for ":variant" but it's stored as "variant" in the source
-        source = '<c-button :variant="x">Click</c-button>'
-        loc = _find_attribute_location(source, "c-button", "variant")
-        assert loc is not None
-
 
 # ---------------------------------------------------------------------------
 # _is_generic_html_attribute
@@ -203,81 +56,6 @@ class TestIsGenericHtmlAttribute:
         assert extension._is_generic_html_attribute("") is False
 
 
-# ---------------------------------------------------------------------------
-# _extract_slots
-# ---------------------------------------------------------------------------
-
-
-class TestExtractSlots:
-    @pytest.fixture
-    def extension(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        return env.extensions[ComponentExtension.identifier]
-
-    def _make_tag(self, html: str) -> Tag:
-        """Parse HTML and return the first tag."""
-        soup = BeautifulSoup(html, "html.parser")
-        return soup.find(True)  # first tag
-
-    def test_no_slots_no_content(self, extension):
-        tag = self._make_tag("<c-button></c-button>")
-        named_slots, default_content = extension._extract_slots(tag)
-        assert named_slots == {}
-        assert default_content is None
-
-    def test_default_content_only(self, extension):
-        tag = self._make_tag("<c-button>Click me</c-button>")
-        named_slots, default_content = extension._extract_slots(tag)
-        assert named_slots == {}
-        assert default_content == "Click me"
-
-    def test_named_slot(self, extension):
-        tag = self._make_tag(
-            '<c-card><template slot="header">My Title</template></c-card>'
-        )
-        named_slots, default_content = extension._extract_slots(tag)
-        assert "header" in named_slots
-        assert named_slots["header"] == "My Title"
-
-    def test_multiple_named_slots(self, extension):
-        tag = self._make_tag(
-            '<c-card>'
-            '<template slot="header">Header</template>'
-            '<template slot="footer">Footer</template>'
-            '</c-card>'
-        )
-        named_slots, default_content = extension._extract_slots(tag)
-        assert len(named_slots) == 2
-        assert named_slots["header"] == "Header"
-        assert named_slots["footer"] == "Footer"
-
-    def test_named_slot_with_default_content(self, extension):
-        tag = self._make_tag(
-            '<c-card>'
-            '<template slot="header">Title</template>'
-            'Default body content'
-            '</c-card>'
-        )
-        named_slots, default_content = extension._extract_slots(tag)
-        assert named_slots["header"] == "Title"
-        assert default_content == "Default body content"
-
-    def test_template_without_slot_is_default_content(self, extension):
-        tag = self._make_tag(
-            "<c-card><template>Not a slot</template></c-card>"
-        )
-        named_slots, default_content = extension._extract_slots(tag)
-        assert named_slots == {}
-        assert default_content is not None
-        assert "Not a slot" in default_content
-
-    def test_named_slot_with_html_content(self, extension):
-        tag = self._make_tag(
-            '<c-card><template slot="header"><strong>Bold</strong> text</template></c-card>'
-        )
-        named_slots, _ = extension._extract_slots(tag)
-        assert "<strong>Bold</strong> text" in named_slots["header"]
 
 
 # ---------------------------------------------------------------------------
@@ -294,7 +72,7 @@ class TestBuildInclude:
 
     @pytest.fixture
     def state(self):
-        return _CompileState(template_id="test.html", source="")
+        return _CompileState()
 
     def test_simple_component_no_attrs(self, extension, state):
         result = extension._build_include("button", {}, None, state)
@@ -357,7 +135,7 @@ class TestBuildInclude:
 
 
 # ---------------------------------------------------------------------------
-# _generate_id (deterministic)
+# _generate_id (per-compile counter)
 # ---------------------------------------------------------------------------
 
 
@@ -368,166 +146,25 @@ class TestGenerateId:
         env.add_extension(ComponentExtension)
         return env.extensions[ComponentExtension.identifier]
 
-    def test_returns_8_char_hex(self, extension):
-        state = _CompileState(template_id="test.html", source="")
-        result = extension._generate_id(state)
-        assert len(result) == 8
-        int(result, 16)  # should not raise
+    def test_counts_from_one(self, extension):
+        state = _CompileState()
+        assert extension._generate_id(state) == "1"
+        assert extension._generate_id(state) == "2"
 
-    def test_deterministic_for_same_input(self, extension):
-        # Two fresh states with the same template id and counter must agree.
-        state1 = _CompileState(template_id="same.html", source="")
-        state2 = _CompileState(template_id="same.html", source="")
-        assert extension._generate_id(state1) == extension._generate_id(state2)
+    def test_fresh_state_restarts(self, extension):
+        # Each compile gets its own state, so ids restart deterministically.
+        assert extension._generate_id(_CompileState()) == "1"
+        assert extension._generate_id(_CompileState()) == "1"
 
     def test_different_for_sequential_calls(self, extension):
-        state = _CompileState(template_id="test.html", source="")
-        id1 = extension._generate_id(state)
-        id2 = extension._generate_id(state)
-        assert id1 != id2
-
-    def test_different_for_different_templates(self, extension):
-        state_a = _CompileState(template_id="a.html", source="")
-        state_b = _CompileState(template_id="b.html", source="")
-        assert extension._generate_id(state_a) != extension._generate_id(state_b)
+        state = _CompileState()
+        assert extension._generate_id(state) != extension._generate_id(state)
 
 
-# ---------------------------------------------------------------------------
-# _restore_jinja_tags
-# ---------------------------------------------------------------------------
 
 
-class TestRestoreJinjaTags:
-    @pytest.fixture
-    def extension(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        return env.extensions[ComponentExtension.identifier]
-
-    @pytest.fixture
-    def state(self):
-        return _CompileState(template_id="test.html", source="")
-
-    def test_no_placeholders(self, extension, state):
-        result = extension._restore_jinja_tags("<div>Hello</div>", state)
-        assert result == "<div>Hello</div>"
-
-    def test_single_placeholder(self, extension, state):
-        state.placeholders["JINJA2_PLACEHOLDER_abc"] = '{% include "x.html.j2" %}'
-        result = extension._restore_jinja_tags("<div>JINJA2_PLACEHOLDER_abc</div>", state)
-        assert '{% include "x.html.j2" %}' in result
-
-    def test_multiple_placeholders(self, extension, state):
-        state.placeholders["JINJA2_PLACEHOLDER_1"] = "{% block a %}"
-        state.placeholders["JINJA2_PLACEHOLDER_2"] = "{% block b %}"
-        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_1 JINJA2_PLACEHOLDER_2", state)
-        assert "{% block a %}" in result
-        assert "{% block b %}" in result
-
-    def test_html_entities_unescaped(self, extension, state):
-        result = extension._restore_jinja_tags("&amp; &lt; &gt;", state)
-        assert "& < >" == result
-
-    def test_nested_placeholders(self, extension, state):
-        # Placeholder that, when expanded, contains another placeholder
-        state.placeholders["JINJA2_PLACEHOLDER_outer"] = "before JINJA2_PLACEHOLDER_inner after"
-        state.placeholders["JINJA2_PLACEHOLDER_inner"] = "RESOLVED"
-        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_outer", state)
-        assert "RESOLVED" in result
-
-    def test_max_iterations_prevents_infinite_loop(self, extension, state):
-        # Circular placeholders (pathological case) - should not hang
-        state.placeholders["JINJA2_PLACEHOLDER_a"] = "JINJA2_PLACEHOLDER_b"
-        state.placeholders["JINJA2_PLACEHOLDER_b"] = "JINJA2_PLACEHOLDER_a"
-        # Should complete without hanging (max 10 iterations)
-        result = extension._restore_jinja_tags("JINJA2_PLACEHOLDER_a", state)
-        assert isinstance(result, str)
 
 
-# ---------------------------------------------------------------------------
-# _calculate_nesting_depth
-# ---------------------------------------------------------------------------
-
-
-class TestCalculateNestingDepth:
-    @pytest.fixture
-    def extension(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        return env.extensions[ComponentExtension.identifier]
-
-    def test_top_level_component_depth_0(self, extension):
-        soup = BeautifulSoup("<c-button>Click</c-button>", "html.parser")
-        tag = soup.find("c-button")
-        tag_to_id = {id(tag): tag}
-        assert extension._calculate_nesting_depth(tag, tag_to_id) == 0
-
-    def test_nested_component_depth_1(self, extension):
-        soup = BeautifulSoup(
-            "<c-card><c-button>Click</c-button></c-card>", "html.parser"
-        )
-        card = soup.find("c-card")
-        button = soup.find("c-button")
-        tag_to_id = {id(card): card, id(button): button}
-        assert extension._calculate_nesting_depth(button, tag_to_id) == 1
-
-    def test_deeply_nested_depth_2(self, extension):
-        soup = BeautifulSoup(
-            "<c-page><c-card><c-button>Click</c-button></c-card></c-page>",
-            "html.parser",
-        )
-        page = soup.find("c-page")
-        card = soup.find("c-card")
-        button = soup.find("c-button")
-        tag_to_id = {id(page): page, id(card): card, id(button): button}
-        assert extension._calculate_nesting_depth(button, tag_to_id) == 2
-        assert extension._calculate_nesting_depth(card, tag_to_id) == 1
-        assert extension._calculate_nesting_depth(page, tag_to_id) == 0
-
-    def test_non_component_wrappers_not_counted(self, extension):
-        soup = BeautifulSoup(
-            "<c-card><div><span><c-button>Click</c-button></span></div></c-card>",
-            "html.parser",
-        )
-        card = soup.find("c-card")
-        button = soup.find("c-button")
-        tag_to_id = {id(card): card, id(button): button}
-        # Only c-card counts as a parent, not div/span
-        assert extension._calculate_nesting_depth(button, tag_to_id) == 1
-
-
-# ---------------------------------------------------------------------------
-# _is_component_tag
-# ---------------------------------------------------------------------------
-
-
-class TestIsComponentTag:
-    @pytest.fixture
-    def extension(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        return env.extensions[ComponentExtension.identifier]
-
-    def test_valid_component_tag(self, extension):
-        soup = BeautifulSoup("<c-button>x</c-button>", "html.parser")
-        tag = soup.find("c-button")
-        assert extension._is_component_tag(tag) is True
-
-    def test_regular_html_tag(self, extension):
-        soup = BeautifulSoup("<div>x</div>", "html.parser")
-        tag = soup.find("div")
-        assert extension._is_component_tag(tag) is False
-
-    def test_navigable_string(self, extension):
-        soup = BeautifulSoup("just text", "html.parser")
-        text = soup.contents[0]
-        assert extension._is_component_tag(text) is False
-
-    def test_none(self, extension):
-        assert extension._is_component_tag(None) is False
-
-    def test_plain_object(self, extension):
-        assert extension._is_component_tag("not a tag") is False
 
 
 # ---------------------------------------------------------------------------
@@ -794,99 +431,49 @@ class TestComponentErrorEdgeCases:
 
 
 class TestPreprocessGenericExceptionWrapping:
-    """Tests for the generic Exception handler at extension.py:188-190."""
+    """A non-ComponentError raised while emitting is wrapped as RuntimeError."""
 
-    def test_generic_exception_wrapped_as_runtime_error(self):
-        """Non-ComponentError exceptions get wrapped as RuntimeError with template context."""
+    def _ext(self):
         env = Environment()
         env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
+        return env.extensions[ComponentExtension.identifier]
 
-        # Monkey-patch _process_components_in_soup to raise a generic exception
-        original = ext._process_components_in_soup
+    def test_generic_exception_wrapped_as_runtime_error(self):
+        ext = self._ext()
 
-        def raise_generic(soup, state):
+        def boom(*args, **kwargs):
             raise ValueError("something went wrong internally")
 
-        ext._process_components_in_soup = raise_generic
-
+        ext._emit = boom
         with pytest.raises(RuntimeError, match="Component preprocessing failed"):
             ext.preprocess("<c-button>Click</c-button>", "broken.html")
 
-        ext._process_components_in_soup = original
-
     def test_generic_exception_includes_template_name(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
+        ext = self._ext()
 
-        def raise_generic(soup, state):
+        def boom(*args, **kwargs):
             raise TypeError("bad type")
 
-        ext._process_components_in_soup = raise_generic
-
+        ext._emit = boom
         with pytest.raises(RuntimeError, match="broken-template.html"):
             ext.preprocess("<c-button>Click</c-button>", "broken-template.html")
 
-        ext._process_components_in_soup = raise_generic  # restore isn't critical
-
     def test_generic_exception_preserves_cause(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
-
+        ext = self._ext()
         original_error = ValueError("root cause")
 
-        def raise_generic(soup, state):
+        def boom(*args, **kwargs):
             raise original_error
 
-        ext._process_components_in_soup = raise_generic
-
+        ext._emit = boom
         with pytest.raises(RuntimeError) as exc_info:
             ext.preprocess("<c-button>Click</c-button>", "test.html")
 
         assert exc_info.value.__cause__ is original_error
 
 
-class TestSlotNameAsList:
-    """Tests for extension.py:363 — slot name returned as list by BeautifulSoup."""
-
-    def test_slot_name_as_list_uses_first_element(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
-
-        # BeautifulSoup can return attribute values as lists for duplicate attrs.
-        # Construct a tag manually with slot attr as a list.
-        soup = BeautifulSoup("<div></div>", "html.parser")
-        component_tag = soup.new_tag("c-button")
-
-        template_tag = soup.new_tag("template")
-        template_tag.attrs["slot"] = ["header", "extra"]
-        template_tag.string = "Header content"
-        component_tag.append(template_tag)
-
-        named_slots, default_content = ext._extract_slots(component_tag)
-        assert "header" in named_slots
-        assert named_slots["header"] == "Header content"
 
 
-class TestOrphanedPlaceholders:
-    """Tests for extension.py:570-573 — orphaned placeholder warning."""
-
-    def test_orphaned_placeholder_logged(self):
-        env = Environment()
-        env.add_extension(ComponentExtension)
-        ext = env.extensions[ComponentExtension.identifier]
-
-        # Inject a placeholder that has no mapping
-        html = "before JINJA2_PLACEHOLDER_deadbeef after"
-        state = _CompileState(template_id="test.html", source="")
-        # The placeholder text is present but not in state.placeholders → orphaned
-
-        result = ext._restore_jinja_tags(html, state)
-        # Should return with placeholder still present (no replacement possible)
-        assert "JINJA2_PLACEHOLDER_deadbeef" in result
 
 
 class TestSetupNonListSearchpath:

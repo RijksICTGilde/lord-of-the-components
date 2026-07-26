@@ -140,8 +140,10 @@ class TestPageHead:
     """Test additional head content."""
 
     def test_head_content_injected(self, render):
+        # `head` is raw HTML: pass it via a single-quoted attribute so the inner
+        # double quotes survive verbatim (the parser never unescapes attributes).
         html = render(
-            '<c-page title="Test" head="&lt;link rel=&quot;icon&quot; href=&quot;/favicon.ico&quot;&gt;"/>'
+            "<c-page title='Test' head='<link rel=\"icon\" href=\"/favicon.ico\">'/>"
         )
         assert 'rel="icon"' in html
 
