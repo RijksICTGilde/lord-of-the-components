@@ -16,6 +16,8 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlparse
 
+from typing import Callable
+
 from jinja2 import Environment, FileSystemLoader
 
 # Add the Python package to sys.path
@@ -48,10 +50,47 @@ BUNDLED_CSS = "\n".join(
 )
 
 
+def _inject_assets(source: str) -> str:
+    """Inject the bundled RVO CSS and rvo-theme body class into fixture HTML."""
+    # Inject bundled CSS into the <head> section
+    if "</head>" in source:
+        source = source.replace("</head>", f"{BUNDLED_CSS}\n</head>")
+
+    # Add rvo-theme class to <body> so design tokens activate
+    if "<body" in source and "rvo-theme" not in source:
+        source = source.replace("<body>", '<body class="rvo-theme">')
+
+    return source
+
+
+class FixtureLoader(FileSystemLoader):
+    """FileSystemLoader that injects the bundled CSS/body-class into fixtures.
+
+    Applying the transform in get_source (rather than per request via
+    env.from_string) lets the compiled template be cached in Environment.cache,
+    so repeat requests skip the BeautifulSoup preprocess + recompile entirely.
+    """
+
+    def __init__(self, fixtures_dir: Path, transform: Callable[[str], str]) -> None:
+        super().__init__([str(fixtures_dir), str(TEMPLATES_DIR)])
+        self._fixtures_root = fixtures_dir.resolve()
+        self._transform = transform
+
+    def get_source(self, environment: Environment, template: str):  # type: ignore[override]
+        source, filename, uptodate = super().get_source(environment, template)
+        # Only fixture files get the asset injection; component templates do not.
+        if filename is not None and Path(filename).resolve().is_relative_to(self._fixtures_root):
+            source = self._transform(source)
+        return source, filename, uptodate
+
+
 def create_jinja_env() -> Environment:
     """Create a Jinja2 environment with LOTC extension and fixture templates."""
     jinja_env = Environment(
-        loader=FileSystemLoader([str(FIXTURES_DIR), str(TEMPLATES_DIR)]),
+        loader=FixtureLoader(FIXTURES_DIR, _inject_assets),
+        # Production mode: compiled templates stay in Environment.cache instead
+        # of being recompiled from source on every request.
+        auto_reload=False,
     )
     setup_components(jinja_env, registry_path=str(REGISTRY_JSON))
     return jinja_env
@@ -65,25 +104,15 @@ def render_fixture(fixture_path: str) -> str:
     """Render a fixture file through the LOTC Jinja2 pipeline.
 
     The fixture HTML is treated as a Jinja2 template, so <c-*> tags
-    get preprocessed by the ComponentExtension into real HTML.
+    get preprocessed by the ComponentExtension into real HTML. The compiled
+    template is served from the Environment cache on repeat requests.
     """
-    fixture_file = (FIXTURES_DIR / fixture_path).resolve()
-    if not fixture_file.is_relative_to(FIXTURES_DIR.resolve()):
-        return "<h1>403</h1><p>Forbidden</p>"
-    if not fixture_file.exists():
+    from jinja2 import TemplateNotFound
+
+    try:
+        template = _jinja_env.get_template(fixture_path)
+    except TemplateNotFound:
         return f"<h1>404</h1><p>Fixture not found: {fixture_path}</p>"
-
-    source = fixture_file.read_text(encoding="utf-8")
-
-    # Inject bundled CSS into the <head> section
-    if "</head>" in source:
-        source = source.replace("</head>", f"{BUNDLED_CSS}\n</head>")
-
-    # Add rvo-theme class to <body> so design tokens activate
-    if "<body" in source and "rvo-theme" not in source:
-        source = source.replace("<body>", '<body class="rvo-theme">')
-
-    template = _jinja_env.from_string(source)
     return template.render()
 
 
