@@ -42,13 +42,39 @@ active design system → `ComponentError("'c-button' needs a design system, but
 none is loaded. Declare one at setup, e.g. setup_components(env,
 design_systems=['rvo']).")`. System components skip the check and always render.
 
-## Roadmap (agreed, not yet done)
+## Discovery (done — Stage 1 of the package split)
 
-- **Decouple implementations into separate poetry packages.** The component
-  *system* (parser/extension/runtime/definitions + the system layer) is one
-  package; each design system (`lotc-rvo`, `lotc-nldd`) is an independently
-  installed package that registers itself with the core — the core must not
-  import `themes.<id>` directly. Discovery via entry points. (Its own phase.)
+Core no longer hard-codes the set of design systems. It discovers whatever is
+installed via the entry-point group `lord_of_the_components.design_systems`; each
+system exposes a `DesignSystem` descriptor (`design_system.py`):
+
+```python
+@dataclass(frozen=True)
+class DesignSystem:
+    name: str                       # "rvo"
+    renderers_module: str           # import path of the Python renderers
+    templates_path: Path | None     # optional jinja templates dir -> loader path
+    static_path: Path | None        # optional CSS/assets dir
+```
+
+`setup_components(design_systems=["rvo"])` resolves each id against the discovered
+descriptors (typo → `get_close_matches` suggestion listing the *installed*
+systems), registers only the declared systems' renderers, and appends any
+`templates_path` to the loader. `KNOWN_THEMES` is gone; core imports no
+`themes.<id>` by name.
+
+The in-repo rvo/nldd still live under `themes/` for now but are wired exactly
+like external packages — each is registered via an entry point in the core
+`pyproject.toml`. Extracting them physically is Stage 2 and changes nothing about
+discovery.
+
+## Roadmap (remaining)
+
+- **Stage 2 — physical extraction into separate poetry packages.** Move each
+  system's renderers (+ rvo templates + rvo static) into `lotc-rvo` / `lotc-nldd`
+  with their own `pyproject.toml` + entry point; drop them from core; point the
+  generator at the new locations. Discovery is already in place, so core code does
+  not change.
 - **Per-tag `theme` override.** Once a page declares availability, a tag may carry
   `theme="rvo|nldd|system"`; the engine resolves against the declared systems and
   falls back to the system layer. For now the practical use is just the per-page

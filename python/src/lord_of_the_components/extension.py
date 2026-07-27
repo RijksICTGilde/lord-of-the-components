@@ -13,11 +13,13 @@ through as unmodified slices of the original source.
 import logging
 from dataclasses import dataclass
 from difflib import get_close_matches
+from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
 from jinja2 import Environment
 from jinja2.ext import Extension
 
+from .design_system import DesignSystem, discover_design_systems
 from .parser import (
     Attr,
     ComponentNode,
@@ -120,34 +122,39 @@ def _py_string(value: str) -> str:
     return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'"
 
 
-#: Installable design systems (each has a themes/<id>/renderers.py). The
-#: theme-agnostic "system" layer (LOTC's own layout + basic HTML) is NOT a design
-#: system: it is always present and needs nothing loaded. There is no implicit
-#: default design system — a page must declare which ones it uses.
-KNOWN_THEMES = ("rvo", "nldd")
-
 #: Names that mean "the always-present system layer" rather than a design system.
+#: The theme-agnostic "system" layer (LOTC's own layout + basic HTML) is always
+#: present and needs nothing loaded. There is no implicit default design system —
+#: a page declares which ones it uses; core discovers the installed ones.
 SYSTEM_ALIASES = ("system", "default")
 
 
-def _resolve_theme(theme: str) -> str:
-    """Validate a single design-system id, or raise with a suggestion."""
-    if theme in KNOWN_THEMES:
-        return theme
-    suggestion = get_close_matches(theme, KNOWN_THEMES, n=1, cutoff=0.4)
+@lru_cache(maxsize=1)
+def _available_design_systems() -> Dict[str, DesignSystem]:
+    """Installed design systems, discovered via entry points (cached per process)."""
+    return discover_design_systems()
+
+
+def _resolve_theme(theme: str) -> DesignSystem:
+    """Resolve a design-system id to its installed descriptor, or raise."""
+    available = _available_design_systems()
+    if theme in available:
+        return available[theme]
+    names = sorted(available)
+    suggestion = get_close_matches(theme, names, n=1, cutoff=0.4)
     hint = f" Did you mean '{suggestion[0]}'?" if suggestion else ""
+    installed = ", ".join(names) if names else "(none installed)"
     raise RuntimeError(
-        f"Unknown design system '{theme}'. Known design systems: "
-        f"{', '.join(KNOWN_THEMES)}.{hint}"
+        f"Unknown design system '{theme}'. Installed design systems: {installed}.{hint}"
     )
 
 
-def _register_theme_renderers(jinja_env: Environment, theme: str) -> None:
-    """Register the generated Python renderers as `_lotc_<theme>_<name>` globals."""
+def _register_theme_renderers(jinja_env: Environment, ds: DesignSystem) -> None:
+    """Register a design system's Python renderers as `_lotc_<name>_<comp>` globals."""
     import importlib
 
     try:
-        module = importlib.import_module(f"lord_of_the_components.themes.{theme}.renderers")
+        module = importlib.import_module(ds.renderers_module)
     except ModuleNotFoundError:
         return
     for attr_name in dir(module):
@@ -155,7 +162,7 @@ def _register_theme_renderers(jinja_env: Environment, theme: str) -> None:
             continue
         fn = getattr(module, attr_name)
         if callable(fn) and getattr(fn, "__module__", "") == module.__name__:
-            jinja_env.globals[f"_lotc_{theme}_{attr_name}"] = fn
+            jinja_env.globals[f"_lotc_{ds.name}_{attr_name}"] = fn
 
 
 def _slot_name(node: TemplateNode) -> Optional[str]:
@@ -713,20 +720,25 @@ def setup_components(
         declared = [theme]
     else:
         declared = []
-    resolved = tuple(_resolve_theme(t) for t in declared)  # validates each id
-    primary = resolved[0] if resolved else None
+    resolved = tuple(_resolve_theme(t) for t in declared)  # -> DesignSystem descriptors
+    primary = resolved[0].name if resolved else None
 
     # Register the generated Python renderers (the fast backend) for every
-    # declared design system — loading only what the page asked for.
+    # declared design system — loading only what the page asked for. Each system
+    # may also contribute its own templates dir to the loader search path (used
+    # once the systems are extracted into their own packages).
     ext = jinja_env.extensions.get(ComponentExtension.identifier)
     if isinstance(ext, ComponentExtension):
         ext.fold = fold
         ext.validate_data = validate_data
         ext.debug = debug
-        ext.design_systems = resolved
+        ext.design_systems = tuple(ds.name for ds in resolved)
         ext.render_theme = primary
     for ds in resolved:
         _register_theme_renderers(jinja_env, ds)
+        ds_searchpath = getattr(loader, "searchpath", None)
+        if ds.templates_path is not None and isinstance(ds_searchpath, list):
+            ds_searchpath.append(str(ds.templates_path))
 
     # Render-time data-binding validation (:items, :columns, ...).
     from .validation import validate_binding

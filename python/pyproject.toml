@@ -23,6 +23,13 @@ dependencies = [
     "jinja2>=3.0",
 ]
 
+# In-repo design systems, discovered by core via this entry-point group. When
+# extracted to their own packages (lotc-rvo, lotc-nldd) each package declares its
+# own entry point here instead; core discovery is unchanged.
+[project.entry-points."lord_of_the_components.design_systems"]
+rvo = "lord_of_the_components.themes.rvo:DESIGN_SYSTEM"
+nldd = "lord_of_the_components.themes.nldd:DESIGN_SYSTEM"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
