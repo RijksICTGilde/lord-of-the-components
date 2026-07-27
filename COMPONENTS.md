@@ -4,20 +4,27 @@
 
 | component | category | props | events | bindings | rvo | nldd |
 |---|---|---|---|---|---|---|
+| accordion | data | 1 | 0 | 0 | ✅ | — |
+| accordion-item | data | 3 | 0 | 0 | ✅ | — |
 | alert | feedback | 6 | 0 | 0 | ✅ | — |
+| app-shell | layout | 3 | 0 | 0 | ✅ | — |
+| auto-grid | layout | 3 | 0 | 0 | ✅ | — |
 | b | html | 1 | 0 | 0 | ✅ | — |
+| badge | feedback | 3 | 0 | 0 | ✅ | — |
 | blockquote | html | 1 | 0 | 0 | ✅ | — |
 | breadcrumbs | navigation | 3 | 0 | 0 | ✅ | — |
 | button | actions | 15 | 3 | 0 | ✅ | — |
 | card | data-display | 15 | 1 | 0 | ✅ | — |
+| checkbox | forms | 7 | 0 | 0 | ✅ | — |
 | code | html | 1 | 0 | 0 | ✅ | — |
+| columns | layout | 6 | 0 | 0 | ✅ | — |
 | data-list | data-display | 1 | 0 | 0 | ✅ | — |
 | div | html | 1 | 0 | 0 | ✅ | — |
 | em | typography | 2 | 0 | 0 | ✅ | — |
 | footer | layout | 3 | 0 | 0 | ✅ | — |
 | grid | layout | 4 | 0 | 0 | ✅ | — |
 | header | layout | 4 | 0 | 0 | ✅ | — |
-| heading | typography | 3 | 0 | 0 | ✅ | — |
+| heading | typography | 4 | 0 | 0 | ✅ | — |
 | hero | layout | 7 | 0 | 0 | ✅ | — |
 | hr | html | 1 | 0 | 0 | ✅ | — |
 | i | html | 1 | 0 | 0 | ✅ | — |
@@ -29,12 +36,48 @@
 | link | typography | 17 | 1 | 0 | ✅ | — |
 | max-width-layout | layout | 4 | 0 | 0 | ✅ | — |
 | menu | navigation | 4 | 1 | 1 | ✅ | — |
+| option | forms | 5 | 0 | 0 | ✅ | — |
 | paragraph | typography | 5 | 0 | 0 | ✅ | — |
+| radio | forms | 7 | 0 | 0 | ✅ | — |
+| select | forms | 6 | 0 | 0 | ✅ | — |
 | small | html | 1 | 0 | 0 | ✅ | — |
 | span | html | 1 | 0 | 0 | ✅ | — |
+| stack | layout | 6 | 0 | 0 | ✅ | — |
 | strong | typography | 2 | 0 | 0 | ✅ | — |
+| tab | navigation | 4 | 0 | 0 | ✅ | — |
+| table | data | 2 | 0 | 0 | ✅ | — |
+| table-head | data | 1 | 0 | 0 | ✅ | — |
+| table-row | data | 1 | 0 | 0 | ✅ | — |
+| tabs | navigation | 2 | 0 | 0 | ✅ | — |
+| tag | feedback | 3 | 0 | 0 | ✅ | — |
+| td | data | 2 | 0 | 0 | ✅ | — |
 | text-input | forms | 9 | 0 | 0 | ✅ | — |
 | textarea | forms | 7 | 0 | 0 | ✅ | — |
+| th | data | 2 | 0 | 0 | ✅ | — |
+
+## accordion  (data)
+
+Container for <c-accordion-item> collapsible items
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## accordion-item  (data)
+
+A collapsible item; title via prop, panel body via content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| title | string | — |  |  |
+| open | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
 
 ## alert  (feedback)
 
@@ -52,12 +95,51 @@ Status alert with icon, heading, and optional close button
 events: —    bindings: —
 content: yes
 
+## app-shell  (layout)
+
+Application shell layout (header / sidebar / main / footer) via named grid areas; regions come from <template slot="header|sidebar|footer">, main from the body
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| direction | enum | left right | left |  |
+| width | string | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## auto-grid  (layout)
+
+Responsive column grid: as many columns as fit at a minimum width, then wrap
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| min | string | — |  |  |
+| gap | string | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
 ## b  (html)
 
 Stylistically bold text
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## badge  (feedback)
+
+Small count or notification badge
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| type | enum | default info success warning error | default |  |
+| label | string | — |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —
@@ -137,12 +219,45 @@ Content container with optional image and link
 events: @click    bindings: —
 content: yes
 
+## checkbox  (forms)
+
+Single checkbox with a label
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| name | string | — |  |  |
+| value | string | — |  |  |
+| label | string | — |  |  |
+| checked | boolean | — |  |  |
+| disabled | boolean | — |  |  |
+| required | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: no
+
 ## code  (html)
 
 Inline code
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## columns  (layout)
+
+Grid with an explicit column count and a mobile-first per-breakpoint fallback (cols = base; sm/md/lg override upward)
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| columns | string | — |  |  |
+| sm | string | — |  |  |
+| md | string | — |  |  |
+| lg | string | — |  |  |
+| gap | string | — |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —
@@ -230,6 +345,7 @@ Semantic heading element with dynamic level
 | prop | type | values | default | required |
 |---|---|---|---|---|
 | type | enum | h1 h2 h3 h4 h5 h6 | h1 |  |
+| size | enum | 1 2 3 4 5 6 |  |  |
 | label | string | — |  |  |
 | class | string | — |  |  |
 
@@ -405,6 +521,21 @@ Navigation menu with items
 events: @select    bindings: :items
 content: yes
 
+## option  (forms)
+
+A single option for a select; label via prop or content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| value | string | — |  |  |
+| label | string | — |  |  |
+| selected | boolean | — |  |  |
+| disabled | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
 ## paragraph  (typography)
 
 Text paragraph with color, size, and spacing options
@@ -415,6 +546,39 @@ Text paragraph with color, size, and spacing options
 | color | enum | logoblauw wit zwart grijs-500 grijs-900 | grijs-900 |  |
 | size | enum | sm md lg | md |  |
 | no-spacing | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## radio  (forms)
+
+Single radio button with a label
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| name | string | — |  |  |
+| value | string | — |  |  |
+| label | string | — |  |  |
+| checked | boolean | — |  |  |
+| disabled | boolean | — |  |  |
+| required | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: no
+
+## select  (forms)
+
+Dropdown select; <option> elements go in the content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| name | string | — |  |  |
+| value | string | — |  |  |
+| placeholder | string | — |  |  |
+| disabled | boolean | — |  |  |
+| required | boolean | — |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —
@@ -442,6 +606,22 @@ Generic inline container
 events: —    bindings: —
 content: yes
 
+## stack  (layout)
+
+Flex stack with an explicit direction (vertical | horizontal), enforced uniformly across themes
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| direction | enum | vertical horizontal | vertical |  |
+| gap | string | — |  |  |
+| wrap | boolean | — |  |  |
+| align | enum | start center end stretch |  |  |
+| justify | enum | start center end between |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
 ## strong  (typography)
 
 Semantic bold text wrapper
@@ -449,6 +629,91 @@ Semantic bold text wrapper
 | prop | type | values | default | required |
 |---|---|---|---|---|
 | label | string | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## tab  (navigation)
+
+A single tab; label via prop or content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| label | string | — |  |  |
+| href | string | — |  |  |
+| active | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## table  (data)
+
+Data table; <c-table-head> and <c-table-row> go in the content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| columns | string | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## table-head  (data)
+
+Table header row; <c-th> cells go in the content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## table-row  (data)
+
+Table body row; <c-td> cells go in the content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## tabs  (navigation)
+
+Tab bar; <c-tab> items go in the content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| aria-label | string | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## tag  (feedback)
+
+Small labelled status chip
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| type | enum | default info success warning error | default |  |
+| label | string | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes
+
+## td  (data)
+
+Table body cell; value via content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| numeric | boolean | — |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —
@@ -489,3 +754,15 @@ Multi-line text input
 
 events: —    bindings: —
 content: no
+
+## th  (data)
+
+Table header cell; label via content
+
+| prop | type | values | default | required |
+|---|---|---|---|---|
+| numeric | boolean | — |  |  |
+| class | string | — |  |  |
+
+events: —    bindings: —
+content: yes

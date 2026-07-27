@@ -627,6 +627,19 @@
           "description": "Heading level (h1-h6)"
         },
         {
+          "name": "size",
+          "type": "enum",
+          "enum_values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "description": "Visual size (1-6), independent of the heading level"
+        },
+        {
           "name": "label",
           "type": "string",
           "description": "Heading text (can be overridden by content between tags)"

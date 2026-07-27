@@ -53,6 +53,14 @@ def test_heading_maps_to_nldd_title_with_slotted_h(render):
     assert "<h2>Title</h2>" in html
 
 
+def test_heading_visual_size_decoupled_from_level(render):
+    # An explicit `size` sets the visual scale independent of the semantic level:
+    # a real <h1> rendered at nldd-title size 2 (as bg.rijks.app does).
+    html = render('<c-heading type="h1" size="2">Begane Grond</c-heading>')
+    assert 'size="2"' in html and "<h1>Begane Grond</h1>" in html
+    assert 'size="1"' not in html  # the level-derived size is overridden
+
+
 def test_paragraph_is_native_p(render):
     html = render("<c-paragraph>Body</c-paragraph>")
     assert "<p" in html and "Body" in html

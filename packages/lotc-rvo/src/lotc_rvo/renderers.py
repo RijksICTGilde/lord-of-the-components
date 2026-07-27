@@ -241,7 +241,7 @@ def checkbox(*, name='', value='', label='', checked=False, disabled=False, requ
     parts.append('</label>')
     return Markup(''.join(parts))
 
-def heading(*, type='h1', label='', content=None, _extra=None, _class=''):
+def heading(*, type='h1', size='', label='', content=None, _extra=None, _class=''):
     parts = []
     _el0 = type or 'h1'
     cls0 = ''

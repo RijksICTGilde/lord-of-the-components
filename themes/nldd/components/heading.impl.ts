@@ -10,7 +10,17 @@ export const headingImpl = defineImplementation({
   root: {
     element: "nldd-title",
     isRoot: true,
-    attributes: [{ prop: "type", attr: "size", type: "value", valueMap: "size" }],
+    attributes: [
+      // Explicit visual size wins; otherwise derive it from the heading level.
+      { prop: "size", attr: "size", type: "value", conditional: true },
+      {
+        prop: "type",
+        attr: "size",
+        type: "value",
+        valueMap: "size",
+        when: { not: { prop: "size" } },
+      },
+    ],
     children: [
       {
         element: { prop: "type", default: "h1" },
