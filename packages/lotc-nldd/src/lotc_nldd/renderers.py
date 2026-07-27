@@ -351,14 +351,18 @@ def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, conte
     parts = []
     cls0 = ''
     cls0 = merge_class(cls0, _class)
-    parts.append('<p')
+    parts.append('<nldd-rich-text')
     if cls0:
         parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="paragraph"')
+    parts.append(' spacing="snug"')
     parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append('<p')
     parts.append('>')
     parts.append(((content or '') if content else esc(label)))
     parts.append('</p>')
+    parts.append('</nldd-rich-text>')
     return Markup(''.join(parts))
 
 def radio(*, name='', value='', label='', checked=False, disabled=False, required=False, content=None, _extra=None, _class=''):
