@@ -1,3 +1,4 @@
+{% macro lotc_render(_component_context) %}
 {% set title = _component_context.get('title', '') %}
 {% set icon = _component_context.get('icon', '') %}
 {% set children = _component_context.get('content', '') %}
@@ -5,3 +6,4 @@
     {% if title %}<nldd-title size="4"><h2 class="bg-section-title">{{ title }}</h2></nldd-title>{% endif %}
     {% if icon or children %}<div class="bg-section-head-aside">{{ children | safe }}{% if icon %}{{ _lotc_nldd_icon(icon=icon, _class='bg-head-icon') }}{% endif %}</div>{% endif %}
 </div>
+{% endmacro %}

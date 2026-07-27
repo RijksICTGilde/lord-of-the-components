@@ -1,3 +1,4 @@
+{% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get('icon', '') %}
 {% set value = _component_context.get('value', '') %}
 {% set label = _component_context.get('label', '') %}
@@ -13,3 +14,4 @@
         </nldd-container>
     </nldd-card>
 </a>
+{% endmacro %}

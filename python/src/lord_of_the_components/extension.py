@@ -205,6 +205,9 @@ class ComponentExtension(Extension):
         # Resolved DesignSystem descriptors for the declared systems, in order
         # (used by c-page to emit each system's CSS/JS bundle). Set at setup.
         self.active_design_systems: tuple[Any, ...] = ()
+        # Components whose lotc_render macro was looked up and NOT found, so we
+        # don't re-attempt get_template on every use (lazy macro registration).
+        self._jinja_macro_missing: set[str] = set()
         # Constant folding: render fully-literal python components at compile time.
         self.fold = True
         # Validate bound data structures (:items, :columns, ...) at render time.
@@ -556,6 +559,13 @@ class ComponentExtension(Extension):
         context_str = ", ".join(context_items)
         set_stmts_str = "".join(set_statements)
 
+        # Prefer calling the template's `lotc_render` macro directly (registered as
+        # a global at setup) — a compiled function call, far cheaper than the
+        # {% include %} machinery. Fall back to the include when no macro is
+        # registered (e.g. bare-extension unit tests with no loader).
+        macro_global = f"_lotc_jinja_{_py_ident(component_name)}"
+        if self._ensure_jinja_macro(component_name) is not None:
+            return f"{set_stmts_str}{{{{ {macro_global}({{{context_str}}}) }}}}"
         return (
             f"{set_stmts_str}"
             f"{{% set _component_context = {{{context_str}}} %}}"
@@ -698,6 +708,32 @@ class ComponentExtension(Extension):
             return f"{{% raw %}}{html}{{% endraw %}}"
         return html
 
+    def _ensure_jinja_macro(self, component_name: str) -> Optional[Any]:
+        """Lazily load a jinja component template's `lotc_render` macro and cache
+        it as the global `_lotc_jinja_<name>`, so the emitter can call it directly
+        instead of paying {% include %} overhead. Registered on first use (not at
+        setup) so a page only pays for the components it actually uses. Returns the
+        macro, or None (no loader / missing template / no macro)."""
+        key = f"_lotc_jinja_{_py_ident(component_name)}"
+        macro = self.environment.globals.get(key)
+        if macro is not None:
+            return macro
+        if component_name in self._jinja_macro_missing:
+            return None
+        if getattr(self.environment, "loader", None) is None:
+            self._jinja_macro_missing.add(component_name)
+            return None
+        try:
+            tmpl = self.environment.get_template(f"components/{component_name}.html.j2")
+            macro = getattr(tmpl.module, "lotc_render", None)
+        except Exception:  # noqa: BLE001 — missing template etc.: fall back to include
+            macro = None
+        if macro is None:
+            self._jinja_macro_missing.add(component_name)
+            return None
+        self.environment.globals[key] = macro
+        return macro
+
     def _fold_jinja_component(
         self,
         component_name: str,
@@ -710,17 +746,14 @@ class ComponentExtension(Extension):
         HTML, so its `{% include %}` is gone at render time. Returns None (falling
         back to the include) if the template is missing or rendering fails.
         """
-        from jinja2 import TemplateNotFound
         from markupsafe import Markup
 
         from .registry import AttributeType
 
-        # No loader (e.g. bare-extension unit tests) -> can't fold; use the include.
-        if self.environment.loader is None:
-            return None
-        try:
-            template = self.environment.get_template(f"components/{component_name}.html.j2")
-        except (TemplateNotFound, TypeError):
+        # The component renders via its `lotc_render` macro. No macro (e.g. no
+        # loader) -> can't fold; use the include.
+        macro = self._ensure_jinja_macro(component_name)
+        if macro is None:
             return None
 
         # Build _component_context as real Python values (mirrors _build_include's
@@ -743,7 +776,7 @@ class ComponentExtension(Extension):
             ctx["slots"] = {name: Markup(html) for name, html in named_slots.items()}
 
         try:
-            html = template.render(_component_context=ctx)
+            html = str(macro(ctx))
         except Exception:  # noqa: BLE001 — any failure: fall back to the include
             return None
         if _has_jinja(html):

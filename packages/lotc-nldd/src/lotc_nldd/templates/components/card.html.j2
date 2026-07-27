@@ -1,4 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set padding_map = {'none': '0', 'sm': '16', 'md': '20', 'lg': '24', 'xl': '32'} %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set background_color = _component_context.get('background-color', '') %}
@@ -15,7 +17,6 @@
 {% set padding = _component_context.get('padding', 'md') %}
 {% set show_link_indicator = _component_context.get('show-link-indicator', false) %}
 {% set title = _component_context.get('title', '') %}
-{% set padding_map = {'none': '0', 'sm': '16', 'md': '20', 'lg': '24', 'xl': '32'} %}
 {% set css_classes = [] %}
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
@@ -37,3 +38,4 @@
         {{ children | safe }}
     </nldd-container>
 </nldd-card>
+{% endmacro %}

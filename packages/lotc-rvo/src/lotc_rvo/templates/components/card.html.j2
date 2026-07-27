@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set background_color = _component_context.get('background-color', '') %}
@@ -155,3 +156,4 @@
     </div>
     {% endif %}
 </div>
+{% endmacro %}

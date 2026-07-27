@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set open = _component_context.get('open', false) %}
@@ -47,3 +48,4 @@
         {{ children | safe }}
     </div>
 </details>
+{% endmacro %}

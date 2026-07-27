@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set size = _component_context.get('size', '') %}
@@ -65,3 +66,4 @@
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children | safe }}
 </div>
+{% endmacro %}

@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set direction = _component_context.get('direction', 'left') %}
@@ -40,3 +41,4 @@
     </footer>
     {% endif %}
 </div>
+{% endmacro %}

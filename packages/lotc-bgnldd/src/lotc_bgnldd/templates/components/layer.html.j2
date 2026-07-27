@@ -1,3 +1,4 @@
+{% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get('icon', '') %}
 {% set title = _component_context.get('title', '') %}
 {% set count = _component_context.get('count', '') %}
@@ -13,3 +14,4 @@
     </span>
     {{ _lotc_nldd_icon(icon='chevron-right', _class='bg-layer-go') }}
 </a>
+{% endmacro %}

@@ -243,25 +243,17 @@ export class Jinja2Generator {
    * Generate a complete Jinja2 template for a component implementation.
    */
   generateTemplate(impl: ComponentImplementation): string {
-    const lines: string[] = [];
+    // Module-level imports stay outside the macro; everything that reads the
+    // per-instance context goes inside it.
+    const head: string[] = [];
+    const body: string[] = [];
 
-    // ── Imports ────────────────────────────────────────────────────────────
+    // ── Imports (module level) ─────────────────────────────────────────────
     if (impl.mixins?.genericAttributes) {
-      lines.push("{% import 'components/_generic_attributes.j2' as attrs %}");
+      head.push("{% import 'components/_generic_attributes.j2' as attrs %}");
     }
     if (impl.mixins?.utilityClasses) {
-      lines.push("{% import 'components/_attribute_mixin.j2' as attributes %}");
-    }
-
-    // ── Prop variables ────────────────────────────────────────────────────
-    lines.push(...this.emitPropVariables(impl));
-
-    // ── Computed variables ────────────────────────────────────────────────
-    if (impl.computedVars) {
-      for (const cv of impl.computedVars) {
-        const cond = this.renderCondition(cv.condition);
-        lines.push(`{% set ${cv.name} = ${cond} %}`);
-      }
+      head.push("{% import 'components/_attribute_mixin.j2' as attributes %}");
     }
 
     // ── Value maps ────────────────────────────────────────────────────────
@@ -271,14 +263,35 @@ export class Jinja2Generator {
         const entries = Object.entries(map)
           .map(([k, v]) => `'${k}': '${v}'`)
           .join(", ");
-        lines.push(`{% set ${varName}_map = {${entries}} %}`);
+        body.push(`{% set ${varName}_map = {${entries}} %}`);
+      }
+    }
+
+    // ── Prop variables ────────────────────────────────────────────────────
+    body.push(...this.emitPropVariables(impl));
+
+    // ── Computed variables ────────────────────────────────────────────────
+    if (impl.computedVars) {
+      for (const cv of impl.computedVars) {
+        const cond = this.renderCondition(cv.condition);
+        body.push(`{% set ${cv.name} = ${cond} %}`);
       }
     }
 
     // ── Element tree ──────────────────────────────────────────────────────
-    lines.push(...this.emitElementNode(impl.root, impl, 0));
+    body.push(...this.emitElementNode(impl.root, impl, 0));
 
-    return lines.join("\n") + "\n";
+    // Wrap the body in a macro so the extension can call it directly
+    // ({{ macro(ctx) }}) instead of paying {% include %} overhead per instance.
+    // The name has no leading underscore so Jinja exports it on the module.
+    return (
+      [
+        ...head,
+        "{% macro lotc_render(_component_context) %}",
+        ...body,
+        "{% endmacro %}",
+      ].join("\n") + "\n"
+    );
   }
 
   /**

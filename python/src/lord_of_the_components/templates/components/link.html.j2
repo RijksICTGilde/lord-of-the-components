@@ -1,5 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
+{% macro lotc_render(_component_context) %}
+{% set colors_map = {'primary': 'hemelblauw', 'primary-dark': 'donkerblauw', 'muted': 'grijs-700', 'inverse': 'wit', 'hemelblauw': 'hemelblauw', 'donkerblauw': 'donkerblauw', 'logoblauw': 'logoblauw'} %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set active = _component_context.get('active', false) %}
@@ -18,7 +20,6 @@
 {% set show_icon = _component_context.get('show-icon', 'no') %}
 {% set target = _component_context.get('target', '') %}
 {% set weight = _component_context.get('weight', 'bold') %}
-{% set colors_map = {'primary': 'hemelblauw', 'primary-dark': 'donkerblauw', 'muted': 'grijs-700', 'inverse': 'wit', 'hemelblauw': 'hemelblauw', 'donkerblauw': 'donkerblauw', 'logoblauw': 'logoblauw'} %}
 {% set css_classes = ['rvo-link'] %}
 {% if active %}{% set css_classes = css_classes + ['rvo-link--active'] %}{% endif %}
 {% if hover %}{% set css_classes = css_classes + ['rvo-link--hover'] %}{% endif %}
@@ -67,3 +68,4 @@
     </span>
     {% endif %}
 </a>
+{% endmacro %}

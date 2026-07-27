@@ -1,5 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
+{% macro lotc_render(_component_context) %}
+{% set status_icon_map = {'info': 'info', 'warning': 'waarschuwing', 'error': 'foutmelding', 'success': 'bevestiging'} %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set closable = _component_context.get('closable', false) %}
@@ -7,7 +9,6 @@
 {% set max_width = _component_context.get('max-width', '') %}
 {% set padding = _component_context.get('padding', 'md') %}
 {% set type = _component_context.get('type', 'info') %}
-{% set status_icon_map = {'info': 'info', 'warning': 'waarschuwing', 'error': 'foutmelding', 'success': 'bevestiging'} %}
 {% set css_classes = ['rvo-alert'] %}
 {% if type == 'info' %}{% set css_classes = css_classes + ['rvo-alert--info'] %}{% endif %}
 {% if type == 'success' %}{% set css_classes = css_classes + ['rvo-alert--success'] %}{% endif %}
@@ -69,3 +70,4 @@
         {% endif %}
     </div>
 </div>
+{% endmacro %}

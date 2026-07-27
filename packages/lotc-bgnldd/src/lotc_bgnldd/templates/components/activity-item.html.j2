@@ -1,3 +1,4 @@
+{% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get('icon', '') %}
 {% set actor = _component_context.get('actor', '') %}
 {% set action = _component_context.get('action', '') %}
@@ -11,3 +12,4 @@
         <span class="bg-activity-meta">{% if res %}<span class="bg-activity-res">{{ res }}</span>{% endif %}{% if at %}<span class="bg-activity-at">{{ at }}</span>{% endif %}</span>
     </span>
 </li>
+{% endmacro %}

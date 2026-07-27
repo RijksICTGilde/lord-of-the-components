@@ -1,3 +1,5 @@
+{% macro lotc_render(_component_context) %}
 {% set label = _component_context.get('label', 'Hulplinks') %}
 {% set children = _component_context.get('content', '') %}
 <nldd-menu-bar slot="utility" accessible-label="{{ label }}" data-lotc-component="menu-bar">{{ children | safe }}</nldd-menu-bar>
+{% endmacro %}

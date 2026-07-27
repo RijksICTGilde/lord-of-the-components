@@ -37,10 +37,11 @@ def test_python_component_emits_call(ext_env):
     assert "components/button.html.j2" not in out
 
 
-def test_jinja_component_still_includes(ext_env):
-    # card is still on the jinja backend.
+def test_jinja_component_renders_via_macro(ext_env):
+    # card is on the jinja backend; it renders by calling its lotc_render macro
+    # (a compiled function call) rather than a slow {% include %}.
     out = _pre(ext_env, "<c-card>Body</c-card>")
-    assert "components/card.html.j2" in out
+    assert "_lotc_jinja_card(" in out and "components/card.html.j2" not in out
 
 
 def test_literal_prop_is_string_literal(ext_env):
