@@ -2163,6 +2163,48 @@
       "content": {
         "allowed": true
       }
+    },
+    {
+      "name": "accordion",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Container for <c-accordion-item> collapsible items",
+      "category": "data",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "accordion-item",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Summary title"
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "A collapsible item; title via prop, panel body via content",
+      "category": "data",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }

@@ -1,0 +1,49 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set open = _component_context.get('open', false) %}
+{% set title = _component_context.get('title', '') %}
+{% set css_classes = ['rvo-accordion__item'] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<details
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="accordion-item"
+    {% if open %}open{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% set css_classes = ['rvo-accordion__item-summary'] %}
+    <summary
+        class="{{ css_classes | join(' ') }}">
+        {% set css_classes = ['rvo-accordion__item-icon'] %}
+        <div
+            class="{{ css_classes | join(' ') }}">
+            {% set css_classes = ['utrecht-icon', 'rvo-icon', 'rvo-icon-delta-omlaag', 'rvo-icon--md', 'rvo-icon--hemelblauw', 'rvo-accordion__item-icon--closed'] %}
+            <span
+                role="img"
+                aria-hidden="true"
+                class="{{ css_classes | join(' ') }}">
+            </span>
+            {% set css_classes = ['utrecht-icon', 'rvo-icon', 'rvo-icon-delta-omhoog', 'rvo-icon--md', 'rvo-icon--hemelblauw', 'rvo-accordion__item-icon--open'] %}
+            <span
+                role="img"
+                aria-hidden="true"
+                class="{{ css_classes | join(' ') }}">
+            </span>
+        </div>
+        {% set css_classes = ['rvo-accordion__item-title-container'] %}
+        <div
+            class="{{ css_classes | join(' ') }}">
+            {% set css_classes = ['utrecht-heading-3', 'rvo-accordion__item-title'] %}
+            <h3
+                class="{{ css_classes | join(' ') }}">
+                {{ title | safe }}
+            </h3>
+        </div>
+    </summary>
+    {% set css_classes = ['rvo-accordion__content'] %}
+    <div
+        class="{{ css_classes | join(' ') }}">
+        {{ children | safe }}
+    </div>
+</details>
