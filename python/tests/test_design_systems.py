@@ -130,3 +130,21 @@ def test_debug_still_flags_unknown_attribute():
     with pytest.raises(ComponentError) as exc:
         _render(env, '<c-button typ="primary" label="Go"/>')
     assert "Unknown attribute" in str(exc.value)
+
+
+# ── entry-point discovery (decoupled: core has no hard-coded theme list) ──────
+
+
+def test_discovery_finds_installed_design_systems():
+    from lord_of_the_components.design_system import discover_design_systems
+
+    found = discover_design_systems()
+    assert {"rvo", "nldd"} <= set(found)
+    assert found["rvo"].renderers_module.endswith("themes.rvo.renderers")
+
+
+def test_core_has_no_hardcoded_theme_list():
+    # The decoupling: core no longer ships a KNOWN_THEMES constant.
+    import lord_of_the_components.extension as ext
+
+    assert not hasattr(ext, "KNOWN_THEMES")
