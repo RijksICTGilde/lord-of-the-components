@@ -11,10 +11,15 @@
  *   .lotc-auto-grid  — responsive column grid via repeat(auto-fit, minmax(...)).
  *                      Shows as many columns as fit at --lotc-col-min each, then
  *                      wraps — the "2 or 3 columns depending on width" pattern.
+ *   .lotc-stack      — one-dimensional flex stack with an explicit
+ *                      direction (vertical | horizontal). Because it is OUR own
+ *                      flexbox, the direction is enforced uniformly across themes
+ *                      — it does not depend on a theme providing both variants.
  *
  * Tunables are CSS custom properties, settable inline by the components:
  *   --lotc-sidebar-width (default 16rem), --lotc-shell-gap (default 0)
  *   --lotc-col-min (default 16rem), --lotc-grid-gap (default 1rem)
+ *   --lotc-stack-gap (default 1rem)
  */
 
 /* ── App shell ──────────────────────────────────────────────────────────── */
@@ -65,3 +70,24 @@
     minmax(min(var(--lotc-col-min, 16rem), 100%), 1fr)
   );
 }
+
+/* ── Stack (uniform direction primitive) ────────────────────────────────── */
+.lotc-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lotc-stack-gap, 1rem);
+}
+.lotc-stack--horizontal { flex-direction: row; }
+.lotc-stack--wrap { flex-wrap: wrap; }
+
+/* Cross-axis alignment */
+.lotc-stack--align-start { align-items: flex-start; }
+.lotc-stack--align-center { align-items: center; }
+.lotc-stack--align-end { align-items: flex-end; }
+.lotc-stack--align-stretch { align-items: stretch; }
+
+/* Main-axis distribution */
+.lotc-stack--justify-start { justify-content: flex-start; }
+.lotc-stack--justify-center { justify-content: center; }
+.lotc-stack--justify-end { justify-content: flex-end; }
+.lotc-stack--justify-between { justify-content: space-between; }

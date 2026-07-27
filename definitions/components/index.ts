@@ -23,6 +23,7 @@ export { maxWidthLayout, type MaxWidthLayoutDefinition } from "./max-width-layou
 export { grid, type GridDefinition } from "./grid.def.js";
 export { autoGrid, type AutoGridDefinition } from "./auto-grid.def.js";
 export { appShell, type AppShellDefinition } from "./app-shell.def.js";
+export { stack, type StackDefinition } from "./stack.def.js";
 
 // Data display components
 export { card, type CardDefinition } from "./card.def.js";
@@ -76,6 +77,7 @@ import { maxWidthLayout } from "./max-width-layout.def.js";
 import { grid } from "./grid.def.js";
 import { autoGrid } from "./auto-grid.def.js";
 import { appShell } from "./app-shell.def.js";
+import { stack } from "./stack.def.js";
 import { paragraph } from "./paragraph.def.js";
 import { link } from "./link.def.js";
 import { label } from "./label.def.js";
@@ -125,6 +127,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   grid,
   "auto-grid": autoGrid,
   "app-shell": appShell,
+  stack,
   paragraph,
   link,
   label,
