@@ -336,6 +336,21 @@ class ComponentExtension(Extension):
             return self._build_python_call(
                 component_name, component_def, attrs, default_content, state, render_theme
             )
+        # Jinja-backend: fold a fully-static instance (static attrs + content + all
+        # slots) to literal HTML at compile time, exactly like a python component —
+        # collapsing the {% include %} away. Since children are emitted first, a
+        # static subtree folds bottom-up. Falls back to the include on anything
+        # dynamic or on any render error.
+        if (
+            self.fold
+            and _is_foldable(attrs, default_content)
+            and not any(_has_jinja(s) for s in (named_slots or {}).values())
+        ):
+            folded = self._fold_jinja_component(
+                component_name, component_def, attrs, default_content, named_slots
+            )
+            if folded is not None:
+                return folded
         return self._build_include(component_name, attrs, default_content, state, named_slots)
 
     def _extract_slots(
@@ -679,6 +694,58 @@ class ComponentExtension(Extension):
             kwargs["_class"] = css_class
 
         html = str(fn(**kwargs))
+        if _has_jinja(html):
+            return f"{{% raw %}}{html}{{% endraw %}}"
+        return html
+
+    def _fold_jinja_component(
+        self,
+        component_name: str,
+        component_def: Any,
+        attrs: Dict[str, Any],
+        content: Optional[str],
+        named_slots: Optional[Dict[str, str]],
+    ) -> Optional[str]:
+        """Render a fully-static jinja-backend component at compile time to literal
+        HTML, so its `{% include %}` is gone at render time. Returns None (falling
+        back to the include) if the template is missing or rendering fails.
+        """
+        from jinja2 import TemplateNotFound
+        from markupsafe import Markup
+
+        from .registry import AttributeType
+
+        # No loader (e.g. bare-extension unit tests) -> can't fold; use the include.
+        if self.environment.loader is None:
+            return None
+        try:
+            template = self.environment.get_template(f"components/{component_name}.html.j2")
+        except (TemplateNotFound, TypeError):
+            return None
+
+        # Build _component_context as real Python values (mirrors _build_include's
+        # dict, but evaluated now instead of emitted as a Jinja literal).
+        ctx: Dict[str, Any] = {}
+        for key, value in attrs.items():
+            if key.startswith(("@", ":")):
+                # Events pass through; ':' can't occur here (guarded by _is_foldable).
+                ctx[key] = value
+                continue
+            attr_def = component_def.get_attribute(key) if component_def else None
+            if attr_def is not None and attr_def.type == AttributeType.BOOLEAN:
+                sv = str(value).lower() if value is not None else ""
+                ctx[key] = sv not in ("false", "0", "no", "off")
+            else:
+                ctx[key] = value if value is not None else ""
+        if content:
+            ctx["content"] = Markup(content)  # already-safe rendered children
+        if named_slots:
+            ctx["slots"] = {name: Markup(html) for name, html in named_slots.items()}
+
+        try:
+            html = template.render(_component_context=ctx)
+        except Exception:  # noqa: BLE001 — any failure: fall back to the include
+            return None
         if _has_jinja(html):
             return f"{{% raw %}}{html}{{% endraw %}}"
         return html

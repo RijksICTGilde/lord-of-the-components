@@ -90,6 +90,27 @@ def test_static_child_in_dynamic_parent(folded_env):
     assert "Go" in html
 
 
+def test_static_jinja_component_is_folded(folded_env):
+    # card is jinja-backend under RVO; a fully-static instance folds to literal
+    # HTML at compile time, collapsing its {% include %} away.
+    out = _preprocess(folded_env, '<c-card title="Aanvragen">Body</c-card>')
+    assert "{% include" not in out
+    assert "rvo-card" in out and "Aanvragen" in out
+
+
+def test_dynamic_jinja_component_is_not_folded(folded_env):
+    # A dynamic attribute keeps the runtime include (can't fold).
+    out = _preprocess(folded_env, '<c-card :title="t">Body</c-card>')
+    assert "{% include" in out
+
+
+def test_jinja_fold_matches_unfold(folded_env, unfolded_env):
+    src = '<c-card title="Aanvragen" href="#">Bekijk je aanvragen.</c-card>'
+    assert normalize(folded_env.from_string(src).render()) == normalize(
+        unfolded_env.from_string(src).render()
+    )
+
+
 def test_raw_guard_wraps_jinja_in_folded_output(folded_env):
     # Directly fold content that contains Jinja delimiters: the result must be
     # wrapped in {% raw %} so Jinja does not re-interpret it.
