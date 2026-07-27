@@ -1,4 +1,16 @@
-# bg.rijks.app Overzicht — pure-components recreation & gap report
+# bg.rijks.app Overzicht — components recreation & gap report
+
+> **Update — BGNLDD theme.** The custom app components below (sidenav, metric,
+> layer, section-head, activity, shortcut) are now provided by the **BGNLDD**
+> theme (`packages/lotc-bgnldd`), a mix-and-match layer on top of NLDD. The
+> recreation (`gen_bg_overzicht.py`) is now built 100% from `c-*` components
+> under `design_systems=["nldd", "bgnldd"]`. Only two gaps remain: the
+> **status bar** and the **header utility menu** (see the list at the bottom).
+> The original "pure NLDD-only" measurement is kept below for the record.
+
+---
+
+# (original) pure-components recreation & gap report
 
 Recreation of the [bg.rijks.app](https://bg.rijks.app/) Overzicht page built with
 **only** LOTC `<c-*>` components under the NLDD backend, using **no** app-specific

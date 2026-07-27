@@ -97,22 +97,47 @@ def _nldd_head() -> str:
     return f"{links}\n{scripts}\n{font}"
 
 
+def _extra_ds_css(themes: list[str]) -> str:
+    """CSS <link>s each declared design system asks a page to load (css_urls).
+
+    This is what a page declaring these systems would emit — used here so a
+    BGNLDD page picks up bg-components.css on top of the NLDD bundle.
+    """
+    from lord_of_the_components.design_system import discover_design_systems
+
+    ds_map = discover_design_systems()
+    links = []
+    for name in themes:
+        ds = ds_map.get(name)
+        for url in getattr(ds, "css_urls", ()) if ds else ():
+            links.append(f'    <link rel="stylesheet" href="{url}">')
+    return "\n".join(links)
+
+
 def _make_transform(theme: str) -> Callable[[str], str]:
-    """Return a fixture transform that injects the CSS/JS for the given theme."""
+    """Return a fixture transform that injects the CSS/JS for the declared systems.
+
+    `theme` may be a comma-separated list (e.g. "nldd,bgnldd") for mix-and-match;
+    the first entry is primary and picks the base bundle.
+    """
+    themes = [t.strip() for t in theme.split(",") if t.strip()]
+    primary = themes[0] if themes else "rvo"
 
     # Theme-agnostic layout primitives (app-shell, auto-grid) render the same in
     # both themes, so their structural CSS is injected everywhere.
     layout_css = '    <link rel="stylesheet" href="/static/lotc/layout.css">'
+    extra_css = _extra_ds_css(themes)
 
     def _transform(source: str) -> str:
-        if theme == "nldd":
-            head = f"{_nldd_head()}\n{layout_css}"
+        if primary == "nldd":
+            head = "\n".join(p for p in (_nldd_head(), extra_css, layout_css) if p)
             if "</head>" in source:
                 source = source.replace("</head>", f"{head}\n</head>")
             return source
         # RVO (default): bundled CSS + rvo-theme body class for design tokens.
+        head = "\n".join(p for p in (BUNDLED_CSS, extra_css, layout_css) if p)
         if "</head>" in source:
-            source = source.replace("</head>", f"{BUNDLED_CSS}\n{layout_css}\n</head>")
+            source = source.replace("</head>", f"{head}\n</head>")
         if "<body" in source and "rvo-theme" not in source:
             source = source.replace("<body>", '<body class="rvo-theme">')
         return source
@@ -151,7 +176,8 @@ def create_jinja_env(theme: str = "rvo") -> Environment:
         # of being recompiled from source on every request.
         auto_reload=False,
     )
-    setup_components(jinja_env, registry_path=str(REGISTRY_JSON), theme=theme)
+    themes = [t.strip() for t in theme.split(",") if t.strip()]
+    setup_components(jinja_env, registry_path=str(REGISTRY_JSON), design_systems=themes)
     return jinja_env
 
 
@@ -269,9 +295,9 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=5555, help="Port to listen on")
     parser.add_argument(
         "--theme",
-        choices=["rvo", "nldd"],
         default="rvo",
-        help="Design-system theme to render fixtures with",
+        help="Design system(s) to render fixtures with. Comma-separated for "
+        "mix-and-match (e.g. 'nldd,bgnldd'); the first is primary.",
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
     args = parser.parse_args()

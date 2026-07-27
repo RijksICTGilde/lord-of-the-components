@@ -41,6 +41,14 @@ class DesignSystem:
     renderers_module: str
     templates_path: Optional[Path] = None
     static_path: Optional[Path] = None
+    #: Optional JSON registry fragment declaring component definitions this
+    #: design system OWNS (theme-specific components not present in core, e.g.
+    #: BGNLDD's `c-metric`). Merged into the registry when the system is active;
+    #: each merged component is tagged with this system's name as its owner theme.
+    registry_path: Optional[Path] = None
+    #: CSS hrefs (under the /static/lotc/... URL space) that a page declaring this
+    #: design system should load. Consumed by `c-page`'s asset loading.
+    css_urls: tuple[str, ...] = ()
 
 
 def discover_design_systems() -> Dict[str, DesignSystem]:

@@ -1,0 +1,15 @@
+{% set icon = _component_context.get('icon', '') %}
+{% set title = _component_context.get('title', '') %}
+{% set count = _component_context.get('count', '') %}
+{% set sub = _component_context.get('sub', '') %}
+{% set href = _component_context.get('href', '') %}
+{% set children = _component_context.get('content', '') %}
+<a{% if href %} href="{{ href }}"{% endif %} class="bg-layer" data-lotc-component="layer">
+    <span class="bg-layer-icon">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}</span>
+    <span class="bg-layer-body">
+        <span class="bg-layer-head"><span class="bg-layer-title">{{ title }}</span>{% if count %}<span class="bg-layer-count">{{ count }}</span>{% endif %}</span>
+        {% if sub %}<span class="bg-layer-sub">{{ sub }}</span>{% endif %}
+        {% if children %}<span class="bg-layer-chips">{{ children | safe }}</span>{% endif %}
+    </span>
+    {{ _lotc_nldd_icon(icon='chevron-right', _class='bg-layer-go') }}
+</a>

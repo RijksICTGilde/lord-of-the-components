@@ -59,6 +59,9 @@ class ComponentDefinition:
     #: System components render under any theme and need no design system loaded.
     system: bool = False
     backend: str = "jinja"
+    #: Owner theme for a theme-specific component (e.g. "bgnldd" for c-metric).
+    #: None = a shared/core component (renders under the page's primary theme).
+    theme: Optional[str] = None
     attributes: List[AttributeDefinition] = field(default_factory=list)
     slots: List[SlotDefinition] = field(default_factory=list)
     #: Data bindings (`:name`) -> binding type string (e.g. "MenuItem[]").
@@ -129,7 +132,24 @@ class ComponentRegistry:
             for name, comp_data in components.items():
                 self._register_from_dict(name, comp_data)
 
-    def _register_from_dict(self, name: str, data: Dict[str, Any]) -> None:
+    def merge_fragment(self, path: Path, theme: str) -> None:
+        """Merge a theme's registry fragment, tagging each component's owner.
+
+        Used so a design system can OWN component definitions that don't exist in
+        core (e.g. BGNLDD's c-metric) without polluting the shared registry.json.
+        """
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        components = data.get("components", [])
+        items = components if isinstance(components, list) else list(components.values())
+        for comp_data in items:
+            name = comp_data.get("name", "")
+            if name:
+                self._register_from_dict(name, comp_data, theme=theme)
+
+    def _register_from_dict(
+        self, name: str, data: Dict[str, Any], theme: Optional[str] = None
+    ) -> None:
         """Register a component from a dictionary."""
         attributes = []
         for attr_data in data.get("attributes", data.get("props", [])):
@@ -167,6 +187,7 @@ class ComponentRegistry:
             status=data.get("status", "experimental"),
             system=bool(data.get("system", False)),
             backend=data.get("backend", "jinja"),
+            theme=theme,
             attributes=attributes,
             slots=slots,
             bindings=dict(data.get("bindings", {})),

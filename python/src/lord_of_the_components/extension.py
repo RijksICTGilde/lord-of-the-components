@@ -202,6 +202,9 @@ class ComponentExtension(Extension):
         # Primary/active design system for design-system components (first
         # declared). None when only the system layer is available.
         self.render_theme: Optional[str] = None
+        # Resolved DesignSystem descriptors for the declared systems, in order
+        # (used by c-page to emit each system's CSS/JS bundle). Set at setup.
+        self.active_design_systems: tuple[Any, ...] = ()
         # Constant folding: render fully-literal python components at compile time.
         self.fold = True
         # Validate bound data structures (:items, :columns, ...) at render time.
@@ -289,10 +292,25 @@ class ComponentExtension(Extension):
 
         component_def = self.registry.get_component(component_name)
 
+        # Resolve which design system renders this component (mix-and-match):
+        #   explicit `theme=` on the tag  >  the component's owner theme  >  the
+        #   page's primary. `theme=` routes to a design system and is stripped
+        #   before attribute parsing — UNLESS the component declares its own
+        #   `theme` prop (e.g. c-page uses theme= for its body class), in which
+        #   case it's an ordinary attribute.
+        explicit_theme: Optional[str] = None
+        routed_attrs = node.attrs
+        if component_def is not None and not component_def.has_attribute("theme") and any(
+            a.name == "theme" for a in node.attrs
+        ):
+            explicit_theme = next(a.raw_value for a in node.attrs if a.name == "theme")
+            routed_attrs = [a for a in node.attrs if a.name != "theme"]
+        render_theme = explicit_theme or getattr(component_def, "theme", None) or self.render_theme
+
         # A non-system component needs an active design system. The theme-agnostic
         # "system" layer (layout + basic HTML) always renders. Fail loudly, early,
         # if the page declared no design system (or none at all).
-        if not getattr(component_def, "system", False) and self.render_theme is None:
+        if not getattr(component_def, "system", False) and render_theme is None:
             hint = (
                 "Declare one at setup, e.g. "
                 "setup_components(env, design_systems=['rvo'])."
@@ -302,7 +320,7 @@ class ComponentExtension(Extension):
                 location=location,
             )
 
-        attrs = self._parse_component_attributes(source, node.attrs, component_def, tag_name)
+        attrs = self._parse_component_attributes(source, routed_attrs, component_def, tag_name)
         for key, value in alias_defaults.items():
             attrs.setdefault(key, value)
 
@@ -310,11 +328,13 @@ class ComponentExtension(Extension):
 
         if getattr(component_def, "backend", "jinja") == "python" and not named_slots:
             if self.fold and _is_foldable(attrs, default_content):
-                folded = self._fold_component(component_name, component_def, attrs, default_content)
+                folded = self._fold_component(
+                    component_name, component_def, attrs, default_content, render_theme
+                )
                 if folded is not None:
                     return folded
             return self._build_python_call(
-                component_name, component_def, attrs, default_content, state
+                component_name, component_def, attrs, default_content, state, render_theme
             )
         return self._build_include(component_name, attrs, default_content, state, named_slots)
 
@@ -543,8 +563,10 @@ class ComponentExtension(Extension):
         attrs: Dict[str, Any],
         content: Optional[str],
         state: "_CompileState",
+        render_theme: Optional[str] = None,
     ) -> str:
         """Emit `{{ _lotc_<theme>_<name>(...) }}` for a Python-backend component."""
+        theme = render_theme or self.render_theme
         kwargs: List[str] = []
         extra_items: List[str] = []
         class_expr: Optional[str] = None
@@ -602,7 +624,7 @@ class ComponentExtension(Extension):
         if class_expr:
             kwargs.append(f"_class={class_expr}")
 
-        global_name = f"_lotc_{self.render_theme}_{_py_ident(component_name)}"
+        global_name = f"_lotc_{theme}_{_py_ident(component_name)}"
         call = f"{{{{ {global_name}({', '.join(kwargs)}) }}}}"
         return "".join(set_stmts) + call
 
@@ -612,6 +634,7 @@ class ComponentExtension(Extension):
         component_def: Any,
         attrs: Dict[str, Any],
         content: Optional[str],
+        render_theme: Optional[str] = None,
     ) -> Optional[str]:
         """Render a fully-literal component at compile time to literal HTML.
 
@@ -622,7 +645,7 @@ class ComponentExtension(Extension):
 
         from .registry import AttributeType
 
-        global_name = f"_lotc_{self.render_theme}_{_py_ident(component_name)}"
+        global_name = f"_lotc_{render_theme or self.render_theme}_{_py_ident(component_name)}"
         fn: Any = self.environment.globals.get(global_name)
         if fn is None:
             return None
@@ -759,6 +782,33 @@ def setup_components(
         ds_searchpath = getattr(loader, "searchpath", None)
         if ds.templates_path is not None and isinstance(ds_searchpath, list):
             ds_searchpath.append(str(ds.templates_path))
+        # Merge any component definitions this design system OWNS (theme-specific
+        # components absent from core, e.g. BGNLDD's c-metric), tagged with its
+        # owner theme so the emitter routes them to this system's renderer.
+        if ds.registry_path is not None and isinstance(ext, ComponentExtension):
+            ext.registry.merge_fragment(Path(ds.registry_path), ds.name)
+
+    # Expose the active design systems (with their CSS bundle URLs) so `c-page`
+    # can emit the right <link>/<script> tags for whatever the page declared.
+    if isinstance(ext, ComponentExtension):
+        ext.active_design_systems = resolved
+
+    from markupsafe import Markup
+
+    def _design_system_assets() -> Markup:
+        """<link> tags for every declared design system's CSS (its css_urls).
+
+        A page calls `{{ get_design_system_assets() }}` in its <head> to load the
+        theme bundles it declared (e.g. BGNLDD's bg-components.css on top of NLDD).
+        """
+        tags = [
+            f'<link rel="stylesheet" href="{url}">'
+            for ds in resolved
+            for url in ds.css_urls
+        ]
+        return Markup("\n".join(tags))
+
+    jinja_env.globals["get_design_system_assets"] = _design_system_assets
 
     # Render-time data-binding validation (:items, :columns, ...).
     from .validation import validate_binding

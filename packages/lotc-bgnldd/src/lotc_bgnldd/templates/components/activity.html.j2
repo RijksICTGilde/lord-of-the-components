@@ -1,0 +1,3 @@
+{% set children = _component_context.get('content', '') %}
+{% set extra = _component_context.get('class', '') %}
+<ul class="bg-activity{% if extra %} {{ extra }}{% endif %}" data-lotc-component="activity">{{ children | safe }}</ul>
