@@ -128,6 +128,19 @@ def _py_string(value: str) -> str:
 #: a page declares which ones it uses; core discovers the installed ones.
 SYSTEM_ALIASES = ("system", "default")
 
+#: Convenience tag aliases -> (target component, default props merged in unless the
+#: author overrides them). Lets you write <c-p>/<c-h1> for the common HTML-ish
+#: components (<c-paragraph>/<c-heading type="h1">). Aliases resolve before lookup.
+COMPONENT_ALIASES: Dict[str, tuple[str, Dict[str, str]]] = {
+    "p": ("paragraph", {}),
+    "h1": ("heading", {"type": "h1"}),
+    "h2": ("heading", {"type": "h2"}),
+    "h3": ("heading", {"type": "h3"}),
+    "h4": ("heading", {"type": "h4"}),
+    "h5": ("heading", {"type": "h5"}),
+    "h6": ("heading", {"type": "h6"}),
+}
+
 
 @lru_cache(maxsize=1)
 def _available_design_systems() -> Dict[str, DesignSystem]:
@@ -253,8 +266,13 @@ class ComponentExtension(Extension):
                 location=_source_location(source, node.span.start),
             )
 
-        component_name = node.name
-        tag_name = f"c-{component_name}"
+        # Resolve a convenience alias (c-p -> paragraph, c-h1 -> heading type=h1).
+        # Keep the original tag for error messages; the alias's default props are
+        # merged into the parsed attributes below (author values win).
+        alias = COMPONENT_ALIASES.get(node.name)
+        component_name = alias[0] if alias else node.name
+        alias_defaults = alias[1] if alias else {}
+        tag_name = f"c-{node.name}"
         location = _source_location(source, node.span.start)
 
         if not self.registry.has_component(component_name):
@@ -285,6 +303,8 @@ class ComponentExtension(Extension):
             )
 
         attrs = self._parse_component_attributes(source, node.attrs, component_def, tag_name)
+        for key, value in alias_defaults.items():
+            attrs.setdefault(key, value)
 
         named_slots, default_content = self._extract_slots(source, node, state, depth + 1)
 
