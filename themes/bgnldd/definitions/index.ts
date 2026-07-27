@@ -127,6 +127,31 @@ export const shortcut = defineComponent({
   },
 });
 
+// ── menu-bar: the header utility menu (Zoeken / Notificaties / … ) ──────────
+export const menuBar = defineComponent({
+  name: "menu-bar",
+  description: "Header utility menu bar (nldd-menu-bar in the top-nav utility slot)",
+  category: "navigation",
+  props: {
+    [PROPS.LABEL]: { description: "Accessible label (default \"Hulplinks\")" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true },
+});
+
+export const menuBarItem = defineComponent({
+  name: "menu-bar-item",
+  description: "A utility menu item: text + NLDD icon, optionally expandable",
+  category: "navigation",
+  props: {
+    [PROPS.LABEL]: { description: "Item text" },
+    [PROPS.ICON]: { description: "NLDD icon name (e.g. search, envelope, plus, sun)" },
+    expandable: null, // boolean — shows a disclosure chevron
+    [PROPS.HREF]: { description: "Link target" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+});
+
 /** All BGNLDD component definitions, in registry order. */
 export const BGNLDD_COMPONENTS = [
   metric,
@@ -138,4 +163,6 @@ export const BGNLDD_COMPONENTS = [
   activity,
   activityItem,
   shortcut,
+  menuBar,
+  menuBarItem,
 ];

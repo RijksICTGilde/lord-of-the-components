@@ -126,7 +126,15 @@ def build() -> str:
 
 <c-app-shell width="16rem">
   <template slot="header">
-    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/"/>
+    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
+      <c-menu-bar>
+        <c-menu-bar-item label="Zoeken" icon="search"/>
+        <c-menu-bar-item label="Notificaties (1)" icon="envelope"/>
+        <c-menu-bar-item label="Nieuw" icon="plus" expandable/>
+        <c-menu-bar-item label="Thema" icon="sun" expandable/>
+        <c-menu-bar-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
+      </c-menu-bar>
+    </c-header>
   </template>
 
   <template slot="sidebar">

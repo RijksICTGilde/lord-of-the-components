@@ -2,6 +2,6 @@
 {% set icon = _component_context.get('icon', '') %}
 {% set children = _component_context.get('content', '') %}
 <div class="bg-section-head" data-lotc-component="section-head">
-    <div class="bg-section-head-main">{% if title %}<span class="bg-section-title">{{ title }}</span>{% endif %}{{ children | safe }}</div>
+    <div class="bg-section-head-main">{% if title %}<nldd-title size="4"><h2 class="bg-section-title">{{ title }}</h2></nldd-title>{% endif %}{{ children | safe }}</div>
     {% if icon %}{{ _lotc_nldd_icon(icon=icon, _class='bg-head-icon') }}{% endif %}
 </div>

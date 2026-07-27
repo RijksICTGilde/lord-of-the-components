@@ -15,4 +15,5 @@
     {% if subtitle %}logo-subtitle="{{ subtitle }}"{% endif %}
     {% if link %}website-href="{{ link }}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
 </nldd-top-navigation-bar>

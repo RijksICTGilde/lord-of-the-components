@@ -4,9 +4,12 @@
 > layer, section-head, activity, shortcut) are now provided by the **BGNLDD**
 > theme (`packages/lotc-bgnldd`), a mix-and-match layer on top of NLDD. The
 > recreation (`gen_bg_overzicht.py`) is now built 100% from `c-*` components
-> under `design_systems=["nldd", "bgnldd"]`. Only two gaps remain: the
-> **status bar** and the **header utility menu** (see the list at the bottom).
-> The original "pure NLDD-only" measurement is kept below for the record.
+> under `design_systems=["nldd", "bgnldd"]`, rendered end-to-end through
+> `<c-page design-systems="nldd bgnldd">`. The header **utility menu** is now
+> provided too (`c-menu-bar` + `c-menu-bar-item` → `nldd-menu-bar` in the top-nav
+> utility slot; `c-header` renders its children inside the nav bar), and section
+> titles use the real `nldd-title` component. **Only the status bar remains** as a
+> gap. The original "pure NLDD-only" measurement is kept below for the record.
 
 ---
 
