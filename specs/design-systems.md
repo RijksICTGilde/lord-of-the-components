@@ -105,10 +105,33 @@ output and still emit into core's `static/`. Relocating each system's CSS into i
 own package is a frontend-build concern (webpack output paths) left for later; it
 does not affect the Python package boundary.
 
+## Choosing own vs theme-specific layout (by tag, not by attribute)
+
+The one place "own vs theme" genuinely comes up is layout, and it is selected by
+**which tag you use** — no per-element attribute needed:
+
+- **Uniform across themes** (LOTC's own system layer): `c-columns`, `c-stack`,
+  `c-auto-grid`, `c-app-shell`. Always render, identical under every theme.
+- **Theme-specific**: `c-grid`, `c-layout-row`, `c-layout-column`,
+  `c-max-width-layout`, `c-layout-flow` — use the active design system's classes.
+
+## Per-tag `theme` override — deferred (YAGNI)
+
+Considered and deliberately not built. With the model above it adds little:
+
+- For layout it is redundant — own vs theme is already tag-distinguished.
+- The only new capability would be forcing a *different* design system on a single
+  multi-theme python component (`<c-button theme="nldd">` on an rvo page). That
+  needs both systems loaded, does not work for jinja-backend components (their
+  templates are not theme-namespaced in the loader), and is a niche "mix design
+  systems on one page" use. Cost outweighs value for now.
+
+Revisit only if a concrete need to mix design systems within one page appears.
+
 ## Roadmap (remaining)
 
-- **Per-tag `theme` override** (see above).
-- **Move the webpack CSS bundles into their theme packages** (frontend-build).
+- **Move the webpack CSS bundles into their theme packages** (frontend-build), so
+  each `lotc-<system>` package is fully self-contained (Python + CSS).
 - **Per-tag `theme` override.** Once a page declares availability, a tag may carry
   `theme="rvo|nldd|system"`; the engine resolves against the declared systems and
   falls back to the system layer. For now the practical use is just the per-page
