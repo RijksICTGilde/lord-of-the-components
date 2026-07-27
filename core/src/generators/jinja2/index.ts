@@ -118,7 +118,7 @@ export function textToJinjaString(text: string | TextExpr): string {
   if ("raw" in text) return text.raw;
   if ("content" in text) return "{{ children | safe }}";
   if ("slot" in text) return `{{ slots.get('${text.slot}', '') | safe }}`;
-  if ("prop" in text) return `{{ ${text.prop} | safe }}`;
+  if ("prop" in text) return `{{ ${propToVar(text.prop)} | safe }}`;
   // coalesce: content-then-prop is the only shape used today.
   const parts = text.coalesce;
   if (
@@ -126,12 +126,12 @@ export function textToJinjaString(text: string | TextExpr): string {
     "content" in parts[0] &&
     "prop" in parts[1]
   ) {
-    return `{{ children if children else ${(parts[1] as { prop: string }).prop} | safe }}`;
+    return `{{ children if children else ${propToVar((parts[1] as { prop: string }).prop)} | safe }}`;
   }
   // Generic fallback: nested ternary of the parts.
   const exprs = parts.map((p) => {
     if ("content" in p) return "children";
-    if ("prop" in p) return (p as { prop: string }).prop;
+    if ("prop" in p) return propToVar((p as { prop: string }).prop);
     if ("literal" in p) return JSON.stringify((p as { literal: string }).literal);
     if ("raw" in p) return JSON.stringify((p as { raw: string }).raw);
     return "''";

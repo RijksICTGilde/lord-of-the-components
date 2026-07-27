@@ -1,0 +1,30 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set image = _component_context.get('image', '') %}
+{% set image_alt = _component_context.get('image-alt', '') %}
+{% set overlay = _component_context.get('overlay', false) %}
+{% set size = _component_context.get('size', 'md') %}
+{% set subtitle = _component_context.get('subtitle', '') %}
+{% set title = _component_context.get('title', '') %}
+{% set css_classes = [] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<nldd-hero
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="hero"
+    {% if image %}media-src="{{ image }}"{% endif %}
+    {% if image_alt %}media-alt="{{ image_alt }}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    <nldd-title>
+        <span>{{ title | safe }}</span>
+        {% if subtitle %}
+        <span
+            slot="subtitle">
+            {{ subtitle | safe }}
+        </span>
+        {% endif %}
+    </nldd-title>
+    <div>{{ children | safe }}</div>
+</nldd-hero>
