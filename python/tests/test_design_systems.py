@@ -92,3 +92,41 @@ def test_unknown_design_system_errors_with_suggestion():
     with pytest.raises(RuntimeError) as exc:
         _env(design_systems=["rvoo"])
     assert "rvo" in str(exc.value)
+
+
+# ── debug diagnostics: invalid enum values with suggestions ───────────────────
+
+
+def test_debug_rejects_invalid_enum_value_with_suggestion():
+    env = _env(design_systems=["rvo"], debug=True)
+    with pytest.raises(ComponentError) as exc:
+        _render(env, '<c-button type="prmary" label="Go"/>')
+    msg = str(exc.value)
+    assert "Invalid value 'prmary'" in msg
+    assert "type" in msg
+    assert "primary" in msg  # suggestion / allowed set
+
+
+def test_debug_accepts_valid_enum_value():
+    env = _env(design_systems=["rvo"], debug=True)
+    assert "utrecht-button" in _render(env, '<c-button type="secondary" label="Go"/>')
+
+
+def test_non_debug_is_lenient_on_enum_values():
+    # Without debug, an out-of-set value passes through (no author diagnostic).
+    env = _env(design_systems=["rvo"], debug=False)
+    _render(env, '<c-button type="prmary" label="Go"/>')  # does not raise
+
+
+def test_debug_skips_dynamic_values():
+    # A jinja-expression value can't be checked statically -> no false positive.
+    env = _env(design_systems=["rvo"], debug=True)
+    env.from_string('{% set t = "primary" %}<c-button type="{{ t }}" label="Go"/>').render()
+
+
+def test_debug_still_flags_unknown_attribute():
+    # Unknown-attribute diagnostics are always on (independent of debug).
+    env = _env(design_systems=["rvo"], debug=True)
+    with pytest.raises(ComponentError) as exc:
+        _render(env, '<c-button typ="primary" label="Go"/>')
+    assert "Unknown attribute" in str(exc.value)
