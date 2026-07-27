@@ -39,6 +39,7 @@ export interface AttributeMapping {
   conditional?: boolean;
   valueMap?: string;
   filter?: string;
+  when?: Condition;
 }
 export interface StyleMapping {
   property: string;
@@ -429,13 +430,19 @@ export class PythonGenerator {
   }
 
   private emitAttribute(attr: AttributeMapping, ind: number, lines: string[]): void {
+    // Extra guard on another prop's condition (e.g. NLDD start-icon/end-icon
+    // selected by show-icon), combined with the attribute's own guards.
+    const whenExpr = attr.when ? pyCondition(attr.when) : null;
     if (attr.type === "static") {
-      this.append(lines, ind, pyStr(` ${attr.attr}="${attr.value ?? ""}"`));
+      const sind = whenExpr ? ind + 1 : ind;
+      if (whenExpr) lines.push(`${"    ".repeat(ind)}if ${whenExpr}:`);
+      this.append(lines, sind, pyStr(` ${attr.attr}="${attr.value ?? ""}"`));
       return;
     }
     const v = pyName(attr.prop!);
     if (attr.type === "boolean") {
-      lines.push(`${"    ".repeat(ind)}if ${v}:`);
+      const guard = whenExpr ? `(${whenExpr}) and ${v}` : v;
+      lines.push(`${"    ".repeat(ind)}if ${guard}:`);
       this.append(lines, ind + 1, pyStr(` ${attr.attr}`));
       return;
     }
@@ -444,9 +451,12 @@ export class PythonGenerator {
     if (attr.filter) {
       throw new UnsupportedIR(`attribute filter not yet supported`);
     }
-    const vind = attr.conditional ? ind + 1 : ind;
-    if (attr.conditional) {
-      lines.push(`${"    ".repeat(ind)}if ${v}:`);
+    const guardParts: string[] = [];
+    if (whenExpr) guardParts.push(`(${whenExpr})`);
+    if (attr.conditional) guardParts.push(v);
+    const vind = guardParts.length ? ind + 1 : ind;
+    if (guardParts.length) {
+      lines.push(`${"    ".repeat(ind)}if ${guardParts.join(" and ")}:`);
     }
     let valueExpr = `esc(${v})`;
     if (attr.valueMap) {

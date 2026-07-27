@@ -136,6 +136,13 @@ export interface AttributeMapping {
   valueMap?: string;
   /** Jinja2 filter to apply to the value (e.g., "title" for Title Case) */
   filter?: string;
+  /**
+   * Extra guard: only emit this attribute when the condition holds (on top of
+   * `conditional`, which guards on the attribute's own prop). Lets one prop's
+   * value drive an attribute gated on ANOTHER prop, e.g. NLDD's start-icon/
+   * end-icon selected by `show-icon`.
+   */
+  when?: Condition;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

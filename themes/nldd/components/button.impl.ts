@@ -5,6 +5,7 @@
  */
 import { defineImplementation } from "../../../implementations/implementation.js";
 import { button } from "../../../definitions/components/button.def.js";
+import { iconMapFor } from "../../../definitions/icons.js";
 
 export const buttonImpl = defineImplementation({
   component: button,
@@ -20,10 +21,28 @@ export const buttonImpl = defineImplementation({
       { prop: "disabled", attr: "disabled", type: "boolean" },
       { prop: "href", attr: "href", type: "value", conditional: true },
       { prop: "target", attr: "target", type: "value", conditional: true },
+      // Icon -> start-icon / end-icon, selected by show-icon (semantic icon name
+      // resolved to the NLDD icon set). RVO puts the icon in a <span>; NLDD uses
+      // the button's own start-icon/end-icon attributes.
+      {
+        prop: "icon",
+        attr: "start-icon",
+        type: "value",
+        valueMap: "icons",
+        when: { prop: "show-icon", eq: "before" },
+      },
+      {
+        prop: "icon",
+        attr: "end-icon",
+        type: "value",
+        valueMap: "icons",
+        when: { prop: "show-icon", eq: "after" },
+      },
     ],
     text: { content: true },
   },
   valueMaps: {
+    icons: iconMapFor("nldd"),
     variant: {
       primary: "primary",
       secondary: "secondary",

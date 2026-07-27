@@ -48,6 +48,7 @@ export interface AttributeMapping {
   conditional?: boolean;
   valueMap?: string;
   filter?: string;
+  when?: Condition;
 }
 
 export interface StyleMapping {
@@ -610,14 +611,17 @@ export class Jinja2Generator {
    * Emit an HTML attribute.
    */
   private emitAttribute(attr: AttributeMapping, ind: string): string[] {
+    const whenExpr = attr.when ? this.renderCondition(attr.when) : null;
     if (attr.type === "static") {
-      return [`${ind}${attr.attr}="${attr.value}"`];
+      const body = `${attr.attr}="${attr.value}"`;
+      return whenExpr ? [`${ind}{% if ${whenExpr} %}${body}{% endif %}`] : [`${ind}${body}`];
     }
 
     const varName = propToVar(attr.prop!);
 
     if (attr.type === "boolean") {
-      return [`${ind}{% if ${varName} %}${attr.attr}{% endif %}`];
+      const guard = whenExpr ? `(${whenExpr}) and ${varName}` : varName;
+      return [`${ind}{% if ${guard} %}${attr.attr}{% endif %}`];
     }
 
     // Value attribute — resolve value expression with optional valueMap and filter
@@ -629,10 +633,13 @@ export class Jinja2Generator {
       valueExpr = `${valueExpr} | ${attr.filter}`;
     }
 
-    if (attr.conditional) {
-      return [`${ind}{% if ${varName} %}${attr.attr}="{{ ${valueExpr} }}"{% endif %}`];
-    }
-    return [`${ind}${attr.attr}="{{ ${valueExpr} }}"`];
+    const guardParts: string[] = [];
+    if (whenExpr) guardParts.push(`(${whenExpr})`);
+    if (attr.conditional) guardParts.push(varName);
+    const body = `${attr.attr}="{{ ${valueExpr} }}"`;
+    return guardParts.length
+      ? [`${ind}{% if ${guardParts.join(" and ")} %}${body}{% endif %}`]
+      : [`${ind}${body}`];
   }
 
   /**
