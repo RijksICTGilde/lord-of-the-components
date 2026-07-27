@@ -1,0 +1,3 @@
+{% set children = _component_context.get('content', '') %}
+{% set extra = _component_context.get('class', '') %}
+<span class="bg-layer-chip{% if extra %} {{ extra }}{% endif %}" data-lotc-component="chip">{{ children | safe }}</span>

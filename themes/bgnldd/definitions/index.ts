@@ -152,6 +152,15 @@ export const menuBarItem = defineComponent({
   },
 });
 
+// ── chip: a small monospace resource chip (used inside a layer row) ─────────
+export const chip = defineComponent({
+  name: "chip",
+  description: "Small monospace chip/pill for a resource name (e.g. inside a layer)",
+  category: "data-display",
+  props: { [PROPS.CLASS]: { description: "Additional CSS classes" } },
+  content: { allowed: true },
+});
+
 /** All BGNLDD component definitions, in registry order. */
 export const BGNLDD_COMPONENTS = [
   metric,
@@ -165,4 +174,5 @@ export const BGNLDD_COMPONENTS = [
   shortcut,
   menuBar,
   menuBarItem,
+  chip,
 ];
