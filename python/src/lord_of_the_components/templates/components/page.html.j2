@@ -1,0 +1,46 @@
+{#
+  Lord of the Components — generic Page template (theme-agnostic).
+
+  Renders a full HTML document and loads the CSS/JS for whatever design systems
+  the page declared, via {{ get_design_system_assets() }} (each system is
+  self-describing: css_urls / js_urls / extra_head). This one template serves
+  every theme and any mix of them (e.g. design-systems="nldd bgnldd"), so there
+  is no per-theme page template.
+
+  Props:
+    - title (required), lang (default "en"), charset (default "utf-8")
+    - description: <meta name="description">
+    - theme: body class {value}-theme (e.g. RVO design tokens: rvo-theme)
+    - design-systems: which systems this page uses (documentational; the loaded
+      bundles come from setup_components' declared systems)
+    - body-class / class: extra body classes
+    - head: raw HTML appended to <head>
+#}
+{% set title = _component_context.get('title', '') %}
+{% set lang = _component_context.get('lang', 'en') %}
+{% set charset = _component_context.get('charset', 'utf-8') %}
+{% set description = _component_context.get('description', '') %}
+{% set theme = _component_context.get('theme', '') %}
+{% set body_class = _component_context.get('body-class', '') %}
+{% set head = _component_context.get('head', '') %}
+{% set custom_class = _component_context.get('class', '') %}
+{% set children = _component_context.get('content', '') %}
+{% set css_classes = [] %}
+{% if theme %}{% set css_classes = css_classes + [theme ~ '-theme'] %}{% endif %}
+{% if body_class %}{% set css_classes = css_classes + body_class.split() %}{% endif %}
+{% if custom_class %}{% set css_classes = css_classes + custom_class.split() %}{% endif %}
+<!DOCTYPE html>
+<html lang="{{ lang }}" data-lotc-component="page">
+<head>
+    <meta charset="{{ charset }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% if description %}<meta name="description" content="{{ description }}">{% endif %}
+    {{ get_design_system_assets() }}
+    <link rel="stylesheet" href="/static/lotc/layout.css">
+    {% if head %}{{ head | safe }}{% endif %}
+</head>
+<body{% if css_classes %} class="{{ css_classes | join(' ') }}"{% endif %}>
+{{ children | safe }}
+</body>
+</html>

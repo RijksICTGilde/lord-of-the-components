@@ -796,17 +796,20 @@ def setup_components(
     from markupsafe import Markup
 
     def _design_system_assets() -> Markup:
-        """<link> tags for every declared design system's CSS (its css_urls).
+        """<head> asset tags for every declared design system (CSS + JS + extra).
 
         A page calls `{{ get_design_system_assets() }}` in its <head> to load the
-        theme bundles it declared (e.g. BGNLDD's bg-components.css on top of NLDD).
+        bundles for whatever it declared — e.g. the NLDD web-components module plus
+        BGNLDD's bg-components.css on top of it. Each design system is
+        self-describing (css_urls / js_urls / extra_head).
         """
-        tags = [
-            f'<link rel="stylesheet" href="{url}">'
-            for ds in resolved
-            for url in ds.css_urls
-        ]
-        return Markup("\n".join(tags))
+        tags: list[str] = []
+        for ds in resolved:
+            tags += [f'<link rel="stylesheet" href="{u}">' for u in ds.css_urls]
+            tags += [f'<script type="module" src="{u}"></script>' for u in ds.js_urls]
+            if ds.extra_head:
+                tags.append(ds.extra_head)
+        return Markup("\n    ".join(tags))
 
     jinja_env.globals["get_design_system_assets"] = _design_system_assets
 

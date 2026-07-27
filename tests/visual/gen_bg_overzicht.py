@@ -119,10 +119,9 @@ def activity() -> str:
 
 
 def build() -> str:
-    return f"""<!DOCTYPE html>
-<html lang="nl"><head><meta charset="UTF-8"><title>Overzicht · Begane Grond (LOTC nldd+bgnldd)</title></head>
-<body>
-<!-- Mix-and-match: NLDD primitives + BGNLDD app components. -->
+    return f"""<c-page title="Overzicht · Begane Grond" lang="nl" design-systems="nldd bgnldd">
+<!-- Mix-and-match: NLDD primitives + BGNLDD app components. c-page loads the
+     CSS/JS for both declared design systems itself. -->
 <!-- GAP still: no c-status-bar; c-header has no utility-menu slot. -->
 
 <c-app-shell width="16rem">
@@ -169,7 +168,7 @@ def build() -> str:
     </c-columns>
   </c-stack>
 </c-app-shell>
-</body></html>
+</c-page>
 """
 
 
