@@ -129,6 +129,10 @@ def _make_transform(theme: str) -> Callable[[str], str]:
     extra_css = _extra_ds_css(themes)
 
     def _transform(source: str) -> str:
+        # A fixture that uses <c-page> renders its own full document and loads the
+        # declared design systems' assets itself — don't double-inject.
+        if "<c-page" in source:
+            return source
         if primary == "nldd":
             head = "\n".join(p for p in (_nldd_head(), extra_css, layout_css) if p)
             if "</head>" in source:

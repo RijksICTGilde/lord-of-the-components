@@ -49,6 +49,12 @@ class DesignSystem:
     #: CSS hrefs (under the /static/lotc/... URL space) that a page declaring this
     #: design system should load. Consumed by `c-page`'s asset loading.
     css_urls: tuple[str, ...] = ()
+    #: ES-module <script> srcs to load for this design system (e.g. NLDD's web
+    #: components bundle). Emitted as <script type="module">.
+    js_urls: tuple[str, ...] = ()
+    #: Raw HTML injected into <head> for this design system (e.g. NLDD's body-font
+    #: fallback for plain content). Kept minimal and design-system specific.
+    extra_head: str = ""
 
 
 def discover_design_systems() -> Dict[str, DesignSystem]:

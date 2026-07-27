@@ -69,6 +69,17 @@ def test_design_system_assets_global_emits_css():
     assert '<link rel="stylesheet" href="/static/lotc/bgnldd/bg-components.css">' in html
 
 
+def test_cpage_loads_all_declared_theme_assets(render):
+    # <c-page> renders the full document and loads every declared system's bundle:
+    # NLDD's web-components module + BGNLDD's CSS.
+    html = render('<c-page title="Overzicht" design-systems="nldd bgnldd"><p>x</p></c-page>')
+    assert "<!DOCTYPE html>" in html
+    assert 'src="/static/lotc/nldd/dist/nldd.js"' in html  # NLDD web components (JS module)
+    assert 'href="/static/lotc/nldd/dist/css/reset.css"' in html  # NLDD base CSS
+    assert 'href="/static/lotc/bgnldd/bg-components.css"' in html  # BGNLDD add-on CSS
+    assert "<p>x</p>" in html
+
+
 def test_bgnldd_components_are_theme_owned():
     # The registry tags each BGNLDD component with its owner theme.
     from lord_of_the_components.design_system import discover_design_systems
