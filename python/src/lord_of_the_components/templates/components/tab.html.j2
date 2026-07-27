@@ -1,0 +1,22 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set active = _component_context.get('active', false) %}
+{% set href = _component_context.get('href', '') %}
+{% set label = _component_context.get('label', '') %}
+{% set css_classes = ['rvo-tabs__item'] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<li
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="tab"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% set css_classes = ['rvo-tabs__item-link'] %}
+    {% if active %}{% set css_classes = css_classes + ['rvo-tabs__item-link--active'] %}{% endif %}
+    <a
+        {% if href %}href="{{ href }}"{% endif %}
+        class="{{ css_classes | join(' ') }}">
+        {{ children if children else label | safe }}
+    </a>
+</li>

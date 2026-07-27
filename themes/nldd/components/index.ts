@@ -13,6 +13,8 @@ export { selectImpl } from "./select.impl.js";
 export { optionImpl } from "./option.impl.js";
 export { tagImpl } from "./tag.impl.js";
 export { badgeImpl } from "./badge.impl.js";
+export { tabsImpl } from "./tabs.impl.js";
+export { tabImpl } from "./tab.impl.js";
 export { tableImpl } from "./table.impl.js";
 export { tableHeadImpl } from "./table-head.impl.js";
 export { tableRowImpl } from "./table-row.impl.js";

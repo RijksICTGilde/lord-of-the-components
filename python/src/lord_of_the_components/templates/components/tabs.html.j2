@@ -1,0 +1,16 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set aria_label = _component_context.get('aria-label', '') %}
+{% set css_classes = ['rvo-tabs', 'rvo-ul', 'rvo-ul--no-margin', 'rvo-ul--no-padding'] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<ul
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="tabs"
+    role="tablist"
+    {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</ul>
