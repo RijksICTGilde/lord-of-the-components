@@ -2,7 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const OUTPUT_DIR = path.resolve(__dirname, 'python/src/lord_of_the_components/static/lotc/nldd/dist');
+// The NLDD CSS/JS bundle ships inside the lotc-nldd package. URL structure
+// (/static/lotc/nldd/dist/...) unchanged; only the physical location moves.
+const OUTPUT_DIR = path.resolve(__dirname, 'packages/lotc-nldd/src/lotc_nldd/static/lotc/nldd/dist');
 const NLDD = 'node_modules/@nldd/design-system/dist';
 
 // Assets consumed by the theme codegen (nldd theme). CSS order matches the

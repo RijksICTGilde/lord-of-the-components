@@ -21,4 +21,4 @@ rvo = "lotc_rvo:DESIGN_SYSTEM"
 where = ["src"]
 
 [tool.setuptools.package-data]
-lotc_rvo = ["templates/**/*.j2"]
+lotc_rvo = ["templates/**/*.j2", "static/**/*"]
