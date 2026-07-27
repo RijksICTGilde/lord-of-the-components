@@ -1080,6 +1080,64 @@
       }
     },
     {
+      "name": "stack",
+      "attributes": [
+        {
+          "name": "direction",
+          "type": "enum",
+          "enum_values": [
+            "vertical",
+            "horizontal"
+          ],
+          "default": "vertical",
+          "description": "Main axis"
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "description": "Gap between items, e.g. '1rem' (CSS length)"
+        },
+        {
+          "name": "wrap",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "align",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end",
+            "stretch"
+          ],
+          "description": "Cross-axis alignment"
+        },
+        {
+          "name": "justify",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end",
+            "between"
+          ],
+          "description": "Main-axis distribution"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Flex stack with an explicit direction (vertical | horizontal), enforced uniformly across themes",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
       "name": "paragraph",
       "attributes": [
         {

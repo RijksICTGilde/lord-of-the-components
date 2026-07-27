@@ -73,6 +73,36 @@ Props: `direction` (`left` | `right`, which side the sidebar sits — swaps the
 area map), `width` (sidebar width → `--lotc-sidebar-width`), `class`. Absent
 slots simply don't emit their region.
 
+## 3. `<c-stack>` — uniform direction primitive
+
+A one-dimensional flex layout with an **explicit** `direction`
+(`vertical` | `horizontal`). This exists because layout is structural, not
+stylistic: rather than lean on a theme's own flow component (whose row/wrap
+behaviour can differ per theme — RVO `layout-flow` wraps horizontally where NLDD
+stacks), `c-stack` is OUR flexbox. The direction is therefore enforced the same
+way in every theme, and does **not** depend on the theme providing both variants.
+
+```html
+<c-stack direction="horizontal" gap="1rem" align="center" justify="between" wrap>
+  …
+</c-stack>
+```
+
+Props: `direction` (`vertical` default | `horizontal`), `gap` (→
+`--lotc-stack-gap`), `wrap`, `align` (start/center/end/stretch), `justify`
+(start/center/end/between), `class`. The rendered HTML is byte-identical across
+themes (asserted in `test_layout_shell.py`).
+
+### Is layout theme-specific, or do we keep our own system?
+
+Both, deliberately. LOTC keeps a small **theme-agnostic base layout system** (the
+`lotc-*` classes here: `app-shell`, `auto-grid`, `stack`) because structural
+layout carries no design-system identity — a grid or a flex row looks the same
+regardless of palette or typography. Theme-specific layout components
+(`layout-flow`, `layout-row`, `layout-column`, `grid`) still exist for cases where
+a theme's own spacing/rhythm tokens matter, but anything that must be *uniform
+across themes* belongs in this base system, where we control it outright.
+
 ## Why these are RVO-impl-only (no NLDD impl)
 
 Both are **jinja-backend** (they use named slots + inline `style` custom

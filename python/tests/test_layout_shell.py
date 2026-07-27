@@ -21,6 +21,12 @@ def _env(theme):
     return env
 
 
+@pytest.fixture
+def rvo():
+    env = _env("rvo")
+    return lambda s: env.from_string(s).render()
+
+
 SHELL = (
     '<c-app-shell width="12rem">'
     '<template slot="header">Kop</template>'
@@ -79,3 +85,31 @@ def test_auto_grid_defaults_without_style():
     html = _env("rvo").from_string("<c-auto-grid>cells</c-auto-grid>").render()
     assert 'class="lotc-auto-grid"' in html
     assert "style=" not in html  # no CSS vars set -> CSS defaults apply
+
+
+# ── stack: uniform direction primitive ────────────────────────────────────────
+
+
+def test_stack_vertical_default(rvo):
+    html = rvo("<c-stack>x</c-stack>")
+    assert 'class="lotc-stack"' in html
+    assert "lotc-stack--horizontal" not in html
+
+
+def test_stack_horizontal(rvo):
+    assert "lotc-stack--horizontal" in rvo('<c-stack direction="horizontal">x</c-stack>')
+
+
+def test_stack_modifiers(rvo):
+    html = rvo('<c-stack direction="horizontal" gap="2rem" wrap align="center" justify="between">x</c-stack>')
+    assert "lotc-stack--wrap" in html
+    assert "lotc-stack--align-center" in html
+    assert "lotc-stack--justify-between" in html
+    assert "--lotc-stack-gap: 2rem;" in html
+
+
+@pytest.mark.parametrize("direction", ["vertical", "horizontal"])
+def test_stack_identical_across_themes(direction):
+    # The direction is OUR flexbox, so it is enforced the same way in both themes.
+    src = f'<c-stack direction="{direction}" gap="1rem">a</c-stack>'
+    assert _env("rvo").from_string(src).render() == _env("nldd").from_string(src).render()

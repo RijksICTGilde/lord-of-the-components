@@ -1,0 +1,29 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set align = _component_context.get('align', '') %}
+{% set direction = _component_context.get('direction', 'vertical') %}
+{% set gap = _component_context.get('gap', '') %}
+{% set justify = _component_context.get('justify', '') %}
+{% set wrap = _component_context.get('wrap', false) %}
+{% set css_classes = ['lotc-stack'] %}
+{% if direction == 'horizontal' %}{% set css_classes = css_classes + ['lotc-stack--horizontal'] %}{% endif %}
+{% if wrap %}{% set css_classes = css_classes + ['lotc-stack--wrap'] %}{% endif %}
+{% if align == 'start' %}{% set css_classes = css_classes + ['lotc-stack--align-start'] %}{% endif %}
+{% if align == 'center' %}{% set css_classes = css_classes + ['lotc-stack--align-center'] %}{% endif %}
+{% if align == 'end' %}{% set css_classes = css_classes + ['lotc-stack--align-end'] %}{% endif %}
+{% if align == 'stretch' %}{% set css_classes = css_classes + ['lotc-stack--align-stretch'] %}{% endif %}
+{% if justify == 'start' %}{% set css_classes = css_classes + ['lotc-stack--justify-start'] %}{% endif %}
+{% if justify == 'center' %}{% set css_classes = css_classes + ['lotc-stack--justify-center'] %}{% endif %}
+{% if justify == 'end' %}{% set css_classes = css_classes + ['lotc-stack--justify-end'] %}{% endif %}
+{% if justify == 'between' %}{% set css_classes = css_classes + ['lotc-stack--justify-between'] %}{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="stack"
+    {% if gap %}style="--lotc-stack-gap: {{ gap }};"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</div>
