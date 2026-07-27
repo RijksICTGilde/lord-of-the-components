@@ -96,6 +96,17 @@ _BUTTON_VARIANT_MAP = {
     'warning-subtle': 'critical-tinted',
 }
 
+_BUTTON_ICONS_MAP = {
+    'home': 'house',
+    'settings': 'gear',
+    'notification': 'bell',
+    'info': 'info-circle',
+    'favorite': 'star',
+    'mail': 'envelope',
+    'calendar': 'calendar-event',
+    'search': 'magnifier',
+}
+
 def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', full_width=False, label='', aria_label='', disabled=False, loading=False, active=False, html_type='button', href='', target='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
@@ -129,6 +140,14 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
     if target:
         parts.append(' target="')
         parts.append(esc(target))
+        parts.append('"')
+    if (show_icon == 'before'):
+        parts.append(' start-icon="')
+        parts.append(esc(_BUTTON_ICONS_MAP.get(icon, icon)))
+        parts.append('"')
+    if (show_icon == 'after'):
+        parts.append(' end-icon="')
+        parts.append(esc(_BUTTON_ICONS_MAP.get(icon, icon)))
         parts.append('"')
     parts.append(render_extra(_extra))
     parts.append('>')

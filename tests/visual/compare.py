@@ -1,18 +1,30 @@
-"""RVO fidelity compare harness.
+"""Systematic fidelity comparison harness.
 
-Renders each case twice — through the reference RVO implementation
-(jinja-roos-components, the predecessor) and through Lord of the Components — and
-writes a side-by-side HTML page so the two can be compared visually under the
-same RVO CSS. Where they differ, LOTC is missing a class / wrapper / context.
+For each component and theme it produces two isolated, single-component pages:
 
-Run:  python tests/visual/compare.py            # writes fixtures/_compare-rvo.html
-Then serve it with serve.py (--theme rvo) and screenshot.
+    <component>-<theme>-original   the reference / direct rendering (how it SHOULD look)
+    <component>-<theme>-rendered   the output via Lord of the Components
+
+The "original" reference is:
+  * RVO  — rendered through jinja-roos-components (the predecessor), pre-rendered
+           to static HTML here so serve.py just serves it with the RVO CSS.
+  * NLDD — hand-written ideal `<nldd-*>` markup (the storybook's intended usage),
+           served with the NLDD bundle.
+
+This writes one fixture per (component, theme, kind) into tests/visual/fixtures/
+(prefixed `_cmp_`, gitignored) plus a manifest JSON. `compare_shoot.mjs` reads the
+manifest, screenshots each in isolation, and saves them as
+screenshots/compare/<component>-<theme>-<kind>.png.
+
+Run:  python tests/visual/compare.py   then   node tests/visual/compare_shoot.mjs
 """
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
+from typing import Optional
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -23,77 +35,87 @@ from lord_of_the_components import setup_components as lotc_setup  # noqa: E402
 
 PKG = PYTHON_SRC / "lord_of_the_components"
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+MANIFEST = Path(__file__).resolve().parent / "_cmp_manifest.json"
 
 
-# (label, reference markup [jinja-roos syntax], LOTC markup) ---------------------
-CASES: list[tuple[str, str, str]] = [
-    ("heading h2", '<c-heading type="h2">Kop niveau 2</c-heading>', '<c-heading type="h2">Kop niveau 2</c-heading>'),
-    ("paragraph", "<c-paragraph>Een paragraaf met tekst.</c-paragraph>", "<c-paragraph>Een paragraaf met tekst.</c-paragraph>"),
-    ("link", '<c-link href="#">Een link</c-link>', '<c-link href="#">Een link</c-link>'),
-    ("button primary", '<c-button kind="primary" label="Opslaan"></c-button>', '<c-button type="primary" label="Opslaan"/>'),
-    ("button secondary", '<c-button kind="secondary" label="Annuleren"></c-button>', '<c-button type="secondary" label="Annuleren"/>'),
-    ("alert info", '<c-alert kind="info" heading="Ter info">Een informatief bericht.</c-alert>', '<c-alert type="info" heading="Ter info">Een informatief bericht.</c-alert>'),
-    ("alert warning", '<c-alert kind="warning" heading="Let op">Een waarschuwing.</c-alert>', '<c-alert type="warning" heading="Let op">Een waarschuwing.</c-alert>'),
-    ("card", '<c-card title="Kaarttitel">Inhoud van de kaart.</c-card>', '<c-card title="Kaarttitel">Inhoud van de kaart.</c-card>'),
-    ("label", "", '<c-label label="Veldlabel"/>'),
-    ("hero", '<c-hero title="Hero titel" subtitle="Ondertitel"></c-hero>', '<c-hero title="Hero titel" subtitle="Ondertitel"/>'),
-    # Data-driven / structural components (reference syntax diverges — LOTC only).
-    (
-        "menu",
-        "",
-        '<c-menu type="horizontal"><c-menu-item label="Home" href="/"/>'
-        '<c-menu-item label="Aanvragen" href="/a"/><c-menu-item label="Documenten" href="/d"/></c-menu>',
+class Case:
+    """One component comparison.
+
+    lotc:     the <c-*> markup (rendered via LOTC under each theme).
+    rvo_ref:  jinja-roos markup for the RVO reference (None -> no RVO original).
+    nldd_ref: ideal <nldd-*> markup for the NLDD reference (None -> no NLDD original).
+    """
+
+    def __init__(self, name: str, lotc: str, rvo_ref: Optional[str], nldd_ref: Optional[str]):
+        self.name = name
+        self.lotc = lotc
+        self.rvo_ref = rvo_ref
+        self.nldd_ref = nldd_ref
+
+
+CASES: list[Case] = [
+    Case(
+        "button",
+        '<c-button type="primary" label="Opslaan"/>',
+        '<c-button kind="primary" label="Opslaan"></c-button>',
+        '<nldd-button variant="primary" text="Opslaan"></nldd-button>',
     ),
-    (
-        "breadcrumbs",
-        "",
-        '<c-breadcrumbs><c-breadcrumbs-item label="Home" href="/"/>'
-        '<c-breadcrumbs-item label="Aanvragen" href="/a"/><c-breadcrumbs-item label="Detail" href="/a/1"/></c-breadcrumbs>',
+    Case(
+        "button-icon-after",
+        '<c-button type="primary" label="Volgende" icon="arrow-right" show-icon="after"/>',
+        '<c-button kind="primary" label="Volgende" icon="pijl-naar-rechts" showIcon="after"></c-button>',
+        '<nldd-button variant="primary" text="Volgende" end-icon="arrow-right"></nldd-button>',
     ),
-    (
-        "data-list",
-        "",
-        "<c-data-list>"
-        '<dt class="rvo-data-list__term">Naam</dt><dd class="rvo-data-list__description">Jan de Vries</dd>'
-        '<dt class="rvo-data-list__term">Rol</dt><dd class="rvo-data-list__description">Beheerder</dd>'
-        "</c-data-list>",
+    Case(
+        "button-icon-before",
+        '<c-button type="secondary" label="Terug" icon="arrow-left" show-icon="before"/>',
+        '<c-button kind="secondary" label="Terug" icon="pijl-naar-links" showIcon="before"></c-button>',
+        '<nldd-button variant="secondary" text="Terug" start-icon="arrow-left"></nldd-button>',
     ),
-    ("header", "", '<c-header text="Mijn Organisatie" subtitle="Zelfservice portaal"/>'),
-    ("footer", "", '<c-footer pay-off="Samen digitaal"/>'),
-    ("tag + badge", '<c-tag type="info">Concept</c-tag>', '<c-tag type="info">Concept</c-tag> <c-badge type="error" label="3"/>'),
-    ("max-width-layout", "", '<c-max-width-layout><c-paragraph>Inhoud met max breedte.</c-paragraph></c-max-width-layout>'),
-    # Batch 2 — components not yet visually verified. Reference where jinja-roos maps.
-    ("alert success", '<c-alert kind="success" heading="Gelukt">Opgeslagen.</c-alert>', '<c-alert type="success" heading="Gelukt">Opgeslagen.</c-alert>'),
-    ("alert error", '<c-alert kind="error" heading="Fout">Er ging iets mis.</c-alert>', '<c-alert type="error" heading="Fout">Er ging iets mis.</c-alert>'),
-    ("checkbox", '<c-checkbox label="Ik ga akkoord" name="a" checked></c-checkbox>', '<c-checkbox label="Ik ga akkoord" name="a" value="ja" checked/>'),
-    ("textarea", '<c-textarea name="m" placeholder="Typ een bericht"></c-textarea>', '<c-textarea name="m" placeholder="Typ een bericht"/>'),
-    ("label required", "", '<c-label label="Naam" type="required"/>'),
-    ("label optional", "", '<c-label label="Bijnaam" type="optional"/>'),
-    ("strong / em", "", "<c-strong>vetgedrukt</c-strong> en <c-em>schuingedrukt</c-em>"),
-    ("icon set", "", '<c-icon icon="home" size="lg"/> <c-icon icon="settings" size="lg"/> <c-icon icon="info" size="lg"/> <c-icon icon="search" size="lg"/>'),
-    (
-        "grid (3 cols)",
-        "",
-        '<c-grid columns="three" gap="md"><c-card title="Een">a</c-card>'
-        '<c-card title="Twee">b</c-card><c-card title="Drie">c</c-card></c-grid>',
+    Case(
+        "tag",
+        '<c-tag type="info">Concept</c-tag>',
+        '<c-tag type="info">Concept</c-tag>',
+        '<nldd-tag color="accent">Concept</nldd-tag>',
     ),
-    (
-        "layout-row",
-        "",
-        '<c-layout-row gap="md"><c-button type="primary" label="Opslaan"/>'
-        '<c-button type="secondary" label="Annuleren"/></c-layout-row>',
+    Case(
+        "alert-info",
+        '<c-alert type="info" heading="Ter info">Een informatief bericht.</c-alert>',
+        '<c-alert kind="info" heading="Ter info">Een informatief bericht.</c-alert>',
+        '<nldd-banner variant="accent" text="Ter info">Een informatief bericht.</nldd-banner>',
     ),
-    ("tabs", "", '<c-tabs><c-tab label="Een" href="#" active/><c-tab label="Twee" href="#"/></c-tabs>'),
-    (
-        "table",
-        "",
-        '<c-table><c-table-head><c-th>Naam</c-th><c-th>Rol</c-th></c-table-head>'
-        '<c-table-row><c-td>Jan</c-td><c-td>Beheerder</c-td></c-table-row></c-table>',
+    Case(
+        "alert-success",
+        '<c-alert type="success" heading="Gelukt">Opgeslagen.</c-alert>',
+        '<c-alert kind="success" heading="Gelukt">Opgeslagen.</c-alert>',
+        '<nldd-banner variant="success" text="Gelukt">Opgeslagen.</nldd-banner>',
+    ),
+    Case(
+        "checkbox",
+        '<c-checkbox label="Ik ga akkoord" name="a" value="ja" checked/>',
+        '<c-checkbox label="Ik ga akkoord" name="a" checked></c-checkbox>',
+        '<nldd-checkbox-field label="Ik ga akkoord" name="a" checked></nldd-checkbox-field>',
+    ),
+    Case(
+        "card",
+        '<c-card title="Aanvragen" href="#" outline>Bekijk je aanvragen.</c-card>',
+        '<c-card title="Aanvragen" href="#" outline="true">Bekijk je aanvragen.</c-card>',
+        '<nldd-card href="#"><span slot="header">Aanvragen</span>Bekijk je aanvragen.</nldd-card>',
+    ),
+    Case(
+        "tabs",
+        '<c-tabs><c-tab label="Overzicht" href="#" active/><c-tab label="Details" href="#"/></c-tabs>',
+        None,  # jinja-roos tabs template classes don't match its CSS -> not a fair oracle
+        '<nldd-tab-bar><nldd-tab-bar-item text="Overzicht" href="#" selected></nldd-tab-bar-item>'
+        '<nldd-tab-bar-item text="Details" href="#"></nldd-tab-bar-item></nldd-tab-bar>',
     ),
 ]
 
 
-def _reference_env() -> Environment | None:
+# ── reference rendering ─────────────────────────────────────────────────────────
+
+
+def _rvo_reference_env() -> Optional[Environment]:
     try:
         from jinja_roos_components import setup_components as ref_setup
     except ImportError:
@@ -103,60 +125,47 @@ def _reference_env() -> Environment | None:
     return env
 
 
-def _lotc_env() -> Environment:
-    env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
-    lotc_setup(env, design_systems=["rvo"], registry_path=str(PKG / "registry.json"))
-    return env
-
-
-def _render(env: Environment | None, src: str) -> str:
-    if not src:
-        return '<em style="color:#aaa">— (reference syntax diverges)</em>'
-    if env is None:
-        return '<em style="color:#888">reference unavailable</em>'
-    try:
-        return env.from_string(src).render()
-    except Exception as exc:  # noqa: BLE001 - report render errors inline for the visual diff
-        return f'<pre style="color:#b00;white-space:pre-wrap">{type(exc).__name__}: {exc}</pre>'
+def _page(body: str) -> str:
+    return (
+        '<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8">'
+        "<title>compare</title></head><body>"
+        f'<div id="cmp-root">{body}</div></body></html>'
+    )
 
 
 def main() -> None:
-    ref = _reference_env()
-    lotc = _lotc_env()
+    ref = _rvo_reference_env()
+    manifest: list[dict[str, str]] = []
 
-    rows = []
-    for label, ref_src, lotc_src in CASES:
-        rows.append(
-            f"""
-            <tr>
-              <th class="cmp-label">{label}</th>
-              <td class="cmp-cell">{_render(ref, ref_src)}</td>
-              <td class="cmp-cell">{_render(lotc, lotc_src)}</td>
-            </tr>"""
+    def write(name: str, theme: str, kind: str, body: str) -> None:
+        fixture = f"_cmp_{name}__{theme}__{kind}.html"
+        (FIXTURES / fixture).write_text(_page(body), encoding="utf-8")
+        manifest.append(
+            {"component": name, "theme": theme, "kind": kind, "fixture": fixture}
         )
 
-    html = f"""<!DOCTYPE html>
-<html lang="nl"><head><meta charset="UTF-8"><title>RVO compare</title>
-<style>
-  body {{ font-family: sans-serif; }}
-  table.cmp {{ border-collapse: collapse; width: 100%; }}
-  table.cmp th.cmp-head {{ text-align: left; padding: .5rem; background: #f3f3f3; border-bottom: 2px solid #ccc; }}
-  table.cmp th.cmp-label {{ text-align: left; padding: 1rem .5rem; vertical-align: top; width: 10rem; color: #555; font-weight: 600; }}
-  table.cmp td.cmp-cell {{ padding: 1rem; vertical-align: top; border-bottom: 1px solid #eee; width: 45%; }}
-  table.cmp td.cmp-cell:nth-child(2) {{ border-right: 1px solid #ddd; background: #fafcff; }}
-</style>
-</head>
-<body>
-  <h1>RVO compare — reference (jinja-roos) vs Lord of the Components</h1>
-  <table class="cmp">
-    <tr><th class="cmp-head">component</th><th class="cmp-head">reference (direct)</th><th class="cmp-head">via LOTC</th></tr>
-    {"".join(rows)}
-  </table>
-</body></html>
-"""
-    out = FIXTURES / "_compare-rvo.html"
-    out.write_text(html, encoding="utf-8")
-    print(f"Wrote {out} ({len(CASES)} cases, reference={'yes' if ref else 'MISSING'})")
+    for case in CASES:
+        # rendered: raw <c-*>, served through LOTC per theme.
+        write(case.name, "rvo", "rendered", case.lotc)
+        write(case.name, "nldd", "rendered", case.lotc)
+
+        # original (RVO): pre-render jinja-roos to static HTML.
+        if case.rvo_ref and ref is not None:
+            try:
+                html = ref.from_string(case.rvo_ref).render()
+            except Exception as exc:  # noqa: BLE001
+                html = f'<pre style="color:#b00">{type(exc).__name__}: {exc}</pre>'
+            write(case.name, "rvo", "original", html)
+
+        # original (NLDD): ideal static <nldd-*> markup.
+        if case.nldd_ref:
+            write(case.name, "nldd", "original", case.nldd_ref)
+
+    MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    # Touch the LOTC env once so an import error surfaces here, not in the browser.
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
+    lotc_setup(env, design_systems=["rvo"], registry_path=str(PKG / "registry.json"))
+    print(f"Wrote {len(manifest)} fixtures + {MANIFEST.name} (rvo reference: {'yes' if ref else 'MISSING'})")
 
 
 if __name__ == "__main__":
