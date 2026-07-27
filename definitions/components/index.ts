@@ -39,6 +39,7 @@ export { accordionItem, type AccordionItemDefinition } from "./accordion-item.de
 
 // Feedback components
 export { alert, type AlertDefinition } from "./alert.def.js";
+export { statusBar, type StatusBarDefinition } from "./status-bar.def.js";
 export { tag, type TagDefinition } from "./tag.def.js";
 export { badge, type BadgeDefinition } from "./badge.def.js";
 export { tabs, type TabsDefinition } from "./tabs.def.js";
@@ -90,6 +91,7 @@ import { label } from "./label.def.js";
 import { strong } from "./strong.def.js";
 import { em } from "./em.def.js";
 import { alert } from "./alert.def.js";
+import { statusBar } from "./status-bar.def.js";
 // Basic HTML elements (F9, batch D)
 import { div } from "./div.def.js";
 import { span } from "./span.def.js";
@@ -145,6 +147,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   strong,
   em,
   alert,
+  statusBar,
   div,
   span,
   small,
