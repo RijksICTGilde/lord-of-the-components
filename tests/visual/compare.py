@@ -109,6 +109,78 @@ CASES: list[Case] = [
         '<nldd-tab-bar><nldd-tab-bar-item text="Overzicht" href="#" selected></nldd-tab-bar-item>'
         '<nldd-tab-bar-item text="Details" href="#"></nldd-tab-bar-item></nldd-tab-bar>',
     ),
+    Case(
+        "heading",
+        '<c-heading type="h2">Kop niveau 2</c-heading>',
+        '<c-heading type="h2">Kop niveau 2</c-heading>',
+        '<nldd-title><span>Kop niveau 2</span></nldd-title>',
+    ),
+    Case(
+        "link",
+        '<c-link href="#">Een link</c-link>',
+        '<c-link href="#">Een link</c-link>',
+        '<nldd-link href="#" text="Een link"></nldd-link>',
+    ),
+    Case(
+        "paragraph",
+        "<c-paragraph>Een paragraaf met wat tekst erin.</c-paragraph>",
+        "<c-paragraph>Een paragraaf met wat tekst erin.</c-paragraph>",
+        "<p>Een paragraaf met wat tekst erin.</p>",
+    ),
+    Case(
+        "badge",
+        '<c-badge type="error" label="3"/>',
+        None,
+        '<nldd-badge color="critical" text="3"></nldd-badge>',
+    ),
+    Case(
+        "radio",
+        '<c-radio name="k" value="a" label="Optie A" checked/>',
+        None,
+        '<nldd-radio-button-field name="k" value="a" label="Optie A" checked></nldd-radio-button-field>',
+    ),
+    Case(
+        "text-input",
+        '<c-text-input name="e" type="email" placeholder="naam@voorbeeld.nl"/>',
+        None,
+        '<nldd-text-field name="e" type="email" placeholder="naam@voorbeeld.nl"></nldd-text-field>',
+    ),
+    Case(
+        "textarea",
+        '<c-textarea name="m" placeholder="Typ een bericht"/>',
+        '<c-textarea name="m" placeholder="Typ een bericht"></c-textarea>',
+        '<nldd-multi-line-text-field name="m" placeholder="Typ een bericht"></nldd-multi-line-text-field>',
+    ),
+    Case(
+        "select",
+        '<c-select name="p" placeholder="Kies..."><c-option value="ut" label="Utrecht"/>'
+        '<c-option value="nh" label="Noord-Holland"/></c-select>',
+        None,
+        '<nldd-combo-box name="p" placeholder="Kies..."><nldd-menu>'
+        '<nldd-menu-item value="ut" text="Utrecht"></nldd-menu-item>'
+        '<nldd-menu-item value="nh" text="Noord-Holland"></nldd-menu-item></nldd-menu></nldd-combo-box>',
+    ),
+    Case(
+        "breadcrumbs",
+        '<c-breadcrumbs><c-breadcrumbs-item label="Home" href="/"/>'
+        '<c-breadcrumbs-item label="Aanvragen" href="/a"/>'
+        '<c-breadcrumbs-item label="Detail"/></c-breadcrumbs>',
+        None,  # jinja-roos has no breadcrumbs component
+        '<nldd-breadcrumbs><nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>'
+        '<nldd-breadcrumbs-item text="Aanvragen" href="/a"></nldd-breadcrumbs-item>'
+        '<nldd-breadcrumbs-item text="Detail"></nldd-breadcrumbs-item></nldd-breadcrumbs>',
+    ),
+    Case(
+        "table",
+        '<c-table columns="1fr 1fr"><c-table-head><c-th>Naam</c-th><c-th>Rol</c-th></c-table-head>'
+        '<c-table-row><c-td>Jan de Vries</c-td><c-td>Beheerder</c-td></c-table-row>'
+        '<c-table-row><c-td>Aisha Bakker</c-td><c-td>Ontwikkelaar</c-td></c-table-row></c-table>',
+        None,
+        '<nldd-table columns="1fr 1fr"><nldd-table-row slot="header">'
+        '<nldd-cell>Naam</nldd-cell><nldd-cell>Rol</nldd-cell></nldd-table-row>'
+        '<nldd-table-row><nldd-cell>Jan de Vries</nldd-cell><nldd-cell>Beheerder</nldd-cell></nldd-table-row>'
+        '<nldd-table-row><nldd-cell>Aisha Bakker</nldd-cell><nldd-cell>Ontwikkelaar</nldd-cell></nldd-table-row></nldd-table>',
+    ),
 ]
 
 
