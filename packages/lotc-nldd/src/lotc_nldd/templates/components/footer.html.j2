@@ -1,0 +1,18 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set max_width = _component_context.get('max-width', '') %}
+{% set pay_off = _component_context.get('pay-off', '') %}
+{% set css_classes = [] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<nldd-page-footer
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="footer"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% if pay_off %}
+    <span>{{ pay_off | safe }}</span>
+    {% endif %}
+    <div>{{ children | safe }}</div>
+</nldd-page-footer>
