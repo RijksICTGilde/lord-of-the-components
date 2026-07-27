@@ -140,7 +140,9 @@ def test_discovery_finds_installed_design_systems():
 
     found = discover_design_systems()
     assert {"rvo", "nldd"} <= set(found)
-    assert found["rvo"].renderers_module.endswith("themes.rvo.renderers")
+    # Renderers now live in the separate packages, not in core.
+    assert found["rvo"].renderers_module == "lotc_rvo.renderers"
+    assert found["nldd"].renderers_module == "lotc_nldd.renderers"
 
 
 def test_core_has_no_hardcoded_theme_list():
