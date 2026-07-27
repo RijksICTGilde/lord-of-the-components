@@ -38,11 +38,14 @@ sys.path.insert(0, str(PACKAGE_DIR.parent))
 from lord_of_the_components import setup_components  # noqa: E402
 
 
-def make_env() -> Environment:
+def make_env(theme: str) -> Environment:
     # setup_components requires autoescape=True (F3): renderers escape prop values
-    # and treat content as Markup. The golden env matches test_golden.py.
+    # and treat content as Markup. The golden env matches test_golden.py. Each
+    # case declares its design system (no implicit default), so system components
+    # ("system") load none while design-system cases load their theme.
     env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
-    setup_components(env, registry_path=str(REGISTRY_JSON))
+    design_systems = None if theme in ("system", "", None) else [theme]
+    setup_components(env, design_systems=design_systems, registry_path=str(REGISTRY_JSON))
     return env
 
 
@@ -69,7 +72,7 @@ def main() -> int:
     args = parser.parse_args()
 
     matrix = load_matrix()
-    env = make_env()
+    envs: dict[str, Environment] = {}
 
     written = 0
     errors = 0
@@ -77,6 +80,7 @@ def main() -> int:
 
     for case in matrix["cases"]:
         theme, component, case_id = case["theme"], case["component"], case["case_id"]
+        env = envs.get(theme) or envs.setdefault(theme, make_env(theme))
         try:
             html = render_case(env, case["markup"])
         except Exception as exc:  # noqa: BLE001 - surface any render failure

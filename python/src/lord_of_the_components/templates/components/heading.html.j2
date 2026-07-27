@@ -4,6 +4,7 @@
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set label = _component_context.get('label', '') %}
+{% set size = _component_context.get('size', '') %}
 {% set type = _component_context.get('type', 'h1') %}
 {% set css_classes = [] %}
 {% if type == 'h1' %}{% set css_classes = css_classes + ['utrecht-heading-1'] %}{% endif %}

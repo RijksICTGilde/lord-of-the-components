@@ -29,6 +29,16 @@ export const heading = defineComponent({
     },
 
     /**
+     * Visual size, decoupled from the semantic level. When omitted it follows
+     * `type` (h1→largest). Set it to render, say, a semantic h1 at a smaller
+     * visual scale (as NLDD's nldd-title separates level from size).
+     */
+    [PROPS.SIZE]: {
+      values: ["1", "2", "3", "4", "5", "6"],
+      description: "Visual size (1-6), independent of the heading level",
+    },
+
+    /**
      * Heading text content
      * Can be overridden by content between tags
      */

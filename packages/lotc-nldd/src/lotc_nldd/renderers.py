@@ -193,7 +193,7 @@ _HEADING_SIZE_MAP = {
     'h6': '6',
 }
 
-def heading(*, type='h1', label='', content=None, _extra=None, _class=''):
+def heading(*, type='h1', size='', label='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
     cls0 = merge_class(cls0, _class)
@@ -201,9 +201,14 @@ def heading(*, type='h1', label='', content=None, _extra=None, _class=''):
     if cls0:
         parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="heading"')
-    parts.append(' size="')
-    parts.append(esc(_HEADING_SIZE_MAP.get(type, type)))
-    parts.append('"')
+    if size:
+        parts.append(' size="')
+        parts.append(esc(size))
+        parts.append('"')
+    if (not (size)):
+        parts.append(' size="')
+        parts.append(esc(_HEADING_SIZE_MAP.get(type, type)))
+        parts.append('"')
     parts.append(render_extra(_extra))
     parts.append('>')
     _el0 = type or 'h1'
