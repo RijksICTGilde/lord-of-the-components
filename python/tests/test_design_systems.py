@@ -49,8 +49,9 @@ def test_design_system_component_errors_without_one():
     with pytest.raises(ComponentError) as exc:
         _render(env, '<c-button label="Go"/>')
     msg = str(exc.value)
+    # A design-system component with no active system that implements it errors.
+    assert "not implemented" in msg
     assert "design system" in msg
-    assert "design_systems=['rvo']" in msg
 
 
 def test_design_system_component_works_when_declared():
