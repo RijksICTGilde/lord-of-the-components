@@ -1138,6 +1138,47 @@
       }
     },
     {
+      "name": "columns",
+      "attributes": [
+        {
+          "name": "columns",
+          "type": "string",
+          "description": "Base column count (mobile-first)"
+        },
+        {
+          "name": "sm",
+          "type": "string",
+          "description": "Column count from 40rem"
+        },
+        {
+          "name": "md",
+          "type": "string",
+          "description": "Column count from 48rem"
+        },
+        {
+          "name": "lg",
+          "type": "string",
+          "description": "Column count from 64rem"
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "description": "Gap between cells, e.g. '1rem' (CSS length)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Grid with an explicit column count and a mobile-first per-breakpoint fallback (cols = base; sm/md/lg override upward)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
       "name": "paragraph",
       "attributes": [
         {

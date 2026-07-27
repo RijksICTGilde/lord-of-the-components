@@ -1,0 +1,19 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set columns = _component_context.get('columns', '') %}
+{% set gap = _component_context.get('gap', '') %}
+{% set lg = _component_context.get('lg', '') %}
+{% set md = _component_context.get('md', '') %}
+{% set sm = _component_context.get('sm', '') %}
+{% set css_classes = ['lotc-columns'] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="columns"
+    {% if columns or sm or md or lg or gap %}style="{% if columns %}--lotc-cols: {{ columns }};{% endif %}{% if sm %}--lotc-cols-sm: {{ sm }};{% endif %}{% if md %}--lotc-cols-md: {{ md }};{% endif %}{% if lg %}--lotc-cols-lg: {{ lg }};{% endif %}{% if gap %}--lotc-columns-gap: {{ gap }};{% endif %}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</div>

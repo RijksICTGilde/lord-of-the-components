@@ -113,3 +113,27 @@ def test_stack_identical_across_themes(direction):
     # The direction is OUR flexbox, so it is enforced the same way in both themes.
     src = f'<c-stack direction="{direction}" gap="1rem">a</c-stack>'
     assert _env("rvo").from_string(src).render() == _env("nldd").from_string(src).render()
+
+
+# ── columns: explicit responsive column counts ────────────────────────────────
+
+
+def test_columns_sets_only_given_breakpoints(rvo):
+    html = rvo('<c-columns columns="1" md="2" lg="4" gap="1rem">x</c-columns>')
+    assert 'class="lotc-columns"' in html
+    assert "--lotc-cols: 1;" in html
+    assert "--lotc-cols-md: 2;" in html
+    assert "--lotc-cols-lg: 4;" in html
+    assert "--lotc-columns-gap: 1rem;" in html
+    # sm was not given -> no empty custom property (would defeat the var() fallback).
+    assert "--lotc-cols-sm" not in html
+
+
+def test_columns_base_only(rvo):
+    html = rvo('<c-columns columns="3">x</c-columns>')
+    assert 'style="--lotc-cols: 3;"' in html
+
+
+def test_columns_identical_across_themes():
+    src = '<c-columns columns="1" md="2" lg="3" gap="1rem">a</c-columns>'
+    assert _env("rvo").from_string(src).render() == _env("nldd").from_string(src).render()

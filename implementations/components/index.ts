@@ -17,6 +17,7 @@ export { gridImpl } from "./grid.impl.js";
 export { autoGridImpl } from "./auto-grid.impl.js";
 export { appShellImpl } from "./app-shell.impl.js";
 export { stackImpl } from "./stack.impl.js";
+export { columnsImpl } from "./columns.impl.js";
 export { paragraphImpl } from "./paragraph.impl.js";
 export { linkImpl } from "./link.impl.js";
 export { labelImpl } from "./label.impl.js";
