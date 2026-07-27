@@ -225,6 +225,18 @@ _ICON_ICONS_MAP = {
     'search': 'magnifier',
 }
 
+_ICON_SIZES_MAP = {
+    '2xs': '16',
+    'xs': '16',
+    'sm': '20',
+    'md': '24',
+    'lg': '32',
+    'xl': '40',
+    '2xl': '48',
+    '3xl': '64',
+    '4xl': '96',
+}
+
 _ICON_COLORS_MAP = {
     'primary': 'accent',
     'primary-dark': 'donkerblauw',
@@ -249,7 +261,7 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
         parts.append('"')
     if size:
         parts.append(' size="')
-        parts.append(esc(size))
+        parts.append(esc(_ICON_SIZES_MAP.get(size, size)))
         parts.append('"')
     if color:
         parts.append(' color="')
