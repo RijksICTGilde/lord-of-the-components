@@ -68,13 +68,47 @@ like external packages — each is registered via an entry point in the core
 `pyproject.toml`. Extracting them physically is Stage 2 and changes nothing about
 discovery.
 
+## Physical packages (done — Stage 2)
+
+The design systems are now separate installable packages under `packages/`:
+
+```
+packages/lotc-rvo/    src/lotc_rvo/{__init__ (DESIGN_SYSTEM), renderers.py, templates/components/*.j2}
+packages/lotc-nldd/   src/lotc_nldd/{__init__ (DESIGN_SYSTEM), renderers.py}
+```
+
+- Each has its own `pyproject.toml`, depends on `lord-of-the-components`, and
+  declares its own `lord_of_the_components.design_systems` entry point. Core has
+  **no** entry points and no `themes/` directory.
+- **What moved out of core:** the RVO/NLDD Python renderers, and the RVO-specific
+  jinja templates (the non-`system`, jinja-backend components: card, alert, grid,
+  menu, header, …). `lotc-rvo` sets `templates_path`; `setup_components` appends it
+  to the loader, so those templates resolve at render time.
+- **What stayed in core:** the engine, the full `registry.json` (component
+  contracts are theme-agnostic), the system-layer templates, the python-backend
+  fallback templates, the shared macros (`_generic_attributes.j2`,
+  `_attribute_mixin.j2`), and `layout.css`.
+- **Generation:** `generate-all.ts` routes each template to core (system or
+  python-backend) or `lotc-rvo` (everything else) and writes the renderers into
+  the package dirs.
+- **Dev/test:** the theme packages are editable dev-dependencies of core (via
+  `[tool.uv.sources]`), so `uv sync --extra dev` installs all three; core does
+  **not** depend on them at runtime.
+
+Adding a third design system is now: a new package with a `DESIGN_SYSTEM` entry
+point — no change to core.
+
+### Not moved (follow-up)
+
+The webpack CSS bundles (`static/lotc/dist`, `.../nldd/dist`) are gitignored build
+output and still emit into core's `static/`. Relocating each system's CSS into its
+own package is a frontend-build concern (webpack output paths) left for later; it
+does not affect the Python package boundary.
+
 ## Roadmap (remaining)
 
-- **Stage 2 — physical extraction into separate poetry packages.** Move each
-  system's renderers (+ rvo templates + rvo static) into `lotc-rvo` / `lotc-nldd`
-  with their own `pyproject.toml` + entry point; drop them from core; point the
-  generator at the new locations. Discovery is already in place, so core code does
-  not change.
+- **Per-tag `theme` override** (see above).
+- **Move the webpack CSS bundles into their theme packages** (frontend-build).
 - **Per-tag `theme` override.** Once a page declares availability, a tag may carry
   `theme="rvo|nldd|system"`; the engine resolves against the declared systems and
   falls back to the system layer. For now the practical use is just the per-page

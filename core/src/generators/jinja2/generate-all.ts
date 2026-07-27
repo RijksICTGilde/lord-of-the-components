@@ -41,13 +41,19 @@ const __dirname = dirname(__filename);
 /** Project root directory */
 const PROJECT_ROOT = resolve(__dirname, "../../../..");
 
-/** Output directory for generated Jinja2 templates */
+/** Core templates dir: system-layer templates, python-backend fallbacks, shared macros. */
 const TEMPLATES_DIR = resolve(
   PROJECT_ROOT,
   "python/src/lord_of_the_components/templates/components",
 );
 
-/** Output path for registry.json */
+/** RVO package templates dir: the RVO-specific jinja-backend component templates. */
+const RVO_TEMPLATES_DIR = resolve(
+  PROJECT_ROOT,
+  "packages/lotc-rvo/src/lotc_rvo/templates/components",
+);
+
+/** Output path for registry.json (core owns the shared component contracts). */
 const REGISTRY_PATH = resolve(
   PROJECT_ROOT,
   "python/src/lord_of_the_components/registry.json",
@@ -72,23 +78,32 @@ const implementations = (Object.values(rvoImpls) as CompImpl[])
 function main(): void {
   const generator = new Jinja2Generator();
 
-  // Ensure output directory exists
+  // Ensure output directories exist
   mkdirSync(TEMPLATES_DIR, { recursive: true });
+  mkdirSync(RVO_TEMPLATES_DIR, { recursive: true });
 
   console.log("Lord of the Components — Generate All");
   console.log("=====================================\n");
 
   // ── Generate Jinja2 templates ──────────────────────────────────────────
+  // System-layer templates and the python-backend fallbacks (+ shared macros)
+  // belong to core; the RVO-specific jinja-backend templates ship in lotc-rvo.
   console.log("Generating Jinja2 templates...\n");
+
+  const SYSTEM = new Set(
+    Object.values(COMPONENTS)
+      .filter((c) => (c as { system?: boolean }).system)
+      .map((c) => c.name),
+  );
 
   let templateCount = 0;
   for (const impl of implementations) {
     const name = impl.component.name;
     const template = generator.generateTemplate(impl);
-    const outputPath = resolve(TEMPLATES_DIR, `${name}.html.j2`);
-
-    writeFileSync(outputPath, template, "utf-8");
-    console.log(`  ✓ ${name}.html.j2`);
+    const inCore = SYSTEM.has(name) || PYTHON_BACKEND.has(name);
+    const dir = inCore ? TEMPLATES_DIR : RVO_TEMPLATES_DIR;
+    writeFileSync(resolve(dir, `${name}.html.j2`), template, "utf-8");
+    console.log(`  ✓ ${name}.html.j2 -> ${inCore ? "core" : "lotc-rvo"}`);
     templateCount++;
   }
 
@@ -112,22 +127,22 @@ function main(): void {
   const renderersPy = generatePythonRenderers(pythonImpls);
   const renderersPath = resolve(
     PROJECT_ROOT,
-    "python/src/lord_of_the_components/themes/rvo/renderers.py",
+    "packages/lotc-rvo/src/lotc_rvo/renderers.py",
   );
   mkdirSync(dirname(renderersPath), { recursive: true });
   writeFileSync(renderersPath, renderersPy, "utf-8");
-  console.log(`  ✓ themes/rvo/renderers.py (${pythonImpls.length} renderer(s))\n`);
+  console.log(`  ✓ lotc-rvo/renderers.py (${pythonImpls.length} renderer(s))\n`);
 
   // ── Generate the NLDD theme renderers ──────────────────────────────────
   const nlddList = Object.values(nlddImpls) as unknown as CompImpl[];
   const nlddPy = generatePythonRenderers(nlddList);
   const nlddPath = resolve(
     PROJECT_ROOT,
-    "python/src/lord_of_the_components/themes/nldd/renderers.py",
+    "packages/lotc-nldd/src/lotc_nldd/renderers.py",
   );
   mkdirSync(dirname(nlddPath), { recursive: true });
   writeFileSync(nlddPath, nlddPy, "utf-8");
-  console.log(`  ✓ themes/nldd/renderers.py (${nlddList.length} renderer(s))\n`);
+  console.log(`  ✓ lotc-nldd/renderers.py (${nlddList.length} renderer(s))\n`);
 
   // ── Generate showcase.html ───────────────────────────────────────────
   console.log("Generating showcase.html...\n");

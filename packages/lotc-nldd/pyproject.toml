@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lotc-nldd"
+version = "0.1.0"
+description = "NLDD design-system implementation for Lord of the Components"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+    "lord-of-the-components",
+]
+
+# Core discovers this design system via the entry-point group.
+[project.entry-points."lord_of_the_components.design_systems"]
+nldd = "lotc_nldd:DESIGN_SYSTEM"
+
+[tool.setuptools.packages.find]
+where = ["src"]

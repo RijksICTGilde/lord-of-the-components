@@ -23,12 +23,9 @@ dependencies = [
     "jinja2>=3.0",
 ]
 
-# In-repo design systems, discovered by core via this entry-point group. When
-# extracted to their own packages (lotc-rvo, lotc-nldd) each package declares its
-# own entry point here instead; core discovery is unchanged.
-[project.entry-points."lord_of_the_components.design_systems"]
-rvo = "lord_of_the_components.themes.rvo:DESIGN_SYSTEM"
-nldd = "lord_of_the_components.themes.nldd:DESIGN_SYSTEM"
+# Design systems are separate installable packages (lotc-rvo, lotc-nldd); each
+# declares its own "lord_of_the_components.design_systems" entry point. Core has
+# none — it discovers whatever is installed.
 
 [project.optional-dependencies]
 dev = [
@@ -38,7 +35,16 @@ dev = [
     # Test tooling only: the golden normalizer (tools/htmlnorm.py) parses HTML.
     # The runtime no longer depends on BeautifulSoup (replaced by parser.py).
     "beautifulsoup4>=4.9",
+    # The test suite exercises the RVO/NLDD implementations, so the dev env
+    # installs them (they are NOT runtime deps of core — core stays decoupled).
+    "lotc-rvo",
+    "lotc-nldd",
 ]
+
+# Resolve the in-repo design-system packages editably for development/tests.
+[tool.uv.sources]
+lotc-rvo = { path = "../packages/lotc-rvo", editable = true }
+lotc-nldd = { path = "../packages/lotc-nldd", editable = true }
 
 [tool.setuptools.packages.find]
 where = ["src"]

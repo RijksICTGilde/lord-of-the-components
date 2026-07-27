@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lotc-rvo"
+version = "0.1.0"
+description = "RVO (Rijkshuisstijl/Utrecht) design-system implementation for Lord of the Components"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+    "lord-of-the-components",
+]
+
+# Core discovers this design system via the entry-point group.
+[project.entry-points."lord_of_the_components.design_systems"]
+rvo = "lotc_rvo:DESIGN_SYSTEM"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+lotc_rvo = ["templates/**/*.j2"]
