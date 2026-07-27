@@ -27,6 +27,11 @@ export { appShell, type AppShellDefinition } from "./app-shell.def.js";
 // Data display components
 export { card, type CardDefinition } from "./card.def.js";
 export { dataList, type DataListDefinition } from "./data-list.def.js";
+export { table, type TableDefinition } from "./table.def.js";
+export { tableHead, type TableHeadDefinition } from "./table-head.def.js";
+export { tableRow, type TableRowDefinition } from "./table-row.def.js";
+export { th, type ThDefinition } from "./th.def.js";
+export { td, type TdDefinition } from "./td.def.js";
 
 // Feedback components
 export { alert, type AlertDefinition } from "./alert.def.js";
@@ -94,6 +99,11 @@ import { select } from "./select.def.js";
 import { option } from "./option.def.js";
 import { tag } from "./tag.def.js";
 import { badge } from "./badge.def.js";
+import { table } from "./table.def.js";
+import { tableHead } from "./table-head.def.js";
+import { tableRow } from "./table-row.def.js";
+import { th } from "./th.def.js";
+import { td } from "./td.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -137,6 +147,11 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   option,
   tag,
   badge,
+  table,
+  "table-head": tableHead,
+  "table-row": tableRow,
+  th,
+  td,
 };
 
 /**

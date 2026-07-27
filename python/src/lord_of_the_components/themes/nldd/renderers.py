@@ -344,6 +344,53 @@ def select(*, name='', value='', placeholder='', disabled=False, required=False,
     parts.append('</nldd-combo-box>')
     return Markup(''.join(parts))
 
+def table(*, columns='', content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-table')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="table"')
+    if columns:
+        parts.append(' columns="')
+        parts.append(esc(columns))
+        parts.append('"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-table>')
+    return Markup(''.join(parts))
+
+def table_head(*, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-table-row')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="table-head"')
+    parts.append(' slot="header"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-table-row>')
+    return Markup(''.join(parts))
+
+def table_row(*, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-table-row')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="table-row"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-table-row>')
+    return Markup(''.join(parts))
+
 _TAG_COLOR_MAP = {
     'default': 'neutral',
     'info': 'accent',
@@ -372,6 +419,20 @@ def tag(*, type='default', label='', content=None, _extra=None, _class=''):
     parts.append('>')
     parts.append((content or ''))
     parts.append('</nldd-tag>')
+    return Markup(''.join(parts))
+
+def td(*, numeric=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-cell')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="td"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-cell>')
     return Markup(''.join(parts))
 
 def text_input(*, type='text', name='', value='', placeholder='', autocomplete='', disabled=False, required=False, readonly=False, content=None, _extra=None, _class=''):
@@ -441,4 +502,18 @@ def textarea(*, name='', value='', placeholder='', disabled=False, required=Fals
     parts.append(render_extra(_extra))
     parts.append('>')
     parts.append('</nldd-multi-line-text-field>')
+    return Markup(''.join(parts))
+
+def th(*, numeric=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = ''
+    cls0 = merge_class(cls0, _class)
+    parts.append('<nldd-cell')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="th"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</nldd-cell>')
     return Markup(''.join(parts))
