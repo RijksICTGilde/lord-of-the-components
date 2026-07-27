@@ -39,6 +39,8 @@ export { td, type TdDefinition } from "./td.def.js";
 export { alert, type AlertDefinition } from "./alert.def.js";
 export { tag, type TagDefinition } from "./tag.def.js";
 export { badge, type BadgeDefinition } from "./badge.def.js";
+export { tabs, type TabsDefinition } from "./tabs.def.js";
+export { tab, type TabDefinition } from "./tab.def.js";
 
 // Typography components
 export { heading, type HeadingDefinition } from "./heading.def.js";
@@ -103,6 +105,8 @@ import { select } from "./select.def.js";
 import { option } from "./option.def.js";
 import { tag } from "./tag.def.js";
 import { badge } from "./badge.def.js";
+import { tabs } from "./tabs.def.js";
+import { tab } from "./tab.def.js";
 import { table } from "./table.def.js";
 import { tableHead } from "./table-head.def.js";
 import { tableRow } from "./table-row.def.js";
@@ -153,6 +157,8 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   option,
   tag,
   badge,
+  tabs,
+  tab,
   table,
   "table-head": tableHead,
   "table-row": tableRow,

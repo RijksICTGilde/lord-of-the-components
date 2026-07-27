@@ -53,6 +53,8 @@ export { optionImpl } from "./option.impl.js";
 // Feedback (F9, batch F)
 export { tagImpl } from "./tag.impl.js";
 export { badgeImpl } from "./badge.impl.js";
+export { tabsImpl } from "./tabs.impl.js";
+export { tabImpl } from "./tab.impl.js";
 
 // Data table (F9, batch table)
 export { tableImpl } from "./table.impl.js";

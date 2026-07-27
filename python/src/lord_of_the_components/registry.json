@@ -2018,6 +2018,58 @@
       }
     },
     {
+      "name": "tabs",
+      "attributes": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "description": "Accessible label for the tablist"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Tab bar; <c-tab> items go in the content",
+      "category": "navigation",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "tab",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Tab label (content overrides)"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Tab link target"
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "A single tab; label via prop or content",
+      "category": "navigation",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
       "name": "table",
       "attributes": [
         {
