@@ -33,6 +33,16 @@ _BUTTON_SIZE = {
     'md': ' utrecht-button--rvo-md',
 }
 
+_BUTTON_COLORS_MAP = {
+    'primary': 'hemelblauw',
+    'primary-dark': 'donkerblauw',
+    'muted': 'grijs-700',
+    'inverse': 'wit',
+    'hemelblauw': 'hemelblauw',
+    'donkerblauw': 'donkerblauw',
+    'logoblauw': 'logoblauw',
+}
+
 def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', full_width=False, label='', aria_label='', disabled=False, loading=False, active=False, html_type='button', href='', target='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = 'utrecht-button'
@@ -81,7 +91,7 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
         if size:
             cls1 += ' rvo-icon--' + size
         if color:
-            cls1 += ' rvo-icon--' + color
+            cls1 += ' rvo-icon--' + _BUTTON_COLORS_MAP.get(color, color)
         parts.append('<span')
         if cls1:
             parts.append(' class="' + cls1 + '"')
@@ -102,7 +112,7 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
         if size:
             cls2 += ' rvo-icon--' + size
         if color:
-            cls2 += ' rvo-icon--' + color
+            cls2 += ' rvo-icon--' + _BUTTON_COLORS_MAP.get(color, color)
         parts.append('<span')
         if cls2:
             parts.append(' class="' + cls2 + '"')
@@ -205,6 +215,16 @@ _ICON_SIZE = {
     '4xl': ' rvo-icon--4xl',
 }
 
+_ICON_COLORS_MAP = {
+    'primary': 'hemelblauw',
+    'primary-dark': 'donkerblauw',
+    'muted': 'grijs-700',
+    'inverse': 'wit',
+    'hemelblauw': 'hemelblauw',
+    'donkerblauw': 'donkerblauw',
+    'logoblauw': 'logoblauw',
+}
+
 def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = 'utrecht-icon rvo-icon'
@@ -212,7 +232,7 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
         cls0 += ' rvo-icon-' + _ICON_ICONS_MAP.get(icon, icon)
     cls0 += _ICON_SIZE.get(size, '')
     if color:
-        cls0 += ' rvo-icon--' + color
+        cls0 += ' rvo-icon--' + _ICON_COLORS_MAP.get(color, color)
     cls0 = merge_class(cls0, render_utility(_extra))
     cls0 = merge_class(cls0, _class)
     parts.append('<span')
@@ -303,6 +323,16 @@ def layout_flow(*, gap='md', size='lg', row=False, wrap=False, align_items='', a
     parts.append('</div>')
     return Markup(''.join(parts))
 
+_LINK_COLORS_MAP = {
+    'primary': 'hemelblauw',
+    'primary-dark': 'donkerblauw',
+    'muted': 'grijs-700',
+    'inverse': 'wit',
+    'hemelblauw': 'hemelblauw',
+    'donkerblauw': 'donkerblauw',
+    'logoblauw': 'logoblauw',
+}
+
 def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no', icon='', icon_size='md', icon_color='', icon_aria_label='', target='', role='', hover=False, active=False, focus=False, no_underline=False, full_container_link=False, content=None, _extra=None, _class=''):
     parts = []
     cls0 = 'rvo-link'
@@ -359,7 +389,7 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
         if icon_size:
             cls1 += ' rvo-icon--' + icon_size
         if icon_color:
-            cls1 += ' rvo-icon--' + icon_color
+            cls1 += ' rvo-icon--' + _LINK_COLORS_MAP.get(icon_color, icon_color)
         parts.append('<span')
         if cls1:
             parts.append(' class="' + cls1 + '"')
@@ -376,7 +406,7 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
         if icon_size:
             cls2 += ' rvo-icon--' + icon_size
         if icon_color:
-            cls2 += ' rvo-icon--' + icon_color
+            cls2 += ' rvo-icon--' + _LINK_COLORS_MAP.get(icon_color, icon_color)
         parts.append('<span')
         if cls2:
             parts.append(' class="' + cls2 + '"')

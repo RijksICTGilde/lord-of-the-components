@@ -6,6 +6,7 @@
 {% set icon = _component_context.get('icon', '') %}
 {% set size = _component_context.get('size', 'md') %}
 {% set icons_map = {'home': 'home', 'settings': 'instellingen', 'notification': 'bel', 'info': 'info', 'favorite': 'favoriet', 'mail': 'mail', 'calendar': 'kalender', 'search': 'zoek'} %}
+{% set colors_map = {'primary': 'hemelblauw', 'primary-dark': 'donkerblauw', 'muted': 'grijs-700', 'inverse': 'wit', 'hemelblauw': 'hemelblauw', 'donkerblauw': 'donkerblauw', 'logoblauw': 'logoblauw'} %}
 {% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
 {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icons_map[icon]] %}{% endif %}
 {% if size == '2xs' %}{% set css_classes = css_classes + ['rvo-icon--2xs'] %}{% endif %}
@@ -17,7 +18,7 @@
 {% if size == '2xl' %}{% set css_classes = css_classes + ['rvo-icon--2xl'] %}{% endif %}
 {% if size == '3xl' %}{% set css_classes = css_classes + ['rvo-icon--3xl'] %}{% endif %}
 {% if size == '4xl' %}{% set css_classes = css_classes + ['rvo-icon--4xl'] %}{% endif %}
-{% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ color] %}{% endif %}
+{% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ colors_map[color]] %}{% endif %}
 {% set utility_classes = attributes.render_utility_classes(_component_context) %}
 {% if utility_classes %}
     {% set css_classes = css_classes + utility_classes.split() %}

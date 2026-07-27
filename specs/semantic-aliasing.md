@@ -26,25 +26,33 @@ name still works.
 Starter vocabulary: home, settings, notification, info, favorite, mail, calendar,
 search. Grow `ICON_ALIASES` as components need more (the sweep, F9).
 
-## Colors — TODO
+## Colors — DONE
 
-Same shape, `definitions/colors.ts`:
+- `definitions/colors.ts` — `COLOR_ALIASES = { semantic: { rvo, nldd } }` +
+  `colorMapFor(theme)`. The single source of truth.
+- Wired through a `valueMap: "colors"` on the icon-color props (same mechanism as
+  icons): RVO `implementations/components/icon.impl.ts` (`color` → the
+  `rvo-icon--{value}` class), NLDD `themes/nldd/components/icon.impl.ts` (`color`
+  attribute), and the RVO icon spans of `button` (`color`) and `link`
+  (`icon-color`).
+- Result: `<c-icon color="primary"/>` → RVO `rvo-icon--hemelblauw`, NLDD
+  `<nldd-icon color="accent">`; `color="muted"` → `rvo-icon--grijs-700` /
+  `color="secondary-content"`. Raw names (`donkerblauw`) pass through.
 
-```ts
-export const COLORS = {
-  // semantic (preferred)
-  primary:            { rvo: "hemelblauw",  nldd: "brand" },
-  "primary-bg":       { rvo: "lichtblauw",  nldd: "brand-tinted" },
-  // specific is allowed too (easy search/replace)
-  blue:               { rvo: "hemelblauw",  nldd: "blue" },
-};
-export function colorMapFor(theme): Record<string,string> { ... }
-```
+Starter vocabulary: semantic `primary`, `primary-dark`, `muted`, `inverse`;
+specific `hemelblauw`, `donkerblauw`, `logoblauw`.
 
-Wire the `color` / `background-color` props of the components that take a color
-through a `valueMap: "colors"` per theme (same mechanism as icons). Prefer
-semantic names (`primary`, `primary-bg`, …) where the design intent is clear; a
-specific `blue` alias is fine as an escape hatch.
+### Constraint learned
+
+Colour aliasing only attaches to props that resolve through a **plain `pattern`**
+class or a **value attribute** — the Python emitter resolves the `valueMap` in
+those branches. It does **not** resolve inside a `when`-guarded pattern (the
+`when` branch keys off the raw value), so the text-colour props of `paragraph`
+(`when: [...]`) and `link` (`eq: ...`) are left on their raw RVO names for now.
+Converting those would need generator support for a valueMap in the `when` branch.
+
+Tests: `python/tests/test_color_aliasing.py` (both themes + escape hatch).
+Screenshots: `screenshots/color-aliasing-{rvo,nldd}.png`.
 
 ## Notes
 
