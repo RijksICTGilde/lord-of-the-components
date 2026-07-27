@@ -53,5 +53,18 @@ design_systems=['rvo']).")`. System components skip the check and always render.
   `theme="rvo|nldd|system"`; the engine resolves against the declared systems and
   falls back to the system layer. For now the practical use is just the per-page
   default (e.g. layout resolves to the system layer).
-- **Debug diagnostics.** With debug on, give jinja-roos-quality messages for wrong
-  attributes/values, with suggestions. (Next up.)
+
+## Debug diagnostics (done)
+
+`setup_components(env, design_systems=["rvo"], debug=True)` turns on extra
+author-facing diagnostics, jinja-roos style:
+
+- **Unknown attribute** (always on, debug or not): `Unknown attribute 'typ' on
+  component 'c-button'. Did you mean 'type'?`
+- **Invalid enum value** (debug only): a literal value outside an enum
+  attribute's allowed set → `Invalid value 'prmary' for attribute 'type' on
+  'c-button'. Allowed: primary, secondary, …. Did you mean 'primary'?`
+
+Value checks are debug-gated so production stays lenient/fast; dynamic
+(`{{ … }}`) values are skipped (not statically checkable). Suggestions come from
+`difflib.get_close_matches` over the enum set.

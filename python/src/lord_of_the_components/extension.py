@@ -186,6 +186,9 @@ class ComponentExtension(Extension):
         self.fold = True
         # Validate bound data structures (:items, :columns, ...) at render time.
         self.validate_data = True
+        # Debug mode: extra author-facing diagnostics (invalid enum values with
+        # suggestions), in addition to the always-on unknown-attribute checks.
+        self.debug = False
 
     def _wrap_binding(self, clean_key: str, value: str, component_def: Any) -> str:
         """Wrap a :binding expression in a render-time validation call, if enabled."""
@@ -353,7 +356,12 @@ class ComponentExtension(Extension):
             else:
                 clean_name = attr_name.lower()
                 if clean_name in valid_attrs:
-                    attrs[valid_attrs[clean_name]] = attr_value
+                    real_name = valid_attrs[clean_name]
+                    attrs[real_name] = attr_value
+                    if self.debug:
+                        self._validate_enum_value(
+                            source, component_def, real_name, attr_value, parsed, tag_name
+                        )
                 else:
                     available = sorted(set(valid_attrs.values()))
                     suggestion = None
@@ -377,6 +385,36 @@ class ComponentExtension(Extension):
                     )
 
         return attrs
+
+    def _validate_enum_value(
+        self,
+        source: str,
+        component_def: Any,
+        attr_name: str,
+        value: str,
+        parsed: Attr,
+        tag_name: str,
+    ) -> None:
+        """Debug-only: reject a literal value outside an enum attribute's set,
+        with a suggestion — the jinja-roos-style author diagnostic."""
+        from .registry import AttributeType
+
+        attr_def = component_def.get_attribute(attr_name)
+        if attr_def is None or attr_def.type != AttributeType.ENUM or not attr_def.enum_values:
+            return
+        # Skip dynamic / empty values — only plain literals are checkable.
+        if not value or _has_jinja(value):
+            return
+        if value in attr_def.enum_values:
+            return
+        close = get_close_matches(value, attr_def.enum_values, n=1, cutoff=0.4)
+        allowed = ", ".join(attr_def.enum_values)
+        raise ComponentError(
+            f"Invalid value '{value}' for attribute '{attr_name}' on '{tag_name}'. "
+            f"Allowed: {allowed}",
+            location=_source_location(source, parsed.span.start),
+            suggestion=close[0] if close else None,
+        )
 
     def _is_generic_html_attribute(self, attr_name: str) -> bool:
         """Check if an attribute is a generic HTML attribute or utility attribute."""
@@ -607,6 +645,7 @@ def setup_components(
     registry_path: Optional[str] = None,
     validate_data: bool = True,
     fold: bool = True,
+    debug: bool = False,
 ) -> Environment:
     """
     Setup Lord of the Components in a Jinja2 environment.
@@ -628,6 +667,9 @@ def setup_components(
         validate_data: Whether to validate dynamic data structures
         fold: Render fully-literal python components at compile time (default True;
             set False to debug the runtime renderer calls)
+        debug: Extra author-facing diagnostics. On top of the always-on
+            unknown-attribute check, rejects literal values outside an enum
+            attribute's allowed set, with a suggestion (jinja-roos parity).
 
     Returns:
         Configured Jinja2 environment
@@ -680,6 +722,7 @@ def setup_components(
     if isinstance(ext, ComponentExtension):
         ext.fold = fold
         ext.validate_data = validate_data
+        ext.debug = debug
         ext.design_systems = resolved
         ext.render_theme = primary
     for ds in resolved:
