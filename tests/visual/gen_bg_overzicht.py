@@ -102,7 +102,7 @@ def metrics() -> str:
 def layers() -> str:
     rows: list[str] = []
     for icon, title, count, sub, chips in LAYERS:
-        chip_tags = "".join(f'<c-tag type="default">{c}</c-tag>' for c in chips)
+        chip_tags = "".join(f'<c-chip>{c}</c-chip>' for c in chips)
         rows.append(
             f'        <c-layer icon="{icon}" title="{title}" count="{count}" sub="{sub}" href="#">'
             f'{chip_tags}</c-layer>'
@@ -160,15 +160,15 @@ def build() -> str:
     </c-auto-grid>
 
     <c-columns columns="1" lg="2" gap="1.5rem">
-      <c-card outline>
-        <c-section-head title="De lagen van het platform" icon="arrow-up-arrow-down"/>
+      <c-card outline padding="lg">
+        <c-section-head title="De lagen van het platform"><c-tag type="default">persoon → datacenter</c-tag></c-section-head>
         <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
         <c-stack gap="0.75rem">
 {layers()}
         </c-stack>
       </c-card>
 
-      <c-card outline>
+      <c-card outline padding="lg">
         <c-section-head title="Recente activiteit" icon="timer"/>
         <c-activity>
 {activity()}

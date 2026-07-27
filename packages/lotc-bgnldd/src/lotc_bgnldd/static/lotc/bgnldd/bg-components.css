@@ -80,6 +80,14 @@
 .bg-layer-count { opacity: 0.6; font-size: 0.8rem; font-weight: 600; }
 .bg-layer-sub { opacity: 0.7; margin-top: 0.1rem; font-size: 0.85rem; display: block; }
 .bg-layer-chips { flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; display: flex; }
+.bg-layer-chip {
+    font-size: 0.72rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--semantics-surfaces-tinted-background-color);
+    white-space: nowrap;
+    border-radius: 6px;
+    padding: 0.12rem 0.45rem;
+}
 .bg-layer-go { opacity: 0.4; flex: 0 0 auto; width: 1.2rem; height: 1.2rem; }
 
 /* ── section-head ────────────────────────────────────────────────────────── */
@@ -91,6 +99,7 @@
     display: flex;
 }
 .bg-section-head-main { align-items: center; gap: 0.6rem; display: flex; }
+.bg-section-head-aside { align-items: center; gap: 0.5rem; display: flex; }
 /* Title is rendered by <nldd-title> (its shadow controls typography); just
    strip the slotted heading's default margin so it sits in the flex row. */
 .bg-section-title { margin: 0; }

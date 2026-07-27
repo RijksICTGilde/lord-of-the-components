@@ -328,6 +328,22 @@
       "description": "A utility menu item: text + NLDD icon, optionally expandable",
       "category": "navigation",
       "backend": "jinja"
+    },
+    {
+      "name": "chip",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Small monospace chip/pill for a resource name (e.g. inside a layer)",
+      "category": "data-display",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }
