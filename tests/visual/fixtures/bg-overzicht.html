@@ -1,65 +1,138 @@
 <!DOCTYPE html>
-<html lang="nl"><head><meta charset="UTF-8"><title>Overzicht · Begane Grond</title>
-<style>
-  body { margin: 0; }
-  .bg-statusbar { background: #4a5568; color: #fff; text-align: center; padding: 6px 12px; font-size: 14px; }
-  .bg-main { max-width: 72rem; margin: 0 auto; padding: 1.5rem; }
-  .bg-stat { display: flex; flex-direction: column; gap: .1rem; }
-  .bg-stat .num { font-size: 1.9rem; font-weight: 700; line-height: 1.1; }
-  .bg-stat .lbl { font-weight: 600; }
-  .bg-stat .sub { color: #5b6472; font-size: .9rem; }
-  .bg-actions { display: flex; gap: .75rem; margin: 1rem 0 1.5rem; }
-</style>
-</head>
+<html lang="nl"><head><meta charset="UTF-8"><title>Overzicht · Begane Grond (LOTC pure components)</title></head>
 <body>
-  <!-- Status bar. NLDD has nldd-status-bar (no LOTC component yet) - approximated. -->
-  <div class="bg-statusbar">Begane Grond is een demo / mock-up. Geen productiedata.</div>
+<!-- GAP: no c-status-bar component (site uses <nldd-status-bar>). -->
+<!-- GAP: c-header renders <nldd-top-navigation-bar> but has no utility-menu slot
+     (site puts Zoeken/Notificaties/Nieuw/Thema/profiel in an <nldd-menu-bar slot="utility">). -->
 
-  <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/"/>
+<c-app-shell width="16rem">
+  <template slot="header">
+    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/"/>
+  </template>
 
-  <c-stack gap="1.25rem" class="bg-main">
-    <div><c-h1>Begane Grond</c-h1>
-    <c-p no-spacing>Welkom Anne, één plek voor fysieke infra, diensten, applicaties en teams van de Rijksoverheid.</c-p></div>
+  <template slot="sidebar">
+    <c-stack gap="0.15rem">
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="house" size="sm"/><c-link href="/" active>Overzicht</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="person" size="sm"/><c-link href="/zelf">Mijn overzicht</c-link></c-stack>
+      <c-small><strong>BOUWEN & DRAAIEN</strong></c-small>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="apartment-building" size="sm"/><c-link href="/fysiek">Fundament</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="cylinder-split" size="sm"/><c-link href="/infra">Infra-diensten</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="rectangle-stack" size="sm"/><c-link href="/apps">Applicaties</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="chevron-left-forward-slash-chevron-right" size="sm"/><c-link href="/code">Code</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="puzzle-piece" size="sm"/><c-link href="/componenten">Componenten</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="square-on-square" size="sm"/><c-link href="/design-system">Design system</c-link></c-stack>
+      <c-small><strong>UITROLLEN & DRAAIEN</strong></c-small>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="arrow-up-arrow-down" size="sm"/><c-link href="/environments">Omgevingen</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="gear" size="sm"/><c-link href="/environments/pijplijn">CI-pijplijn</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="timer" size="sm"/><c-link href="/environments/runners">CI-runners</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="folder-stack" size="sm"/><c-link href="/artefacten">Artefacten</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="flag" size="sm"/><c-link href="/flags">Feature flags</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="eye" size="sm"/><c-link href="/observability">Observability</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="exclamation-triangle" size="sm"/><c-link href="/incidenten">Incidenten</c-link></c-stack>
+      <c-small><strong>MENSEN & WERKPLEK</strong></c-small>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="person-2" size="sm"/><c-link href="/teams">Teams & mensen</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="business-suitcase" size="sm"/><c-link href="/werkplekken">Werkplekken</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="face-smiling-badge-plus" size="sm"/><c-link href="/leren">Leren</c-link></c-stack>
+      <c-small><strong>TOEGANG & BEVEILIGING</strong></c-small>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="person-circle" size="sm"/><c-link href="/inloggen">Inloggen</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="globe" size="sm"/><c-link href="/dns">Domeinen & DNS</c-link></c-stack>
+      <c-stack direction="horizontal" gap="0.6rem"><c-icon icon="certificate" size="sm"/><c-link href="/secrets/certificaten">Certificaten</c-link></c-stack>
+    </c-stack>
+  </template>
 
-    <div class="bg-actions">
-      <c-button type="secondary" label="Mijn overzicht" icon="person" show-icon="before"/>
-      <c-button type="primary" label="Nieuwe applicatie" icon="plus" show-icon="before"/>
+  <c-stack gap="1.25rem">
+    <div>
+      <c-h1>Begane Grond</c-h1>
+      <c-p>Welkom Anne, één plek voor fysieke infra, diensten, applicaties en teams van de Rijksoverheid.</c-p>
     </div>
 
+    <c-stack direction="horizontal" gap="0.75rem">
+      <c-button type="secondary" label="Mijn overzicht" icon="person" show-icon="before"/>
+      <c-button type="primary" label="Nieuwe applicatie" icon="plus" show-icon="before"/>
+    </c-stack>
+
     <c-auto-grid min="220px" gap="1rem">
-      <c-card outline><div class="bg-stat"><c-icon icon="home" size="sm"/><span class="num">5</span><span class="lbl">Datacenters</span><span class="sub">4 operationeel</span></div></c-card>
-      <c-card outline><div class="bg-stat"><span class="num">35</span><span class="lbl">Racks</span><span class="sub">10 rijen</span></div></c-card>
-      <c-card outline><div class="bg-stat"><span class="num">244</span><span class="lbl">Afgenomen instances</span><span class="sub">€124409/mnd</span></div></c-card>
-      <c-card outline><div class="bg-stat"><span class="num">123</span><span class="lbl">Applicaties</span><span class="sub">125 repo's</span></div></c-card>
-      <c-card outline><div class="bg-stat"><span class="num">99</span><span class="lbl">Teams</span><span class="sub">393 mensen</span></div></c-card>
-      <c-card outline><div class="bg-stat"><span class="num">345</span><span class="lbl">Werkplekken</span><span class="sub">238 in gebruik</span></div></c-card>
-      <c-card outline><div class="bg-stat"><span class="num">21</span><span class="lbl">Actieve incidenten</span><span class="sub">aandacht nodig</span></div></c-card>
-      <c-card outline><div class="bg-stat"><span class="num">40</span><span class="lbl">Open fleet-PR's</span><span class="sub">3 actieve campagnes</span></div></c-card>
+    <c-card href="/fysiek" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="apartment-building"/><c-h2>5</c-h2></c-stack>
+        <strong>Datacenters</strong>
+        <c-small>4 operationeel</c-small>
+      </c-stack>
+    </c-card>
+    <c-card href="/fysiek" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="rectangle-stack"/><c-h2>35</c-h2></c-stack>
+        <strong>Racks</strong>
+        <c-small>10 rijen</c-small>
+      </c-stack>
+    </c-card>
+    <c-card href="/infra/instances" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="cylinder-split"/><c-h2>244</c-h2></c-stack>
+        <strong>Afgenomen instances</strong>
+        <c-small>€124409/mnd</c-small>
+      </c-stack>
+    </c-card>
+    <c-card href="/apps" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="rectangle-stack"/><c-h2>123</c-h2></c-stack>
+        <strong>Applicaties</strong>
+        <c-small>125 repo's</c-small>
+      </c-stack>
+    </c-card>
+    <c-card href="/teams" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="person-2"/><c-h2>99</c-h2></c-stack>
+        <strong>Teams</strong>
+        <c-small>393 mensen</c-small>
+      </c-stack>
+    </c-card>
+    <c-card href="/werkplekken" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="person-circle"/><c-h2>345</c-h2></c-stack>
+        <strong>Werkplekken</strong>
+        <c-small>238 in gebruik</c-small>
+      </c-stack>
+    </c-card>
+    <c-card href="/incidenten" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="exclamation-triangle"/><c-h2>21</c-h2></c-stack>
+        <strong>Actieve incidenten</strong>
+        <c-small>aandacht nodig</c-small>
+      </c-stack>
+    </c-card>
+    <c-card href="/fleet" outline>
+      <c-stack gap="0.25rem">
+        <c-stack direction="horizontal" gap="0.5rem"><c-icon icon="ship-wheel"/><c-h2>40</c-h2></c-stack>
+        <strong>Open fleet-PR's</strong>
+        <c-small>3 actieve campagnes</c-small>
+      </c-stack>
+    </c-card>
     </c-auto-grid>
 
     <c-columns columns="1" lg="2" gap="1.5rem">
-      <c-card outline>
-        <c-h2>De lagen van het platform</c-h2>
-        <c-tag type="default">persoon → datacenter</c-tag>
-        <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
-        <c-stack gap="0.75rem">
-          <c-card><c-stack gap="0.25rem"><strong>Applicaties</strong> <span class="sub">123 apps — Wat burgers en ambtenaren gebruiken</span>
-            <c-stack direction="horizontal" gap="0.35rem" wrap><c-tag type="default">Paspoortaanvraag</c-tag><c-tag type="default">Toeslagenmotor</c-tag><c-tag type="default">Platformportaal</c-tag></c-stack></c-stack></c-card>
-          <c-card><c-stack gap="0.25rem"><strong>Infra-diensten</strong> <span class="sub">244 instances — Kubernetes, databases, brokers, LLM</span>
-            <c-stack direction="horizontal" gap="0.35rem" wrap><c-tag type="default">pg-burgerzaken-prod</c-tag><c-tag type="default">k8s-platform-prod</c-tag></c-stack></c-stack></c-card>
-          <c-card><c-stack gap="0.25rem"><strong>Fundament</strong> <span class="sub">35 racks — Datacenters, racks en hardware</span></c-stack></c-card>
-        </c-stack>
-      </c-card>
-
-      <c-card outline>
-        <c-h2>Recente activiteit</c-h2>
-        <c-stack gap="0.75rem">
-          <div><strong>Anne Schuth</strong> infra afgenomen<br><span class="sub">llm-gilde-prod · di 10:02</span></div>
-          <div><strong>Fatima El Amrani</strong> secret geroteerd<br><span class="sub">platform/llm-gateway-key · di 09:40</span></div>
-          <div><strong>Joost de Vries</strong> release gepromoot<br><span class="sub">app-paspoort → prod · gisteren 14:22</span></div>
-          <div><strong>Omar Van Es</strong> release gepromoot<br><span class="sub">app-subsidieportaal-rvo → prod · gisteren 9:11</span></div>
-        </c-stack>
-      </c-card>
+    <c-card outline>
+      <c-h2>De lagen van het platform</c-h2>
+      <c-tag type="default">persoon → datacenter</c-tag>
+      <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
+      <c-stack gap="0.75rem">
+        <c-card><c-stack gap="0.25rem"><strong>Applicaties</strong><c-small>123 apps — Wat burgers en ambtenaren gebruiken</c-small>
+          <c-stack direction="horizontal" gap="0.35rem" wrap><c-tag type="default">Paspoortaanvraag</c-tag><c-tag type="default">Toeslagenmotor</c-tag><c-tag type="default">Platformportaal</c-tag></c-stack></c-stack></c-card>
+        <c-card><c-stack gap="0.25rem"><strong>Infra-diensten</strong><c-small>244 instances — Kubernetes, databases, brokers, LLM</c-small>
+          <c-stack direction="horizontal" gap="0.35rem" wrap><c-tag type="default">pg-burgerzaken-prod</c-tag><c-tag type="default">k8s-platform-prod</c-tag></c-stack></c-stack></c-card>
+        <c-card><c-stack gap="0.25rem"><strong>Fundament</strong><c-small>35 racks — Datacenters, racks en hardware</c-small></c-stack></c-card>
+      </c-stack>
+    </c-card>
+    <c-card outline>
+      <c-h2>Recente activiteit</c-h2>
+      <c-stack gap="0.75rem">
+        <div><strong>Anne Schuth</strong> infra afgenomen<br><c-small>llm-gilde-prod · di 10:02</c-small></div>
+        <div><strong>Fatima El Amrani</strong> secret geroteerd<br><c-small>platform/llm-gateway-key · di 09:40</c-small></div>
+        <div><strong>Joost de Vries</strong> release gepromoot<br><c-small>app-paspoort → prod · gisteren 14:22</c-small></div>
+        <div><strong>Omar Van Es</strong> release gepromoot<br><c-small>app-subsidieportaal-rvo → prod · gisteren 9:11</c-small></div>
+      </c-stack>
+    </c-card>
     </c-columns>
   </c-stack>
+</c-app-shell>
 </body></html>

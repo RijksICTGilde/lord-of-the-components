@@ -1,0 +1,60 @@
+# bg.rijks.app Overzicht — pure-components recreation & gap report
+
+Recreation of the [bg.rijks.app](https://bg.rijks.app/) Overzicht page built with
+**only** LOTC `<c-*>` components under the NLDD backend, using **no** app-specific
+CSS. The real site is NLDD web components **plus** a substantial layer of bespoke
+Vue-scoped CSS (`.rp-*` classes). This exercise measures what the component system
+can express on its own — everything that looks off below is a genuine gap, not a
+missing stylesheet.
+
+- Source of truth: `tests/visual/gen_bg_overzicht.py` (icons/labels/grouping
+  extracted verbatim from the live DOM) → `fixtures/bg-overzicht.html`.
+- Shots: `screenshots/recreate/bg-overzicht-{reference,lotc,compare}.png`.
+- Regenerate: `python tests/visual/gen_bg_overzicht.py`, serve with
+  `python tests/visual/serve.py --port 5811 --theme nldd`, shoot `bg_shoot.mjs`.
+
+## What renders correctly (component output == intended NLDD)
+
+- `c-header` → `nldd-top-navigation-bar` (logo title/subtitle/href).
+- `c-button` (+ `icon`/`show-icon`) → `nldd-button` with `start-icon`.
+- `c-icon` → `nldd-icon` with the correct semantic-name → NLDD-name mapping.
+- `c-card` → `nldd-card`; `c-tag` → `nldd-tag`; `c-heading`/`c-h1..h6`, `c-p`,
+  `c-link`, `c-small`.
+- `c-app-shell` (header + sidebar + main regions), `c-auto-grid`, `c-columns`,
+  `c-stack` — all lay out correctly.
+
+## Bug found & fixed: `c-icon` size mapping (NLDD)
+
+`nldd-icon`'s default is `--_size: 100%` (**fills its parent**) and its `size`
+attribute only accepts numeric spacer tokens (`16 20 24 28 32 40 44 48 56 64 80 96`).
+Our impl emitted the t-shirt value verbatim (`size="md"`), which NLDD does not
+recognise → every icon fell back to filling its parent → giant icons that blew out
+the sidebar and wrapped the metric numbers.
+
+Fix: `themes/nldd/components/icon.impl.ts` now maps `2xs..4xl → 16..96` via a
+`sizes` valueMap. Regression test: `python/tests/test_icon_size_nldd.py`.
+(Before/after is the difference between the first and second `bg-overzicht-lotc.png`.)
+
+## Remaining gaps (no component today — documented, not worked around)
+
+1. **Status bar** — the site's top `nldd-status-bar` ("… demo / mock-up …") has no
+   LOTC component. Omitted.
+2. **Header utility menu** — `c-header` renders only the logo lockup; the site's
+   `nldd-menu-bar slot="utility"` (Zoeken / Notificaties / Nieuw / Thema / profiel)
+   has no slot on `c-header`. Missing in the recreation.
+3. **Nav item** — the sidebar is faked with `c-stack` + `c-icon` + `c-link`.
+   `c-link` → `nldd-link` renders as a blue hyperlink; a sidebar item should inherit
+   text colour and carry an active/hover state. There is no nav-item component and
+   `c-menu`/`c-menu-item` have **no NLDD template** (`menu-item.html.j2` missing), so
+   a real sidenav cannot be built with components yet. No active-state on "Overzicht".
+4. **Metric / stat value** — the big number uses `c-h2` as a stand-in (semantic
+   hack). There is no display-typography / metric component.
+5. **Layer rows** (the "De lagen" card) — the site renders per-row icon tiles +
+   chevron via `.rp-layer*`; recreated as plain stacked text.
+
+## Other components missing an NLDD template (surfaced while building)
+
+`c-page`, `c-menu` / `c-menu-item`, `c-grid`, `c-layout-row`, `c-layout-column`,
+`c-max-width-layout` all raise `TemplateNotFound` under NLDD, and `c-data-list-item`
+is not registered. These are theme-agnostic/layout components that generate no NLDD
+output today.
