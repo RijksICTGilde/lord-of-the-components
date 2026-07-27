@@ -35,6 +35,26 @@ Fix: `themes/nldd/components/icon.impl.ts` now maps `2xs..4xl → 16..96` via a
 `sizes` valueMap. Regression test: `python/tests/test_icon_size_nldd.py`.
 (Before/after is the difference between the first and second `bg-overzicht-lotc.png`.)
 
+## Bug found & fixed: `c-card` had no padding (NLDD)
+
+`nldd-card` has **no intrinsic padding** — `.card__main` is a bare slot
+(`card.styles.ts`), so NLDD composes padding with a wrapping `<nldd-container
+padding="…">` (the site uses `20` for metric cards, `24` for section cards). Our
+impl emitted a bare `<div>` for the body **and ignored the card's own `padding`
+prop** (which defaults to `md`), so all card content sat flush against the edge.
+
+Fix: `themes/nldd/components/card.impl.ts` now wraps the body in `<nldd-container>`
+and maps the `padding` prop (`none/sm/md/lg/xl → 0/16/20/24/32`) onto NLDD's spacer
+scale. `<c-card>` → `<nldd-card><nldd-container padding="20">…` — the site's exact
+pattern. Regression: `test_card_alert_nldd.py`.
+
+### Audited faithful (no change needed)
+
+`c-button` (`size="md"` — NLDD button accepts `xs/sm/md/lg`), `c-tag`
+(`type="default" → color="neutral"`, matches the site). `c-heading`/`c-h1..h6` map
+heading level → `nldd-title size` correctly; the site's smaller visual sizes
+(`size="2"` for its h1) are a per-page usage choice, not a component defect.
+
 ## Remaining gaps (no component today — documented, not worked around)
 
 1. **Status bar** — the site's top `nldd-status-bar` ("… demo / mock-up …") has no

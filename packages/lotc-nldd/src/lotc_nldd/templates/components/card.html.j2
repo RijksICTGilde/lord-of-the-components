@@ -15,6 +15,7 @@
 {% set padding = _component_context.get('padding', 'md') %}
 {% set show_link_indicator = _component_context.get('show-link-indicator', false) %}
 {% set title = _component_context.get('title', '') %}
+{% set padding_map = {'none': '0', 'sm': '16', 'md': '20', 'lg': '24', 'xl': '32'} %}
 {% set css_classes = [] %}
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
@@ -31,5 +32,8 @@
         {{ title | safe }}
     </span>
     {% endif %}
-    <div>{{ children | safe }}</div>
+    <nldd-container
+        {% if padding %}padding="{{ padding_map[padding] }}"{% endif %}>
+        {{ children | safe }}
+    </nldd-container>
 </nldd-card>

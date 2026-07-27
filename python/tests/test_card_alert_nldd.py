@@ -37,6 +37,18 @@ def test_card_nldd():
     assert 'slot="header"' in html  # title in the header slot
     assert "Titel" in html and "Inhoud" in html
     assert "rvo-card" not in html
+    # nldd-card has no intrinsic padding: the body must sit in an nldd-container
+    # whose padding comes from the `padding` prop (default md -> 20).
+    assert "<nldd-container" in html and 'padding="20"' in html
+
+
+def test_card_nldd_padding_prop_maps_to_container_token():
+    render = lambda p: _env("nldd").from_string(f'<c-card padding="{p}">x</c-card>').render()
+    assert 'padding="0"' in render("none")
+    assert 'padding="16"' in render("sm")
+    assert 'padding="20"' in render("md")
+    assert 'padding="24"' in render("lg")
+    assert 'padding="32"' in render("xl")
 
 
 # ── alert ──────────────────────────────────────────────────────────────────────
