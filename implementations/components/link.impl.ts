@@ -19,9 +19,12 @@
 
 import { defineImplementation } from "../implementation.js";
 import { link } from "../../definitions/components/link.def.js";
+import { colorMapFor } from "../../definitions/colors.js";
 
 export const linkImpl = defineImplementation({
   component: link,
+
+  valueMaps: { colors: colorMapFor("rvo") },
 
   root: {
     element: "a",
@@ -60,7 +63,7 @@ export const linkImpl = defineImplementation({
           "rvo-icon",
           { prop: "icon", pattern: "rvo-icon-{value}" },
           { prop: "icon-size", pattern: "rvo-icon--{value}" },
-          { prop: "icon-color", pattern: "rvo-icon--{value}" },
+          { prop: "icon-color", pattern: "rvo-icon--{value}", valueMap: "colors" },
           "rvo-link__icon--before",
         ],
       },
@@ -78,7 +81,7 @@ export const linkImpl = defineImplementation({
           "rvo-icon",
           { prop: "icon", pattern: "rvo-icon-{value}" },
           { prop: "icon-size", pattern: "rvo-icon--{value}" },
-          { prop: "icon-color", pattern: "rvo-icon--{value}" },
+          { prop: "icon-color", pattern: "rvo-icon--{value}", valueMap: "colors" },
           "rvo-link__icon--after",
         ],
       },

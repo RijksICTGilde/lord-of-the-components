@@ -16,6 +16,7 @@
 {% set size = _component_context.get('size', 'md') %}
 {% set target = _component_context.get('target', '') %}
 {% set type = _component_context.get('type', 'primary') %}
+{% set colors_map = {'primary': 'hemelblauw', 'primary-dark': 'donkerblauw', 'muted': 'grijs-700', 'inverse': 'wit', 'hemelblauw': 'hemelblauw', 'donkerblauw': 'donkerblauw', 'logoblauw': 'logoblauw'} %}
 {% set css_classes = ['utrecht-button'] %}
 {% if type == 'primary' %}{% set css_classes = css_classes + ['utrecht-button--primary-action'] %}{% endif %}
 {% if type == 'warning' %}{% set css_classes = css_classes + ['utrecht-button--primary-action'] %}{% endif %}
@@ -49,7 +50,7 @@
     {% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
     {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}
     {% if size %}{% set css_classes = css_classes + ['rvo-icon--' ~ size] %}{% endif %}
-    {% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ color] %}{% endif %}
+    {% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ colors_map[color]] %}{% endif %}
     <span
         role="img"
         aria-label="{{ aria_label }}"
@@ -61,7 +62,7 @@
     {% set css_classes = ['utrecht-icon', 'rvo-icon'] %}
     {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}
     {% if size %}{% set css_classes = css_classes + ['rvo-icon--' ~ size] %}{% endif %}
-    {% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ color] %}{% endif %}
+    {% if color %}{% set css_classes = css_classes + ['rvo-icon--' ~ colors_map[color]] %}{% endif %}
     <span
         role="img"
         aria-label="{{ aria_label }}"

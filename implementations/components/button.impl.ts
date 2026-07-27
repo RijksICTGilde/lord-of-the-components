@@ -15,9 +15,12 @@
 
 import { defineImplementation } from "../implementation.js";
 import { button } from "../../definitions/components/button.def.js";
+import { colorMapFor } from "../../definitions/colors.js";
 
 export const buttonImpl = defineImplementation({
   component: button,
+
+  valueMaps: { colors: colorMapFor("rvo") },
 
   root: {
     element: "button",
@@ -90,7 +93,7 @@ export const buttonImpl = defineImplementation({
           "rvo-icon",
           { prop: "icon", pattern: "rvo-icon-{value}" },
           { prop: "size", pattern: "rvo-icon--{value}" },
-          { prop: "color", pattern: "rvo-icon--{value}" },
+          { prop: "color", pattern: "rvo-icon--{value}", valueMap: "colors" },
         ],
         attributes: [
           { attr: "role", type: "static", value: "img" },
@@ -111,7 +114,7 @@ export const buttonImpl = defineImplementation({
           "rvo-icon",
           { prop: "icon", pattern: "rvo-icon-{value}" },
           { prop: "size", pattern: "rvo-icon--{value}" },
-          { prop: "color", pattern: "rvo-icon--{value}" },
+          { prop: "color", pattern: "rvo-icon--{value}", valueMap: "colors" },
         ],
         attributes: [
           { attr: "role", type: "static", value: "img" },

@@ -163,6 +163,16 @@ _ICON_ICONS_MAP = {
     'search': 'magnifier',
 }
 
+_ICON_COLORS_MAP = {
+    'primary': 'accent',
+    'primary-dark': 'donkerblauw',
+    'muted': 'secondary-content',
+    'inverse': '',
+    'hemelblauw': 'hemelblauw',
+    'donkerblauw': 'donkerblauw',
+    'logoblauw': 'hemelblauw',
+}
+
 def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
@@ -181,7 +191,7 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
         parts.append('"')
     if color:
         parts.append(' color="')
-        parts.append(esc(color))
+        parts.append(esc(_ICON_COLORS_MAP.get(color, color)))
         parts.append('"')
     parts.append(render_extra(_extra))
     parts.append('>')

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="UTF-8"><title>Color aliasing</title>
+<style>
+  body { font-family: sans-serif; }
+  .row { display: flex; align-items: center; gap: 1rem; margin: .5rem 0; }
+  .row code { width: 9rem; color: #555; }
+  .swatch { display: inline-flex; align-items: center; gap: .5rem; }
+  .on-dark { background: #154273; padding: .5rem 1rem; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <c-heading type="h2">Semantic icon colors</c-heading>
+  <c-paragraph>Dezelfde semantische naam, per thema een eigen kleur.</c-paragraph>
+
+  <div class="row"><code>color="primary"</code>
+    <span class="swatch"><c-icon icon="favorite" size="xl" color="primary"/> primary</span></div>
+  <div class="row"><code>color="primary-dark"</code>
+    <span class="swatch"><c-icon icon="favorite" size="xl" color="primary-dark"/> primary-dark</span></div>
+  <div class="row"><code>color="muted"</code>
+    <span class="swatch"><c-icon icon="favorite" size="xl" color="muted"/> muted</span></div>
+  <div class="row on-dark"><code style="color:#fff">color="inverse"</code>
+    <span class="swatch" style="color:#fff"><c-icon icon="favorite" size="xl" color="inverse"/> inverse (op donker)</span></div>
+</body></html>
