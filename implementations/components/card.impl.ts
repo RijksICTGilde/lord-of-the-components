@@ -162,10 +162,12 @@ export const cardImpl = defineImplementation({
               },
             ],
           },
-          // Link indicator icon
+          // Link indicator icon. Needs the utrecht-icon base class (it carries the
+          // size via --utrecht-icon-size); the icon-name class is single-dash
+          // (rvo-icon-<name>), not the double-dash modifier form.
           {
             element: "span",
-            classes: ["rvo-icon", "rvo-icon--delta-naar-rechts", "rvo-icon--sm", "rvo-card__link-indicator"],
+            classes: ["utrecht-icon", "rvo-icon", "rvo-icon-delta-naar-rechts", "rvo-icon--sm", "rvo-card__link-indicator"],
             attributes: [
               { attr: "aria-label", type: "static", value: "Delta naar rechts" },
               { attr: "role", type: "static", value: "img" },

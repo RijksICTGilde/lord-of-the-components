@@ -161,7 +161,11 @@ class TestCardLinkIndicator:
         norm = normalize_whitespace(html)
         assert "rvo-card--with-link-indicator" in norm
         assert "rvo-card__link-indicator" in norm
-        assert "rvo-icon--delta-naar-rechts" in norm
+        # The icon needs the utrecht-icon base class (for size) and the single-dash
+        # icon-name class (rvo-icon-<name>), not the double-dash modifier form.
+        assert "utrecht-icon" in norm
+        assert "rvo-icon-delta-naar-rechts" in norm
+        assert "rvo-icon--delta-naar-rechts" not in norm
 
     def test_no_indicator_without_href(self, render):
         html = render('<c-card title="Test" full-card-link show-link-indicator/>')
