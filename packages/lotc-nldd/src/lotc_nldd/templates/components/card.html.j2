@@ -1,0 +1,35 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set background_color = _component_context.get('background-color', '') %}
+{% set background_image = _component_context.get('background-image', '') %}
+{% set full_card_link = _component_context.get('full-card-link', false) %}
+{% set href = _component_context.get('href', '') %}
+{% set image = _component_context.get('image', '') %}
+{% set image_alt = _component_context.get('image-alt', '') %}
+{% set image_size = _component_context.get('image-size', 'md') %}
+{% set inline_image = _component_context.get('inline-image', false) %}
+{% set inverted_colors = _component_context.get('inverted-colors', false) %}
+{% set layout = _component_context.get('layout', 'column') %}
+{% set outline = _component_context.get('outline', false) %}
+{% set padding = _component_context.get('padding', 'md') %}
+{% set show_link_indicator = _component_context.get('show-link-indicator', false) %}
+{% set title = _component_context.get('title', '') %}
+{% set css_classes = [] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<nldd-card
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="card"
+    {% if href %}href="{{ href }}"{% endif %}
+    {% if target %}target="{{ target }}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% if title %}
+    <span
+        slot="header">
+        {{ title | safe }}
+    </span>
+    {% endif %}
+    <div>{{ children | safe }}</div>
+</nldd-card>

@@ -133,16 +133,34 @@ function main(): void {
   writeFileSync(renderersPath, renderersPy, "utf-8");
   console.log(`  ✓ lotc-rvo/renderers.py (${pythonImpls.length} renderer(s))\n`);
 
-  // ── Generate the NLDD theme renderers ──────────────────────────────────
-  const nlddList = Object.values(nlddImpls) as unknown as CompImpl[];
-  const nlddPy = generatePythonRenderers(nlddList);
+  // ── Generate the NLDD theme implementations ────────────────────────────
+  // Like RVO: python-backend components become renderers; jinja-backend ones
+  // (card, alert, …) become templates shipped in lotc-nldd, so the loader finds
+  // the NLDD template under the NLDD theme (core has no template for them).
+  const nlddList = (Object.values(nlddImpls) as unknown as CompImpl[]).filter(
+    (impl) => impl && impl.component && impl.root,
+  );
+  const nlddPythonImpls = nlddList.filter((impl) => PYTHON_BACKEND.has(impl.component.name));
+  const nlddPy = generatePythonRenderers(nlddPythonImpls);
   const nlddPath = resolve(
     PROJECT_ROOT,
     "packages/lotc-nldd/src/lotc_nldd/renderers.py",
   );
   mkdirSync(dirname(nlddPath), { recursive: true });
   writeFileSync(nlddPath, nlddPy, "utf-8");
-  console.log(`  ✓ lotc-nldd/renderers.py (${nlddList.length} renderer(s))\n`);
+  console.log(`  ✓ lotc-nldd/renderers.py (${nlddPythonImpls.length} renderer(s))\n`);
+
+  const nlddJinjaImpls = nlddList.filter((impl) => !PYTHON_BACKEND.has(impl.component.name));
+  const NLDD_TEMPLATES_DIR = resolve(
+    PROJECT_ROOT,
+    "packages/lotc-nldd/src/lotc_nldd/templates/components",
+  );
+  mkdirSync(NLDD_TEMPLATES_DIR, { recursive: true });
+  for (const impl of nlddJinjaImpls) {
+    const template = generator.generateTemplate(impl);
+    writeFileSync(resolve(NLDD_TEMPLATES_DIR, `${impl.component.name}.html.j2`), template, "utf-8");
+    console.log(`  ✓ lotc-nldd template: ${impl.component.name}.html.j2`);
+  }
 
   // ── Generate showcase.html ───────────────────────────────────────────
   console.log("Generating showcase.html...\n");
