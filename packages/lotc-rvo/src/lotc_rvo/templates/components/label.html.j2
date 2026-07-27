@@ -1,5 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set for = _component_context.get('for', '') %}
@@ -26,3 +27,4 @@
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children if children else label | safe }}
 </label>
+{% endmacro %}

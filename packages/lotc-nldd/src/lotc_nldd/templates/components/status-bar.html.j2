@@ -1,10 +1,11 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set variant_map = {'neutral': 'neutral', 'info': 'accent', 'success': 'success', 'warning': 'warning', 'error': 'critical'} %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set href = _component_context.get('href', '') %}
 {% set text = _component_context.get('text', '') %}
 {% set type = _component_context.get('type', 'neutral') %}
-{% set variant_map = {'neutral': 'neutral', 'info': 'accent', 'success': 'success', 'warning': 'warning', 'error': 'critical'} %}
 {% set css_classes = [] %}
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
@@ -17,3 +18,4 @@
     {% if href %}href="{{ href }}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
 </nldd-status-bar>
+{% endmacro %}

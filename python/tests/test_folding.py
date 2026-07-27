@@ -92,16 +92,17 @@ def test_static_child_in_dynamic_parent(folded_env):
 
 def test_static_jinja_component_is_folded(folded_env):
     # card is jinja-backend under RVO; a fully-static instance folds to literal
-    # HTML at compile time, collapsing its {% include %} away.
+    # HTML at compile time (no runtime include and no macro call).
     out = _preprocess(folded_env, '<c-card title="Aanvragen">Body</c-card>')
-    assert "{% include" not in out
+    assert "{% include" not in out and "_lotc_jinja_card(" not in out
     assert "rvo-card" in out and "Aanvragen" in out
 
 
-def test_dynamic_jinja_component_is_not_folded(folded_env):
-    # A dynamic attribute keeps the runtime include (can't fold).
+def test_dynamic_jinja_component_calls_the_macro(folded_env):
+    # A dynamic attribute can't fold -> it calls the component's lotc_render macro
+    # at render time (a compiled function call, not a slow {% include %}).
     out = _preprocess(folded_env, '<c-card :title="t">Body</c-card>')
-    assert "{% include" in out
+    assert "_lotc_jinja_card(" in out and "{% include" not in out
 
 
 def test_jinja_fold_matches_unfold(folded_env, unfolded_env):

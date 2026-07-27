@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set css_classes = [] %}
@@ -11,3 +12,4 @@
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children | safe }}
 </code>
+{% endmacro %}

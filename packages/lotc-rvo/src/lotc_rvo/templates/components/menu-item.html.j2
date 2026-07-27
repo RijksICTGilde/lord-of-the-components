@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
 {% set label = _component_context.get('label', '') %}
 {% set href = _component_context.get('href', '') %}
 {% set target = _component_context.get('target', '') %}
@@ -37,3 +38,4 @@
         </span>
     {% endif %}
 </li>
+{% endmacro %}

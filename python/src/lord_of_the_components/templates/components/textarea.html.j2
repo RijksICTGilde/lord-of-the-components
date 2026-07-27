@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set disabled = _component_context.get('disabled', false) %}
 {% set name = _component_context.get('name', '') %}
@@ -22,3 +23,4 @@
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ value | safe }}
 </textarea>
+{% endmacro %}

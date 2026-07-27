@@ -1,5 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {% import 'components/_attribute_mixin.j2' as attributes %}
+{% macro lotc_render(_component_context) %}
+{% set colors_map = {'primary': 'hemelblauw', 'primary-dark': 'donkerblauw', 'muted': 'grijs-700', 'inverse': 'wit', 'hemelblauw': 'hemelblauw', 'donkerblauw': 'donkerblauw', 'logoblauw': 'logoblauw'} %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set active = _component_context.get('active', false) %}
@@ -16,7 +18,6 @@
 {% set size = _component_context.get('size', 'md') %}
 {% set target = _component_context.get('target', '') %}
 {% set type = _component_context.get('type', 'primary') %}
-{% set colors_map = {'primary': 'hemelblauw', 'primary-dark': 'donkerblauw', 'muted': 'grijs-700', 'inverse': 'wit', 'hemelblauw': 'hemelblauw', 'donkerblauw': 'donkerblauw', 'logoblauw': 'logoblauw'} %}
 {% set css_classes = ['utrecht-button'] %}
 {% if type == 'primary' %}{% set css_classes = css_classes + ['utrecht-button--primary-action'] %}{% endif %}
 {% if type == 'warning' %}{% set css_classes = css_classes + ['utrecht-button--primary-action'] %}{% endif %}
@@ -70,3 +71,4 @@
     </span>
     {% endif %}
 </button>
+{% endmacro %}

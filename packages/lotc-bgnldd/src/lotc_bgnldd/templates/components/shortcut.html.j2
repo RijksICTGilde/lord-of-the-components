@@ -1,3 +1,4 @@
+{% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get('icon', '') %}
 {% set title = _component_context.get('title', '') %}
 {% set desc = _component_context.get('desc', '') %}
@@ -9,3 +10,4 @@
     {% if desc %}<span class="bg-shortcut-desc">{{ desc }}</span>{% endif %}
     {% if cta %}<span class="bg-shortcut-cta">{{ cta }}{{ _lotc_nldd_icon(icon='arrow-right', _class='bg-shortcut-cta-icon') }}</span>{% endif %}
 </a>
+{% endmacro %}

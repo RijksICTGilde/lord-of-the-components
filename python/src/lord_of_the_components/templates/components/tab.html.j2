@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set active = _component_context.get('active', false) %}
@@ -20,3 +21,4 @@
         {{ children if children else label | safe }}
     </a>
 </li>
+{% endmacro %}

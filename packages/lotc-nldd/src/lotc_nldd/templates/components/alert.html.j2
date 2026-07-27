@@ -1,4 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set variant_map = {'info': 'accent', 'success': 'success', 'warning': 'warning', 'error': 'critical'} %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
 {% set closable = _component_context.get('closable', false) %}
@@ -6,7 +8,6 @@
 {% set max_width = _component_context.get('max-width', '') %}
 {% set padding = _component_context.get('padding', 'md') %}
 {% set type = _component_context.get('type', 'info') %}
-{% set variant_map = {'info': 'accent', 'success': 'success', 'warning': 'warning', 'error': 'critical'} %}
 {% set css_classes = [] %}
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
@@ -20,3 +21,4 @@
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children | safe }}
 </nldd-banner>
+{% endmacro %}

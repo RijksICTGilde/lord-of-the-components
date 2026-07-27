@@ -1,3 +1,5 @@
+{% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set extra = _component_context.get('class', '') %}
 <nav class="bg-sidenav{% if extra %} {{ extra }}{% endif %}" data-lotc-component="sidenav"><ul>{{ children | safe }}</ul></nav>
+{% endmacro %}
