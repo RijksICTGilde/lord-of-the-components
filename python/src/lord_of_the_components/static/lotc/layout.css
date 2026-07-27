@@ -91,3 +91,30 @@
 .lotc-stack--justify-center { justify-content: center; }
 .lotc-stack--justify-end { justify-content: flex-end; }
 .lotc-stack--justify-between { justify-content: space-between; }
+
+/* ── Columns (explicit responsive column counts) ────────────────────────── */
+/* Mobile-first: --lotc-cols is the base count; each breakpoint reads its own
+ * count and falls back through the smaller breakpoints, so you set only the
+ * ones that change. Set as CSS custom properties by the component. */
+.lotc-columns {
+  display: grid;
+  gap: var(--lotc-columns-gap, 1rem);
+  grid-template-columns: repeat(var(--lotc-cols, 1), minmax(0, 1fr));
+}
+@media (min-width: 40rem) { /* sm */
+  .lotc-columns {
+    grid-template-columns: repeat(var(--lotc-cols-sm, var(--lotc-cols, 1)), minmax(0, 1fr));
+  }
+}
+@media (min-width: 48rem) { /* md */
+  .lotc-columns {
+    grid-template-columns: repeat(
+      var(--lotc-cols-md, var(--lotc-cols-sm, var(--lotc-cols, 1))), minmax(0, 1fr));
+  }
+}
+@media (min-width: 64rem) { /* lg */
+  .lotc-columns {
+    grid-template-columns: repeat(
+      var(--lotc-cols-lg, var(--lotc-cols-md, var(--lotc-cols-sm, var(--lotc-cols, 1)))), minmax(0, 1fr));
+  }
+}

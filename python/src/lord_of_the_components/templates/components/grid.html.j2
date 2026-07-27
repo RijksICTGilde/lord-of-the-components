@@ -44,7 +44,7 @@
     <div
         class="{{ css_classes | join(' ') }}"
         data-lotc-component="grid"
-        {% if division %}style="--division: {{ division }};"{% endif %}
+        {% if division %}style="{% if division %}--division: {{ division }};{% endif %}"{% endif %}
         {{ attrs.render_extra_attributes(_component_context) }}>
         {{ children | safe }}
     </div>

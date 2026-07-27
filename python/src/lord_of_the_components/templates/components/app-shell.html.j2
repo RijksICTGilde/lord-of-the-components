@@ -11,7 +11,7 @@
 <div
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="app-shell"
-    {% if width %}style="--lotc-sidebar-width: {{ width }};"{% endif %}
+    {% if width %}style="{% if width %}--lotc-sidebar-width: {{ width }};{% endif %}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
     {% if slots.header %}
     {% set css_classes = ['lotc-app-shell__header'] %}

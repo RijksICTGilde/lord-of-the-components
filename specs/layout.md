@@ -73,6 +73,26 @@ Props: `direction` (`left` | `right`, which side the sidebar sits — swaps the
 area map), `width` (sidebar width → `--lotc-sidebar-width`), `class`. Absent
 slots simply don't emit their region.
 
+## 4. `<c-columns>` — explicit responsive column counts
+
+Where `auto-grid` decides the count from a minimum width, `columns` lets you state
+the count **explicitly per breakpoint**, mobile-first:
+
+```html
+<c-columns columns="1" sm="2" lg="4" gap="1rem"> … </c-columns>
+```
+
+`columns` is the base (mobile) count; `sm` (≥40rem), `md` (≥48rem), `lg` (≥64rem)
+override upward and each **falls back** through the smaller breakpoints when
+unset. So the example is 1 column on phones, 2 from `sm`, still 2 through `md`
+(inherits `sm`), 4 from `lg` — set only what changes.
+
+Mechanically the component sets `--lotc-cols[-sm|-md|-lg]` custom properties and
+the stylesheet's fixed breakpoint media queries read them with a nested `var()`
+fallback chain, so no per-instance media query is generated. (This relies on the
+emitter guarding each style property individually — an unset breakpoint emits
+*nothing*, never `--x: ;`, whose empty value would defeat the `var()` fallback.)
+
 ## 3. `<c-stack>` — uniform direction primitive
 
 A one-dimensional flex layout with an **explicit** `direction`

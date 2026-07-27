@@ -639,19 +639,21 @@ export class Jinja2Generator {
    * Emit inline style properties.
    */
   private emitStyles(styles: StyleMapping[], ind: string): string[] {
-    // Build a conditional style string
-    // {% if division %}style="--division: {{ division }};"{% endif %}
-    const parts: string[] = [];
+    // Build a conditional style string with each property guarded individually,
+    // so an unset prop emits nothing (rather than "--x: ;", whose empty value
+    // would defeat the var() fallback used by responsive layout components):
+    //   {% if a or b %}style="{% if a %}--a: {{ a }};{% endif %}...{% endif %}
     const conditions: string[] = [];
+    const inner: string[] = [];
 
     for (const style of styles) {
       const varName = propToVar(style.prop);
-      parts.push(`${style.property}: {{ ${varName} }};`);
       conditions.push(varName);
+      inner.push(`{% if ${varName} %}${style.property}: {{ ${varName} }};{% endif %}`);
     }
 
     const condStr = conditions.join(" or ");
-    const styleStr = parts.join(" ");
+    const styleStr = inner.join("");
 
     return [`${ind}{% if ${condStr} %}style="${styleStr}"{% endif %}`];
   }

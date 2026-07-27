@@ -10,7 +10,7 @@
 <div
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="auto-grid"
-    {% if min or gap %}style="--lotc-col-min: {{ min }}; --lotc-grid-gap: {{ gap }};"{% endif %}
+    {% if min or gap %}style="{% if min %}--lotc-col-min: {{ min }};{% endif %}{% if gap %}--lotc-grid-gap: {{ gap }};{% endif %}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children | safe }}
 </div>
