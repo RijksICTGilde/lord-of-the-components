@@ -13,6 +13,49 @@ from lord_of_the_components.runtime import (
     render_utility,
 )
 
+def accordion(*, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'nldd-accordion'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<div')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="accordion"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</div>')
+    return Markup(''.join(parts))
+
+def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'nldd-accordion__item'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<details')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="accordion-item"')
+    if open:
+        parts.append(' open')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    cls1 = 'nldd-accordion__summary'
+    parts.append('<summary')
+    if cls1:
+        parts.append(' class="' + cls1 + '"')
+    parts.append('>')
+    parts.append(esc(title))
+    parts.append('</summary>')
+    cls2 = 'nldd-accordion__content'
+    parts.append('<div')
+    if cls2:
+        parts.append(' class="' + cls2 + '"')
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</div>')
+    parts.append('</details>')
+    return Markup(''.join(parts))
+
 _BADGE_COLOR_MAP = {
     'default': 'neutral',
     'info': 'accent',

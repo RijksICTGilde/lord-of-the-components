@@ -34,6 +34,8 @@ export { tableHead, type TableHeadDefinition } from "./table-head.def.js";
 export { tableRow, type TableRowDefinition } from "./table-row.def.js";
 export { th, type ThDefinition } from "./th.def.js";
 export { td, type TdDefinition } from "./td.def.js";
+export { accordion, type AccordionDefinition } from "./accordion.def.js";
+export { accordionItem, type AccordionItemDefinition } from "./accordion-item.def.js";
 
 // Feedback components
 export { alert, type AlertDefinition } from "./alert.def.js";
@@ -112,6 +114,8 @@ import { tableHead } from "./table-head.def.js";
 import { tableRow } from "./table-row.def.js";
 import { th } from "./th.def.js";
 import { td } from "./td.def.js";
+import { accordion } from "./accordion.def.js";
+import { accordionItem } from "./accordion-item.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -164,6 +168,8 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   "table-row": tableRow,
   th,
   td,
+  accordion,
+  "accordion-item": accordionItem,
 };
 
 /**

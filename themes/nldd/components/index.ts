@@ -20,3 +20,5 @@ export { tableHeadImpl } from "./table-head.impl.js";
 export { tableRowImpl } from "./table-row.impl.js";
 export { thImpl } from "./th.impl.js";
 export { tdImpl } from "./td.impl.js";
+export { accordionImpl } from "./accordion.impl.js";
+export { accordionItemImpl } from "./accordion-item.impl.js";

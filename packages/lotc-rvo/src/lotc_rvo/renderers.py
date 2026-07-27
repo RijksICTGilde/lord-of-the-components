@@ -13,6 +13,83 @@ from lord_of_the_components.runtime import (
     render_utility,
 )
 
+def accordion(*, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-accordion'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<div')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="accordion"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</div>')
+    return Markup(''.join(parts))
+
+def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-accordion__item'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<details')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="accordion-item"')
+    if open:
+        parts.append(' open')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    cls1 = 'rvo-accordion__item-summary'
+    parts.append('<summary')
+    if cls1:
+        parts.append(' class="' + cls1 + '"')
+    parts.append('>')
+    cls2 = 'rvo-accordion__item-icon'
+    parts.append('<div')
+    if cls2:
+        parts.append(' class="' + cls2 + '"')
+    parts.append('>')
+    cls3 = 'utrecht-icon rvo-icon rvo-icon-delta-omlaag rvo-icon--md rvo-icon--hemelblauw rvo-accordion__item-icon--closed'
+    parts.append('<span')
+    if cls3:
+        parts.append(' class="' + cls3 + '"')
+    parts.append(' role="img"')
+    parts.append(' aria-hidden="true"')
+    parts.append('>')
+    parts.append('</span>')
+    cls4 = 'utrecht-icon rvo-icon rvo-icon-delta-omhoog rvo-icon--md rvo-icon--hemelblauw rvo-accordion__item-icon--open'
+    parts.append('<span')
+    if cls4:
+        parts.append(' class="' + cls4 + '"')
+    parts.append(' role="img"')
+    parts.append(' aria-hidden="true"')
+    parts.append('>')
+    parts.append('</span>')
+    parts.append('</div>')
+    cls5 = 'rvo-accordion__item-title-container'
+    parts.append('<div')
+    if cls5:
+        parts.append(' class="' + cls5 + '"')
+    parts.append('>')
+    cls6 = 'utrecht-heading-3 rvo-accordion__item-title'
+    parts.append('<h3')
+    if cls6:
+        parts.append(' class="' + cls6 + '"')
+    parts.append('>')
+    parts.append(esc(title))
+    parts.append('</h3>')
+    parts.append('</div>')
+    parts.append('</summary>')
+    cls7 = 'rvo-accordion__content'
+    parts.append('<div')
+    if cls7:
+        parts.append(' class="' + cls7 + '"')
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</div>')
+    parts.append('</details>')
+    return Markup(''.join(parts))
+
 def badge(*, type='default', label='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = 'rvo-badge'

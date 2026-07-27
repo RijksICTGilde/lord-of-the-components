@@ -118,6 +118,8 @@ export const PYTHON_BACKEND = new Set<string>([
   "table-row",
   "th",
   "td",
+  "accordion",
+  "accordion-item",
 ]);
 
 // ── helpers ───────────────────────────────────────────────────────────────────
