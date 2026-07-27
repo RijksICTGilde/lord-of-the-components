@@ -42,6 +42,18 @@ def test_header_nldd(nldd):
     assert 'website-href="/"' in html
 
 
+def test_status_bar_nldd(nldd):
+    html = nldd('<c-status-bar text="Demo / mock-up. Geen productiedata."/>')
+    assert "<nldd-status-bar" in html
+    assert 'text="Demo / mock-up. Geen productiedata."' in html
+    assert 'variant="neutral"' in html  # default type
+
+
+def test_status_bar_type_maps_to_variant(nldd):
+    assert 'variant="warning"' in nldd('<c-status-bar type="warning" text="Storing"/>')
+    assert 'variant="critical"' in nldd('<c-status-bar type="error" text="Down"/>')
+
+
 def test_hero_nldd(nldd):
     html = nldd('<c-hero title="Welkom" subtitle="Ondertitel" image="/img.png" image-alt="x"/>')
     assert "<nldd-hero" in html

@@ -2,6 +2,7 @@
 export { buttonImpl } from "./button.impl.js";
 export { cardImpl } from "./card.impl.js";
 export { alertImpl } from "./alert.impl.js";
+export { statusBarImpl } from "./status-bar.impl.js";
 export { footerImpl } from "./footer.impl.js";
 export { heroImpl } from "./hero.impl.js";
 export { headerImpl } from "./header.impl.js";
