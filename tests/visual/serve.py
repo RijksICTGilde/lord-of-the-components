@@ -86,7 +86,15 @@ def _nldd_head() -> str:
         f'    <script type="module" src="/static/lotc/nldd/dist/{js["src"]}"></script>'
         for js in manifest.get("js", [])
     )
-    return f"{links}\n{scripts}"
+    # NLDD only applies its body font via `html:has(nldd-app-view) body`, so plain
+    # HTML content (not a self-styled web component) falls back to the browser
+    # default serif. Apply the RijksSans stack so ordinary content matches the
+    # NLDD components — the root-context equivalent of RVO's `rvo-theme` class.
+    font = (
+        "    <style>body { font-family: var(--primitives-font-family-sans-serif, "
+        "RijksSans, system-ui, sans-serif); }</style>"
+    )
+    return f"{links}\n{scripts}\n{font}"
 
 
 def _make_transform(theme: str) -> Callable[[str], str]:

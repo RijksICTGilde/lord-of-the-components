@@ -23,11 +23,14 @@
     </template>
 
     <c-heading type="h2">Overzicht</c-heading>
+    <!-- Cross-theme-safe content: heading/paragraph/button have both an RVO and
+         an NLDD implementation, so the shell demo renders in both themes. Cards
+         are RVO-only, so they are not used here. -->
     <c-auto-grid min="14rem" gap="1rem">
-      <c-card title="Aanvragen">12 open</c-card>
-      <c-card title="Documenten">34 bestanden</c-card>
-      <c-card title="Berichten">5 ongelezen</c-card>
-      <c-card title="Taken">3 vandaag</c-card>
+      <c-stack gap="0.25rem"><c-heading type="h3">Aanvragen</c-heading><c-paragraph no-spacing>12 open</c-paragraph></c-stack>
+      <c-stack gap="0.25rem"><c-heading type="h3">Documenten</c-heading><c-paragraph no-spacing>34 bestanden</c-paragraph></c-stack>
+      <c-stack gap="0.25rem"><c-heading type="h3">Berichten</c-heading><c-paragraph no-spacing>5 ongelezen</c-paragraph></c-stack>
+      <c-stack gap="0.25rem"><c-heading type="h3">Taken</c-heading><c-paragraph no-spacing>3 vandaag</c-paragraph></c-stack>
     </c-auto-grid>
 
     <template slot="footer">

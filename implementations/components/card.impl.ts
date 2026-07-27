@@ -138,7 +138,10 @@ export const cardImpl = defineImplementation({
                     element: "a",
                     when: { prop: "href" },
                     classes: [
-                      "rvo-card__link",
+                      // The RVO card renders its linked title via the Link
+                      // component (rvo-link); there is no rvo-card__link class,
+                      // so a bare one falls back to the default browser link.
+                      "rvo-link",
                       { prop: "full-card-link", class: "rvo-card__full-card-link" },
                     ],
                     attributes: [
@@ -208,7 +211,10 @@ export const cardImpl = defineImplementation({
                     element: "a",
                     when: { prop: "href" },
                     classes: [
-                      "rvo-card__link",
+                      // The RVO card renders its linked title via the Link
+                      // component (rvo-link); there is no rvo-card__link class,
+                      // so a bare one falls back to the default browser link.
+                      "rvo-link",
                       { prop: "full-card-link", class: "rvo-card__full-card-link" },
                     ],
                     attributes: [

@@ -134,7 +134,10 @@ class TestCardLink:
         html = render('<c-card title="Click Me" href="/page"/>')
         norm = normalize_whitespace(html)
         assert '<a href="/page"' in norm
-        assert "rvo-card__link" in norm
+        # The linked title uses the RVO Link class (rvo-link), not a nonexistent
+        # rvo-card__link (which would fall back to a default browser link).
+        assert "rvo-link" in norm
+        assert "rvo-card__link" not in norm.replace("rvo-card__link-indicator", "")
         assert "Click Me" in norm
 
     def test_title_without_link(self, render):
