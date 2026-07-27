@@ -274,6 +274,60 @@
       "description": "Quick-action card: icon, title, description, and a call-to-action",
       "category": "actions",
       "backend": "jinja"
+    },
+    {
+      "name": "menu-bar",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible label (default \"Hulplinks\")"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Header utility menu bar (nldd-menu-bar in the top-nav utility slot)",
+      "category": "navigation",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "menu-bar-item",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Item text"
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "NLDD icon name (e.g. search, envelope, plus, sun)"
+        },
+        {
+          "name": "expandable",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link target"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "A utility menu item: text + NLDD icon, optionally expandable",
+      "category": "navigation",
+      "backend": "jinja"
     }
   ]
 }

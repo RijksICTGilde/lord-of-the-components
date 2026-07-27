@@ -54,6 +54,27 @@ def test_mix_and_match_routes_by_owner_theme(render):
     assert "bg-metric-link" in html  # BGNLDD component
 
 
+def test_header_utility_menu(render):
+    # c-header renders its children inside the nav bar; the utility menu bar lands
+    # in the top-nav "utility" slot with its items (text + NLDD icon).
+    html = render(
+        '<c-header text="BG" link="/">'
+        '<c-menu-bar><c-menu-bar-item label="Zoeken" icon="search"/>'
+        '<c-menu-bar-item label="Nieuw" icon="plus" expandable/></c-menu-bar></c-header>'
+    )
+    assert "<nldd-top-navigation-bar" in html
+    assert '<nldd-menu-bar slot="utility"' in html
+    assert '<nldd-menu-bar-item text="Zoeken" icon="search"' in html
+    assert "expandable" in html  # the "Nieuw" item
+
+
+def test_section_head_uses_nldd_title(render):
+    # Section titles render via the real nldd-title (not a hand-styled span), so
+    # they match the design system's title typography.
+    html = render('<c-section-head title="De lagen" icon="timer"/>')
+    assert '<nldd-title size="4"><h2' in html and "De lagen" in html
+
+
 def test_layer_and_activity_render(render):
     layer = render('<c-layer icon="rectangle-stack" title="Applicaties" count="123 apps" sub="Wat.."/>')
     assert 'class="bg-layer"' in layer and "bg-layer-title" in layer and "bg-layer-go" in layer

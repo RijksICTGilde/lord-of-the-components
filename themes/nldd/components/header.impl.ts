@@ -12,6 +12,9 @@ export const headerImpl = defineImplementation({
       { prop: "subtitle", attr: "logo-subtitle", type: "value", conditional: true },
       { prop: "link", attr: "website-href", type: "value", conditional: true },
     ],
+    // Header content (e.g. a utility <c-menu-bar slot="utility">) renders inside
+    // the top navigation bar.
+    text: { content: true },
   },
   mixins: { genericAttributes: true },
 });
