@@ -45,7 +45,9 @@
 
 .lotc-app-shell__header { grid-area: header; }
 .lotc-app-shell__sidebar { grid-area: sidebar; }
-.lotc-app-shell__main { grid-area: main; }
+/* Main content gets breathing room so it doesn't butt against the sidebar
+   divider; override via --lotc-main-padding. */
+.lotc-app-shell__main { grid-area: main; padding: var(--lotc-main-padding, 1.5rem 2rem 4rem); }
 .lotc-app-shell__footer { grid-area: footer; }
 
 /* Restack to a single column on narrow viewports; markup is unchanged. */
