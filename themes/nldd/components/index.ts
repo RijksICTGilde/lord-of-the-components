@@ -1,5 +1,8 @@
 /** NLDD component implementations (plan v7 F6). */
 export { buttonImpl } from "./button.impl.js";
+export { cardImpl } from "./card.impl.js";
+export { alertImpl } from "./alert.impl.js";
+
 export { headingImpl } from "./heading.impl.js";
 export { iconImpl } from "./icon.impl.js";
 export { linkImpl } from "./link.impl.js";
