@@ -61,10 +61,11 @@ def test_heading_visual_size_decoupled_from_level(render):
     assert 'size="1"' not in html  # the level-derived size is overridden
 
 
-def test_paragraph_is_native_p(render):
+def test_paragraph_uses_nldd_rich_text(render):
+    # NLDD renders body copy through nldd-rich-text (typography + title-flush
+    # spacing), with the text in a slotted <p> — matching the design system.
     html = render("<c-paragraph>Body</c-paragraph>")
-    assert "<p" in html and "Body" in html
-    assert "nldd-" not in html  # prose is native
+    assert "<nldd-rich-text" in html and "<p>Body</p>" in html
 
 
 def test_icon_maps_to_nldd_icon(render):
