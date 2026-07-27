@@ -24,7 +24,7 @@ def env():
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=True,
     )
-    setup_components(jinja_env, registry_path=str(REGISTRY_JSON))
+    setup_components(jinja_env, design_systems=["rvo"], registry_path=str(REGISTRY_JSON))
     return jinja_env
 
 

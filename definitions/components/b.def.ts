@@ -6,6 +6,7 @@ export const b = defineComponent({
   name: "b",
   description: "Stylistically bold text",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

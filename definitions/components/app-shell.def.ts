@@ -8,6 +8,7 @@ export const appShell = defineComponent({
     "Application shell layout (header / sidebar / main / footer) via named grid areas; " +
     "regions come from <template slot=\"header|sidebar|footer\">, main from the body",
   category: "layout",
+  system: true,
   props: {
     // Sidebar side: "left" (default) or "right".
     [PROPS.DIRECTION]: { values: ["left", "right"], default: "left", description: "Sidebar side" },

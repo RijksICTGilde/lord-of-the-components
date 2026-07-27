@@ -12,6 +12,7 @@ def env(generic_registry):
     environment = Environment()
     environment.add_extension(ComponentExtension)
     environment.extensions[ComponentExtension.identifier].registry = generic_registry
+    environment.extensions[ComponentExtension.identifier].render_theme = "rvo"
     return environment
 
 
