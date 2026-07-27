@@ -1,9 +1,10 @@
-"""Generate the bg.rijks.app Overzicht recreation using ONLY LOTC <c-*> components.
+"""Generate the bg.rijks.app Overzicht recreation — mix-and-match NLDD + BGNLDD.
 
-Deliberately uses NO app-specific CSS (the real site's `rp-*` scoped styles).
-This is the honest "what can the component system express today" measurement:
-whatever looks off, or is missing, is a genuine component gap — documented in
-tests/visual/BG_OVERZICHT_GAPS.md.
+This is the "gewenste situatie": the page is built entirely from LOTC `<c-*>`
+components. NLDD renders the primitives (card, button, header, heading); the
+BGNLDD theme renders Begane Grond's own app components (metric, sidenav, layer,
+section-head, activity) that aren't in NLDD proper. Declared with
+`design_systems=["nldd", "bgnldd"]`.
 
 Data (icons, labels, grouping) is extracted verbatim from the live site DOM.
 Run:  python tests/visual/gen_bg_overzicht.py  ->  fixtures/bg-overzicht.html
@@ -16,7 +17,6 @@ from pathlib import Path
 OUT = Path(__file__).resolve().parent / "fixtures" / "bg-overzicht.html"
 
 # ── extracted from https://bg.rijks.app/ (nldd-icon name | label | href) ────────
-# Grouping mirrors the <p class="rp-sidenav-group"> section headers.
 SIDENAV: list[tuple[str | None, list[tuple[str, str, str]]]] = [
     (None, [
         ("house", "Overzicht", "/"),
@@ -63,68 +63,67 @@ METRICS: list[tuple[str, str, str, str, str]] = [
     ("ship-wheel", "40", "Open fleet-PR's", "3 actieve campagnes", "/fleet"),
 ]
 
+# icon | title | count | sub | [chips]
+LAYERS: list[tuple[str, str, str, str, list[str]]] = [
+    ("rectangle-stack", "Applicaties", "123 apps", "Wat burgers en ambtenaren gebruiken",
+     ["Paspoortaanvraag", "Toeslagenmotor", "Platformportaal"]),
+    ("cylinder-split", "Infra-diensten", "244 instances", "Kubernetes, databases, brokers, LLM",
+     ["pg-burgerzaken-prod", "k8s-platform-prod"]),
+    ("apartment-building", "Fundament", "35 racks", "Datacenters, racks en hardware", []),
+]
+
+# icon | actor | action | res | at
+ACTIVITY: list[tuple[str, str, str, str, str]] = [
+    ("plus", "Anne Schuth", "infra afgenomen", "llm-gilde-prod", "di 10:02"),
+    ("lock-closed", "Fatima El Amrani", "secret geroteerd", "platform/llm-gateway-key", "di 09:40"),
+    ("arrow-up-arrow-down", "Joost de Vries", "release gepromoot", "app-paspoort → prod", "gisteren 14:22"),
+    ("arrow-up-arrow-down", "Omar Van Es", "release gepromoot", "app-subsidieportaal-rvo → prod", "gisteren 9:11"),
+]
+
 
 def sidenav() -> str:
     rows: list[str] = []
     for group, items in SIDENAV:
         if group:
-            rows.append(f'      <c-small><strong>{group.upper()}</strong></c-small>')
+            rows.append(f'      <c-sidenav-group label="{group}"/>')
         for icon, label, href in items:
             active = ' active' if href == "/" else ''
-            rows.append(
-                f'      <c-stack direction="horizontal" gap="0.6rem">'
-                f'<c-icon icon="{icon}" size="sm"/>'
-                f'<c-link href="{href}"{active}>{label}</c-link></c-stack>'
-            )
+            rows.append(f'      <c-sidenav-item icon="{icon}" label="{label}" href="{href}"{active}/>')
     return "\n".join(rows)
 
 
-def metric_card(icon: str, value: str, label: str, sub: str, href: str) -> str:
-    # c-h2 stands in for the missing "metric/stat value" display type (semantic hack).
-    return (
-        f'    <c-card href="{href}" outline>\n'
-        f'      <c-stack gap="0.25rem">\n'
-        f'        <c-stack direction="horizontal" gap="0.5rem">'
-        f'<c-icon icon="{icon}"/><c-h2>{value}</c-h2></c-stack>\n'
-        f'        <strong>{label}</strong>\n'
-        f'        <c-small>{sub}</c-small>\n'
-        f'      </c-stack>\n'
-        f'    </c-card>'
+def metrics() -> str:
+    return "\n".join(
+        f'      <c-metric icon="{i}" value="{v}" label="{lbl}" sub="{s}" href="{h}"/>'
+        for i, v, lbl, s, h in METRICS
     )
 
 
-LAYERS_CARD = """    <c-card outline>
-      <c-h2>De lagen van het platform</c-h2>
-      <c-tag type="default">persoon → datacenter</c-tag>
-      <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
-      <c-stack gap="0.75rem">
-        <c-card><c-stack gap="0.25rem"><strong>Applicaties</strong><c-small>123 apps — Wat burgers en ambtenaren gebruiken</c-small>
-          <c-stack direction="horizontal" gap="0.35rem" wrap><c-tag type="default">Paspoortaanvraag</c-tag><c-tag type="default">Toeslagenmotor</c-tag><c-tag type="default">Platformportaal</c-tag></c-stack></c-stack></c-card>
-        <c-card><c-stack gap="0.25rem"><strong>Infra-diensten</strong><c-small>244 instances — Kubernetes, databases, brokers, LLM</c-small>
-          <c-stack direction="horizontal" gap="0.35rem" wrap><c-tag type="default">pg-burgerzaken-prod</c-tag><c-tag type="default">k8s-platform-prod</c-tag></c-stack></c-stack></c-card>
-        <c-card><c-stack gap="0.25rem"><strong>Fundament</strong><c-small>35 racks — Datacenters, racks en hardware</c-small></c-stack></c-card>
-      </c-stack>
-    </c-card>"""
+def layers() -> str:
+    rows: list[str] = []
+    for icon, title, count, sub, chips in LAYERS:
+        chip_tags = "".join(f'<c-tag type="default">{c}</c-tag>' for c in chips)
+        rows.append(
+            f'        <c-layer icon="{icon}" title="{title}" count="{count}" sub="{sub}" href="#">'
+            f'{chip_tags}</c-layer>'
+        )
+    return "\n".join(rows)
 
-ACTIVITY_CARD = """    <c-card outline>
-      <c-h2>Recente activiteit</c-h2>
-      <c-stack gap="0.75rem">
-        <div><strong>Anne Schuth</strong> infra afgenomen<br><c-small>llm-gilde-prod · di 10:02</c-small></div>
-        <div><strong>Fatima El Amrani</strong> secret geroteerd<br><c-small>platform/llm-gateway-key · di 09:40</c-small></div>
-        <div><strong>Joost de Vries</strong> release gepromoot<br><c-small>app-paspoort → prod · gisteren 14:22</c-small></div>
-        <div><strong>Omar Van Es</strong> release gepromoot<br><c-small>app-subsidieportaal-rvo → prod · gisteren 9:11</c-small></div>
-      </c-stack>
-    </c-card>"""
+
+def activity() -> str:
+    rows = "\n".join(
+        f'        <c-activity-item icon="{i}" actor="{a}" action="{act}" res="{r}" at="{t}"/>'
+        for i, a, act, r, t in ACTIVITY
+    )
+    return rows
 
 
 def build() -> str:
-    cards = "\n".join(metric_card(*m) for m in METRICS)
     return f"""<!DOCTYPE html>
-<html lang="nl"><head><meta charset="UTF-8"><title>Overzicht · Begane Grond (LOTC pure components)</title></head>
+<html lang="nl"><head><meta charset="UTF-8"><title>Overzicht · Begane Grond (LOTC nldd+bgnldd)</title></head>
 <body>
-<!-- GAP: no c-status-bar component (site uses <nldd-status-bar>). -->
-<!-- GAP: c-header renders <nldd-top-navigation-bar> but has no utility-menu slot
-     (site puts Zoeken/Notificaties/Nieuw/Thema/profiel in an <nldd-menu-bar slot="utility">). -->
+<!-- Mix-and-match: NLDD primitives + BGNLDD app components. -->
+<!-- GAP still: no c-status-bar; c-header has no utility-menu slot. -->
 
 <c-app-shell width="16rem">
   <template slot="header">
@@ -132,9 +131,9 @@ def build() -> str:
   </template>
 
   <template slot="sidebar">
-    <c-stack gap="0.15rem">
+    <c-sidenav>
 {sidenav()}
-    </c-stack>
+    </c-sidenav>
   </template>
 
   <c-stack gap="1.25rem">
@@ -149,12 +148,24 @@ def build() -> str:
     </c-stack>
 
     <c-auto-grid min="220px" gap="1rem">
-{cards}
+{metrics()}
     </c-auto-grid>
 
     <c-columns columns="1" lg="2" gap="1.5rem">
-{LAYERS_CARD}
-{ACTIVITY_CARD}
+      <c-card outline>
+        <c-section-head title="De lagen van het platform" icon="arrow-up-arrow-down"/>
+        <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
+        <c-stack gap="0.75rem">
+{layers()}
+        </c-stack>
+      </c-card>
+
+      <c-card outline>
+        <c-section-head title="Recente activiteit" icon="timer"/>
+        <c-activity>
+{activity()}
+        </c-activity>
+      </c-card>
     </c-columns>
   </c-stack>
 </c-app-shell>

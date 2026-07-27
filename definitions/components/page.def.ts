@@ -77,6 +77,14 @@ export const page = defineComponent({
     },
 
     /**
+     * Design systems this page uses (space-separated, e.g. "nldd bgnldd"), so
+     * their CSS/JS bundles are loaded. Emit via {{ get_design_system_assets() }}.
+     */
+    "design-systems": {
+      description: "Design systems in use (space-separated); drives asset loading",
+    },
+
+    /**
      * Additional CSS classes for the body element
      */
     "body-class": {

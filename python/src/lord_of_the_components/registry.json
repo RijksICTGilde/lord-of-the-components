@@ -456,6 +456,11 @@
           "description": "Theme name applied as body class"
         },
         {
+          "name": "design-systems",
+          "type": "string",
+          "description": "Design systems in use (space-separated); drives asset loading"
+        },
+        {
           "name": "body-class",
           "type": "string",
           "description": "Additional CSS classes for the body element"
