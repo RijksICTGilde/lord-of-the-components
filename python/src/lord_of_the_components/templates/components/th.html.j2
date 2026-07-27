@@ -1,0 +1,15 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set numeric = _component_context.get('numeric', false) %}
+{% set css_classes = ['rvo-table-header'] %}
+{% if numeric %}{% set css_classes = css_classes + ['rvo-table-header--numeric'] %}{% endif %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<th
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="th"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</th>

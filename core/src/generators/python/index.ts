@@ -111,6 +111,11 @@ export const PYTHON_BACKEND = new Set<string>([
   "option",
   "tag",
   "badge",
+  "table",
+  "table-head",
+  "table-row",
+  "th",
+  "td",
 ]);
 
 // ── helpers ───────────────────────────────────────────────────────────────────

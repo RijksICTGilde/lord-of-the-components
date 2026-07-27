@@ -537,6 +537,54 @@ def select(*, name='', value='', placeholder='', disabled=False, required=False,
     parts.append('</div>')
     return Markup(''.join(parts))
 
+def table(*, columns='', content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-table--responsive'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<div')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="table"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    cls1 = 'rvo-table'
+    parts.append('<table')
+    if cls1:
+        parts.append(' class="' + cls1 + '"')
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</table>')
+    parts.append('</div>')
+    return Markup(''.join(parts))
+
+def table_head(*, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-table-row'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<tr')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="table-head"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</tr>')
+    return Markup(''.join(parts))
+
+def table_row(*, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-table-row'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<tr')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="table-row"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</tr>')
+    return Markup(''.join(parts))
+
 def tag(*, type='default', label='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = 'rvo-tag'
@@ -551,6 +599,22 @@ def tag(*, type='default', label='', content=None, _extra=None, _class=''):
     parts.append('>')
     parts.append(((content or '') if content else esc(label)))
     parts.append('</div>')
+    return Markup(''.join(parts))
+
+def td(*, numeric=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-table-cell'
+    if numeric:
+        cls0 += ' rvo-table-cell--numeric'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<td')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="td"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</td>')
     return Markup(''.join(parts))
 
 def text_input(*, type='text', name='', value='', placeholder='', autocomplete='', disabled=False, required=False, readonly=False, content=None, _extra=None, _class=''):
@@ -620,4 +684,20 @@ def textarea(*, name='', value='', placeholder='', disabled=False, required=Fals
     parts.append('>')
     parts.append(esc(value))
     parts.append('</textarea>')
+    return Markup(''.join(parts))
+
+def th(*, numeric=False, content=None, _extra=None, _class=''):
+    parts = []
+    cls0 = 'rvo-table-header'
+    if numeric:
+        cls0 += ' rvo-table-header--numeric'
+    cls0 = merge_class(cls0, _class)
+    parts.append('<th')
+    if cls0:
+        parts.append(' class="' + cls0 + '"')
+    parts.append(' data-lotc-component="th"')
+    parts.append(render_extra(_extra))
+    parts.append('>')
+    parts.append((content or ''))
+    parts.append('</th>')
     return Markup(''.join(parts))

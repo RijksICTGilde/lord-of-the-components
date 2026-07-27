@@ -51,3 +51,10 @@ export { optionImpl } from "./option.impl.js";
 // Feedback (F9, batch F)
 export { tagImpl } from "./tag.impl.js";
 export { badgeImpl } from "./badge.impl.js";
+
+// Data table (F9, batch table)
+export { tableImpl } from "./table.impl.js";
+export { tableHeadImpl } from "./table-head.impl.js";
+export { tableRowImpl } from "./table-row.impl.js";
+export { thImpl } from "./th.impl.js";
+export { tdImpl } from "./td.impl.js";

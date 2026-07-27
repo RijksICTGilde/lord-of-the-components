@@ -1905,6 +1905,101 @@
       "content": {
         "allowed": true
       }
+    },
+    {
+      "name": "table",
+      "attributes": [
+        {
+          "name": "columns",
+          "type": "string",
+          "description": "NLDD column track template, e.g. '1fr 1fr auto'"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Data table; <c-table-head> and <c-table-row> go in the content",
+      "category": "data",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "table-head",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Table header row; <c-th> cells go in the content",
+      "category": "data",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "table-row",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Table body row; <c-td> cells go in the content",
+      "category": "data",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "th",
+      "attributes": [
+        {
+          "name": "numeric",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Table header cell; label via content",
+      "category": "data",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "td",
+      "attributes": [
+        {
+          "name": "numeric",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Table body cell; value via content",
+      "category": "data",
+      "backend": "python",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }

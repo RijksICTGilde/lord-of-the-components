@@ -1,0 +1,18 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set columns = _component_context.get('columns', '') %}
+{% set css_classes = ['rvo-table--responsive'] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<div
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="table"
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {% set css_classes = ['rvo-table'] %}
+    <table
+        class="{{ css_classes | join(' ') }}">
+        {{ children | safe }}
+    </table>
+</div>
