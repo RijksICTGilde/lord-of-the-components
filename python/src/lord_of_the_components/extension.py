@@ -208,6 +208,10 @@ class ComponentExtension(Extension):
         # Components whose lotc_render macro was looked up and NOT found, so we
         # don't re-attempt get_template on every use (lazy macro registration).
         self._jinja_macro_missing: set[str] = set()
+        # What to do when a component is defined globally but no active design
+        # system implements it: "error" (default, fail loudly) or "placeholder"
+        # (render a visible marker so you can switch themes and see the gaps).
+        self.on_missing_component: str = "error"
         # Constant folding: render fully-literal python components at compile time.
         self.fold = True
         # Validate bound data structures (:items, :columns, ...) at render time.
@@ -308,20 +312,30 @@ class ComponentExtension(Extension):
         ):
             explicit_theme = next(a.raw_value for a in node.attrs if a.name == "theme")
             routed_attrs = [a for a in node.attrs if a.name != "theme"]
-        render_theme = explicit_theme or getattr(component_def, "theme", None) or self.render_theme
+        owner = getattr(component_def, "theme", None)
+        is_system = getattr(component_def, "system", False)
+        backend = getattr(component_def, "backend", "jinja")
 
-        # A non-system component needs an active design system. The theme-agnostic
-        # "system" layer (layout + basic HTML) always renders. Fail loudly, early,
-        # if the page declared no design system (or none at all).
-        if not getattr(component_def, "system", False) and render_theme is None:
-            hint = (
-                "Declare one at setup, e.g. "
-                "setup_components(env, design_systems=['rvo'])."
+        # Resolve which active design system implements this component (partial
+        # theme coverage): definitions are global, but a system only implements a
+        # subset. System components (layout + basic HTML) are theme-agnostic and
+        # always render. If no active system implements a component, defer to
+        # on_missing_component (error, or a visible placeholder).
+        # No loader = a bare-extension mechanics test (no real setup); we can't
+        # (and shouldn't) verify implementations there — emit as declared.
+        has_loader = getattr(self.environment, "loader", None) is not None
+        if is_system or not has_loader:
+            render_theme: Optional[str] = (
+                None if is_system else (explicit_theme or owner or self.render_theme)
             )
-            raise ComponentError(
-                f"'{tag_name}' needs a design system, but none is loaded. {hint}",
-                location=location,
-            )
+        elif backend == "python":
+            render_theme = self._python_impl_theme(component_name, explicit_theme, owner)
+            if render_theme is None:
+                return self._missing_impl(component_name, tag_name, location)
+        else:  # jinja
+            if not self._jinja_impl_available(component_name):
+                return self._missing_impl(component_name, tag_name, location)
+            render_theme = explicit_theme or owner or self.render_theme
 
         attrs = self._parse_component_attributes(source, routed_attrs, component_def, tag_name)
         for key, value in alias_defaults.items():
@@ -708,6 +722,52 @@ class ComponentExtension(Extension):
             return f"{{% raw %}}{html}{{% endraw %}}"
         return html
 
+    def _python_impl_theme(
+        self, component_name: str, explicit: Optional[str], owner: Optional[str]
+    ) -> Optional[str]:
+        """The active design system that provides this python-backend component's
+        renderer (`_lotc_<theme>_<name>`), searched: explicit theme=, then owner,
+        then declared order. None if no active system implements it."""
+        ident = _py_ident(component_name)
+        for cand in (explicit, owner, *self.design_systems):
+            if cand and f"_lotc_{cand}_{ident}" in self.environment.globals:
+                return cand
+        return None
+
+    def _jinja_impl_available(self, component_name: str) -> bool:
+        """Whether a jinja template exists for this component on the loader path
+        (i.e. some active design system — or core — implements it)."""
+        if self._ensure_jinja_macro(component_name) is not None:
+            return True
+        loader = getattr(self.environment, "loader", None)
+        if loader is None:
+            return True  # bare-extension tests: don't second-guess, use the include
+        from jinja2 import TemplateNotFound
+
+        try:
+            self.environment.get_template(f"components/{component_name}.html.j2")
+            return True
+        except (TemplateNotFound, TypeError):
+            return False
+
+    def _missing_impl(self, component_name: str, tag_name: str, location: Any) -> str:
+        """Handle a globally-defined component that no active design system
+        implements: raise (default) or emit a visible placeholder."""
+        active = ", ".join(self.design_systems) or "none"
+        if self.on_missing_component == "placeholder":
+            from markupsafe import escape
+
+            return (
+                f'<div class="lotc-unimplemented" data-lotc-component="{escape(component_name)}">'
+                f"&lt;{escape(tag_name)}&gt; not implemented in theme(s): {escape(active)}</div>"
+            )
+        raise ComponentError(
+            f"'{tag_name}' is not implemented by the active design system(s): [{active}]. "
+            f"Implement it for one of them, activate a system that provides it, or set "
+            f"setup_components(on_missing_component='placeholder') to preview the gap.",
+            location=location,
+        )
+
     def _ensure_jinja_macro(self, component_name: str) -> Optional[Any]:
         """Lazily load a jinja component template's `lotc_render` macro and cache
         it as the global `_lotc_jinja_<name>`, so the emitter can call it directly
@@ -796,6 +856,7 @@ def setup_components(
     validate_data: bool = True,
     fold: bool = True,
     debug: bool = False,
+    on_missing_component: str = "error",
 ) -> Environment:
     """
     Setup Lord of the Components in a Jinja2 environment.
@@ -874,6 +935,7 @@ def setup_components(
     if isinstance(ext, ComponentExtension):
         ext.fold = fold
         ext.validate_data = validate_data
+        ext.on_missing_component = on_missing_component
         ext.debug = debug
         ext.design_systems = tuple(ds.name for ds in resolved)
         ext.render_theme = primary
