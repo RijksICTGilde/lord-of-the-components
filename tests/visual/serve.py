@@ -33,7 +33,22 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 TEMPLATES_DIR = PYTHON_SRC / "lord_of_the_components" / "templates"
 REGISTRY_JSON = PYTHON_SRC / "lord_of_the_components" / "registry.json"
-STATIC_DIR = PYTHON_SRC / "lord_of_the_components" / "static"
+CORE_STATIC_DIR = PYTHON_SRC / "lord_of_the_components" / "static"
+
+
+def _static_roots() -> list[Path]:
+    """Static roots for the /static/lotc/... URL space: core (layout.css) plus
+    every installed design system's own static dir (its CSS/JS bundle)."""
+    from lord_of_the_components.design_system import discover_design_systems
+
+    roots = [CORE_STATIC_DIR]
+    for ds in discover_design_systems().values():
+        if ds.static_path is not None:
+            roots.append(Path(ds.static_path))
+    return roots
+
+
+STATIC_ROOTS = _static_roots()
 
 # Bundled CSS from webpack build (served from /static/lotc/dist/)
 BUNDLED_CSS = "\n".join(
@@ -52,11 +67,17 @@ BUNDLED_CSS = "\n".join(
 # NLDD assets from the `npm run build:fe:nldd` bundle (served from
 # /static/lotc/nldd/dist/). The CSS list + module JS come from its manifest so
 # the head matches whatever the bundle actually produced.
-_NLDD_DIST = STATIC_DIR / "lotc" / "nldd" / "dist"
+def _nldd_dist() -> Path:
+    """The nldd bundle dir, resolved from the installed lotc-nldd static root."""
+    from lord_of_the_components.design_system import discover_design_systems
+
+    ds = discover_design_systems().get("nldd")
+    base = Path(ds.static_path) if ds and ds.static_path else CORE_STATIC_DIR
+    return base / "lotc" / "nldd" / "dist"
 
 
 def _nldd_head() -> str:
-    manifest = json.loads((_NLDD_DIST / "assets.json").read_text())
+    manifest = json.loads((_nldd_dist() / "assets.json").read_text())
     links = "\n".join(
         f'    <link rel="stylesheet" href="/static/lotc/nldd/dist/{css}">'
         for css in manifest.get("css", [])
@@ -168,14 +189,17 @@ class FixtureHandler(SimpleHTTPRequestHandler):
         self.send_error(404, f"Not found: {path}")
 
     def _serve_static(self, url_path: str) -> None:
-        """Serve a static file from the bundled assets directory."""
-        # url_path is "static/lotc/..." → map to STATIC_DIR / "lotc/..."
+        """Serve a static file from any static root: core (layout.css) or an
+        installed design system's own bundle. URLs are unique per root."""
+        # url_path is "static/lotc/..." → map to <root>/lotc/... for each root.
         rel = url_path[len("static/"):]
-        file_path = (STATIC_DIR / rel).resolve()
-        if not file_path.is_relative_to(STATIC_DIR.resolve()):
-            self.send_error(403, "Forbidden")
-            return
-        if not file_path.is_file():
+        file_path = None
+        for root in STATIC_ROOTS:
+            candidate = (root / rel).resolve()
+            if candidate.is_relative_to(root.resolve()) and candidate.is_file():
+                file_path = candidate
+                break
+        if file_path is None:
             self.send_error(404, f"Static file not found: {url_path}")
             return
         content_type, _ = mimetypes.guess_type(str(file_path))

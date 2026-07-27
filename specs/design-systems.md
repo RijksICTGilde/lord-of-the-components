@@ -98,12 +98,21 @@ packages/lotc-nldd/   src/lotc_nldd/{__init__ (DESIGN_SYSTEM), renderers.py}
 Adding a third design system is now: a new package with a `DESIGN_SYSTEM` entry
 point — no change to core.
 
-### Not moved (follow-up)
+### CSS bundles (done)
 
-The webpack CSS bundles (`static/lotc/dist`, `.../nldd/dist`) are gitignored build
-output and still emit into core's `static/`. Relocating each system's CSS into its
-own package is a frontend-build concern (webpack output paths) left for later; it
-does not affect the Python package boundary.
+Each system's webpack CSS/JS bundle now emits **into its own package** and ships
+with it, so `lotc-rvo` / `lotc-nldd` are fully self-contained (Python + assets):
+
+- `webpack.config.cjs` → `packages/lotc-rvo/src/lotc_rvo/static/lotc/dist`
+- `webpack.nldd.cjs` → `packages/lotc-nldd/src/lotc_nldd/static/lotc/nldd/dist`
+- Only `layout.css` (the system layer) stays in core `static/`.
+
+The URL space is unchanged (`/static/lotc/dist/…`, `/static/lotc/nldd/dist/…`), so
+`<c-page>` links and everything downstream stay byte-stable — only the physical
+location moved. Each `DesignSystem` exposes `static_path`; a host serves the
+`/static/lotc/…` URL space from core plus every installed system's `static_path`
+(see `tests/visual/serve.py`, which resolves across those roots). The built
+bundles are gitignored per package, exactly as core's were.
 
 ## Choosing own vs theme-specific layout (by tag, not by attribute)
 
@@ -128,10 +137,12 @@ Considered and deliberately not built. With the model above it adds little:
 
 Revisit only if a concrete need to mix design systems within one page appears.
 
-## Roadmap (remaining)
+## Roadmap
 
-- **Move the webpack CSS bundles into their theme packages** (frontend-build), so
-  each `lotc-<system>` package is fully self-contained (Python + CSS).
+The package split is complete: core + two self-contained design-system packages
+(Python renderers, templates, and CSS each), discovered via entry points. Adding a
+third design system is a new package with a `DESIGN_SYSTEM` entry point — no core
+change.
 - **Per-tag `theme` override.** Once a page declares availability, a tag may carry
   `theme="rvo|nldd|system"`; the engine resolves against the declared systems and
   falls back to the system layer. For now the practical use is just the per-page

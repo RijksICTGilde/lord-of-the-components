@@ -4,7 +4,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const ReplaceInFileWebpackPlugin = require("replace-in-file-webpack-plugin");
 
-const OUTPUT_DIR = path.resolve(__dirname, 'python/src/lord_of_the_components/static/lotc/dist');
+// The RVO CSS bundle ships inside the lotc-rvo package (self-contained). The
+// URL structure (/static/lotc/dist/...) is unchanged, so downstream (<c-page>
+// links, serve.py) stays byte-stable; only the physical location moves.
+const OUTPUT_DIR = path.resolve(__dirname, 'packages/lotc-rvo/src/lotc_rvo/static/lotc/dist');
 
 // Asset manifest consumed by the codegen (see plan v7 T0.1 / F6). The order matches
 // the historical page.html.j2 link order so the generated <c-page> stays byte-stable.
@@ -106,7 +109,7 @@ module.exports = {
     new AssetManifestPlugin(),
     // Rewrite relative url() references in the icons CSS to absolute /static paths.
     new ReplaceInFileWebpackPlugin([{
-      dir: 'python/src/lord_of_the_components/static/lotc/dist/@nl-rvo/assets/icons/',
+      dir: 'packages/lotc-rvo/src/lotc_rvo/static/lotc/dist/@nl-rvo/assets/icons/',
       files: ['index.css'],
       rules: [{
         search: /url\("(?!\/)/ig,

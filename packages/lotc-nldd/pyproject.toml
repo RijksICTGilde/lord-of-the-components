@@ -19,3 +19,6 @@ nldd = "lotc_nldd:DESIGN_SYSTEM"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+lotc_nldd = ["static/**/*"]
