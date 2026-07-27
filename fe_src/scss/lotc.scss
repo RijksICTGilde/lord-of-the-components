@@ -3,3 +3,12 @@
 
 @use 'reset-css/reset';
 @use '@nl-rvo/css-button/dist/index.css';
+
+// ── LOTC corrections to the RVO components ──────────────────────────────────
+// RVO's breadcrumbs use a chevron as the divider BETWEEN items: the reference
+// (rvo React template) only renders it for index > 0. LOTC's <c-breadcrumbs-item>
+// is a child component with no index awareness, so it emits the chevron on every
+// item; suppress the leading one on the first item to match the reference.
+.rvo-breadcrumbs-item:first-child > .rvo-icon-delta-naar-rechts {
+  display: none;
+}
