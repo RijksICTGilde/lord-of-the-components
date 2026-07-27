@@ -60,8 +60,36 @@ CASES: list[tuple[str, str, str]] = [
     ),
     ("header", "", '<c-header text="Mijn Organisatie" subtitle="Zelfservice portaal"/>'),
     ("footer", "", '<c-footer pay-off="Samen digitaal"/>'),
-    ("tag + badge", "", '<c-tag type="info">Concept</c-tag> <c-badge type="error" label="3"/>'),
+    ("tag + badge", '<c-tag type="info">Concept</c-tag>', '<c-tag type="info">Concept</c-tag> <c-badge type="error" label="3"/>'),
     ("max-width-layout", "", '<c-max-width-layout><c-paragraph>Inhoud met max breedte.</c-paragraph></c-max-width-layout>'),
+    # Batch 2 — components not yet visually verified. Reference where jinja-roos maps.
+    ("alert success", '<c-alert kind="success" heading="Gelukt">Opgeslagen.</c-alert>', '<c-alert type="success" heading="Gelukt">Opgeslagen.</c-alert>'),
+    ("alert error", '<c-alert kind="error" heading="Fout">Er ging iets mis.</c-alert>', '<c-alert type="error" heading="Fout">Er ging iets mis.</c-alert>'),
+    ("checkbox", '<c-checkbox label="Ik ga akkoord" name="a" checked></c-checkbox>', '<c-checkbox label="Ik ga akkoord" name="a" value="ja" checked/>'),
+    ("textarea", '<c-textarea name="m" placeholder="Typ een bericht"></c-textarea>', '<c-textarea name="m" placeholder="Typ een bericht"/>'),
+    ("label required", "", '<c-label label="Naam" type="required"/>'),
+    ("label optional", "", '<c-label label="Bijnaam" type="optional"/>'),
+    ("strong / em", "", "<c-strong>vetgedrukt</c-strong> en <c-em>schuingedrukt</c-em>"),
+    ("icon set", "", '<c-icon icon="home" size="lg"/> <c-icon icon="settings" size="lg"/> <c-icon icon="info" size="lg"/> <c-icon icon="search" size="lg"/>'),
+    (
+        "grid (3 cols)",
+        "",
+        '<c-grid columns="three" gap="md"><c-card title="Een">a</c-card>'
+        '<c-card title="Twee">b</c-card><c-card title="Drie">c</c-card></c-grid>',
+    ),
+    (
+        "layout-row",
+        "",
+        '<c-layout-row gap="md"><c-button type="primary" label="Opslaan"/>'
+        '<c-button type="secondary" label="Annuleren"/></c-layout-row>',
+    ),
+    ("tabs", "", '<c-tabs><c-tab label="Een" href="#" active/><c-tab label="Twee" href="#"/></c-tabs>'),
+    (
+        "table",
+        "",
+        '<c-table><c-table-head><c-th>Naam</c-th><c-th>Rol</c-th></c-table-head>'
+        '<c-table-row><c-td>Jan</c-td><c-td>Beheerder</c-td></c-table-row></c-table>',
+    ),
 ]
 
 
