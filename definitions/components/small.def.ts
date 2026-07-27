@@ -6,6 +6,7 @@ export const small = defineComponent({
   name: "small",
   description: "Small print / de-emphasized text",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

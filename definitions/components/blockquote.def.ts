@@ -6,6 +6,7 @@ export const blockquote = defineComponent({
   name: "blockquote",
   description: "Block quotation",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

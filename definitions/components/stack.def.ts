@@ -8,6 +8,7 @@ export const stack = defineComponent({
     "Flex stack with an explicit direction (vertical | horizontal), enforced " +
     "uniformly across themes",
   category: "layout",
+  system: true,
   props: {
     [PROPS.DIRECTION]: {
       values: ["vertical", "horizontal"],

@@ -45,7 +45,7 @@ def create_env() -> Environment:
         # cost that env.from_string() incurred on every request.
         auto_reload=False,
     )
-    setup_components(env, registry_path=str(LOTC_REGISTRY))
+    setup_components(env, design_systems=["rvo"], registry_path=str(LOTC_REGISTRY))
     return env
 
 

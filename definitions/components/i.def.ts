@@ -6,6 +6,7 @@ export const i = defineComponent({
   name: "i",
   description: "Stylistically italic text",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

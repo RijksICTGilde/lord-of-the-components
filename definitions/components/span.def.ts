@@ -6,6 +6,7 @@ export const span = defineComponent({
   name: "span",
   description: "Generic inline container",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

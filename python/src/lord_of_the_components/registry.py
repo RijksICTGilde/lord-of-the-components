@@ -55,6 +55,9 @@ class ComponentDefinition:
     description: str
     category: str = "utility"
     status: str = "experimental"
+    #: Theme-agnostic "system" layer (LOTC's own impl, e.g. layout + basic HTML).
+    #: System components render under any theme and need no design system loaded.
+    system: bool = False
     backend: str = "jinja"
     attributes: List[AttributeDefinition] = field(default_factory=list)
     slots: List[SlotDefinition] = field(default_factory=list)
@@ -162,6 +165,7 @@ class ComponentRegistry:
             description=data.get("description", ""),
             category=data.get("category", "utility"),
             status=data.get("status", "experimental"),
+            system=bool(data.get("system", False)),
             backend=data.get("backend", "jinja"),
             attributes=attributes,
             slots=slots,

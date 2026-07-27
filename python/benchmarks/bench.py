@@ -55,7 +55,7 @@ def _make_env() -> Environment:
         autoescape=True,
         auto_reload=False,
     )
-    setup_components(env, registry_path=str(REGISTRY_JSON))
+    setup_components(env, design_systems=["rvo"], registry_path=str(REGISTRY_JSON))
     return env
 
 

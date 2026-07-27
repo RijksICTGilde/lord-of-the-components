@@ -245,9 +245,10 @@ class TestSetupComponents:
         assert env.globals["lotc_theme"] == "rvo"
 
     def test_default_theme(self):
+        # No design system declared -> only the always-present "system" layer.
         env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
         setup_components(env)
-        assert env.globals["lotc_theme"] == "default"
+        assert env.globals["lotc_theme"] == "system"
 
     def test_htmx_global_true(self):
         env = Environment(loader=FileSystemLoader("/tmp"), autoescape=True)
@@ -334,7 +335,12 @@ class TestPreprocessEdgeCases:
     def extension(self):
         env = Environment()
         env.add_extension(ComponentExtension)
-        return env.extensions[ComponentExtension.identifier]
+        ext = env.extensions[ComponentExtension.identifier]
+        # These tests preprocess design-system components (c-button, ...), so make
+        # a design system available (rvo) — there is no implicit default.
+        ext.design_systems = ("rvo",)
+        ext.render_theme = "rvo"
+        return ext
 
     def test_no_component_tags_returns_source_unchanged(self, extension):
         source = "<div>Hello world</div>"
@@ -515,6 +521,8 @@ class TestConcurrentPreprocess:
         env = Environment()
         env.add_extension(ComponentExtension)
         ext = env.extensions[ComponentExtension.identifier]
+        ext.design_systems = ("rvo",)
+        ext.render_theme = "rvo"
 
         source_a = '<c-card><c-button type="primary">Alpha</c-button></c-card>'
         source_b = (

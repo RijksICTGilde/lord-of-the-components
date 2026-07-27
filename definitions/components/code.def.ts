@@ -6,6 +6,7 @@ export const code = defineComponent({
   name: "code",
   description: "Inline code",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

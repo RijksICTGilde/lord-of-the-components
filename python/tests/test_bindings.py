@@ -20,7 +20,7 @@ REGISTRY_JSON = PACKAGE_DIR / "registry.json"
 
 def _env(validate_data: bool = True) -> Environment:
     env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
-    setup_components(env, registry_path=str(REGISTRY_JSON), validate_data=validate_data)
+    setup_components(env, design_systems=["rvo"], registry_path=str(REGISTRY_JSON), validate_data=validate_data)
     return env
 
 

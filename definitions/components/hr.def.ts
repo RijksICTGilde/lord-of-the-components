@@ -6,6 +6,7 @@ export const hr = defineComponent({
   name: "hr",
   description: "Thematic break (horizontal rule)",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

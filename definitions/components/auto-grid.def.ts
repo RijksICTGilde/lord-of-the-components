@@ -6,6 +6,7 @@ export const autoGrid = defineComponent({
   name: "auto-grid",
   description: "Responsive column grid: as many columns as fit at a minimum width, then wrap",
   category: "layout",
+  system: true,
   props: {
     // Minimum column width; more columns appear as the container widens.
     [PROPS.MIN]: { description: "Minimum column width, e.g. '16rem' (CSS length)" },

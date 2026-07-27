@@ -19,7 +19,7 @@ def ext_env():
     # fold=False so the routing tests below see the runtime _lotc_* call form
     # rather than the folded literal HTML.
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
-    setup_components(env, registry_path=str(REGISTRY_JSON), fold=False)
+    setup_components(env, design_systems=["rvo"], registry_path=str(REGISTRY_JSON), fold=False)
     return env
 
 

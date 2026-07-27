@@ -120,20 +120,25 @@ def _py_string(value: str) -> str:
     return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'"
 
 
-#: Known design-system themes (each has a themes/<id>/renderers.py).
+#: Installable design systems (each has a themes/<id>/renderers.py). The
+#: theme-agnostic "system" layer (LOTC's own layout + basic HTML) is NOT a design
+#: system: it is always present and needs nothing loaded. There is no implicit
+#: default design system — a page must declare which ones it uses.
 KNOWN_THEMES = ("rvo", "nldd")
 
+#: Names that mean "the always-present system layer" rather than a design system.
+SYSTEM_ALIASES = ("system", "default")
 
-def _resolve_theme(theme: Optional[str]) -> str:
-    """Resolve the theme name to a known theme id, or raise with a suggestion."""
-    if theme is None or theme == "default":
-        return "rvo"
+
+def _resolve_theme(theme: str) -> str:
+    """Validate a single design-system id, or raise with a suggestion."""
     if theme in KNOWN_THEMES:
         return theme
     suggestion = get_close_matches(theme, KNOWN_THEMES, n=1, cutoff=0.4)
     hint = f" Did you mean '{suggestion[0]}'?" if suggestion else ""
     raise RuntimeError(
-        f"Unknown theme '{theme}'. Known themes: {', '.join(KNOWN_THEMES)}.{hint}"
+        f"Unknown design system '{theme}'. Known design systems: "
+        f"{', '.join(KNOWN_THEMES)}.{hint}"
     )
 
 
@@ -171,8 +176,12 @@ class ComponentExtension(Extension):
     def __init__(self, environment: Environment) -> None:
         super().__init__(environment)
         self.registry = ComponentRegistry()
-        # Design-system theme bound to the Python renderers (F6 generalizes this).
-        self.render_theme = "rvo"
+        # Design systems available on this page (declared at setup). The
+        # theme-agnostic "system" layer is always available regardless.
+        self.design_systems: tuple[str, ...] = ()
+        # Primary/active design system for design-system components (first
+        # declared). None when only the system layer is available.
+        self.render_theme: Optional[str] = None
         # Constant folding: render fully-literal python components at compile time.
         self.fold = True
         # Validate bound data structures (:items, :columns, ...) at render time.
@@ -251,6 +260,20 @@ class ComponentExtension(Extension):
             )
 
         component_def = self.registry.get_component(component_name)
+
+        # A non-system component needs an active design system. The theme-agnostic
+        # "system" layer (layout + basic HTML) always renders. Fail loudly, early,
+        # if the page declared no design system (or none at all).
+        if not getattr(component_def, "system", False) and self.render_theme is None:
+            hint = (
+                "Declare one at setup, e.g. "
+                "setup_components(env, design_systems=['rvo'])."
+            )
+            raise ComponentError(
+                f"'{tag_name}' needs a design system, but none is loaded. {hint}",
+                location=location,
+            )
+
         attrs = self._parse_component_attributes(source, node.attrs, component_def, tag_name)
 
         named_slots, default_content = self._extract_slots(source, node, state, depth + 1)
@@ -575,6 +598,7 @@ class ComponentExtension(Extension):
 
 def setup_components(
     jinja_env: Environment,
+    design_systems: Optional[List[str]] = None,
     theme: Optional[str] = None,
     htmx: bool = False,
     user_css_files: Optional[List[str]] = None,
@@ -589,7 +613,13 @@ def setup_components(
 
     Args:
         jinja_env: The Jinja2 environment to configure
-        theme: Optional theme name to use
+        design_systems: Design systems available on this page (e.g. ["rvo"]).
+            Only these are loaded. The theme-agnostic "system" layer (LOTC's own
+            layout + basic HTML) is always present and needs none of them. There
+            is NO implicit default design system — declare what you use. The first
+            entry is the primary/active one for design-system components.
+        theme: Deprecated single-design-system alias. `theme="rvo"` is equivalent
+            to `design_systems=["rvo"]`. Ignored when `design_systems` is given.
         htmx: Whether to include HTMX library
         user_css_files: List of additional CSS files to include
         user_js_files: List of additional JS files to include
@@ -632,16 +662,28 @@ def setup_components(
         elif searchpath is not None:
             setattr(loader, "searchpath", [searchpath, component_templates_path])
 
-    # Resolve the design-system theme (rvo default). nlds -> helpful error (D2).
-    render_theme = _resolve_theme(theme)
+    # Resolve the declared design systems. `theme=` is the legacy single-system
+    # alias. No implicit default: with neither given, only the system layer is
+    # available and design-system components raise a clear error when used.
+    if design_systems is not None:
+        declared = list(design_systems)
+    elif theme is not None and theme not in SYSTEM_ALIASES:
+        declared = [theme]
+    else:
+        declared = []
+    resolved = tuple(_resolve_theme(t) for t in declared)  # validates each id
+    primary = resolved[0] if resolved else None
 
-    # Register the generated Python renderers (the fast backend) as globals.
+    # Register the generated Python renderers (the fast backend) for every
+    # declared design system — loading only what the page asked for.
     ext = jinja_env.extensions.get(ComponentExtension.identifier)
     if isinstance(ext, ComponentExtension):
         ext.fold = fold
         ext.validate_data = validate_data
-        ext.render_theme = render_theme
-    _register_theme_renderers(jinja_env, render_theme)
+        ext.design_systems = resolved
+        ext.render_theme = primary
+    for ds in resolved:
+        _register_theme_renderers(jinja_env, ds)
 
     # Render-time data-binding validation (:items, :columns, ...).
     from .validation import validate_binding
@@ -651,7 +693,7 @@ def setup_components(
     jinja_env.globals["get_component_assets"] = lambda: _get_component_assets(
         static_url_prefix, htmx, user_css_files, user_js_files
     )
-    jinja_env.globals["lotc_theme"] = theme or "default"
+    jinja_env.globals["lotc_theme"] = primary or "system"
     jinja_env.globals["lotc_htmx"] = htmx
     jinja_env.globals["lotc_validate_data"] = validate_data
 

@@ -6,6 +6,7 @@ export const div = defineComponent({
   name: "div",
   description: "Generic block container",
   category: "html",
+  system: true,
 
   props: {
     [PROPS.CLASS]: { description: "Additional CSS classes" },

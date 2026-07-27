@@ -46,7 +46,7 @@ CASES = _load_cases()
 def golden_env() -> Environment:
     # Must match tools/gen_goldens.py; setup_components requires autoescape=True.
     env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
-    setup_components(env, registry_path=str(REGISTRY_JSON))
+    setup_components(env, design_systems=["rvo"], registry_path=str(REGISTRY_JSON))
     return env
 
 

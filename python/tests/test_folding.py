@@ -31,7 +31,7 @@ CASES = json.loads(GOLDEN_MATRIX.read_text(encoding="utf-8"))["cases"] if GOLDEN
 
 def _env(fold: bool) -> Environment:
     env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
-    setup_components(env, registry_path=str(REGISTRY_JSON), fold=fold)
+    setup_components(env, design_systems=["rvo"], registry_path=str(REGISTRY_JSON), fold=fold)
     return env
 
 

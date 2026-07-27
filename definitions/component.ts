@@ -140,6 +140,14 @@ export interface ComponentDefinition {
   category?: string;
 
   /**
+   * Belongs to the theme-agnostic "system" layer (LOTC's own implementation,
+   * e.g. layout + basic HTML). System-layer components render identically under
+   * every theme and need NO design system loaded — they are always available.
+   * Non-system components require an active design system (rvo, nldd, …).
+   */
+  system?: boolean;
+
+  /**
    * Props this component accepts.
    * Keys are prop names, values define constraints.
    *

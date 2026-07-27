@@ -46,6 +46,7 @@ export interface ComponentDefinition {
   name: string;
   description?: string;
   category?: string;
+  system?: boolean;
   props: Record<string, PropSpec | null>;
   events?: readonly string[];
   bindings?: Record<string, string>;
@@ -75,6 +76,7 @@ export interface RegistryComponent {
   name: string;
   description?: string;
   category?: string;
+  system?: boolean;
   backend?: "python" | "jinja";
   attributes: RegistryAttribute[];
   events?: string[];
@@ -160,6 +162,7 @@ function componentToRegistryEntry(
 
   if (component.description) entry.description = component.description;
   if (component.category) entry.category = component.category;
+  if (component.system) entry.system = true;
   entry.backend = pythonBackend?.has(component.name) ? "python" : "jinja";
 
   if (component.events && component.events.length > 0) {
