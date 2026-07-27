@@ -87,7 +87,7 @@
             <h3
                 class="{{ css_classes | join(' ') }}">
                 {% if href %}
-                {% set css_classes = ['rvo-card__link'] %}
+                {% set css_classes = ['rvo-link'] %}
                 {% if full_card_link %}{% set css_classes = css_classes + ['rvo-card__full-card-link'] %}{% endif %}
                 <a
                     href="{{ href }}"
@@ -130,7 +130,7 @@
         <h3
             class="{{ css_classes | join(' ') }}">
             {% if href %}
-            {% set css_classes = ['rvo-card__link'] %}
+            {% set css_classes = ['rvo-link'] %}
             {% if full_card_link %}{% set css_classes = css_classes + ['rvo-card__full-card-link'] %}{% endif %}
             <a
                 href="{{ href }}"
