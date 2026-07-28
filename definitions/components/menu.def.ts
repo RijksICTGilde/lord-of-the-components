@@ -173,6 +173,11 @@ export const menu = defineComponent({
         [PROPS.ACTIVE]: null, // boolean
 
         /**
+         * Whether the item expands a submenu (shows a disclosure chevron)
+         */
+        expandable: null, // boolean
+
+        /**
          * Whether item is disabled
          */
         [PROPS.DISABLED]: null, // boolean

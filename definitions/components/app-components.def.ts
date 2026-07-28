@@ -1,14 +1,17 @@
 /**
- * BGNLDD component definitions (contracts).
+ * Application/dashboard components — generic UI patterns (a stat metric, a
+ * sidebar nav, a platform-layer row, an activity feed, a shortcut card, a
+ * section header, a resource chip). These are part of the GLOBAL component set:
+ * their definitions are theme-agnostic and live in core, exactly like button or
+ * card, so a page can switch design systems in one go.
  *
- * These are the app-level components Begane Grond built on top of NLDD — not in
- * NLDD proper. They live in the BGNLDD theme so core/NLDD stay clean. All are
- * jinja-backend (single-theme bespoke markup): the generator emits only their
- * registry FRAGMENT from these defs; the templates are hand-authored in the
- * lotc-bgnldd package (like page / menu-item / breadcrumbs-item).
+ * A design system implements the subset it supports; where none does, the
+ * emitter follows `on_missing_component` (error, or a placeholder). Today these
+ * are implemented by the NLDD-adjacent BGNLDD theme (templates + CSS); an RVO
+ * implementation can be added later without touching these definitions.
  */
-import { defineComponent } from "../../../definitions/component.js";
-import { PROPS } from "../../../definitions/props.js";
+import { defineComponent } from "../component.js";
+import { PROPS } from "../props.js";
 
 // ── metric: a stat card link (icon + value + label + sub) ───────────────────
 export const metric = defineComponent({
@@ -78,7 +81,7 @@ export const layer = defineComponent({
 // ── section-head: a card section title row with an optional right icon ──────
 export const sectionHead = defineComponent({
   name: "section-head",
-  description: "Card section header: title with an optional right-aligned icon",
+  description: "Card section header: title with an optional right-aligned icon or content",
   category: "layout",
   props: {
     [PROPS.TITLE]: { description: "Section title (content overrides)" },
@@ -127,31 +130,6 @@ export const shortcut = defineComponent({
   },
 });
 
-// ── menu-bar: the header utility menu (Zoeken / Notificaties / … ) ──────────
-export const menuBar = defineComponent({
-  name: "menu-bar",
-  description: "Header utility menu bar (nldd-menu-bar in the top-nav utility slot)",
-  category: "navigation",
-  props: {
-    [PROPS.LABEL]: { description: "Accessible label (default \"Hulplinks\")" },
-    [PROPS.CLASS]: { description: "Additional CSS classes" },
-  },
-  content: { allowed: true },
-});
-
-export const menuBarItem = defineComponent({
-  name: "menu-bar-item",
-  description: "A utility menu item: text + NLDD icon, optionally expandable",
-  category: "navigation",
-  props: {
-    [PROPS.LABEL]: { description: "Item text" },
-    [PROPS.ICON]: { description: "NLDD icon name (e.g. search, envelope, plus, sun)" },
-    expandable: null, // boolean — shows a disclosure chevron
-    [PROPS.HREF]: { description: "Link target" },
-    [PROPS.CLASS]: { description: "Additional CSS classes" },
-  },
-});
-
 // ── chip: a small monospace resource chip (used inside a layer row) ─────────
 export const chip = defineComponent({
   name: "chip",
@@ -160,19 +138,3 @@ export const chip = defineComponent({
   props: { [PROPS.CLASS]: { description: "Additional CSS classes" } },
   content: { allowed: true },
 });
-
-/** All BGNLDD component definitions, in registry order. */
-export const BGNLDD_COMPONENTS = [
-  metric,
-  sidenav,
-  sidenavGroup,
-  sidenavItem,
-  layer,
-  sectionHead,
-  activity,
-  activityItem,
-  shortcut,
-  menuBar,
-  menuBarItem,
-  chip,
-];

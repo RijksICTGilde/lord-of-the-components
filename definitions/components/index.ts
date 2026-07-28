@@ -37,6 +37,20 @@ export { td, type TdDefinition } from "./td.def.js";
 export { accordion, type AccordionDefinition } from "./accordion.def.js";
 export { accordionItem, type AccordionItemDefinition } from "./accordion-item.def.js";
 
+// Application/dashboard components (global defs; theme-specific impls)
+export {
+  metric,
+  sidenav,
+  sidenavGroup,
+  sidenavItem,
+  layer,
+  sectionHead,
+  activity,
+  activityItem,
+  shortcut,
+  chip,
+} from "./app-components.def.js";
+
 // Feedback components
 export { alert, type AlertDefinition } from "./alert.def.js";
 export { statusBar, type StatusBarDefinition } from "./status-bar.def.js";
@@ -118,6 +132,18 @@ import { th } from "./th.def.js";
 import { td } from "./td.def.js";
 import { accordion } from "./accordion.def.js";
 import { accordionItem } from "./accordion-item.def.js";
+import {
+  metric,
+  sidenav,
+  sidenavGroup,
+  sidenavItem,
+  layer,
+  sectionHead,
+  activity,
+  activityItem,
+  shortcut,
+  chip,
+} from "./app-components.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -173,6 +199,16 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   td,
   accordion,
   "accordion-item": accordionItem,
+  metric,
+  sidenav,
+  "sidenav-group": sidenavGroup,
+  "sidenav-item": sidenavItem,
+  layer,
+  "section-head": sectionHead,
+  activity,
+  "activity-item": activityItem,
+  shortcut,
+  chip,
 };
 
 /**

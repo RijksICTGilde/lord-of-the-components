@@ -30,7 +30,6 @@ import { generatePythonRenderers, PYTHON_BACKEND, type CompImpl } from "../pytho
 import * as rvoImpls from "../../../../implementations/components/index.js";
 import { COMPONENTS } from "../../../../definitions/components/index.js";
 import * as nlddImpls from "../../../../themes/nldd/components/index.js";
-import { BGNLDD_COMPONENTS } from "../../../../themes/bgnldd/definitions/index.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CONFIGURATION
@@ -162,20 +161,6 @@ function main(): void {
     writeFileSync(resolve(NLDD_TEMPLATES_DIR, `${impl.component.name}.html.j2`), template, "utf-8");
     console.log(`  ✓ lotc-nldd template: ${impl.component.name}.html.j2`);
   }
-
-  // ── Generate the BGNLDD registry fragment ──────────────────────────────
-  // BGNLDD owns app-level components (metric, sidenav, …) absent from core.
-  // We emit ONLY their registry fragment (all jinja-backend); the templates are
-  // hand-authored in the package. Core's registry.json is untouched.
-  console.log("Generating BGNLDD registry fragment...\n");
-  const bgnlddFragment = generateRegistryJSON(BGNLDD_COMPONENTS);
-  const bgnlddRegistryPath = resolve(
-    PROJECT_ROOT,
-    "packages/lotc-bgnldd/src/lotc_bgnldd/registry.json",
-  );
-  mkdirSync(dirname(bgnlddRegistryPath), { recursive: true });
-  writeFileSync(bgnlddRegistryPath, bgnlddFragment, "utf-8");
-  console.log(`  ✓ lotc-bgnldd/registry.json (${BGNLDD_COMPONENTS.length} component(s))\n`);
 
   // ── Generate showcase.html ───────────────────────────────────────────
   console.log("Generating showcase.html...\n");

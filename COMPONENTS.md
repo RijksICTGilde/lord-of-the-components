@@ -513,7 +513,7 @@ Navigation menu with items
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
-| type | enum | horizontal vertical | horizontal |  |
+| type | enum | horizontal vertical bar | horizontal |  |
 | size | enum | xs sm md lg xl | md |  |
 | aria-label | string | — |  |  |
 | class | string | — |  |  |
