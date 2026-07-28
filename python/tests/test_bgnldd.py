@@ -25,8 +25,8 @@ def render():
     return lambda s: env.from_string(s).render()
 
 
-def test_fragment_merge_makes_bgnldd_components_known(render):
-    # c-metric is owned by bgnldd (merged registry fragment), not core.
+def test_metric_is_a_global_component_rendered_by_bgnldd(render):
+    # c-metric is a global (core) component; BGNLDD provides its NLDD impl.
     html = render('<c-metric icon="apartment-building" value="5" label="Datacenters"/>')
     assert 'class="bg-metric-link"' in html
     assert "bg-metric-value" in html and ">5<" in html
@@ -47,24 +47,25 @@ def test_sidenav_active_state(render):
     assert "bg-active" in html and 'aria-current="page"' in html
 
 
-def test_mix_and_match_routes_by_owner_theme(render):
-    # Same page: c-card -> NLDD (nldd-card), c-metric -> BGNLDD (bg-metric).
+def test_mix_and_match_resolves_per_component(render):
+    # Same page: c-card -> NLDD (nldd-card), c-metric -> BGNLDD's impl (bg-metric).
     html = render('<c-card>x</c-card><c-metric value="1" label="L"/>')
     assert "<nldd-card" in html  # NLDD primitive
-    assert "bg-metric-link" in html  # BGNLDD component
+    assert "bg-metric-link" in html  # global component, BGNLDD impl
 
 
 def test_header_utility_menu(render):
-    # c-header renders its children inside the nav bar; the utility menu bar lands
-    # in the top-nav "utility" slot with its items (text + NLDD icon).
+    # c-header renders its children inside the nav bar; a utility menu (c-menu
+    # type="bar", placed via slot="utility") lands in the top-nav utility slot.
     html = render(
         '<c-header text="BG" link="/">'
-        '<c-menu-bar><c-menu-bar-item label="Zoeken" icon="search"/>'
-        '<c-menu-bar-item label="Nieuw" icon="plus" expandable/></c-menu-bar></c-header>'
+        '<c-menu type="bar" slot="utility"><c-menu-item label="Zoeken" icon="search"/>'
+        '<c-menu-item label="Nieuw" icon="plus" expandable/></c-menu></c-header>'
     )
     assert "<nldd-top-navigation-bar" in html
     assert '<nldd-menu-bar slot="utility"' in html
     assert '<nldd-menu-bar-item text="Zoeken" icon="search"' in html
+    assert "expandable" in html  # the "Nieuw" item
     assert "expandable" in html  # the "Nieuw" item
 
 
@@ -101,13 +102,18 @@ def test_cpage_loads_all_declared_theme_assets(render):
     assert "<p>x</p>" in html
 
 
-def test_bgnldd_components_are_theme_owned():
-    # The registry tags each BGNLDD component with its owner theme.
+def test_app_components_are_global_and_bgnldd_is_impl_only():
+    # The app components (metric, sidenav, …) are GLOBAL: their definitions live
+    # in core's registry, not owned by any theme. BGNLDD is implementation-only
+    # (it ships templates + CSS, no registry fragment).
     from lord_of_the_components.design_system import discover_design_systems
     from lord_of_the_components.registry import ComponentRegistry
 
     reg = ComponentRegistry(PKG / "registry.json")
+    for name in ("metric", "sidenav", "layer", "activity", "chip", "card"):
+        assert reg.has_component(name), name
+        assert reg.get_component(name).theme is None  # global, no owner
+
     bg = discover_design_systems()["bgnldd"]
-    reg.merge_fragment(bg.registry_path, "bgnldd")
-    assert reg.get_component("metric").theme == "bgnldd"
-    assert reg.get_component("card").theme is None  # core/shared, no owner
+    assert bg.registry_path is None  # impl-only: no definitions of its own
+    assert bg.templates_path is not None and bg.css_urls

@@ -22,7 +22,7 @@ export const VALUES = {
   // ═══════════════════════════════════════════════════════════════════════════
   // MENU TYPES
   // ═══════════════════════════════════════════════════════════════════════════
-  MENU_TYPES: ["horizontal", "vertical"] as const,
+  MENU_TYPES: ["horizontal", "vertical", "bar"] as const,
 
   // ═══════════════════════════════════════════════════════════════════════════
   // STATUS TYPES (for alerts, tags, feedback)

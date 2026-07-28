@@ -3,5 +3,5 @@
 {% set icon = _component_context.get('icon', '') %}
 {% set expandable = _component_context.get('expandable', false) %}
 {% set href = _component_context.get('href', '') %}
-<nldd-menu-bar-item text="{{ label }}"{% if icon %} icon="{{ icon }}"{% endif %}{% if href %} href="{{ href }}"{% endif %}{% if expandable %} expandable{% endif %} data-lotc-component="menu-bar-item"></nldd-menu-bar-item>
+<nldd-menu-bar-item text="{{ label }}"{% if icon %} icon="{{ icon }}"{% endif %}{% if href %} href="{{ href }}"{% endif %}{% if expandable %} expandable{% endif %} data-lotc-component="menu-item"></nldd-menu-bar-item>
 {% endmacro %}

@@ -158,13 +158,13 @@ def build() -> str:
   <template slot="header">
     <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
     <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
-      <c-menu-bar>
-        <c-menu-bar-item label="Zoeken" icon="search"/>
-        <c-menu-bar-item label="Notificaties (1)" icon="envelope"/>
-        <c-menu-bar-item label="Nieuw" icon="plus" expandable/>
-        <c-menu-bar-item label="Thema" icon="sun" expandable/>
-        <c-menu-bar-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
-      </c-menu-bar>
+      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
+        <c-menu-item label="Zoeken" icon="search"/>
+        <c-menu-item label="Notificaties (1)" icon="envelope"/>
+        <c-menu-item label="Nieuw" icon="plus" expandable/>
+        <c-menu-item label="Thema" icon="sun" expandable/>
+        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
+      </c-menu>
     </c-header>
   </template>
 

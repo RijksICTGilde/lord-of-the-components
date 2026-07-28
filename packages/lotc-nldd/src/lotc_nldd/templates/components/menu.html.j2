@@ -1,0 +1,7 @@
+{% macro lotc_render(_component_context) %}
+{% set aria = _component_context.get('aria-label', '') %}
+{% set slot = _component_context.get('slot', '') %}
+{% set children = _component_context.get('content', '') %}
+{% set extra = _component_context.get('class', '') %}
+<nldd-menu-bar{% if slot %} slot="{{ slot }}"{% endif %}{% if aria %} accessible-label="{{ aria }}"{% endif %}{% if extra %} class="{{ extra }}"{% endif %} data-lotc-component="menu">{{ children | safe }}</nldd-menu-bar>
+{% endmacro %}

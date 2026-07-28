@@ -501,8 +501,9 @@ class ComponentExtension(Extension):
         for prefix in generic_prefixes:
             if attr_name.startswith(prefix):
                 return True
-        # Utility attributes used by _attribute_mixin.j2
-        return attr_name in {"text-style", "margin", "padding"}
+        # Utility attributes used by _attribute_mixin.j2, plus `slot` (the web
+        # component slot the element is placed into, e.g. a utility menu bar).
+        return attr_name in {"text-style", "margin", "padding", "slot"}
 
     # ── include building ─────────────────────────────────────────────────────
     def _build_include(
@@ -593,7 +594,7 @@ class ComponentExtension(Extension):
 
     # ── Python renderer backend (F3) ─────────────────────────────────────────
     _GENERIC_PREFIXES = ("data-", "aria-", "hx-")
-    _GENERIC_NAMES = frozenset({"id", "title", "style", "role", "tabindex"})
+    _GENERIC_NAMES = frozenset({"id", "title", "style", "role", "tabindex", "slot"})
 
     def _build_python_call(
         self,

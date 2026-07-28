@@ -36,7 +36,7 @@
 | layout-row | rvo | 25 | ✅ | pending | — |
 | link | rvo | 33 | ✅ | pending | — |
 | max-width-layout | rvo | 13 | ✅ | pending | — |
-| menu | rvo | 13 | ✅ | pending | — |
+| menu | rvo | 14 | ✅ | pending | — |
 | option | rvo | 10 | ✅ | pending | — |
 | paragraph | rvo | 16 | ✅ | pending | — |
 | radio | rvo | 8 | ✅ | pending | — |

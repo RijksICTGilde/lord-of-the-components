@@ -5600,6 +5600,19 @@
     },
     {
       "component": "menu",
+      "case_id": "type--bar",
+      "theme": "rvo",
+      "markup": "<c-menu type=\"bar\">Voorbeeld</c-menu>",
+      "props": {
+        "type": "bar"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "type=bar"
+      ]
+    },
+    {
+      "component": "menu",
       "case_id": "size--xs",
       "theme": "rvo",
       "markup": "<c-menu size=\"xs\">Voorbeeld</c-menu>",
