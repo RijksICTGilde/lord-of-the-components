@@ -1,0 +1,122 @@
+<c-page theme="rvo" design-systems="rvo" title="Overzicht · Begane Grond" lang="nl">
+<!-- Mix-and-match: NLDD primitives + BGNLDD app components. c-page loads the
+     CSS/JS for both declared design systems itself. -->
+<!-- GAP still: no c-status-bar; c-header has no utility-menu slot. -->
+
+<c-app-shell width="16rem">
+  <template slot="header">
+    <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
+    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
+      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
+        <c-menu-item label="Zoeken" icon="search"/>
+        <c-menu-item label="Notificaties (1)" icon="envelope"/>
+        <c-menu-item label="Nieuw" icon="plus" expandable/>
+        <c-menu-item label="Thema" icon="sun" expandable/>
+        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
+      </c-menu>
+    </c-header>
+  </template>
+
+  <template slot="sidebar">
+    <c-sidenav>
+      <c-sidenav-item icon="house" label="Overzicht" href="/" active/>
+      <c-sidenav-item icon="person" label="Mijn overzicht" href="/zelf"/>
+      <c-sidenav-group label="Bouwen & draaien"/>
+      <c-sidenav-item icon="apartment-building" label="Fundament" href="/fysiek"/>
+      <c-sidenav-item icon="cylinder-split" label="Infra-diensten" href="/infra"/>
+      <c-sidenav-item icon="rectangle-stack" label="Applicaties" href="/apps"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Code" href="/code"/>
+      <c-sidenav-item icon="puzzle-piece" label="Componenten" href="/componenten"/>
+      <c-sidenav-item icon="square-on-square" label="Design system" href="/design-system"/>
+      <c-sidenav-group label="Uitrollen & draaien"/>
+      <c-sidenav-item icon="arrow-up-arrow-down" label="Omgevingen" href="/environments"/>
+      <c-sidenav-item icon="gear" label="CI-pijplijn" href="/environments/pijplijn"/>
+      <c-sidenav-item icon="timer" label="CI-runners" href="/environments/runners"/>
+      <c-sidenav-item icon="folder-stack" label="Artefacten" href="/artefacten"/>
+      <c-sidenav-item icon="flag" label="Feature flags" href="/flags"/>
+      <c-sidenav-item icon="eye" label="Observability" href="/observability"/>
+      <c-sidenav-item icon="exclamation-triangle" label="Incidenten" href="/incidenten"/>
+      <c-sidenav-group label="Mensen & werkplek"/>
+      <c-sidenav-item icon="person-2" label="Teams & mensen" href="/teams"/>
+      <c-sidenav-item icon="business-suitcase" label="Werkplekken" href="/werkplekken"/>
+      <c-sidenav-item icon="face-smiling-badge-plus" label="Leren" href="/leren"/>
+      <c-sidenav-group label="Toegang & beveiliging"/>
+      <c-sidenav-item icon="person-circle" label="Inloggen" href="/inloggen"/>
+      <c-sidenav-item icon="globe" label="Domeinen & DNS" href="/dns"/>
+      <c-sidenav-item icon="certificate" label="Certificaten" href="/secrets/certificaten"/>
+      <c-sidenav-item icon="lock-closed" label="Secrets" href="/secrets"/>
+      <c-sidenav-item icon="shield-check-mark" label="Security" href="/security"/>
+      <c-sidenav-group label="Data & koppelvlakken"/>
+      <c-sidenav-item icon="books-vertical" label="Basisregistraties" href="/registers"/>
+      <c-sidenav-item icon="chart-x-y-axis-line" label="Datasets" href="/data"/>
+      <c-sidenav-item icon="pencil-on-square" label="Datacontracten" href="/datacontracten"/>
+      <c-sidenav-item icon="link" label="Koppelvlakken" href="/koppelvlakken"/>
+      <c-sidenav-item icon="envelope" label="Notificaties" href="/notificaties"/>
+      <c-sidenav-group label="Governance & standaarden"/>
+      <c-sidenav-item icon="check-list" label="Governance" href="/governance"/>
+      <c-sidenav-item icon="clipboard" label="Wet uitvoeren" href="/wetten"/>
+      <c-sidenav-item icon="check-mark-circle" label="Standaarden" href="/standaarden"/>
+      <c-sidenav-item icon="check-list" label="NeRDS-richtlijnen" href="/nerds"/>
+      <c-sidenav-item icon="brackets-ellipsis" label="Algoritmeregister" href="/algoritmes"/>
+      <c-sidenav-item icon="clipboard-rectangle" label="Privacy & DPIA" href="/verwerkingen"/>
+      <c-sidenav-item icon="file-text" label="Woo & archief" href="/openbaarheid"/>
+      <c-sidenav-item icon="eyeglasses" label="Toegankelijkheid" href="/toegankelijkheid"/>
+      <c-sidenav-item icon="heart" label="Duurzaamheid" href="/duurzaamheid"/>
+      <c-sidenav-group label="Platform, kosten & AI"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Infra als code" href="/platform/iac"/>
+      <c-sidenav-item icon="euro-sign" label="Kosten" href="/kosten"/>
+      <c-sidenav-item icon="tag" label="Software-inkoop" href="/software-inkoop"/>
+      <c-sidenav-item icon="starburst-filled" label="Scorecards" href="/scorecards"/>
+      <c-sidenav-item icon="ship-wheel" label="Tech radar" href="/tech-radar"/>
+      <c-sidenav-item icon="sparkles" label="AI & LLM" href="/ai"/>
+      <c-sidenav-item icon="terminal" label="CLI & API" href="/cli"/>
+      <c-sidenav-item icon="square-on-square" label="Fleet-shift" href="/fleet"/>
+    </c-sidenav>
+  </template>
+
+  <c-stack gap="1.25rem">
+    <div>
+      <c-heading type="h1" size="2">Begane Grond</c-heading>
+      <c-p>Welkom Anne, één plek voor fysieke infra, diensten, applicaties en teams van de Rijksoverheid.</c-p>
+    </div>
+
+    <c-stack direction="horizontal" gap="0.75rem">
+      <c-button type="secondary" label="Mijn overzicht" icon="person" show-icon="before"/>
+      <c-button type="primary" label="Nieuwe applicatie" icon="plus" show-icon="before"/>
+    </c-stack>
+
+    <c-auto-grid min="220px" gap="1rem">
+      <c-metric icon="apartment-building" value="5" label="Datacenters" sub="4 operationeel" href="/fysiek"/>
+      <c-metric icon="rectangle-stack" value="35" label="Racks" sub="10 rijen" href="/fysiek"/>
+      <c-metric icon="cylinder-split" value="244" label="Afgenomen instances" sub="€124409/mnd" href="/infra/instances"/>
+      <c-metric icon="rectangle-stack" value="123" label="Applicaties" sub="125 repo's" href="/apps"/>
+      <c-metric icon="person-2" value="99" label="Teams" sub="393 mensen" href="/teams"/>
+      <c-metric icon="person-circle" value="345" label="Werkplekken" sub="238 in gebruik" href="/werkplekken"/>
+      <c-metric icon="exclamation-triangle" value="21" label="Actieve incidenten" sub="aandacht nodig" href="/incidenten"/>
+      <c-metric icon="ship-wheel" value="40" label="Open fleet-PR's" sub="3 actieve campagnes" href="/fleet"/>
+    </c-auto-grid>
+
+    <c-columns columns="1" lg="2" gap="1.5rem">
+      <c-card outline padding="lg">
+        <c-section-head title="De lagen van het platform"><c-tag type="default">persoon → datacenter</c-tag></c-section-head>
+        <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
+        <c-stack gap="0.75rem">
+        <c-layer icon="rectangle-stack" title="Applicaties" count="123 apps" sub="Wat burgers en ambtenaren gebruiken" href="#"><c-chip>Paspoortaanvraag</c-chip><c-chip>Toeslagenmotor</c-chip><c-chip>Platformportaal</c-chip></c-layer>
+        <c-layer icon="cylinder-split" title="Infra-diensten" count="244 instances" sub="Kubernetes, databases, brokers, LLM" href="#"><c-chip>pg-burgerzaken-prod</c-chip><c-chip>k8s-platform-prod</c-chip></c-layer>
+        <c-layer icon="apartment-building" title="Fundament" count="35 racks" sub="Datacenters, racks en hardware" href="#"></c-layer>
+        </c-stack>
+      </c-card>
+
+      <c-card outline padding="lg">
+        <c-section-head title="Recente activiteit" icon="timer"/>
+        <c-activity>
+        <c-activity-item icon="plus" actor="Anne Schuth" action="infra afgenomen" res="llm-gilde-prod" at="di 10:02"/>
+        <c-activity-item icon="lock-closed" actor="Fatima El Amrani" action="secret geroteerd" res="platform/llm-gateway-key" at="di 09:40"/>
+        <c-activity-item icon="arrow-up-arrow-down" actor="Joost de Vries" action="release gepromoot" res="app-paspoort → prod" at="gisteren 14:22"/>
+        <c-activity-item icon="arrow-up-arrow-down" actor="Omar Van Es" action="release gepromoot" res="app-subsidieportaal-rvo → prod" at="gisteren 9:11"/>
+        </c-activity>
+      </c-card>
+    </c-columns>
+  </c-stack>
+</c-app-shell>
+</c-page>
