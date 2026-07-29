@@ -7,18 +7,26 @@ link a stylesheet by hand.
 
 ## Install
 
-The LOTC packages aren't on PyPI yet, so install them from this checkout
-(editable):
+The LOTC packages aren't on PyPI yet, so install them from this checkout:
 
 ```bash
 pip install -e python -e packages/lotc-rvo
 # add -e packages/lotc-nldd -e packages/lotc-bgnldd to also render NLDD
 ```
 
+**No Node/npm required.** The packages ship the full built frontend (the webpack
+CSS/JS bundles, RVO's design tokens, fonts and icons, NLDD's web-component
+module). A `pip`/`poetry install` gives you everything; you never run a frontend
+build as a consumer.
+
 `lord-of-the-components` is the core (the `<c-*>` compiler + component
 definitions). Each design system is a separate package (`lotc-rvo`, `lotc-nldd`,
 …) discovered automatically via entry points — installing one makes it available
 to `design_systems=[...]`.
+
+> Maintainers only: the bundles are committed under each package's
+> `static/lotc/dist/`. When the frontend changes, run `npm run build` and commit
+> the result — consumers never do this.
 
 ## The three-step integration
 
