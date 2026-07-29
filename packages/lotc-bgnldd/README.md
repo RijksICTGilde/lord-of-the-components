@@ -1,12 +1,14 @@
 # lotc-bgnldd
 
-Begane Grond's app-level components as a **mix-and-match theme layer** on top of
-NLDD, for [Lord of the Components](../../README.md).
+An **implementation-only** design-system layer that renders app/dashboard
+components on top of NLDD, for [Lord of the Components](../../README.md).
 
-bg.rijks.app is NLDD web components *plus* its own app components — a sidebar
-nav, metric cards, platform-layer rows, an activity feed, shortcut cards, section
-headers — that aren't in NLDD proper. Rather than pollute NLDD, BGNLDD ships them
-as a separate design system that composes with NLDD.
+bg.rijks.app is NLDD web components *plus* app components — a sidebar nav, metric
+cards, platform-layer rows, an activity feed, a profile/identity card, catalog
+cards, a filter bar, a page footer — that aren't in NLDD proper. Those components
+are defined **globally** in core (like `c-button` or `c-card`); BGNLDD just
+provides their NLDD-flavoured implementations, so you can drop them into any
+NLDD page.
 
 ## Usage
 
@@ -15,7 +17,7 @@ setup_components(env, design_systems=["nldd", "bgnldd"])
 ```
 
 NLDD renders the primitives (`c-card`, `c-button`, `c-icon`, …); BGNLDD renders
-its own components, each routed to its owner theme automatically:
+the app components, each routed to its owner theme automatically:
 
 ```html
 <c-metric icon="apartment-building" value="5" label="Datacenters" sub="4 operationeel" href="/fysiek"/>
@@ -24,30 +26,34 @@ its own components, each routed to its owner theme automatically:
   <c-sidenav-group label="Bouwen & draaien"/>
   <c-sidenav-item icon="cylinder-split" label="Infra-diensten" href="/infra"/>
 </c-sidenav>
-<c-layer icon="rectangle-stack" title="Applicaties" count="123 apps" sub="…">
-  <c-tag type="default">Paspoortaanvraag</c-tag>
-</c-layer>
-<c-section-head title="Recente activiteit" icon="timer"/>
-<c-activity>
-  <c-activity-item icon="plus" actor="Anne Schuth" action="infra afgenomen" res="llm-gilde-prod" at="di 10:02"/>
-</c-activity>
+<c-catalog-card icon="rectangle-stack" title="Paspoortaanvraag" subtitle="Burgerzaken"
+                status="ok" status-type="success" maturity="goud" open-label="Open" href="/apps/x">
+  <c-tag type="default">service</c-tag><c-tag type="info">Rust</c-tag>
+</c-catalog-card>
 ```
 
 ## Components
 
 `c-metric`, `c-sidenav` (+ `c-sidenav-group`, `c-sidenav-item`), `c-layer`,
-`c-section-head`, `c-activity` (+ `c-activity-item`), `c-shortcut`.
+`c-section-head`, `c-activity` (+ `c-activity-item`), `c-shortcut`, `c-chip`,
+`c-identity`, `c-action`, `c-detail-list` (+ `c-detail-item`), `c-section-link`,
+`c-notification` (+ `c-notification-item`), `c-catalog-card`, `c-filter-bar`
+(+ `c-filter-select`), `c-site-footer`.
 
 ## How it works
 
-- **Contracts**: TS definitions in `themes/bgnldd/definitions/` → the generator
-  emits this package's `registry.json` fragment (core's registry is untouched).
-  `setup_components` merges the fragment, tagging each component's owner theme.
+- **Contracts**: the definitions are **global**, in core's
+  `definitions/components/app-components.def.ts` — BGNLDD ships no registry
+  fragment of its own.
 - **Rendering**: hand-authored Jinja templates in `templates/components/`. They
-  compose NLDD primitives — e.g. icons call NLDD's icon renderer
-  (`_lotc_nldd_icon`), so BGNLDD reuses NLDD's semantic icon mapping. Requires
-  `nldd` to also be declared.
-- **CSS**: `static/lotc/bgnldd/bg-components.css` (the `bg-*` classes,
-  derived from the live site's `rp-*` styles, using NLDD design tokens). A page
-  loads it via `{{ get_design_system_assets() }}` / `design-systems="nldd bgnldd"`
-  on `c-page`.
+  compose NLDD primitives — icons call NLDD's icon renderer (`_lotc_nldd_icon`),
+  so BGNLDD reuses NLDD's semantic icon mapping. Requires `nldd` to also be
+  declared.
+- **CSS**: the structural styles (`lotc-*` classes, using
+  `var(--semantics-*, fallback)` so they work under any theme) live in **core**,
+  in `app-components.css` — loaded on every page. BGNLDD is pure implementation:
+  no CSS bundle, no static assets of its own.
+
+The same app components also have RVO implementations (in `lotc-rvo`), proving
+they are design-system-agnostic: the same `<c-metric>` / `<c-catalog-card>`
+markup renders under RVO or NLDD.

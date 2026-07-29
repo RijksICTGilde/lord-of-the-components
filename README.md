@@ -1,198 +1,155 @@
 # Lord of the Components
 
-A component system for Jinja2 that lets you use `<c-*>` custom tags in your templates. Components render to fully styled HTML using the RVO/Utrecht design system.
+A **design-system-agnostic** component compiler for Jinja2. Author your templates
+once with `<c-*>` tags; render them to whatever design system you activate — and
+switch systems by changing one argument, with no template edits.
 
 ```html
-<c-page title="My App" theme="rvo">
+<c-page title="My App" design-systems="rvo">
+  <c-header text="My app" link="/"/>
   <c-heading type="h1">Welcome</c-heading>
-  <c-button type="primary" name="Get started" />
+  <c-button type="primary" label="Get started"/>
 </c-page>
 ```
 
-## Quick Start
+The same markup rendered under `design_systems=["rvo"]` produces RVO/Utrecht
+HTML; under `["nldd"]` it produces NLDD web components. Component *definitions*
+are global (they live in core); each *design system* is a separate, installable
+package that provides the implementations. You can add your own.
 
-### Install
+## Why
+
+- **One set of templates, many design systems.** `<c-metric>`, `<c-button>`,
+  `<c-card>` … are defined once. RVO, NLDD (and your own) each implement the
+  subset they support.
+- **Switch in one line.** `setup_components(env, design_systems=["nldd"])`.
+- **Partial coverage is a feature.** If the active system doesn't implement a
+  component, you get a clear error — or, opt in to
+  `on_missing_component="placeholder"` and it renders a visible gap marker so you
+  can switch, see the holes, and fill them in later.
+- **`<c-page>` wires the `<head>` for you.** It emits the full document and the
+  CSS/JS `<link>`/`<script>` tags for whatever systems you activated. You never
+  link a stylesheet by hand.
+
+## Install
+
+The packages aren't on PyPI yet, so install them from this checkout:
 
 ```bash
-# Python package (Jinja2 integration)
-pip install -e python/
-
-# Node dependencies (for generators and visual tests)
-npm install
-
-# Build the bundled frontend assets (RVO/Utrecht CSS + JS).
-# Required: the output lives under python/src/lord_of_the_components/static/
-# which is git-ignored, so a fresh clone has no CSS until this runs.
-npm run build:fe
+pip install -e python -e packages/lotc-rvo
+# add -e packages/lotc-nldd -e packages/lotc-bgnldd for the NLDD design system
 ```
 
-### Run the Getting-Started Example
+**No Node/npm as a consumer.** The packages ship the full built frontend (the
+webpack CSS/JS bundles, design tokens, fonts, icons, web-component modules), so a
+plain `pip`/`poetry install` gives you everything.
 
-```bash
-cd examples/getting-started
-python app.py --serve
-# Open http://localhost:8080
-```
+`lord-of-the-components` is the core (the `<c-*>` compiler + the global component
+definitions). Each design system is its own package (`lotc-rvo`, `lotc-nldd`, …)
+discovered automatically via a Python entry point — installing one makes it
+available to `design_systems=[...]`.
 
-This serves a fully styled page showcasing all 21 components with bundled RVO CSS.
+## Use it
 
-### Use in Your Own Project
+Three steps, in any framework:
 
 ```python
-from jinja2 import Environment, FileSystemLoader, ChoiceLoader
-from lord_of_the_components import setup_components, get_templates_path, get_static_files_path
+from jinja2 import Environment, FileSystemLoader
+from lord_of_the_components import setup_components, get_static_roots
 
-env = Environment(loader=ChoiceLoader([
-    FileSystemLoader('your/templates'),
-    FileSystemLoader(get_templates_path()),
-]))
-setup_components(env, registry_path='path/to/registry.json')
+# 1. A Jinja env with your templates. Use a FileSystemLoader (it has a
+#    `searchpath` that setup_components extends); autoescape is required.
+env = Environment(loader=FileSystemLoader("templates"), autoescape=True)
+
+# 2. Teach Jinja the <c-*> tags + which design system(s) to render with.
+#    No registry_path needed — it defaults to the one shipped in core.
+setup_components(env, design_systems=["rvo"])
+
+# 3. Serve these roots under /static/lotc/ — the CSS/JS <c-page> references.
+#    A request for /static/lotc/<rest> maps to <root>/lotc/<rest>, first wins.
+static_roots = get_static_roots()
 ```
 
-The registry file is at `python/src/lord_of_the_components/registry.json`.
-
-### Frontend Assets
-
-`<c-page>` automatically injects `<link href="/static/lotc/dist/lotc.css">`. Your server needs to serve the bundled CSS:
-
-```python
-from lord_of_the_components import get_static_files_path
-
-STATIC_DIR = get_static_files_path()  # Serve this directory at /static/lotc/
-```
-
-The CSS is built from RVO/Utrecht packages via webpack:
-
-```bash
-npm run build:fe
-```
+Runnable quick-starts live in [`examples/`](examples/): **Flask**
+([`examples/flask_app/`](examples/flask_app/)), **FastAPI**
+([`examples/fastapi_app/`](examples/fastapi_app/)), and a no-framework stdlib
+server ([`examples/getting-started/`](examples/getting-started/)). See
+[`examples/README.md`](examples/README.md) for the full walkthrough.
 
 ## Components
 
-### Page Structure
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| Page | `<c-page>` | Full HTML document with `<head>`, theme, and CSS injection |
-| Header | `<c-header>` | Site header with Rijksoverheid logo |
-| Hero | `<c-hero>` | Hero banner with title, subtitle, and optional image |
-| Footer | `<c-footer>` | Page footer with optional pay-off text |
+Components are grouped into page structure, layout, typography, actions, data
+display, navigation, forms, and app/dashboard patterns (metric, sidenav, layer,
+activity, catalog-card, filter-bar, site-footer, …). The full, always-current
+list — every component, its props, and which design systems implement it — is
+generated into [`COMPONENTS.md`](COMPONENTS.md) and [`COVERAGE.md`](COVERAGE.md).
 
-### Layout
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| Layout Flow | `<c-layout-flow>` | Flexbox flow with gap, direction, alignment |
-| Layout Row | `<c-layout-row>` | Grid row container |
-| Layout Column | `<c-layout-column>` | Grid column with responsive sizing (xs/sm/md/lg) |
-| Max Width Layout | `<c-max-width-layout>` | Centered container with max-width |
-| Grid | `<c-grid>` | CSS grid with named column counts and gap |
-
-### Typography
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| Heading | `<c-heading>` | `<h1>` through `<h6>` |
-| Paragraph | `<c-paragraph>` | Styled paragraph |
-| Link | `<c-link>` | Anchor with color, weight, icon options |
-| Label | `<c-label>` | Form label |
-| Strong | `<c-strong>` | Bold emphasis |
-| Em | `<c-em>` | Italic emphasis |
-
-### Actions
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| Button | `<c-button>` | Button with type, size, icon, loading, disabled states |
-
-### Data Display
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| Card | `<c-card>` | Card with optional image, link, outline, padding |
-| Icon | `<c-icon>` | RVO icon with size and color |
-| Data List | `<c-data-list>` | Definition list (`<dl>`) wrapper |
-| Alert | `<c-alert>` | Info/success/warning/error messages |
-
-### Navigation
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| Menu | `<c-menu>` + `<c-menu-item>` | Menubar with dropdowns and submenus |
-| Breadcrumbs | `<c-breadcrumbs>` + `<c-breadcrumbs-item>` | Breadcrumb trail |
-
-## Project Structure
+## Architecture
 
 ```
 lord-of-the-components/
-├── definitions/              # Component definitions (.def.ts)
-│   ├── components/           #   button.def.ts, heading.def.ts, ...
-│   ├── props.ts              #   Shared prop definitions
-│   └── values.ts             #   Shared value enums
+├── definitions/            # GLOBAL component contracts (.def.ts) — theme-agnostic
+│   ├── components/         #   button.def.ts, metric.def.ts, …
+│   ├── icons.ts            #   semantic icon name -> per-design-system sprite map
+│   ├── props.ts / values.ts
 │
-├── implementations/          # HTML/CSS mappings (.impl.ts)
-│   └── components/           #   button.impl.ts, heading.impl.ts, ...
+├── implementations/        # the default (RVO) implementations (.impl.ts, IR)
+├── themes/                 # per-design-system implementation overrides (nldd, …)
 │
-├── core/                     # TypeScript workspace
-│   └── src/generators/       #   Jinja2 template generator
-│       └── jinja2/
-│           ├── index.ts      #   Jinja2Generator class
-│           ├── generate-all.ts    # Generate all templates + registry
-│           └── generate-registry.ts
+├── core/src/generators/    # TypeScript generator (run via `npx tsx`): emits the
+│                           #   Jinja templates, Python renderers, and registry.json
 │
-├── python/                   # Python package
+├── python/                 # core package: the <c-*> compiler
 │   └── src/lord_of_the_components/
-│       ├── extension.py      #   Jinja2 extension (BeautifulSoup-based)
-│       ├── registry.py       #   Component registry
-│       ├── registry.json     #   Generated component metadata
-│       ├── templates/        #   Generated .html.j2 templates
-│       └── static/lotc/dist/ #   Bundled RVO/Utrecht CSS
+│       ├── extension.py    #   one-pass Jinja extension (design-system dispatch,
+│       │                   #     constant folding, macro rendering)
+│       ├── registry.json   #   generated component metadata
+│       ├── templates/ static/   # core templates + layout.css/app-components.css
 │
-├── examples/                 # Usage examples
-│   └── getting-started/      #   Fully working example app
+├── packages/               # design-system packages (each = one installable dist)
+│   ├── lotc-rvo/           #   RVO renderers + templates + built CSS/JS bundle
+│   ├── lotc-nldd/          #   NLDD renderers + web-component module bundle
+│   └── lotc-bgnldd/        #   app components as an impl-only layer on NLDD
 │
-├── tests/visual/             # Playwright visual regression tests
-│   ├── serve.py              #   Test server (port 5555)
-│   ├── fixtures/             #   HTML fixture files
-│   └── specs/                #   Playwright test specs
-│
-└── specs/                    # Project plans and progress tracking
+├── examples/               # Flask / FastAPI / stdlib quick-starts
+└── tests/visual/           # fixtures + Playwright screenshots
 ```
 
-## How to Add a New Component
+A **design system** is a Python package that declares a
+`lord_of_the_components.design_systems` entry point pointing at a `DesignSystem`
+descriptor (renderers module, templates path, static bundle, CSS/JS URLs). Core
+discovers whatever is installed — nothing hard-codes RVO or NLDD.
 
-1. **Define it** in `definitions/components/{name}.def.ts` using `defineComponent()`
-2. **Implement it** in `implementations/components/{name}.impl.ts` using `defineImplementation()` with the Element Tree API
-3. **Export it** from `implementations/components/index.ts`
-4. **Add it** to the `implementations` array in `core/src/generators/jinja2/generate-all.ts`
-5. **Generate** the template and registry:
+## Add a component
+
+1. **Define it** (global contract) in `definitions/components/{name}.def.ts` with
+   `defineComponent()`, and register it in `definitions/components/index.ts`.
+2. **Implement it** for one or more design systems — either a declarative
+   `.impl.ts` (compiled to a Python renderer) or a hand-authored
+   `templates/components/{name}.html.j2` in the design-system package.
+3. **Regenerate** templates + renderers + registry:
    ```bash
-   npx tsx core/src/generators/jinja2/generate-all.ts
+   npm run build && npx tsx core/src/generators/jinja2/generate-all.ts
    ```
-6. **Test** with e2e tests in `python/tests/test_{name}_e2e.py`
-7. **Add visual test** fixture in `tests/visual/fixtures/{name}-variants.html`
+4. **Test** (`cd python && pytest`) and add a visual fixture under
+   `tests/visual/fixtures/`.
 
-For components with complex nested structure that can't be expressed declaratively (e.g., header, hero, alert), the template may need hand-tuning after generation.
+A design system only needs to implement the components it supports; where none
+does, `on_missing_component` decides between an error and a placeholder.
 
-## Development
-
-### Generate Templates
-
-```bash
-npx tsx core/src/generators/jinja2/generate-all.ts
-```
-
-### Run E2E Tests
+## Develop
 
 ```bash
-cd python && pytest
+npm install                                   # generator + visual-test deps
+npm run build                                 # compile the TS generator
+npx tsx core/src/generators/jinja2/generate-all.ts   # regenerate Jinja/renderers/registry
+npm run build:fe                              # rebuild the design-system CSS/JS bundles
+cd python && pytest                           # Python test suite
 ```
 
-### Run Visual Tests
-
-```bash
-npx playwright test --config tests/visual/playwright.config.ts
-```
-
-### Build Frontend Assets
-
-```bash
-npm run build:fe
-```
+> The built frontend bundles are committed under each package's
+> `static/lotc/dist/`. Rebuilding them (`npm run build:fe`) is a maintainers-only
+> step — consumers never run npm.
 
 ## License
 
