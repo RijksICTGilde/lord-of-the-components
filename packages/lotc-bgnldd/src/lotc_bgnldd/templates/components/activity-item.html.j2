@@ -5,11 +5,11 @@
 {% set res = _component_context.get('res', '') %}
 {% set at = _component_context.get('at', '') %}
 {% set href = _component_context.get('href', '') %}
-<li class="bg-activity-item" data-lotc-component="activity-item">
-    <span class="bg-activity-dot">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}</span>
-    <span class="bg-activity-body">
-        <span class="bg-activity-line">{% if href %}<a href="{{ href }}" class="bg-activity-actor">{{ actor }}</a>{% else %}<span class="bg-activity-actor">{{ actor }}</span>{% endif %} <span class="bg-activity-action">{{ action }}</span></span>
-        <span class="bg-activity-meta">{% if res %}<span class="bg-activity-res">{{ res }}</span>{% endif %}{% if at %}<span class="bg-activity-at">{{ at }}</span>{% endif %}</span>
+<li class="lotc-activity-item" data-lotc-component="activity-item">
+    <span class="lotc-activity-dot">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}</span>
+    <span class="lotc-activity-body">
+        <span class="lotc-activity-line">{% if href %}<a href="{{ href }}" class="lotc-activity-actor">{{ actor }}</a>{% else %}<span class="lotc-activity-actor">{{ actor }}</span>{% endif %} <span class="lotc-activity-action">{{ action }}</span></span>
+        <span class="lotc-activity-meta">{% if res %}<span class="lotc-activity-res">{{ res }}</span>{% endif %}{% if at %}<span class="lotc-activity-at">{{ at }}</span>{% endif %}</span>
     </span>
 </li>
 {% endmacro %}

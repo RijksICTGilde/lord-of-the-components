@@ -28,8 +28,8 @@ def render():
 def test_metric_is_a_global_component_rendered_by_bgnldd(render):
     # c-metric is a global (core) component; BGNLDD provides its NLDD impl.
     html = render('<c-metric icon="apartment-building" value="5" label="Datacenters"/>')
-    assert 'class="bg-metric-link"' in html
-    assert "bg-metric-value" in html and ">5<" in html
+    assert 'class="lotc-metric-link"' in html
+    assert "lotc-metric-value" in html and ">5<" in html
 
 
 def test_metric_composes_nldd_primitives(render):
@@ -43,15 +43,15 @@ def test_metric_composes_nldd_primitives(render):
 
 def test_sidenav_active_state(render):
     html = render('<c-sidenav><c-sidenav-item icon="house" label="Overzicht" href="/" active/></c-sidenav>')
-    assert 'class="bg-sidenav"' in html
-    assert "bg-active" in html and 'aria-current="page"' in html
+    assert 'class="lotc-sidenav"' in html
+    assert "lotc-active" in html and 'aria-current="page"' in html
 
 
 def test_mix_and_match_resolves_per_component(render):
-    # Same page: c-card -> NLDD (nldd-card), c-metric -> BGNLDD's impl (bg-metric).
+    # Same page: c-card -> NLDD (nldd-card), c-metric -> BGNLDD's impl (lotc-metric).
     html = render('<c-card>x</c-card><c-metric value="1" label="L"/>')
     assert "<nldd-card" in html  # NLDD primitive
-    assert "bg-metric-link" in html  # global component, BGNLDD impl
+    assert "lotc-metric-link" in html  # global component, BGNLDD impl
 
 
 def test_header_utility_menu(render):
@@ -78,27 +78,27 @@ def test_section_head_uses_nldd_title(render):
 
 def test_layer_and_activity_render(render):
     layer = render('<c-layer icon="rectangle-stack" title="Applicaties" count="123 apps" sub="Wat.."/>')
-    assert 'class="bg-layer"' in layer and "bg-layer-title" in layer and "bg-layer-go" in layer
+    assert 'class="lotc-layer"' in layer and "lotc-layer-title" in layer and "lotc-layer-go" in layer
     act = render('<c-activity><c-activity-item icon="plus" actor="Anne" action="deed" res="r" at="now"/></c-activity>')
-    assert 'class="bg-activity"' in act and "bg-activity-actor" in act and "bg-activity-res" in act
+    assert 'class="lotc-activity"' in act and "lotc-activity-actor" in act and "lotc-activity-res" in act
 
 
-def test_design_system_assets_global_emits_css():
-    # A page declaring bgnldd loads its CSS bundle via this global.
+def test_design_system_assets_global_emits_the_declared_bundles():
+    # A page declaring nldd loads its web-components bundle via this global.
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json"))
     html = env.from_string("{{ get_design_system_assets() }}").render()
-    assert '<link rel="stylesheet" href="/static/lotc/bgnldd/bg-components.css">' in html
+    assert 'src="/static/lotc/nldd/dist/nldd.js"' in html  # NLDD web components
 
 
-def test_cpage_loads_all_declared_theme_assets(render):
-    # <c-page> renders the full document and loads every declared system's bundle:
-    # NLDD's web-components module + BGNLDD's CSS.
+def test_cpage_loads_declared_bundles_and_app_css(render):
+    # <c-page> renders the full document, loads NLDD's bundle, and the global
+    # app-component styles (theme-agnostic, in core — always loaded).
     html = render('<c-page title="Overzicht" design-systems="nldd bgnldd"><p>x</p></c-page>')
     assert "<!DOCTYPE html>" in html
     assert 'src="/static/lotc/nldd/dist/nldd.js"' in html  # NLDD web components (JS module)
     assert 'href="/static/lotc/nldd/dist/css/reset.css"' in html  # NLDD base CSS
-    assert 'href="/static/lotc/bgnldd/bg-components.css"' in html  # BGNLDD add-on CSS
+    assert 'href="/static/lotc/app-components.css"' in html  # global app-component CSS
     assert "<p>x</p>" in html
 
 
@@ -116,4 +116,5 @@ def test_app_components_are_global_and_bgnldd_is_impl_only():
 
     bg = discover_design_systems()["bgnldd"]
     assert bg.registry_path is None  # impl-only: no definitions of its own
-    assert bg.templates_path is not None and bg.css_urls
+    assert bg.templates_path is not None  # ships templates
+    assert not bg.css_urls  # app CSS is global (core), not per-theme

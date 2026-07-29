@@ -4,5 +4,5 @@
 {% set href = _component_context.get('href', '') %}
 {% set active = _component_context.get('active', false) %}
 {% set children = _component_context.get('content', '') %}
-<li data-lotc-component="sidenav-item"><a{% if href %} href="{{ href }}"{% endif %} class="bg-sidenav-link{% if active %} bg-active{% endif %}"{% if active %} aria-current="page"{% endif %}>{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}<span>{{ label }}{{ children | safe }}</span></a></li>
+<li data-lotc-component="sidenav-item"><a{% if href %} href="{{ href }}"{% endif %} class="lotc-sidenav-link{% if active %} lotc-active{% endif %}"{% if active %} aria-current="page"{% endif %}>{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}<span>{{ label }}{{ children | safe }}</span></a></li>
 {% endmacro %}

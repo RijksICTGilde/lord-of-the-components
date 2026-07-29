@@ -4,10 +4,10 @@
 {% set desc = _component_context.get('desc', '') %}
 {% set cta = _component_context.get('cta', '') %}
 {% set href = _component_context.get('href', '') %}
-<a{% if href %} href="{{ href }}"{% endif %} class="bg-shortcut" data-lotc-component="shortcut">
-    <span class="bg-shortcut-icon">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}</span>
-    <span class="bg-shortcut-title">{{ title }}</span>
-    {% if desc %}<span class="bg-shortcut-desc">{{ desc }}</span>{% endif %}
-    {% if cta %}<span class="bg-shortcut-cta">{{ cta }}{{ _lotc_nldd_icon(icon='arrow-right', _class='bg-shortcut-cta-icon') }}</span>{% endif %}
+<a{% if href %} href="{{ href }}"{% endif %} class="lotc-shortcut" data-lotc-component="shortcut">
+    <span class="lotc-shortcut-icon">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}</span>
+    <span class="lotc-shortcut-title">{{ title }}</span>
+    {% if desc %}<span class="lotc-shortcut-desc">{{ desc }}</span>{% endif %}
+    {% if cta %}<span class="lotc-shortcut-cta">{{ cta }}{{ _lotc_nldd_icon(icon='arrow-right', _class='lotc-shortcut-cta-icon') }}</span>{% endif %}
 </a>
 {% endmacro %}

@@ -125,7 +125,10 @@ def _make_transform(theme: str) -> Callable[[str], str]:
 
     # Theme-agnostic layout primitives (app-shell, auto-grid) render the same in
     # both themes, so their structural CSS is injected everywhere.
-    layout_css = '    <link rel="stylesheet" href="/static/lotc/layout.css">'
+    layout_css = (
+        '    <link rel="stylesheet" href="/static/lotc/layout.css">\n'
+        '    <link rel="stylesheet" href="/static/lotc/app-components.css">'
+    )
     extra_css = _extra_ds_css(themes)
 
     def _transform(source: str) -> str:

@@ -1,5 +1,5 @@
 {% macro lotc_render(_component_context) %}
-{% set label = _component_context.get('label', '') %}
-{% set children = _component_context.get('content', '') %}
+{% set label = _component_context.get("label", "") %}
+{% set children = _component_context.get("content", "") %}
 <li class="lotc-sidenav-group" data-lotc-component="sidenav-group">{{ label }}{{ children | safe }}</li>
 {% endmacro %}

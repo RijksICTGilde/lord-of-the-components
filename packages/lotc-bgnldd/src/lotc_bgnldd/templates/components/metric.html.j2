@@ -5,12 +5,12 @@
 {% set sub = _component_context.get('sub', '') %}
 {% set href = _component_context.get('href', '') %}
 {% set extra = _component_context.get('class', '') %}
-<a{% if href %} href="{{ href }}"{% endif %} class="bg-metric-link{% if extra %} {{ extra }}{% endif %}" data-lotc-component="metric">
+<a{% if href %} href="{{ href }}"{% endif %} class="lotc-metric-link{% if extra %} {{ extra }}{% endif %}" data-lotc-component="metric">
     <nldd-card accessible-label="{{ label }}">
         <nldd-container padding="20">
-            <div class="bg-metric-top">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}<span class="bg-metric-value">{{ value }}</span></div>
-            <div class="bg-metric-label">{{ label }}</div>
-            {% if sub %}<div class="bg-metric-sub">{{ sub }}</div>{% endif %}
+            <div class="lotc-metric-top">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}<span class="lotc-metric-value">{{ value }}</span></div>
+            <div class="lotc-metric-label">{{ label }}</div>
+            {% if sub %}<div class="lotc-metric-sub">{{ sub }}</div>{% endif %}
         </nldd-container>
     </nldd-card>
 </a>
