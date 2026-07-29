@@ -1,0 +1,11 @@
+# Lord of the Components — Flask quick-start.
+#
+# The LOTC packages are not on PyPI yet, so install them from this checkout
+# (editable). From examples/flask_app/:
+#
+#   pip install -e ../../python -e ../../packages/lotc-rvo
+#   pip install -r requirements.txt
+#
+# Add -e ../../packages/lotc-nldd (and lotc-bgnldd) to also render the NLDD
+# design system.
+flask>=3.0
