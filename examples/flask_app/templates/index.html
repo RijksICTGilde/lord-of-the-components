@@ -1,0 +1,55 @@
+<c-page title="Lord of the Components · Flask" theme="rvo" design-systems="rvo">
+
+  <c-header text="Lord of the Components" subtitle="Flask quick-start" link="/"/>
+
+  <c-max-width-layout size="lg">
+    <c-stack gap="2rem">
+
+      <div>
+        <c-heading type="h1" size="2">It just works</c-heading>
+        <c-p>
+          This whole page is styled by one tag. <c-strong>&lt;c-page&gt;</c-strong>
+          renders the full HTML document and pulls in the CSS (and JS, for web-component
+          themes) for whatever design system you activated — you never link a stylesheet
+          by hand.
+        </c-p>
+      </div>
+
+      <c-stack direction="horizontal" gap="0.75rem" wrap>
+        <c-button type="primary" label="Primary action" icon="plus" show-icon="before"/>
+        <c-button type="secondary" label="Secondary"/>
+      </c-stack>
+
+      <c-auto-grid min="240px" gap="1rem">
+        <c-card outline padding="lg">
+          <c-section-head title="Install"><c-tag type="info">1</c-tag></c-section-head>
+          <c-p>Add the packages: <c-strong>lord-of-the-components</c-strong> and a design
+          system such as <c-strong>lotc-rvo</c-strong>.</c-p>
+        </c-card>
+        <c-card outline padding="lg">
+          <c-section-head title="Wire up"><c-tag type="info">2</c-tag></c-section-head>
+          <c-p>Call <c-strong>setup_components(env, design_systems=["rvo"])</c-strong> and
+          serve <c-strong>get_static_roots()</c-strong> under /static/lotc/.</c-p>
+        </c-card>
+        <c-card outline padding="lg">
+          <c-section-head title="Write"><c-tag type="info">3</c-tag></c-section-head>
+          <c-p>Author templates with <c-strong>&lt;c-*&gt;</c-strong> tags. Switch design
+          systems by changing one argument.</c-p>
+        </c-card>
+      </c-auto-grid>
+
+      <c-card outline padding="lg">
+        <c-section-head title="Theme-agnostic"/>
+        <c-p>The same markup renders under a different design system by changing
+        <c-strong>design_systems=["rvo"]</c-strong> to another installed system — no
+        template edits.</c-p>
+      </c-card>
+
+    </c-stack>
+  </c-max-width-layout>
+
+  <c-site-footer text="Built with Lord of the Components">
+    <c-link href="https://git.claude.robbertuittenbroek.nl/robbert/lord-of-the-components">Repository</c-link>
+  </c-site-footer>
+
+</c-page>
