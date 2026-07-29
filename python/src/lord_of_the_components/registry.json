@@ -2556,6 +2556,244 @@
       "content": {
         "allowed": true
       }
+    },
+    {
+      "name": "identity",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Person's name"
+        },
+        {
+          "name": "initials",
+          "type": "string",
+          "description": "Avatar initials (e.g. \"AS\")"
+        },
+        {
+          "name": "handle",
+          "type": "string",
+          "description": "Handle/chat address (e.g. @anne:rijk.chat)"
+        },
+        {
+          "name": "aside-tag",
+          "type": "string",
+          "description": "Aside status tag text (e.g. \"Escalatie-piket\")"
+        },
+        {
+          "name": "aside-tag-type",
+          "type": "enum",
+          "enum_values": [
+            "default",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "description": "Aside tag semantic type"
+        },
+        {
+          "name": "aside-sub",
+          "type": "string",
+          "description": "Aside sub-line"
+        },
+        {
+          "name": "aside-label",
+          "type": "string",
+          "description": "Aside link label"
+        },
+        {
+          "name": "aside-href",
+          "type": "string",
+          "description": "Aside link target"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Profile/identity header: avatar initials + name, with tag content and an optional aside",
+      "category": "data-display",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "action",
+      "attributes": [
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Icon name (semantic)"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Action title"
+        },
+        {
+          "name": "sub",
+          "type": "string",
+          "description": "Sub-line"
+        },
+        {
+          "name": "tone",
+          "type": "enum",
+          "enum_values": [
+            "neutral",
+            "warning",
+            "critical"
+          ],
+          "default": "neutral",
+          "description": "Left-border accent tone"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Action row: icon + title/sub, with a right-aligned action (content), and a tone",
+      "category": "data-display",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "detail-list",
+      "attributes": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Monospace id shown in the header (e.g. \"wp-0001\")"
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Header icon name"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Header link target"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Key/value detail list, with an optional monospace id header",
+      "category": "data-display",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "detail-item",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Row label (left)"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Row value (right, bold)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "One label/value row inside a detail-list",
+      "category": "data-display",
+      "backend": "jinja"
+    },
+    {
+      "name": "section-link",
+      "attributes": [
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Icon name (semantic)"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Link label (content overrides)"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link target"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Bordered navigation chip: icon + label with a trailing chevron",
+      "category": "navigation",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "notification",
+      "attributes": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Notification feed container (holds notification-item)",
+      "category": "data-display",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "notification-item",
+      "attributes": [
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Icon name (semantic)"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Notification title"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Optional link target"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "One notification: icon + title, with meta content (tag, source, time)",
+      "category": "data-display",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }

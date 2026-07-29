@@ -1,0 +1,24 @@
+{% macro lotc_render(_component_context) %}
+{% set name = _component_context.get("name", "") %}
+{% set initials = _component_context.get("initials", "") %}
+{% set handle = _component_context.get("handle", "") %}
+{% set children = _component_context.get("content", "") %}
+{% set atag = _component_context.get("aside-tag", "") %}
+{% set atype = _component_context.get("aside-tag-type", "warning") %}
+{% set asub = _component_context.get("aside-sub", "") %}
+{% set alabel = _component_context.get("aside-label", "") %}
+{% set ahref = _component_context.get("aside-href", "") %}
+{% set vmap = {"default":"neutral","info":"accent","success":"success","warning":"warning","error":"critical"} %}
+<div class="lotc-identity" data-lotc-component="identity">
+  <div class="lotc-avatar">{{ initials }}</div>
+  <div class="lotc-identity-meta">
+    {% if name %}<nldd-title size="4"><h2>{{ name }}</h2></nldd-title>{% endif %}
+    <div class="lotc-identity-sub">{{ children | safe }}{% if handle %}<span class="lotc-identity-handle">{{ _lotc_nldd_icon(icon="chat") }} {{ handle }}</span>{% endif %}</div>
+  </div>
+  {% if atag or asub or alabel %}<div class="lotc-identity-aside">
+    {% if atag %}<nldd-tag color="{{ vmap.get(atype, "warning") }}">{{ atag }}</nldd-tag>{% endif %}
+    {% if asub %}<span class="lotc-identity-aside-sub">{{ asub }}</span>{% endif %}
+    {% if alabel %}<a{% if ahref %} href="{{ ahref }}"{% endif %} class="lotc-identity-aside-link">{{ alabel }} {{ _lotc_nldd_icon(icon="chevron-right") }}</a>{% endif %}
+  </div>{% endif %}
+</div>
+{% endmacro %}

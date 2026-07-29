@@ -102,6 +102,89 @@ def test_cpage_loads_declared_bundles_and_app_css(render):
     assert "<p>x</p>" in html
 
 
+def test_identity_card_renders(render):
+    # The /zelf profile header: avatar initials + name, tag content, and an aside.
+    html = render(
+        '<c-identity name="Anne Schuth" initials="AS" handle="@anne:rijk.chat"'
+        ' aside-tag="Escalatie-piket" aside-tag-type="warning" aside-sub="achter Fatima"'
+        ' aside-label="Piketrooster" aside-href="/on-call"><c-tag type="info">Engineer</c-tag>'
+        "</c-identity>"
+    )
+    assert 'class="lotc-identity"' in html
+    assert "lotc-avatar" in html and ">AS<" in html
+    assert "Anne Schuth" in html and "@anne:rijk.chat" in html
+    assert "lotc-identity-aside" in html and "Escalatie-piket" in html
+
+
+def test_action_row_tone(render):
+    # An action row carries a left-border tone and holds a right-aligned action.
+    html = render(
+        '<c-action icon="lock-closed" title="Roteer secret" sub="Verloopt" tone="warning">'
+        '<c-button type="primary" label="Roteren"/></c-action>'
+    )
+    assert "lotc-action--warning" in html
+    assert "lotc-action-title" in html and "Roteer secret" in html
+    assert "<nldd-button" in html  # the action button, an NLDD primitive
+
+
+def test_detail_list_and_items(render):
+    html = render(
+        '<c-detail-list id="wp-0001" icon="business-suitcase" href="/wp">'
+        '<c-detail-item label="Hardware" value="Rijkslaptop"/>'
+        '<c-detail-item label="Encryptie" value="volledig"/></c-detail-list>'
+    )
+    assert 'class="lotc-detail-list"' in html
+    assert "lotc-detail-id" in html and "wp-0001" in html
+    assert html.count("lotc-detail-label") == 2
+    assert "Hardware" in html and "volledig" in html
+
+
+def test_notification_feed(render):
+    html = render(
+        "<c-notification><c-notification-item icon=\"exclamation-triangle\" title=\"Latency\">"
+        '<c-tag type="error">Incident</c-tag> system</c-notification-item></c-notification>'
+    )
+    assert 'class="lotc-notifications"' in html
+    assert 'class="lotc-notification"' in html and "Latency" in html
+    assert "lotc-notification-meta" in html and "Incident" in html
+
+
+def test_section_link_chip(render):
+    html = render('<c-section-link icon="person" label="Mijn profiel" href="/me"/>')
+    assert 'class="lotc-section-link"' in html
+    assert 'href="/me"' in html and "Mijn profiel" in html
+    assert "lotc-section-link-go" in html  # trailing chevron
+
+
+def test_breadcrumbs_has_nldd_impl(render):
+    # c-breadcrumbs is a global component; NLDD provides a real impl
+    # (nldd-breadcrumbs), so /zelf's breadcrumb resolves under nldd+bgnldd.
+    html = render(
+        '<c-breadcrumbs><c-breadcrumbs-item label="Home" href="/"/>'
+        '<c-breadcrumbs-item label="Mijn overzicht"/></c-breadcrumbs>'
+    )
+    assert "<nldd-breadcrumbs" in html
+    assert '<nldd-breadcrumbs-item text="Home" href="/"' in html
+    assert '<nldd-breadcrumbs-item text="Mijn overzicht"' in html
+
+
+def test_zelf_page_fixture_renders_fully():
+    # The full /zelf ("Mijn overzicht") recreation renders end-to-end under
+    # nldd+bgnldd with every app component resolving (no missing-impl error).
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
+    setup_components(
+        env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+    )
+    fixture = Path(__file__).resolve().parents[2] / "tests" / "visual" / "fixtures" / "zelf.html"
+    html = env.from_string(fixture.read_text(encoding="utf-8")).render()
+    assert "<!DOCTYPE html>" in html and "Welkom, Anne" in html
+    assert "lotc-identity" in html  # profile card
+    assert html.count("lotc-metric-link") == 4  # four metrics
+    assert "lotc-detail-list" in html and "lotc-notifications" in html
+    assert "lotc-section-link" in html and "<nldd-breadcrumbs" in html
+    assert "not implemented" not in html  # no placeholder gaps
+
+
 def test_app_components_are_global_and_bgnldd_is_impl_only():
     # The app components (metric, sidenav, …) are GLOBAL: their definitions live
     # in core's registry, not owned by any theme. BGNLDD is implementation-only

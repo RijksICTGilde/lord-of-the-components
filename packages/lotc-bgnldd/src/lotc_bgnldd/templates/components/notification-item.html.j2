@@ -1,0 +1,10 @@
+{% macro lotc_render(_component_context) %}
+{% set icon = _component_context.get("icon", "") %}
+{% set title = _component_context.get("title", "") %}
+{% set href = _component_context.get("href", "") %}
+{% set children = _component_context.get("content", "") %}
+<li class="lotc-notification" data-lotc-component="notification-item">
+  <span class="lotc-notification-icon">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}</span>
+  <span class="lotc-notification-main"><span class="lotc-notification-title">{% if href %}<a href="{{ href }}">{{ title }}</a>{% else %}{{ title }}{% endif %}</span><span class="lotc-notification-meta">{{ children | safe }}</span></span>
+</li>
+{% endmacro %}

@@ -138,3 +138,98 @@ export const chip = defineComponent({
   props: { [PROPS.CLASS]: { description: "Additional CSS classes" } },
   content: { allowed: true },
 });
+
+// ── identity: a profile/identity card (avatar + name + tags + aside) ────────
+export const identity = defineComponent({
+  name: "identity",
+  description: "Profile/identity header: avatar initials + name, with tag content and an optional aside",
+  category: "data-display",
+  props: {
+    name: { description: "Person's name" },
+    initials: { description: "Avatar initials (e.g. \"AS\")" },
+    handle: { description: "Handle/chat address (e.g. @anne:rijk.chat)" },
+    "aside-tag": { description: "Aside status tag text (e.g. \"Escalatie-piket\")" },
+    "aside-tag-type": { description: "Aside tag semantic type", values: ["default", "info", "success", "warning", "error"], default: "warning" },
+    "aside-sub": { description: "Aside sub-line" },
+    "aside-label": { description: "Aside link label" },
+    "aside-href": { description: "Aside link target" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // tags in the sub-line
+});
+
+// ── action: a to-do row (icon + title + sub + a right-aligned action) ───────
+export const action = defineComponent({
+  name: "action",
+  description: "Action row: icon + title/sub, with a right-aligned action (content), and a tone",
+  category: "data-display",
+  props: {
+    [PROPS.ICON]: { description: "Icon name (semantic)" },
+    [PROPS.TITLE]: { description: "Action title" },
+    sub: { description: "Sub-line" },
+    tone: { description: "Left-border accent tone", values: ["neutral", "warning", "critical"], default: "neutral" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // the action button/link
+});
+
+// ── detail-list: a key/value list (e.g. workplace specs) ────────────────────
+export const detailList = defineComponent({
+  name: "detail-list",
+  description: "Key/value detail list, with an optional monospace id header",
+  category: "data-display",
+  props: {
+    id: { description: "Monospace id shown in the header (e.g. \"wp-0001\")" },
+    [PROPS.ICON]: { description: "Header icon name" },
+    [PROPS.HREF]: { description: "Header link target" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // detail-item rows
+});
+
+export const detailItem = defineComponent({
+  name: "detail-item",
+  description: "One label/value row inside a detail-list",
+  category: "data-display",
+  props: {
+    [PROPS.LABEL]: { description: "Row label (left)" },
+    [PROPS.VALUE]: { description: "Row value (right, bold)" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+});
+
+// ── section-link: a bordered nav chip (icon + label + chevron) ──────────────
+export const sectionLink = defineComponent({
+  name: "section-link",
+  description: "Bordered navigation chip: icon + label with a trailing chevron",
+  category: "navigation",
+  props: {
+    [PROPS.ICON]: { description: "Icon name (semantic)" },
+    [PROPS.LABEL]: { description: "Link label (content overrides)" },
+    [PROPS.HREF]: { description: "Link target" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true },
+});
+
+// ── notification: a notification feed (list of notification-item) ───────────
+export const notification = defineComponent({
+  name: "notification",
+  description: "Notification feed container (holds notification-item)",
+  category: "data-display",
+  props: { [PROPS.CLASS]: { description: "Additional CSS classes" } },
+  content: { allowed: true },
+});
+
+export const notificationItem = defineComponent({
+  name: "notification-item",
+  description: "One notification: icon + title, with meta content (tag, source, time)",
+  category: "data-display",
+  props: {
+    [PROPS.ICON]: { description: "Icon name (semantic)" },
+    [PROPS.TITLE]: { description: "Notification title" },
+    [PROPS.HREF]: { description: "Optional link target" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // meta line (tag + source + time)
+});
