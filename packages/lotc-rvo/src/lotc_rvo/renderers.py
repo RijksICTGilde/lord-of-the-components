@@ -297,7 +297,7 @@ _ICON_ICONS_MAP = {
     'euro-sign': 'eurobiljetten',
     'exclamation-triangle': 'let-op',
     'eye': 'oog',
-    'eyeglasses': 'oog',
+    'eyeglasses': 'zoek',
     'face-smiling-badge-plus': 'user',
     'file-text': 'document-blanco',
     'flag': 'vlag-driehoekig',
