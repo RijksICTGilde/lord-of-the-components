@@ -1,0 +1,150 @@
+<c-page theme="rvo" design-systems="rvo" title="Mijn overzicht · Begane Grond" lang="nl">
+<c-app-shell width="16rem">
+  <template slot="header">
+    <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
+    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
+      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
+        <c-menu-item label="Zoeken" icon="search"/>
+        <c-menu-item label="Notificaties (1)" icon="envelope"/>
+        <c-menu-item label="Nieuw" icon="plus" expandable/>
+        <c-menu-item label="Thema" icon="sun" expandable/>
+        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
+      </c-menu>
+    </c-header>
+  </template>
+
+  <template slot="sidebar">
+    <c-sidenav>
+      <c-sidenav-item icon="house" label="Overzicht" href="/"/>
+      <c-sidenav-item icon="person" label="Mijn overzicht" href="/zelf" active/>
+      <c-sidenav-group label="Bouwen & draaien"/>
+      <c-sidenav-item icon="apartment-building" label="Fundament" href="/fysiek"/>
+      <c-sidenav-item icon="cylinder-split" label="Infra-diensten" href="/infra"/>
+      <c-sidenav-item icon="rectangle-stack" label="Applicaties" href="/apps"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Code" href="/code"/>
+      <c-sidenav-item icon="puzzle-piece" label="Componenten" href="/componenten"/>
+      <c-sidenav-item icon="square-on-square" label="Design system" href="/design-system"/>
+      <c-sidenav-group label="Uitrollen & draaien"/>
+      <c-sidenav-item icon="arrow-up-arrow-down" label="Omgevingen" href="/environments"/>
+      <c-sidenav-item icon="gear" label="CI-pijplijn" href="/environments/pijplijn"/>
+      <c-sidenav-item icon="timer" label="CI-runners" href="/environments/runners"/>
+      <c-sidenav-item icon="folder-stack" label="Artefacten" href="/artefacten"/>
+      <c-sidenav-item icon="flag" label="Feature flags" href="/flags"/>
+      <c-sidenav-item icon="eye" label="Observability" href="/observability"/>
+      <c-sidenav-item icon="exclamation-triangle" label="Incidenten" href="/incidenten"/>
+      <c-sidenav-group label="Mensen & werkplek"/>
+      <c-sidenav-item icon="person-2" label="Teams & mensen" href="/teams"/>
+      <c-sidenav-item icon="business-suitcase" label="Werkplekken" href="/werkplekken"/>
+      <c-sidenav-item icon="face-smiling-badge-plus" label="Leren" href="/leren"/>
+      <c-sidenav-group label="Toegang & beveiliging"/>
+      <c-sidenav-item icon="person-circle" label="Inloggen" href="/inloggen"/>
+      <c-sidenav-item icon="globe" label="Domeinen & DNS" href="/dns"/>
+      <c-sidenav-item icon="certificate" label="Certificaten" href="/secrets/certificaten"/>
+      <c-sidenav-item icon="lock-closed" label="Secrets" href="/secrets"/>
+      <c-sidenav-item icon="shield-check-mark" label="Security" href="/security"/>
+      <c-sidenav-group label="Data & koppelvlakken"/>
+      <c-sidenav-item icon="books-vertical" label="Basisregistraties" href="/registers"/>
+      <c-sidenav-item icon="chart-x-y-axis-line" label="Datasets" href="/data"/>
+      <c-sidenav-item icon="pencil-on-square" label="Datacontracten" href="/datacontracten"/>
+      <c-sidenav-item icon="link" label="Koppelvlakken" href="/koppelvlakken"/>
+      <c-sidenav-item icon="envelope" label="Notificaties" href="/notificaties"/>
+      <c-sidenav-group label="Governance & standaarden"/>
+      <c-sidenav-item icon="check-list" label="Governance" href="/governance"/>
+      <c-sidenav-item icon="clipboard" label="Wet uitvoeren" href="/wetten"/>
+      <c-sidenav-item icon="check-mark-circle" label="Standaarden" href="/standaarden"/>
+      <c-sidenav-item icon="check-list" label="NeRDS-richtlijnen" href="/nerds"/>
+      <c-sidenav-item icon="brackets-ellipsis" label="Algoritmeregister" href="/algoritmes"/>
+      <c-sidenav-item icon="clipboard-rectangle" label="Privacy & DPIA" href="/verwerkingen"/>
+      <c-sidenav-item icon="file-text" label="Woo & archief" href="/openbaarheid"/>
+      <c-sidenav-item icon="eyeglasses" label="Toegankelijkheid" href="/toegankelijkheid"/>
+      <c-sidenav-item icon="heart" label="Duurzaamheid" href="/duurzaamheid"/>
+      <c-sidenav-group label="Platform, kosten & AI"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Infra als code" href="/platform/iac"/>
+      <c-sidenav-item icon="euro-sign" label="Kosten" href="/kosten"/>
+      <c-sidenav-item icon="tag" label="Software-inkoop" href="/software-inkoop"/>
+      <c-sidenav-item icon="starburst-filled" label="Scorecards" href="/scorecards"/>
+      <c-sidenav-item icon="ship-wheel" label="Tech radar" href="/tech-radar"/>
+      <c-sidenav-item icon="sparkles" label="AI & LLM" href="/ai"/>
+      <c-sidenav-item icon="terminal" label="CLI & API" href="/cli"/>
+      <c-sidenav-item icon="square-on-square" label="Fleet-shift" href="/fleet"/>
+    </c-sidenav>
+  </template>
+
+  <c-stack gap="1.25rem">
+    <c-breadcrumbs>
+      <c-breadcrumbs-item label="Home" href="/"/>
+      <c-breadcrumbs-item label="Mijn overzicht"/>
+    </c-breadcrumbs>
+
+    <c-stack direction="horizontal" justify="between" align="start" gap="1.5rem" wrap>
+      <div>
+        <c-heading type="h1" size="2">Welkom, Anne</c-heading>
+        <c-p>Ingelogd op developer.overheid.nl als Platform engineer bij Nederlandse Digitale Dienst. Alles wat van jou en je team is, op één plek.</c-p>
+      </div>
+      <c-stack direction="horizontal" gap="0.75rem">
+        <c-button type="secondary" label="Nieuwe app" icon="plus" show-icon="before"/>
+        <c-button type="primary" label="Infra afnemen" icon="plus" show-icon="before"/>
+      </c-stack>
+    </c-stack>
+
+    <c-card outline padding="lg">
+      <c-identity name="Anne Schuth" initials="AS" handle="@anne:rijk.chat"
+                  aside-tag="Escalatie-piket" aside-tag-type="warning"
+                  aside-sub="achter Fatima El Amrani" aside-label="Piketrooster" aside-href="/teams/on-call">
+        <c-tag type="info">Platform engineer</c-tag><c-tag type="info">Platform Engineering</c-tag>
+      </c-identity>
+    </c-card>
+
+    <c-auto-grid min="220px" gap="1rem">
+      <c-metric icon="rectangle-stack" value="1" label="Mijn apps" sub="services en sites" href="/apps"/>
+      <c-metric icon="cylinder-split" value="2" label="Afgenomen infra" sub="instances van mijn team" href="/infra"/>
+      <c-metric icon="euro-sign" value="€ 1.300" label="Infra-kosten" sub="per maand" href="/kosten"/>
+      <c-metric icon="check-mark-circle" value="2" label="Openstaande acties" sub="vragen om aandacht" href="#acties"/>
+    </c-auto-grid>
+
+    <c-columns columns="1" lg="2" gap="1.5rem">
+      <c-stack gap="1.5rem">
+        <c-card outline padding="lg">
+          <c-section-head title="Openstaande acties"><c-tag type="warning">2</c-tag></c-section-head>
+          <c-stack gap="0.6rem">
+          <c-action icon="lock-closed" title="Roteer secret platform/llm-gateway-key" sub="Verloopt over 89 dagen · laatst geroteerd 1 dag geleden" tone="warning"><c-button type="primary" label="Roteren"/></c-action>
+          <c-action icon="check-mark-circle" title="Keur change goed: Nieuwe leaf-switch DH-A3" sub="Risico laag · venster wo 20:00" tone="neutral"><c-button type="primary" label="Naar wijzigingen"/></c-action>
+          </c-stack>
+        </c-card>
+
+        <c-card outline padding="lg">
+          <c-section-head title="Mijn notificaties"/>
+          <c-notification>
+          <c-notification-item icon="exclamation-triangle" title="Verhoogde latency Toeslagenmotor"><c-tag type="error">Incident geopend</c-tag> system · vandaag 09:14</c-notification-item>
+          <c-notification-item icon="envelope" title="Nieuwe teamgenoot: Sanne Bakker"><c-tag type="info">Team</c-tag> platform · gisteren 16:20</c-notification-item>
+          </c-notification>
+        </c-card>
+      </c-stack>
+
+      <c-stack gap="1.5rem">
+        <c-card outline padding="lg">
+          <c-section-head title="Mijn werkplek"/>
+          <c-detail-list id="wp-0001" icon="business-suitcase" href="/werkplekken/wp-0001">
+          <c-detail-item label="Hardware" value="Rijkslaptop Linux 14″"/>
+          <c-detail-item label="Image" value="Autonome werkplek 13"/>
+          <c-detail-item label="Encryptie" value="volledig"/>
+          <c-detail-item label="Updates" value="bij"/>
+          <c-detail-item label="Gezien" value="2 min geleden"/>
+          </c-detail-list>
+          <c-button type="secondary" label="Werkplek aanvragen" icon="plus" show-icon="before"/>
+        </c-card>
+
+        <c-card outline padding="lg">
+          <c-section-head title="Doorklikken"/>
+          <c-stack gap="0.4rem">
+          <c-section-link icon="person" label="Mijn profiel: Anne Schuth" href="/teams/mensen/ans"/>
+          <c-section-link icon="person-2" label="Platform Engineering" href="/teams/team-platform"/>
+          <c-section-link icon="rectangle-stack" label="Platformportaal" href="/apps/platformportaal"/>
+          <c-section-link icon="cylinder-split" label="k8s-platform-prod" href="/infra/k8s-platform-prod"/>
+          </c-stack>
+        </c-card>
+      </c-stack>
+    </c-columns>
+  </c-stack>
+</c-app-shell>
+</c-page>

@@ -210,3 +210,8 @@
 .lotc-notification-main { flex-direction: column; flex: 1 1 auto; gap: 0.25rem; min-width: 0; display: flex; }
 .lotc-notification-title { font-weight: 600; line-height: 1.3; }
 .lotc-notification-meta { flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.8rem; opacity: 0.7; display: flex; }
+
+/* ── unimplemented-component placeholder (on_missing_component="placeholder") ─
+   A visible gap marker: switch themes, and any component the active theme does
+   not yet implement renders as this dashed box instead of erroring. */
+.lotc-unimplemented { color: var(--semantics-feedback-warning-color, #85520b); background: repeating-linear-gradient(45deg, #fff7e6, #fff7e6 10px, #ffefcc 10px, #ffefcc 20px); border: 1px dashed var(--semantics-feedback-warning-color, #e08600); border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.82rem; font-family: ui-monospace, monospace; }

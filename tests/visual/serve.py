@@ -173,7 +173,7 @@ class FixtureLoader(FileSystemLoader):
         return source, filename, uptodate
 
 
-def create_jinja_env(theme: str = "rvo") -> Environment:
+def create_jinja_env(theme: str = "rvo", on_missing: str = "error") -> Environment:
     """Create a Jinja2 environment with LOTC extension and fixture templates."""
     jinja_env = Environment(
         loader=FixtureLoader(FIXTURES_DIR, _make_transform(theme)),
@@ -184,7 +184,12 @@ def create_jinja_env(theme: str = "rvo") -> Environment:
         auto_reload=False,
     )
     themes = [t.strip() for t in theme.split(",") if t.strip()]
-    setup_components(jinja_env, registry_path=str(REGISTRY_JSON), design_systems=themes)
+    setup_components(
+        jinja_env,
+        registry_path=str(REGISTRY_JSON),
+        design_systems=themes,
+        on_missing_component=on_missing,
+    )
     return jinja_env
 
 
@@ -306,6 +311,13 @@ def main() -> None:
         help="Design system(s) to render fixtures with. Comma-separated for "
         "mix-and-match (e.g. 'nldd,bgnldd'); the first is primary.",
     )
+    parser.add_argument(
+        "--on-missing",
+        choices=["error", "placeholder"],
+        default="error",
+        help="What to do when the active theme(s) don't implement a component: "
+        "raise (default) or emit a visible placeholder so the gap is previewable.",
+    )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
     args = parser.parse_args()
 
@@ -313,7 +325,7 @@ def main() -> None:
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
 
     global _jinja_env
-    _jinja_env = create_jinja_env(args.theme)
+    _jinja_env = create_jinja_env(args.theme, args.on_missing)
 
     server = HTTPServer(("localhost", args.port), FixtureHandler)
     print(f"Serving LOTC fixtures ({args.theme}) on http://localhost:{args.port}")
