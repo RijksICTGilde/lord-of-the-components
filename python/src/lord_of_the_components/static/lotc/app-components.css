@@ -245,3 +245,13 @@
 .lotc-filter-foot { justify-content: space-between; align-items: center; margin-top: 0.85rem; font-size: 0.85rem; display: flex; }
 .lotc-filter-count { opacity: 0.7; }
 .lotc-filter-clear { color: inherit; background: var(--semantics-surfaces-tinted-background-color, #eef0f4); border: 1px solid var(--semantics-dividers-color, #e2e2e6); border-radius: 8px; align-items: center; gap: 0.35rem; padding: 0.45rem 0.7rem; font: inherit; display: inline-flex; }
+
+/* ── site-footer (slim page footer: legal bar + optional note) ───────────── */
+.lotc-site-footer { border-top: 1px solid var(--semantics-dividers-color, #e2e2e6); background: var(--semantics-surfaces-tinted-background-color, #e6e9ef); margin-top: 2rem; padding: 1.5rem 2rem 1.75rem; }
+.lotc-footer-legal { flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; display: flex; }
+.lotc-footer-text { opacity: 0.7; font-size: 0.9rem; }
+.lotc-footer-links { flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.9rem; display: flex; }
+.lotc-footer-note { text-align: center; margin-top: 1rem; }
+.lotc-footer-present { align-items: center; gap: 0.45rem; font-size: 0.9rem; display: inline-flex; }
+.lotc-footer-present strong { font-weight: 600; }
+.lotc-footer-hint { opacity: 0.55; font-family: ui-monospace, monospace; font-size: 0.78rem; }

@@ -59,6 +59,7 @@ export {
   catalogCard,
   filterBar,
   filterSelect,
+  siteFooter,
 } from "./app-components.def.js";
 
 // Feedback components
@@ -163,6 +164,7 @@ import {
   catalogCard,
   filterBar,
   filterSelect,
+  siteFooter,
 } from "./app-components.def.js";
 import type { ComponentDefinition } from "../component.js";
 
@@ -239,6 +241,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   "catalog-card": catalogCard,
   "filter-bar": filterBar,
   "filter-select": filterSelect,
+  "site-footer": siteFooter,
 };
 
 /**
