@@ -56,6 +56,9 @@ export {
   sectionLink,
   notification,
   notificationItem,
+  catalogCard,
+  filterBar,
+  filterSelect,
 } from "./app-components.def.js";
 
 // Feedback components
@@ -157,6 +160,9 @@ import {
   sectionLink,
   notification,
   notificationItem,
+  catalogCard,
+  filterBar,
+  filterSelect,
 } from "./app-components.def.js";
 import type { ComponentDefinition } from "../component.js";
 
@@ -230,6 +236,9 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   "section-link": sectionLink,
   notification,
   "notification-item": notificationItem,
+  "catalog-card": catalogCard,
+  "filter-bar": filterBar,
+  "filter-select": filterSelect,
 };
 
 /**

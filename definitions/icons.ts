@@ -38,6 +38,7 @@ export const ICON_ALIASES: Record<string, IconAlias> = {
   "brackets-ellipsis": { rvo: "computercode", nldd: "brackets-ellipsis" },
   "business-suitcase": { rvo: "koffer", nldd: "business-suitcase" },
   certificate: { rvo: "diploma-certificaat", nldd: "certificate" },
+  "chevron-right": { rvo: "delta-naar-rechts", nldd: "chevron-right" },
   "chart-x-y-axis-line": { rvo: "grafiek", nldd: "chart-x-y-axis-line" },
   "check-list": { rvo: "klembord-met-vinkjes-en-lijnen", nldd: "check-list" },
   "check-mark-circle": { rvo: "vinkje", nldd: "check-mark-circle" },

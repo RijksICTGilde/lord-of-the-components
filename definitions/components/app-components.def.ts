@@ -233,3 +233,48 @@ export const notificationItem = defineComponent({
   },
   content: { allowed: true }, // meta line (tag + source + time)
 });
+
+// ── catalog-card: a resource/app card (icon + title/sub + status, tags, foot) ─
+export const catalogCard = defineComponent({
+  name: "catalog-card",
+  description: "Catalog/resource card: icon + title/subtitle + status tag, a tag row, and a maturity + open footer",
+  category: "data-display",
+  props: {
+    [PROPS.ICON]: { description: "Icon name (semantic)" },
+    [PROPS.TITLE]: { description: "Card title (e.g. app name)" },
+    subtitle: { description: "Sub-line under the title (e.g. owning team)" },
+    status: { description: "Status tag text (e.g. \"ok\", \"warn\")" },
+    "status-type": { description: "Status tag semantic type", values: ["default", "info", "success", "warning", "error"], default: "success" },
+    maturity: { description: "Maturity tier medal", values: ["none", "goud", "zilver", "brons"], default: "none" },
+    "open-label": { description: "Footer open-link label (e.g. \"Open\")" },
+    [PROPS.HREF]: { description: "Link target for the card / open link" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // the tag row (type + stack tags)
+});
+
+// ── filter-bar: a search + dropdowns toolbar (with a result count + clear) ────
+export const filterBar = defineComponent({
+  name: "filter-bar",
+  description: "Filter toolbar: a search field, dropdown fields (content), and a result-count + clear row",
+  category: "navigation",
+  props: {
+    [PROPS.PLACEHOLDER]: { description: "Search field placeholder" },
+    "search-label": { description: "Label above the search field", default: "Zoeken" },
+    count: { description: "Result-count text (e.g. \"123 van 123 applicaties\")" },
+    "clear-label": { description: "Clear-filters button label" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // filter-select fields
+});
+
+export const filterSelect = defineComponent({
+  name: "filter-select",
+  description: "A labelled dropdown field inside a filter-bar (static/display)",
+  category: "navigation",
+  props: {
+    [PROPS.LABEL]: { description: "Field label (e.g. \"Team\")" },
+    [PROPS.VALUE]: { description: "Current value shown (e.g. \"Alle teams\")" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+});

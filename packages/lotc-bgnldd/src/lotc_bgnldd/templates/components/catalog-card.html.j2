@@ -1,0 +1,29 @@
+{% macro lotc_render(_component_context) %}
+{% set icon = _component_context.get("icon", "") %}
+{% set title = _component_context.get("title", "") %}
+{% set subtitle = _component_context.get("subtitle", "") %}
+{% set status = _component_context.get("status", "") %}
+{% set stype = _component_context.get("status-type", "success") %}
+{% set maturity = _component_context.get("maturity", "none") %}
+{% set open_label = _component_context.get("open-label", "") %}
+{% set href = _component_context.get("href", "") %}
+{% set children = _component_context.get("content", "") %}
+{% set vmap = {"default": "neutral", "info": "accent", "success": "success", "warning": "warning", "error": "critical"} %}
+<nldd-card data-lotc-component="catalog-card"><nldd-container padding="20">
+  <div class="lotc-catalog">
+    <div class="lotc-catalog-top">
+      {% if icon %}<span class="lotc-catalog-icon">{{ _lotc_nldd_icon(icon=icon) }}</span>{% endif %}
+      <div class="lotc-catalog-headtext">
+        {% if title %}<nldd-title size="5"><h3>{{ title }}</h3></nldd-title>{% endif %}
+        {% if subtitle %}<span class="lotc-catalog-team">{{ subtitle }}</span>{% endif %}
+      </div>
+      {% if status %}<nldd-tag color="{{ vmap.get(stype, "success") }}">{{ status }}</nldd-tag>{% endif %}
+    </div>
+    {% if children %}<div class="lotc-catalog-stack">{{ children | safe }}</div>{% endif %}
+    {% if (maturity and maturity != "none") or open_label %}<div class="lotc-catalog-foot">
+      {% if maturity and maturity != "none" %}<span class="lotc-catalog-maturity"><span class="lotc-medal lotc-mat-{{ maturity }}"></span> {{ maturity }}</span>{% endif %}
+      {% if open_label %}<a class="lotc-catalog-open"{% if href %} href="{{ href }}"{% endif %}>{{ open_label }} {{ _lotc_nldd_icon(icon="chevron-right") }}</a>{% endif %}
+    </div>{% endif %}
+  </div>
+</nldd-container></nldd-card>
+{% endmacro %}

@@ -185,6 +185,59 @@ def test_zelf_page_fixture_renders_fully():
     assert "not implemented" not in html  # no placeholder gaps
 
 
+def test_catalog_card_renders(render):
+    # The /apps catalog card: icon + title/subtitle + status tag, a tag row,
+    # and a maturity + open footer.
+    html = render(
+        '<c-catalog-card icon="rectangle-stack" title="Paspoortaanvraag" subtitle="Burgerzaken"'
+        ' status="ok" status-type="success" maturity="goud" open-label="Open" href="/apps/x">'
+        '<c-tag type="default">service</c-tag><c-tag type="info">Rust</c-tag></c-catalog-card>'
+    )
+    assert 'class="lotc-catalog"' in html
+    assert "Paspoortaanvraag" in html and "Burgerzaken" in html
+    assert "lotc-catalog-team" in html
+    assert '<nldd-tag color="success">ok</nldd-tag>' in html  # status routed to nldd tag
+    assert "lotc-medal lotc-mat-goud" in html  # gold maturity medal
+    assert "lotc-catalog-open" in html and 'href="/apps/x"' in html
+
+
+def test_filter_bar_and_select(render):
+    html = render(
+        '<c-filter-bar placeholder="Naam..." count="123 van 123" clear-label="Filters wissen">'
+        '<c-filter-select label="Team" value="Alle teams"/></c-filter-bar>'
+    )
+    assert 'class="lotc-filterbar"' in html
+    assert 'placeholder="Naam..."' in html and "lotc-filter-input" in html
+    assert "lotc-filter-count" in html and "123 van 123" in html
+    assert "lotc-filter-clear" in html and "Filters wissen" in html
+    assert 'class="lotc-filter-field"' in html and "Alle teams" in html
+
+
+def test_catalog_card_maturity_variants(render):
+    for tier in ("goud", "zilver", "brons"):
+        html = render(f'<c-catalog-card title="X" maturity="{tier}" open-label="Open"/>')
+        assert f"lotc-mat-{tier}" in html
+    # "none" (default) emits no medal
+    html = render('<c-catalog-card title="X" open-label="Open"/>')
+    assert "lotc-medal" not in html
+
+
+def test_apps_page_fixture_renders_fully():
+    # The full /apps ("Software-catalogus") recreation renders end-to-end under
+    # nldd+bgnldd with every component resolving (no missing-impl error).
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
+    setup_components(
+        env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+    )
+    fixture = Path(__file__).resolve().parents[2] / "tests" / "visual" / "fixtures" / "apps.html"
+    html = env.from_string(fixture.read_text(encoding="utf-8")).render()
+    assert "<!DOCTYPE html>" in html and "Software-catalogus" in html
+    assert html.count('class="lotc-catalog"') == 9  # nine app cards
+    assert "lotc-filterbar" in html and html.count("lotc-filter-field") >= 3
+    assert html.count("lotc-metric-link") == 3
+    assert "not implemented" not in html  # no placeholder gaps
+
+
 def test_app_components_are_global_and_bgnldd_is_impl_only():
     # The app components (metric, sidenav, …) are GLOBAL: their definitions live
     # in core's registry, not owned by any theme. BGNLDD is implementation-only

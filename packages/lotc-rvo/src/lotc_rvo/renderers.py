@@ -284,6 +284,7 @@ _ICON_ICONS_MAP = {
     'brackets-ellipsis': 'computercode',
     'business-suitcase': 'koffer',
     'certificate': 'diploma-certificaat',
+    'chevron-right': 'delta-naar-rechts',
     'chart-x-y-axis-line': 'grafiek',
     'check-list': 'klembord-met-vinkjes-en-lijnen',
     'check-mark-circle': 'vinkje',
