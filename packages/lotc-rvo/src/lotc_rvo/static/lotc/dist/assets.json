@@ -1,0 +1,20 @@
+{
+  "css": [
+    "lotc.css",
+    "@nl-rvo/assets/fonts/index.css",
+    "@nl-rvo/assets/icons/index.css",
+    "@nl-rvo/assets/images/index.css",
+    "@nl-rvo/design-tokens/index.css",
+    "@nl-rvo/component-library-css/index.css",
+    "@nl-rvo/css-button/index.css"
+  ],
+  "js": [
+    {
+      "src": "lotc.js"
+    },
+    {
+      "src": "@nl-rvo/design-tokens/index.mjs",
+      "module": true
+    }
+  ]
+}

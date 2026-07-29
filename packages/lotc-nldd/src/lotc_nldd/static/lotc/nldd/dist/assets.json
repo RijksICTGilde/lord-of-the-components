@@ -1,0 +1,15 @@
+{
+  "css": [
+    "css/reset.css",
+    "css/settings.css",
+    "css/palettes.generated.css",
+    "css/global.css",
+    "css/fouc.css"
+  ],
+  "js": [
+    {
+      "src": "nldd.js",
+      "module": true
+    }
+  ]
+}

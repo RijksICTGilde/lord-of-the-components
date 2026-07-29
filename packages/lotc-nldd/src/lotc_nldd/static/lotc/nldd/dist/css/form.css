@@ -1,0 +1,29 @@
+/* # Host */
+
+nldd-form {
+	container-type: inline-size;
+	display: block;
+}
+
+nldd-form > form {
+	display: block;
+}
+
+nldd-form > form > * + * {
+	margin-top: var(--semantics-forms-gap);
+}
+
+nldd-form nldd-form-field + nldd-form-field {
+	@container (max-width: 640px) {
+		margin-top: var(--semantics-forms-gap-tight);
+	}
+	@container (min-width: 641px) {
+		margin-top: var(--semantics-forms-gap);
+	}
+}
+
+nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) + nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) {
+	@container (min-width: 641px) {
+		margin-top: var(--semantics-forms-gap-tight);
+	}
+}
