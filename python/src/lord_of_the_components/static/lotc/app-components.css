@@ -1,0 +1,171 @@
+/*
+ * Application/dashboard component styles (metric, sidenav, layer, activity,
+ * shortcut, section-head, chip). Structural + theme-agnostic: colours use the
+ * design system CSS custom properties with neutral fallbacks, so the same CSS
+ * works under any theme. Loaded on every page (like layout.css).
+ */
+/*
+ * BGNLDD component styles.
+ *
+ * Begane Grond's app-level components, as a theme layer on top of NLDD. Derived
+ * from the live site's Vue-scoped `rp-*` styles, renamed `rp-* -> lotc-*` and
+ * de-scoped (the `[data-v-*]` hashes dropped). Uses NLDD design tokens
+ * (--semantics-*), which are loaded by the NLDD bundle a BGNLDD page also declares.
+ */
+
+/* ── sidenav ─────────────────────────────────────────────────────────────── */
+.lotc-sidenav {
+    border-right: 1px solid var(--semantics-dividers-color, #e2e2e6);
+    align-self: start;
+    min-height: 70vh;
+    padding: 1.25rem 0.75rem 2rem;
+    position: sticky;
+    top: 0;
+}
+.lotc-sidenav ul { margin: 0; padding: 0; list-style: none; }
+.lotc-sidenav-group {
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin: 1rem 0.5rem 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+.lotc-sidenav-link {
+    color: inherit;
+    border-radius: 8px;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.92rem;
+    text-decoration: none;
+    display: flex;
+}
+.lotc-sidenav-link:hover { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); }
+.lotc-sidenav-link.lotc-active {
+    background: var(--semantics-surfaces-tinted-background-color, #eef0f4);
+    font-weight: 700;
+}
+.lotc-sidenav-link nldd-icon { flex: 0 0 auto; width: 1.1rem; height: 1.1rem; }
+
+/* ── metric ──────────────────────────────────────────────────────────────── */
+.lotc-metric-link {
+    color: inherit;
+    align-self: stretch;
+    height: 100%;
+    text-decoration: none;
+    display: flex;
+}
+.lotc-metric-link nldd-card { width: 100%; height: 100%; }
+.lotc-metric-top { align-items: center; gap: 0.5rem; display: flex; }
+.lotc-metric-top nldd-icon { opacity: 0.7; width: 1.4rem; height: 1.4rem; }
+.lotc-metric-value { font-size: 2rem; font-weight: 700; line-height: 1.1; }
+.lotc-metric-label { margin-top: 0.25rem; font-weight: 600; }
+.lotc-metric-sub { opacity: 0.65; font-size: 0.85rem; }
+
+/* ── layer ───────────────────────────────────────────────────────────────── */
+.lotc-layer {
+    color: inherit;
+    border: 1px solid var(--semantics-dividers-color, #e2e2e6);
+    background: var(--semantics-surfaces-base-background-color, #ffffff);
+    border-radius: 10px;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    text-decoration: none;
+    transition: background 0.12s, border-color 0.12s;
+    display: flex;
+    position: relative;
+}
+.lotc-layer:hover { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); }
+.lotc-layer-icon { flex: 0 0 auto; place-items: center; width: 2.4rem; height: 2.4rem; display: grid; }
+.lotc-layer-icon nldd-icon { opacity: 0.65; width: 1.4rem; height: 1.4rem; }
+.lotc-layer-body { flex: 1 1 auto; min-width: 0; }
+.lotc-layer-head { flex-wrap: wrap; align-items: baseline; gap: 0.6rem; display: flex; }
+.lotc-layer-title { font-size: 1.05rem; font-weight: 700; }
+.lotc-layer-count { opacity: 0.6; font-size: 0.8rem; font-weight: 600; }
+.lotc-layer-sub { opacity: 0.7; margin-top: 0.1rem; font-size: 0.85rem; display: block; }
+.lotc-layer-chips { flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; display: flex; }
+.lotc-layer-chip {
+    font-size: 0.72rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--semantics-surfaces-tinted-background-color, #eef0f4);
+    white-space: nowrap;
+    border-radius: 6px;
+    padding: 0.12rem 0.45rem;
+}
+.lotc-layer-go { opacity: 0.4; flex: 0 0 auto; width: 1.2rem; height: 1.2rem; }
+
+/* ── section-head ────────────────────────────────────────────────────────── */
+.lotc-section-head {
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    display: flex;
+}
+.lotc-section-head-main { align-items: center; gap: 0.6rem; display: flex; }
+.lotc-section-head-aside { align-items: center; gap: 0.5rem; display: flex; }
+/* Title is rendered by <nldd-title> (its shadow controls typography); just
+   strip the slotted heading's default margin so it sits in the flex row. */
+.lotc-section-title { margin: 0; }
+.lotc-head-icon { opacity: 0.5; flex: 0 0 auto; width: 1.2rem; height: 1.2rem; }
+
+/* ── activity ────────────────────────────────────────────────────────────── */
+.lotc-activity {
+    flex-direction: column;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+.lotc-activity-item { align-items: flex-start; gap: 0.7rem; display: flex; }
+.lotc-activity-dot {
+    background: var(--semantics-surfaces-tinted-background-color, #eef0f4);
+    border-radius: 50%;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    display: grid;
+}
+.lotc-activity-dot nldd-icon { opacity: 0.75; width: 1rem; height: 1rem; }
+.lotc-activity-body { flex: 1 1 auto; min-width: 0; }
+.lotc-activity-line { font-size: 0.9rem; }
+.lotc-activity-actor { color: inherit; font-weight: 600; text-decoration: none; }
+.lotc-activity-actor:hover { text-decoration: underline; }
+.lotc-activity-action { opacity: 0.8; }
+.lotc-activity-meta { flex-wrap: wrap; align-items: baseline; gap: 0.5rem; margin-top: 0.15rem; display: flex; }
+.lotc-activity-res {
+    background: var(--semantics-surfaces-tinted-background-color, #eef0f4);
+    border-radius: 5px;
+    padding: 0.05rem 0.35rem;
+    font-size: 0.76rem;
+}
+.lotc-activity-at { opacity: 0.55; font-size: 0.74rem; }
+
+/* ── shortcut ────────────────────────────────────────────────────────────── */
+.lotc-shortcut {
+    height: 100%;
+    color: inherit;
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    text-decoration: none;
+    transition: background 0.12s;
+    display: block;
+}
+.lotc-shortcut:hover { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); }
+.lotc-shortcut-icon { align-items: center; margin-bottom: 0.5rem; display: flex; }
+.lotc-shortcut-icon nldd-icon { opacity: 0.6; width: 1.3rem; height: 1.3rem; }
+.lotc-shortcut-title { font-weight: 700; display: block; }
+.lotc-shortcut-desc { opacity: 0.7; margin-top: 0.15rem; font-size: 0.82rem; display: block; }
+.lotc-shortcut-cta {
+    color: var(--semantics-actions-primary-default-background-color, #154273);
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: flex;
+}
+.lotc-shortcut-cta-icon { width: 0.95rem; height: 0.95rem; }

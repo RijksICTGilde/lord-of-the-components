@@ -24,6 +24,6 @@ DESIGN_SYSTEM = DesignSystem(
     name="bgnldd",
     renderers_module="lotc_bgnldd.renderers",
     templates_path=_HERE / "templates",
-    static_path=_HERE / "static",
-    css_urls=("/static/lotc/bgnldd/bg-components.css",),
+    # The app-component styles are theme-agnostic and now ship in core
+    # (app-components.css, always loaded), so this package is templates-only.
 )

@@ -50,6 +50,26 @@ def test_shared_component_still_renders_in_both_themes():
     assert "nldd-button" in _env(["nldd"]).from_string('<c-button label="X"/>').render()
 
 
+def test_app_components_are_agnostic_rvo_and_nldd():
+    # The same <c-metric> markup renders through each theme's implementation:
+    # RVO composes rvo-card + rvo-icon; NLDD composes nldd-card + nldd-icon.
+    src = '<c-metric icon="home" value="5" label="Datacenters"/>'
+    rvo = _env(["rvo"]).from_string(src).render()
+    assert "rvo-card" in rvo and "rvo-icon" in rvo and "lotc-metric-value" in rvo
+    nldd = _env(["nldd", "bgnldd"]).from_string(src).render()
+    assert "<nldd-card" in nldd and "<nldd-icon" in nldd and "lotc-metric-value" in nldd
+
+
+def test_app_components_render_across_the_set_in_rvo():
+    env = _env(["rvo"])
+    r = lambda s: env.from_string(s).render()
+    assert "lotc-sidenav-link" in r('<c-sidenav-item icon="home" label="X" href="/"/>')
+    assert "lotc-layer" in r('<c-layer icon="home" title="Apps" count="5"/>')
+    assert "lotc-activity-item" in r('<c-activity-item icon="home" actor="A" action="did"/>')
+    assert "utrecht-heading" in r('<c-section-head title="Kop"/>')  # RVO heading
+    assert "lotc-layer-chip" in r("<c-chip>x</c-chip>")
+
+
 def test_missing_python_component_also_detected():
     # A python-backend design-system component (button) with no active theme
     # errors too (no renderer registered).

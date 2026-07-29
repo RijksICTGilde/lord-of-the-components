@@ -1,0 +1,72 @@
+<c-page title="App-componenten · RVO" lang="nl" design-systems="rvo">
+<!-- The SAME app components (c-metric, c-sidenav, c-layer, c-activity, c-section-head,
+     c-chip) that render as NLDD web components under nldd+bgnldd, here under RVO —
+     composing rvo-card / rvo-icon / utrecht-heading. Proves they are agnostic. -->
+<c-app-shell width="16rem">
+  <template slot="sidebar">
+    <c-sidenav>
+      <c-sidenav-item icon="home" label="Overzicht" href="/" active/>
+      <c-sidenav-item icon="gebruiker" label="Mijn overzicht" href="/zelf"/>
+      <c-sidenav-group label="Bouwen & draaien"/>
+      <c-sidenav-item icon="huisje" label="Fundament" href="/fysiek"/>
+      <c-sidenav-item icon="database" label="Infra-diensten" href="/infra"/>
+      <c-sidenav-item icon="documenten" label="Applicaties" href="/apps"/>
+      <c-sidenav-item icon="code" label="Code" href="/code"/>
+      <c-sidenav-group label="Uitrollen & draaien"/>
+      <c-sidenav-item icon="pijlen" label="Omgevingen" href="/env"/>
+      <c-sidenav-item icon="instellingen" label="CI-pijplijn" href="/ci"/>
+      <c-sidenav-item icon="vlag" label="Feature flags" href="/flags"/>
+      <c-sidenav-item icon="oog" label="Observability" href="/obs"/>
+    </c-sidenav>
+  </template>
+
+  <c-stack gap="1.25rem">
+    <div>
+      <c-heading type="h1" size="2">Begane Grond</c-heading>
+      <c-p>Welkom Anne, één plek voor fysieke infra, diensten, applicaties en teams van de Rijksoverheid.</c-p>
+    </div>
+
+    <c-stack direction="horizontal" gap="0.75rem">
+      <c-button type="secondary" label="Mijn overzicht" icon="gebruiker" show-icon="before"/>
+      <c-button type="primary" label="Nieuwe applicatie" icon="plus" show-icon="before"/>
+    </c-stack>
+
+    <c-auto-grid min="220px" gap="1rem">
+      <c-metric icon="huisje" value="5" label="Datacenters" sub="4 operationeel" href="/fysiek"/>
+      <c-metric icon="documenten" value="35" label="Racks" sub="10 rijen" href="/fysiek"/>
+      <c-metric icon="database" value="244" label="Afgenomen instances" sub="€124409/mnd" href="/infra"/>
+      <c-metric icon="documenten" value="123" label="Applicaties" sub="125 repo's" href="/apps"/>
+      <c-metric icon="gebruikers" value="99" label="Teams" sub="393 mensen" href="/teams"/>
+      <c-metric icon="koffer" value="345" label="Werkplekken" sub="238 in gebruik" href="/werkplekken"/>
+      <c-metric icon="waarschuwing" value="21" label="Actieve incidenten" sub="aandacht nodig" href="/incidenten"/>
+      <c-metric icon="instellingen" value="40" label="Open fleet-PR's" sub="3 actieve campagnes" href="/fleet"/>
+    </c-auto-grid>
+
+    <c-columns columns="1" lg="2" gap="1.5rem">
+      <c-card outline padding="lg">
+        <c-section-head title="De lagen van het platform"><c-tag type="default">persoon → datacenter</c-tag></c-section-head>
+        <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
+        <c-stack gap="0.75rem">
+          <c-layer icon="documenten" title="Applicaties" count="123 apps" sub="Wat burgers en ambtenaren gebruiken" href="#">
+            <c-chip>Paspoortaanvraag</c-chip><c-chip>Toeslagenmotor</c-chip><c-chip>Platformportaal</c-chip>
+          </c-layer>
+          <c-layer icon="database" title="Infra-diensten" count="244 instances" sub="Kubernetes, databases, brokers, LLM" href="#">
+            <c-chip>pg-burgerzaken-prod</c-chip><c-chip>k8s-platform-prod</c-chip>
+          </c-layer>
+          <c-layer icon="huisje" title="Fundament" count="35 racks" sub="Datacenters, racks en hardware" href="#"/>
+        </c-stack>
+      </c-card>
+
+      <c-card outline padding="lg">
+        <c-section-head title="Recente activiteit" icon="klok"/>
+        <c-activity>
+          <c-activity-item icon="plus" actor="Anne Schuth" action="infra afgenomen" res="llm-gilde-prod" at="di 10:02"/>
+          <c-activity-item icon="slot" actor="Fatima El Amrani" action="secret geroteerd" res="platform/llm-gateway-key" at="di 09:40"/>
+          <c-activity-item icon="pijlen" actor="Joost de Vries" action="release gepromoot" res="app-paspoort → prod" at="gisteren 14:22"/>
+          <c-activity-item icon="pijlen" actor="Omar Van Es" action="release gepromoot" res="app-subsidieportaal-rvo → prod" at="gisteren 9:11"/>
+        </c-activity>
+      </c-card>
+    </c-columns>
+  </c-stack>
+</c-app-shell>
+</c-page>
