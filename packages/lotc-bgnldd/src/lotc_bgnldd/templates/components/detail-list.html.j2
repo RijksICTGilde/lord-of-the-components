@@ -1,0 +1,10 @@
+{% macro lotc_render(_component_context) %}
+{% set id = _component_context.get("id", "") %}
+{% set icon = _component_context.get("icon", "") %}
+{% set href = _component_context.get("href", "") %}
+{% set children = _component_context.get("content", "") %}
+<div data-lotc-component="detail-list">
+  {% if id %}<a{% if href %} href="{{ href }}"{% endif %} class="lotc-detail-head">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}<span class="lotc-detail-id">{{ id }}</span></a>{% endif %}
+  <ul class="lotc-detail-list">{{ children | safe }}</ul>
+</div>
+{% endmacro %}

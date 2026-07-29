@@ -1,0 +1,4 @@
+{% macro lotc_render(_component_context) %}
+{% set children = _component_context.get('content', '') %}
+<nldd-breadcrumbs data-lotc-component="breadcrumbs">{{ children | safe }}</nldd-breadcrumbs>
+{% endmacro %}

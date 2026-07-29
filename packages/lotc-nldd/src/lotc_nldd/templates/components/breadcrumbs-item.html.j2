@@ -1,0 +1,5 @@
+{% macro lotc_render(_component_context) %}
+{% set label = _component_context.get('label', '') %}
+{% set href = _component_context.get('href', '') %}
+<nldd-breadcrumbs-item text="{{ label }}"{% if href %} href="{{ href }}"{% endif %} data-lotc-component="breadcrumbs-item"></nldd-breadcrumbs-item>
+{% endmacro %}

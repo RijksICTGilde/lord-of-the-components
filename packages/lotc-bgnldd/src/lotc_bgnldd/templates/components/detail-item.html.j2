@@ -1,0 +1,5 @@
+{% macro lotc_render(_component_context) %}
+{% set label = _component_context.get("label", "") %}
+{% set value = _component_context.get("value", "") %}
+<li data-lotc-component="detail-item"><span class="lotc-detail-label">{{ label }}</span><strong>{{ value }}</strong></li>
+{% endmacro %}

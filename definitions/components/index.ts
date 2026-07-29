@@ -49,6 +49,13 @@ export {
   activityItem,
   shortcut,
   chip,
+  identity,
+  action,
+  detailList,
+  detailItem,
+  sectionLink,
+  notification,
+  notificationItem,
 } from "./app-components.def.js";
 
 // Feedback components
@@ -143,6 +150,13 @@ import {
   activityItem,
   shortcut,
   chip,
+  identity,
+  action,
+  detailList,
+  detailItem,
+  sectionLink,
+  notification,
+  notificationItem,
 } from "./app-components.def.js";
 import type { ComponentDefinition } from "../component.js";
 
@@ -209,6 +223,13 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   "activity-item": activityItem,
   shortcut,
   chip,
+  identity,
+  action,
+  "detail-list": detailList,
+  "detail-item": detailItem,
+  "section-link": sectionLink,
+  notification,
+  "notification-item": notificationItem,
 };
 
 /**

@@ -1,0 +1,5 @@
+{% macro lotc_render(_component_context) %}
+{% set children = _component_context.get("content", "") %}
+{% set extra = _component_context.get("class", "") %}
+<ul class="lotc-notifications{% if extra %} {{ extra }}{% endif %}" data-lotc-component="notification">{{ children | safe }}</ul>
+{% endmacro %}
