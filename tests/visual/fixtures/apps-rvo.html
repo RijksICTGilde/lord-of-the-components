@@ -1,0 +1,115 @@
+<c-page theme="rvo" design-systems="rvo" title="Software-catalogus · Begane Grond" lang="nl">
+<c-app-shell width="16rem">
+  <template slot="header">
+    <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
+    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
+      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
+        <c-menu-item label="Zoeken" icon="search"/>
+        <c-menu-item label="Notificaties (1)" icon="envelope"/>
+        <c-menu-item label="Nieuw" icon="plus" expandable/>
+        <c-menu-item label="Thema" icon="sun" expandable/>
+        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
+      </c-menu>
+    </c-header>
+  </template>
+
+  <template slot="sidebar">
+    <c-sidenav>
+      <c-sidenav-item icon="house" label="Overzicht" href="/"/>
+      <c-sidenav-item icon="person" label="Mijn overzicht" href="/zelf"/>
+      <c-sidenav-group label="Bouwen & draaien"/>
+      <c-sidenav-item icon="apartment-building" label="Fundament" href="/fysiek"/>
+      <c-sidenav-item icon="cylinder-split" label="Infra-diensten" href="/infra"/>
+      <c-sidenav-item icon="rectangle-stack" label="Applicaties" href="/apps" active/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Code" href="/code"/>
+      <c-sidenav-item icon="puzzle-piece" label="Componenten" href="/componenten"/>
+      <c-sidenav-item icon="square-on-square" label="Design system" href="/design-system"/>
+      <c-sidenav-group label="Uitrollen & draaien"/>
+      <c-sidenav-item icon="arrow-up-arrow-down" label="Omgevingen" href="/environments"/>
+      <c-sidenav-item icon="gear" label="CI-pijplijn" href="/environments/pijplijn"/>
+      <c-sidenav-item icon="timer" label="CI-runners" href="/environments/runners"/>
+      <c-sidenav-item icon="folder-stack" label="Artefacten" href="/artefacten"/>
+      <c-sidenav-item icon="flag" label="Feature flags" href="/flags"/>
+      <c-sidenav-item icon="eye" label="Observability" href="/observability"/>
+      <c-sidenav-item icon="exclamation-triangle" label="Incidenten" href="/incidenten"/>
+      <c-sidenav-group label="Mensen & werkplek"/>
+      <c-sidenav-item icon="person-2" label="Teams & mensen" href="/teams"/>
+      <c-sidenav-item icon="business-suitcase" label="Werkplekken" href="/werkplekken"/>
+      <c-sidenav-item icon="face-smiling-badge-plus" label="Leren" href="/leren"/>
+      <c-sidenav-group label="Toegang & beveiliging"/>
+      <c-sidenav-item icon="person-circle" label="Inloggen" href="/inloggen"/>
+      <c-sidenav-item icon="globe" label="Domeinen & DNS" href="/dns"/>
+      <c-sidenav-item icon="certificate" label="Certificaten" href="/secrets/certificaten"/>
+      <c-sidenav-item icon="lock-closed" label="Secrets" href="/secrets"/>
+      <c-sidenav-item icon="shield-check-mark" label="Security" href="/security"/>
+      <c-sidenav-group label="Data & koppelvlakken"/>
+      <c-sidenav-item icon="books-vertical" label="Basisregistraties" href="/registers"/>
+      <c-sidenav-item icon="chart-x-y-axis-line" label="Datasets" href="/data"/>
+      <c-sidenav-item icon="pencil-on-square" label="Datacontracten" href="/datacontracten"/>
+      <c-sidenav-item icon="link" label="Koppelvlakken" href="/koppelvlakken"/>
+      <c-sidenav-item icon="envelope" label="Notificaties" href="/notificaties"/>
+      <c-sidenav-group label="Governance & standaarden"/>
+      <c-sidenav-item icon="check-list" label="Governance" href="/governance"/>
+      <c-sidenav-item icon="clipboard" label="Wet uitvoeren" href="/wetten"/>
+      <c-sidenav-item icon="check-mark-circle" label="Standaarden" href="/standaarden"/>
+      <c-sidenav-item icon="check-list" label="NeRDS-richtlijnen" href="/nerds"/>
+      <c-sidenav-item icon="brackets-ellipsis" label="Algoritmeregister" href="/algoritmes"/>
+      <c-sidenav-item icon="clipboard-rectangle" label="Privacy & DPIA" href="/verwerkingen"/>
+      <c-sidenav-item icon="file-text" label="Woo & archief" href="/openbaarheid"/>
+      <c-sidenav-item icon="eyeglasses" label="Toegankelijkheid" href="/toegankelijkheid"/>
+      <c-sidenav-item icon="heart" label="Duurzaamheid" href="/duurzaamheid"/>
+      <c-sidenav-group label="Platform, kosten & AI"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Infra als code" href="/platform/iac"/>
+      <c-sidenav-item icon="euro-sign" label="Kosten" href="/kosten"/>
+      <c-sidenav-item icon="tag" label="Software-inkoop" href="/software-inkoop"/>
+      <c-sidenav-item icon="starburst-filled" label="Scorecards" href="/scorecards"/>
+      <c-sidenav-item icon="ship-wheel" label="Tech radar" href="/tech-radar"/>
+      <c-sidenav-item icon="sparkles" label="AI & LLM" href="/ai"/>
+      <c-sidenav-item icon="terminal" label="CLI & API" href="/cli"/>
+      <c-sidenav-item icon="square-on-square" label="Fleet-shift" href="/fleet"/>
+    </c-sidenav>
+  </template>
+
+  <c-stack gap="1.25rem">
+    <c-breadcrumbs>
+      <c-breadcrumbs-item label="Home" href="/"/>
+      <c-breadcrumbs-item label="Applicaties"/>
+    </c-breadcrumbs>
+
+    <c-stack direction="horizontal" justify="between" align="start" gap="1.5rem">
+      <div>
+        <c-heading type="h1" size="2">Software-catalogus</c-heading>
+        <c-p>Alle applicaties van het Begane Grond op één plek. Elke applicatie hangt aan een team, een repository en de infra waarop hij draait.</c-p>
+      </div>
+      <c-stack direction="horizontal" gap="0.75rem">
+        <c-button type="secondary" label="Gebaande paden" icon="books-vertical" show-icon="before"/>
+        <c-button type="primary" label="Nieuwe applicatie" icon="plus" show-icon="before"/>
+      </c-stack>
+    </c-stack>
+
+    <c-auto-grid min="280px" gap="1rem">
+      <c-metric icon="rectangle-stack" value="123" label="Applicaties" sub="in de catalogus"/>
+      <c-metric icon="certificate" value="41" label="Goud" sub="volgt het gebaande pad"/>
+      <c-metric icon="exclamation-triangle" value="31" label="Aandacht" sub="health niet groen"/>
+    </c-auto-grid>
+
+    <c-filter-bar placeholder="Naam, team of stack…" count="123 van 123 applicaties" clear-label="Filters wissen">
+      <c-filter-select label="Team" value="Alle teams"/>
+      <c-filter-select label="Type" value="Alle types"/>
+      <c-filter-select label="Maturity" value="Alle"/>
+    </c-filter-bar>
+
+    <c-auto-grid min="320px" gap="1rem">
+      <c-catalog-card icon="rectangle-stack" title="Paspoortaanvraag" subtitle="Burgerzaken" status="ok" status-type="success" maturity="goud" open-label="Open" href="/apps/paspoortaanvraag"><c-tag type="default">service</c-tag><c-tag type="info">Rust</c-tag><c-tag type="info">Postgres</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Toeslagenmotor" subtitle="Toeslagen" status="warn" status-type="warning" maturity="zilver" open-label="Open" href="/apps/toeslagenmotor"><c-tag type="default">service</c-tag><c-tag type="info">Rust</c-tag><c-tag type="info">Kafka</c-tag><c-tag type="info">Postgres</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Platformportaal" subtitle="Platform Engineering" status="ok" status-type="success" maturity="goud" open-label="Open" href="/apps/platformportaal"><c-tag type="default">website</c-tag><c-tag type="info">Vue</c-tag><c-tag type="info">NLDD</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Datadeling-API" subtitle="Data & koppelvlakken" status="ok" status-type="success" maturity="brons" open-label="Open" href="/apps/datadeling-api"><c-tag type="default">service</c-tag><c-tag type="info">Python</c-tag><c-tag type="info">Postgres</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Kentekencheck" subtitle="StatLine & Publicatie" status="ok" status-type="success" maturity="zilver" open-label="Open" href="/apps/kentekencheck"><c-tag type="default">service</c-tag><c-tag type="info">Go</c-tag><c-tag type="info">Postgres</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Studiefinanciering portaal" subtitle="Onderwijsregister" status="warn" status-type="warning" maturity="brons" open-label="Open" href="/apps/studiefinanciering-portaal"><c-tag type="default">website</c-tag><c-tag type="info">Vue</c-tag><c-tag type="info">NLDD</c-tag><c-tag type="info">Java</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Vergunningchecker" subtitle="Vergunningen & Regelingen" status="ok" status-type="success" maturity="zilver" open-label="Open" href="/apps/vergunningchecker"><c-tag type="default">service</c-tag><c-tag type="info">Kotlin</c-tag><c-tag type="info">Postgres</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Inkomenstoets" subtitle="Inning & Invordering" status="ok" status-type="success" maturity="goud" open-label="Open" href="/apps/inkomenstoets"><c-tag type="default">service</c-tag><c-tag type="info">Java</c-tag><c-tag type="info">Oracle</c-tag></c-catalog-card>
+      <c-catalog-card icon="rectangle-stack" title="Aangifte Omzetbelasting" subtitle="Aangifteplatform" status="warn" status-type="warning" maturity="zilver" open-label="Open" href="/apps/aangifte-omzetbelasting"><c-tag type="default">service</c-tag><c-tag type="info">Java</c-tag><c-tag type="info">Kafka</c-tag></c-catalog-card>
+    </c-auto-grid>
+  </c-stack>
+</c-app-shell>
+</c-page>

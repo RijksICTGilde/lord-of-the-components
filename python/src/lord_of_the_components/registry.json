@@ -2794,6 +2794,137 @@
       "content": {
         "allowed": true
       }
+    },
+    {
+      "name": "catalog-card",
+      "attributes": [
+        {
+          "name": "icon",
+          "type": "string",
+          "description": "Icon name (semantic)"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Card title (e.g. app name)"
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "description": "Sub-line under the title (e.g. owning team)"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Status tag text (e.g. \"ok\", \"warn\")"
+        },
+        {
+          "name": "status-type",
+          "type": "enum",
+          "enum_values": [
+            "default",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "success",
+          "description": "Status tag semantic type"
+        },
+        {
+          "name": "maturity",
+          "type": "enum",
+          "enum_values": [
+            "none",
+            "goud",
+            "zilver",
+            "brons"
+          ],
+          "default": "none",
+          "description": "Maturity tier medal"
+        },
+        {
+          "name": "open-label",
+          "type": "string",
+          "description": "Footer open-link label (e.g. \"Open\")"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "description": "Link target for the card / open link"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Catalog/resource card: icon + title/subtitle + status tag, a tag row, and a maturity + open footer",
+      "category": "data-display",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "filter-bar",
+      "attributes": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": "Search field placeholder"
+        },
+        {
+          "name": "search-label",
+          "type": "string",
+          "default": "Zoeken",
+          "description": "Label above the search field"
+        },
+        {
+          "name": "count",
+          "type": "string",
+          "description": "Result-count text (e.g. \"123 van 123 applicaties\")"
+        },
+        {
+          "name": "clear-label",
+          "type": "string",
+          "description": "Clear-filters button label"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Filter toolbar: a search field, dropdown fields (content), and a result-count + clear row",
+      "category": "navigation",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "filter-select",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Field label (e.g. \"Team\")"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Current value shown (e.g. \"Alle teams\")"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "A labelled dropdown field inside a filter-bar (static/display)",
+      "category": "navigation",
+      "backend": "jinja"
     }
   ]
 }

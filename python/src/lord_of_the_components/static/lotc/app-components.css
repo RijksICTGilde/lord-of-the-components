@@ -215,3 +215,33 @@
    A visible gap marker: switch themes, and any component the active theme does
    not yet implement renders as this dashed box instead of erroring. */
 .lotc-unimplemented { color: var(--semantics-feedback-warning-color, #85520b); background: repeating-linear-gradient(45deg, #fff7e6, #fff7e6 10px, #ffefcc 10px, #ffefcc 20px); border: 1px dashed var(--semantics-feedback-warning-color, #e08600); border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.82rem; font-family: ui-monospace, monospace; }
+
+/* ── catalog-card (resource/app card) ────────────────────────────────────── */
+.lotc-catalog { flex-direction: column; height: 100%; display: flex; }
+.lotc-catalog-top { align-items: flex-start; gap: 0.6rem; display: flex; }
+.lotc-catalog-icon { opacity: 0.7; flex: 0 0 auto; margin-top: 0.15rem; }
+.lotc-catalog-headtext { flex: 1 1 auto; min-width: 0; }
+.lotc-catalog-headtext h3, .lotc-catalog-title { margin: 0; font-size: 1.05rem; line-height: 1.25; }
+.lotc-catalog-team { opacity: 0.65; margin-top: 0.15rem; font-size: 0.85rem; display: block; }
+.lotc-catalog-stack { flex-wrap: wrap; gap: 0.35rem; margin: 0.75rem 0; display: flex; }
+.lotc-catalog-foot { border-top: 1px solid var(--semantics-dividers-color, #e2e2e6); justify-content: space-between; align-items: center; margin-top: auto; padding-top: 0.6rem; font-size: 0.85rem; display: flex; }
+.lotc-catalog-maturity { text-transform: capitalize; align-items: center; gap: 0.4rem; display: inline-flex; }
+.lotc-medal { background: currentColor; border-radius: 50%; flex: 0 0 auto; width: 0.7rem; height: 0.7rem; display: inline-block; }
+.lotc-mat-goud { color: #c8a200; }
+.lotc-mat-zilver { color: #8a8f99; }
+.lotc-mat-brons { color: #a06a3c; }
+.lotc-catalog-open { color: inherit; opacity: 0.85; align-items: center; gap: 0.25rem; font-weight: 600; text-decoration: none; display: inline-flex; }
+
+/* ── filter-bar (search + dropdown toolbar) ──────────────────────────────── */
+.lotc-filterbar { flex-wrap: wrap; align-items: flex-end; gap: 1rem; display: flex; }
+.lotc-filter-search { flex: 1 1 320px; flex-direction: column; gap: 0.3rem; display: flex; }
+.lotc-filter-label { font-size: 0.85rem; font-weight: 600; }
+.lotc-filter-searchbox { border: 1px solid var(--semantics-dividers-color, #b1c4d1); border-radius: 8px; align-items: center; gap: 0.5rem; padding: 0.55rem 0.7rem; display: flex; }
+.lotc-filter-input { color: inherit; background: none; border: 0; outline: 0; flex: 1 1 auto; min-width: 0; font: inherit; }
+.lotc-filter-fields { flex-wrap: wrap; align-items: flex-end; gap: 0.75rem; display: flex; }
+.lotc-filter-field { flex-direction: column; gap: 0.3rem; display: flex; }
+.lotc-filter-dropdown { border: 1px solid var(--semantics-dividers-color, #b1c4d1); justify-content: space-between; align-items: center; gap: 0.75rem; min-width: 150px; padding: 0.55rem 0.7rem; border-radius: 8px; display: flex; }
+.lotc-filter-caret { opacity: 0.6; }
+.lotc-filter-foot { justify-content: space-between; align-items: center; margin-top: 0.85rem; font-size: 0.85rem; display: flex; }
+.lotc-filter-count { opacity: 0.7; }
+.lotc-filter-clear { color: inherit; background: var(--semantics-surfaces-tinted-background-color, #eef0f4); border: 1px solid var(--semantics-dividers-color, #e2e2e6); border-radius: 8px; align-items: center; gap: 0.35rem; padding: 0.45rem 0.7rem; font: inherit; display: inline-flex; }
