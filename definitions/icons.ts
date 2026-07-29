@@ -51,7 +51,7 @@ export const ICON_ALIASES: Record<string, IconAlias> = {
   "euro-sign": { rvo: "eurobiljetten", nldd: "euro-sign" },
   "exclamation-triangle": { rvo: "let-op", nldd: "exclamation-triangle" },
   eye: { rvo: "oog", nldd: "eye" },
-  eyeglasses: { rvo: "oog", nldd: "eyeglasses" },
+  eyeglasses: { rvo: "zoek", nldd: "eyeglasses" },
   "face-smiling-badge-plus": { rvo: "user", nldd: "face-smiling-badge-plus" },
   "file-text": { rvo: "document-blanco", nldd: "file-text" },
   flag: { rvo: "vlag-driehoekig", nldd: "flag" },
