@@ -2925,6 +2925,42 @@
       "description": "A labelled dropdown field inside a filter-bar (static/display)",
       "category": "navigation",
       "backend": "jinja"
+    },
+    {
+      "name": "site-footer",
+      "attributes": [
+        {
+          "name": "text",
+          "type": "string",
+          "description": "Legal text on the left (e.g. copyright / disclaimer)"
+        },
+        {
+          "name": "note-label",
+          "type": "string",
+          "description": "Centered note action label (e.g. \"Presentatie\")"
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "description": "Centered note hint (monospace, e.g. a keyboard shortcut)"
+        },
+        {
+          "name": "note-icon",
+          "type": "string",
+          "description": "Icon for the note action"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Slim page footer: a legal bar (start text + end links content) with an optional centered note/action row",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }

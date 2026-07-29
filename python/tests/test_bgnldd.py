@@ -222,6 +222,32 @@ def test_catalog_card_maturity_variants(render):
     assert "lotc-medal" not in html
 
 
+def test_site_footer_renders(render):
+    # Slim page footer: legal text (left) + end links (content, right) and an
+    # optional centered note/action row.
+    html = render(
+        '<c-site-footer text="Begane Grond — demo / mock-up" note-label="Presentatie"'
+        ' note="Shift + P" note-icon="eye"><c-link href="/standaarden">Toegankelijkheid'
+        "</c-link></c-site-footer>"
+    )
+    assert 'class="lotc-site-footer"' in html and 'role="contentinfo"' in html
+    assert "lotc-footer-legal" in html and "Begane Grond" in html
+    assert "lotc-footer-links" in html and "Toegankelijkheid" in html
+    assert "lotc-footer-note" in html and "Presentatie" in html and "Shift + P" in html
+    # note-less footer emits no note row
+    bare = render('<c-site-footer text="X"/>')
+    assert "lotc-footer-note" not in bare
+
+
+def test_site_footer_lands_in_app_shell_footer_slot(render):
+    # Placed via <template slot="footer">, the footer renders full-width in the
+    # app-shell's footer region.
+    html = render(
+        '<c-app-shell><template slot="footer"><c-site-footer text="X"/></template>body</c-app-shell>'
+    )
+    assert "lotc-app-shell__footer" in html and "lotc-site-footer" in html
+
+
 def test_apps_page_fixture_renders_fully():
     # The full /apps ("Software-catalogus") recreation renders end-to-end under
     # nldd+bgnldd with every component resolving (no missing-impl error).
@@ -235,6 +261,7 @@ def test_apps_page_fixture_renders_fully():
     assert html.count('class="lotc-catalog"') == 9  # nine app cards
     assert "lotc-filterbar" in html and html.count("lotc-filter-field") >= 3
     assert html.count("lotc-metric-link") == 3
+    assert "lotc-site-footer" in html  # page footer in the app-shell footer slot
     assert "not implemented" not in html  # no placeholder gaps
 
 

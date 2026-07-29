@@ -278,3 +278,18 @@ export const filterSelect = defineComponent({
     [PROPS.CLASS]: { description: "Additional CSS classes" },
   },
 });
+
+// ── site-footer: a slim page footer (legal bar + an optional centered note) ──
+export const siteFooter = defineComponent({
+  name: "site-footer",
+  description: "Slim page footer: a legal bar (start text + end links content) with an optional centered note/action row",
+  category: "layout",
+  props: {
+    text: { description: "Legal text on the left (e.g. copyright / disclaimer)" },
+    "note-label": { description: "Centered note action label (e.g. \"Presentatie\")" },
+    note: { description: "Centered note hint (monospace, e.g. a keyboard shortcut)" },
+    "note-icon": { description: "Icon for the note action" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // end links (right side of the legal bar)
+});

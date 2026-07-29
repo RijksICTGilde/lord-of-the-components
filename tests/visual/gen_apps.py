@@ -123,6 +123,12 @@ def build() -> str:
 {cards()}
     </c-auto-grid>
   </c-stack>
+
+  <template slot="footer">
+    <c-site-footer text="Begane Grond — demo / mock-up" note-label="Presentatie" note="Shift + P · kies een rol" note-icon="eye">
+      <c-link href="/standaarden">Toegankelijkheid</c-link>
+    </c-site-footer>
+  </template>
 </c-app-shell>
 </c-page>
 """
