@@ -1,7 +1,8 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set label = _component_context.get('label', '') %}
 {% set icon = _component_context.get('icon', '') %}
 {% set expandable = _component_context.get('expandable', false) %}
 {% set href = _component_context.get('href', '') %}
-<nldd-menu-bar-item text="{{ label }}"{% if icon %} icon="{{ icon }}"{% endif %}{% if href %} href="{{ href }}"{% endif %}{% if expandable %} expandable{% endif %} data-lotc-component="menu-item"></nldd-menu-bar-item>
+<nldd-menu-bar-item text="{{ label }}"{% if icon %} icon="{{ icon }}"{% endif %}{% if href %} href="{{ href }}"{% endif %}{% if expandable %} expandable{% endif %} data-lotc-component="menu-item" {{ attrs.render_extra_attributes(_component_context) }}></nldd-menu-bar-item>
 {% endmacro %}

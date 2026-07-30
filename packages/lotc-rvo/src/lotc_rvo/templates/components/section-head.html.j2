@@ -1,8 +1,9 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set title = _component_context.get("title", "") %}
 {% set icon = _component_context.get("icon", "") %}
 {% set children = _component_context.get("content", "") %}
-<div class="lotc-section-head" data-lotc-component="section-head">
+<div class="lotc-section-head" data-lotc-component="section-head" {{ attrs.render_extra_attributes(_component_context) }}>
   <div class="lotc-section-head-main">{% if title %}{{ _lotc_rvo_heading(type="h4", label=title, _class="lotc-section-title") }}{% endif %}{{ children | safe }}</div>
   {% if icon or children %}<div class="lotc-section-head-aside">{% if icon %}{{ _lotc_rvo_icon(icon=icon, size="sm", _class="lotc-head-icon") }}{% endif %}</div>{% endif %}
 </div>

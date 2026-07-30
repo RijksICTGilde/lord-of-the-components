@@ -1,3 +1,4 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get("icon", "") %}
 {% set title = _component_context.get("title", "") %}
@@ -9,7 +10,7 @@
 {% set href = _component_context.get("href", "") %}
 {% set children = _component_context.get("content", "") %}
 {% set vmap = {"default": "neutral", "info": "accent", "success": "success", "warning": "warning", "error": "critical"} %}
-<nldd-card data-lotc-component="catalog-card"><nldd-container padding="20">
+<nldd-card data-lotc-component="catalog-card" {{ attrs.render_extra_attributes(_component_context) }}><nldd-container padding="20">
   <div class="lotc-catalog">
     <div class="lotc-catalog-top">
       {% if icon %}<span class="lotc-catalog-icon">{{ _lotc_nldd_icon(icon=icon) }}</span>{% endif %}

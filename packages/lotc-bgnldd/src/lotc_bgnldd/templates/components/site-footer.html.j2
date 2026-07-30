@@ -1,10 +1,11 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set text = _component_context.get("text", "") %}
 {% set note_label = _component_context.get("note-label", "") %}
 {% set note = _component_context.get("note", "") %}
 {% set note_icon = _component_context.get("note-icon", "") %}
 {% set children = _component_context.get("content", "") %}
-<footer class="lotc-site-footer" data-lotc-component="site-footer" role="contentinfo">
+<footer class="lotc-site-footer" data-lotc-component="site-footer" {{ attrs.render_extra_attributes(_component_context) }} role="contentinfo">
   <div class="lotc-footer-legal">
     {% if text %}<span class="lotc-footer-text">{{ text }}</span>{% endif %}
     {% if children %}<div class="lotc-footer-links">{{ children | safe }}</div>{% endif %}

@@ -1,3 +1,4 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get('icon', '') %}
 {% set title = _component_context.get('title', '') %}
@@ -5,7 +6,7 @@
 {% set sub = _component_context.get('sub', '') %}
 {% set href = _component_context.get('href', '') %}
 {% set children = _component_context.get('content', '') %}
-<a{% if href %} href="{{ href }}"{% endif %} class="lotc-layer" data-lotc-component="layer">
+<a{% if href %} href="{{ href }}"{% endif %} class="lotc-layer" data-lotc-component="layer" {{ attrs.render_extra_attributes(_component_context) }}>
     <span class="lotc-layer-icon">{% if icon %}{{ _lotc_nldd_icon(icon=icon) }}{% endif %}</span>
     <span class="lotc-layer-body">
         <span class="lotc-layer-head"><span class="lotc-layer-title">{{ title }}</span>{% if count %}<span class="lotc-layer-count">{{ count }}</span>{% endif %}</span>

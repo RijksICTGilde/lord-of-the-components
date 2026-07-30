@@ -1,5 +1,6 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set children = _component_context.get("content", "") %}
 {% set extra = _component_context.get("class", "") %}
-<ul class="lotc-notifications{% if extra %} {{ extra }}{% endif %}" data-lotc-component="notification">{{ children | safe }}</ul>
+<ul class="lotc-notifications{% if extra %} {{ extra }}{% endif %}" data-lotc-component="notification" {{ attrs.render_extra_attributes(_component_context) }}>{{ children | safe }}</ul>
 {% endmacro %}

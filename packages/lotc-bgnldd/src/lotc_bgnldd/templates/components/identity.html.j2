@@ -1,3 +1,4 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set name = _component_context.get("name", "") %}
 {% set initials = _component_context.get("initials", "") %}
@@ -9,7 +10,7 @@
 {% set alabel = _component_context.get("aside-label", "") %}
 {% set ahref = _component_context.get("aside-href", "") %}
 {% set vmap = {"default":"neutral","info":"accent","success":"success","warning":"warning","error":"critical"} %}
-<div class="lotc-identity" data-lotc-component="identity">
+<div class="lotc-identity" data-lotc-component="identity" {{ attrs.render_extra_attributes(_component_context) }}>
   <div class="lotc-avatar">{{ initials }}</div>
   <div class="lotc-identity-meta">
     {% if name %}<nldd-title size="4"><h2>{{ name }}</h2></nldd-title>{% endif %}

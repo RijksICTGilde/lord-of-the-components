@@ -48,7 +48,7 @@
 | table | data | 2 | 0 | 0 | ✅ | — |
 | table-head | data | 1 | 0 | 0 | ✅ | — |
 | table-row | data | 1 | 0 | 0 | ✅ | — |
-| tabs | navigation | 2 | 0 | 0 | ✅ | — |
+| tabs | navigation | 2 | 0 | 1 | ✅ | — |
 | tag | feedback | 3 | 0 | 0 | ✅ | — |
 | td | data | 2 | 0 | 0 | ✅ | — |
 | text-input | forms | 9 | 0 | 0 | ✅ | — |
@@ -684,14 +684,14 @@ content: yes
 
 ## tabs  (navigation)
 
-Tab bar; <c-tab> items go in the content
+Tab bar; fill it declaratively with <c-tab> or from data via :items
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
 | aria-label | string | — |  |  |
 | class | string | — |  |  |
 
-events: —    bindings: —
+events: —    bindings: :items
 content: yes
 
 ## tag  (feedback)
