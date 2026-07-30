@@ -43,7 +43,7 @@ export declare const slottedReset: import("lit").CSSResult;
  * - inside `:host`, as a guard block right after the `--_*` vars, to lock the
  *   component's OWN shadow text against host inheritance (no `all: revert` there).
  *
- * `text-align` is locked to `start` (logical, RTL-safe) — a host cannot centre or
+ * `text-align` is locked to `start` (logical, RTL-safe) — a host cannot center or
  * justify our text. A component that needs a different alignment sets it
  * explicitly on its own element, which overrides this inherited default.
  */
