@@ -1,0 +1,13 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{#
+  NLDD tabs — hand-authored. Fills an <nldd-tab-bar> declaratively (<c-tab>) or
+  from data (<c-tabs :items="array"/>): label|name, href|path, active|selected.
+#}
+{% macro lotc_render(_component_context) %}
+{% set content = _component_context.get('content', '') %}
+{% set aria = _component_context.get('aria-label', '') %}
+{% set items = _component_context.get('items', []) %}
+{% set extra = _component_context.get('class', '') %}
+<nldd-tab-bar data-lotc-component="tabs"{% if aria %} accessible-label="{{ aria }}"{% endif %}{% if extra %} class="{{ extra }}"{% endif %} {{ attrs.render_extra_attributes(_component_context) }}>
+{%- for it in items %}{{ _lotc_nldd_tab(label=(it.label or it.name), href=(it.href or it.path), active=(it.active or it.selected)) }}{%- endfor %}{{ content | safe }}</nldd-tab-bar>
+{% endmacro %}

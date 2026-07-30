@@ -284,6 +284,16 @@ def test_menu_items_binding_nested_nldd(render):
     assert "current" in html  # Overzicht active -> current
 
 
+def test_tabs_items_binding_nldd(render):
+    # <c-tabs :items="..."> builds an nldd-tab-bar from data, with aliases.
+    tabs = "{% set T = [{'label':'A','href':'#a','active':True},{'name':'B','path':'#b'}] %}"
+    html = render(tabs + '<c-tabs :items="T"/>')
+    assert "<nldd-tab-bar" in html
+    assert "nldd-tab-bar-item" in html
+    assert 'text="A"' in html and "selected" in html  # first tab, active
+    assert 'text="B"' in html and 'href="#b"' in html  # name/path aliases
+
+
 def test_app_components_are_global_and_bgnldd_is_impl_only():
     # The app components (metric, sidenav, …) are GLOBAL: their definitions live
     # in core's registry, not owned by any theme. BGNLDD is implementation-only

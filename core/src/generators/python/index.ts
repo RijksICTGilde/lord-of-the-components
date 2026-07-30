@@ -112,7 +112,6 @@ export const PYTHON_BACKEND = new Set<string>([
   "option",
   "tag",
   "badge",
-  "tabs",
   "tab",
   "table",
   "table-head",

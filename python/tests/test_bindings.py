@@ -204,3 +204,35 @@ class TestMustacheAttributes:
         # A bad shape via items="{{ ... }}" is validated just like :items.
         with pytest.raises(DataValidationError):
             self._render('<c-menu items="{{ BAD }}"/>', BAD=[{"no_label": 1}])
+
+
+class TestTabsItemsBinding:
+    """<c-tabs :items="..."> builds the tab bar from data (RVO)."""
+
+    DATA = (
+        "{% set TABS = ["
+        "{'label':'Overzicht','href':'#o','active':True},"
+        "{'name':'Details','path':'#d'},"
+        "{'label':'Historie','href':'#h'}"
+        "] %}"
+    )
+
+    def _render(self, source: str) -> str:
+        return _env().from_string(source).render()
+
+    def test_items_render_tabs(self):
+        html = self._render(self.DATA + '<c-tabs :items="TABS"/>')
+        assert all(x in html for x in ("Overzicht", "Details", "Historie"))
+        assert "rvo-tabs__item-link--active" in html  # first tab active
+
+    def test_field_aliases(self):
+        html = self._render(self.DATA + '<c-tabs :items="TABS"/>')
+        assert 'href="#d"' in html and "Details" in html  # name/path aliases
+
+    def test_mustache_form(self):
+        html = self._render(self.DATA + '<c-tabs items="{{ TABS }}"/>')
+        assert "Overzicht" in html and "Historie" in html
+
+    def test_declarative_still_works(self):
+        html = self._render('<c-tabs><c-tab label="A" href="#a" active/><c-tab label="B" href="#b"/></c-tabs>')
+        assert "A" in html and "B" in html and "rvo-tabs__item-link--active" in html

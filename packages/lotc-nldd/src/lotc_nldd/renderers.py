@@ -592,24 +592,6 @@ def table_row(*, content=None, _extra=None, _class=''):
     parts.append('</nldd-table-row>')
     return Markup(''.join(parts))
 
-def tabs(*, aria_label='', content=None, _extra=None, _class=''):
-    parts = []
-    cls0 = ''
-    cls0 = merge_class(cls0, _class)
-    parts.append('<nldd-tab-bar')
-    if cls0:
-        parts.append(' class="' + cls0 + '"')
-    parts.append(' data-lotc-component="tabs"')
-    if aria_label:
-        parts.append(' accessible-label="')
-        parts.append(esc(aria_label))
-        parts.append('"')
-    parts.append(render_extra(_extra))
-    parts.append('>')
-    parts.append((content or ''))
-    parts.append('</nldd-tab-bar>')
-    return Markup(''.join(parts))
-
 _TAG_COLOR_MAP = {
     'default': 'neutral',
     'info': 'accent',
