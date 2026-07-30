@@ -2,6 +2,6 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-toggle-button{% if _component_context.get('type') %} type="{{ _component_context.get('type') }}"{% endif %}{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('selected') %} selected{% endif %}{% if _component_context.get('disabled') %} disabled{% endif %}{% if _component_context.get('value') %} value="{{ _component_context.get('value') }}"{% endif %}{% if _component_context.get('name') %} name="{{ _component_context.get('name') }}"{% endif %}{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('icon') %} icon="{{ _component_context.get('icon') }}"{% endif %}{% if _component_context.get('variant') %} variant="{{ _component_context.get('variant') }}"{% endif %}{% if _component_context.get('accessible-label') %} accessible-label="{{ _component_context.get('accessible-label') }}"{% endif %} data-lotc-component="toggle-button" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('icon') %}<template slot="icon">{{ _component_context['slots']['icon'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('icon') %}<div slot="icon">{{ _component_context['slots']['icon'] | safe }}</div>{% endif %}
 </nldd-toggle-button>
 {% endmacro %}

@@ -2,7 +2,7 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-toolbar-item{% if _component_context.get('width') %} width="{{ _component_context.get('width') }}"{% endif %}{% if _component_context.get('min-width') %} min-width="{{ _component_context.get('min-width') }}"{% endif %}{% if _component_context.get('max-width') %} max-width="{{ _component_context.get('max-width') }}"{% endif %}{% if _component_context.get('label') %} label="{{ _component_context.get('label') }}"{% endif %}{% if _component_context.get('priority') %} priority="{{ _component_context.get('priority') }}"{% endif %} data-lotc-component="toolbar-item" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('overflow') %}<template slot="overflow">{{ _component_context['slots']['overflow'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('overflow') %}<div slot="overflow">{{ _component_context['slots']['overflow'] | safe }}</div>{% endif %}
 {{ _component_context.get('content', '') | safe }}
 </nldd-toolbar-item>
 {% endmacro %}

@@ -2,7 +2,7 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-token{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('control') %} control="{{ _component_context.get('control') }}"{% endif %}{% if _component_context.get('expanded') %} expanded{% endif %}{% if _component_context.get('disabled') %} disabled{% endif %}{% if _component_context.get('dismiss-text') %} dismiss-text="{{ _component_context.get('dismiss-text') }}"{% endif %}{% if _component_context.get('menu-text') %} menu-text="{{ _component_context.get('menu-text') }}"{% endif %}{% if _component_context.get('roving') %} roving{% endif %} data-lotc-component="token" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('menu') %}<template slot="menu">{{ _component_context['slots']['menu'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('menu') %}<div slot="menu">{{ _component_context['slots']['menu'] | safe }}</div>{% endif %}
 {{ _component_context.get('content', '') | safe }}
 </nldd-token>
 {% endmacro %}

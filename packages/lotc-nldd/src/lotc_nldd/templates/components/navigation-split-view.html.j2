@@ -2,10 +2,10 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-navigation-split-view{% if _component_context.get('inspector-auto-hidden') %} inspector-auto-hidden{% endif %}{% if _component_context.get('inspector-as-sheet') %} inspector-as-sheet{% endif %}{% if _component_context.get('primary-sidebar-as-sheet') %} primary-sidebar-as-sheet{% endif %}{% if _component_context.get('sidebar-as-sheet') %} sidebar-as-sheet{% endif %}{% if _component_context.get('inspector-accessible-label') %} inspector-accessible-label="{{ _component_context.get('inspector-accessible-label') }}"{% endif %}{% if _component_context.get('primary-sidebar-accessible-label') %} primary-sidebar-accessible-label="{{ _component_context.get('primary-sidebar-accessible-label') }}"{% endif %}{% if _component_context.get('sidebar-accessible-label') %} sidebar-accessible-label="{{ _component_context.get('sidebar-accessible-label') }}"{% endif %} data-lotc-component="navigation-split-view" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('primary-sidebar') %}<template slot="primary-sidebar">{{ _component_context['slots']['primary-sidebar'] | safe }}</template>{% endif %}
-{% if _component_context.get('slots', {}).get('secondary-sidebar') %}<template slot="secondary-sidebar">{{ _component_context['slots']['secondary-sidebar'] | safe }}</template>{% endif %}
-{% if _component_context.get('slots', {}).get('main') %}<template slot="main">{{ _component_context['slots']['main'] | safe }}</template>{% endif %}
-{% if _component_context.get('slots', {}).get('inspector') %}<template slot="inspector">{{ _component_context['slots']['inspector'] | safe }}</template>{% endif %}
-{% if _component_context.get('slots', {}).get('sidebar') %}<template slot="sidebar">{{ _component_context['slots']['sidebar'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('primary-sidebar') %}<div slot="primary-sidebar">{{ _component_context['slots']['primary-sidebar'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('secondary-sidebar') %}<div slot="secondary-sidebar">{{ _component_context['slots']['secondary-sidebar'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('main') %}<div slot="main">{{ _component_context['slots']['main'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('inspector') %}<div slot="inspector">{{ _component_context['slots']['inspector'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('sidebar') %}<div slot="sidebar">{{ _component_context['slots']['sidebar'] | safe }}</div>{% endif %}
 </nldd-navigation-split-view>
 {% endmacro %}

@@ -2,7 +2,7 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-document-tab-bar{% if _component_context.get('accessible-label') %} accessible-label="{{ _component_context.get('accessible-label') }}"{% endif %}{% if _component_context.get('navigation') %} navigation{% endif %}{% if _component_context.get('translations') %} translations="{{ _component_context.get('translations') }}"{% endif %} data-lotc-component="document-tab-bar" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('end') %}<template slot="end">{{ _component_context['slots']['end'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('end') %}<div slot="end">{{ _component_context['slots']['end'] | safe }}</div>{% endif %}
 {{ _component_context.get('content', '') | safe }}
 </nldd-document-tab-bar>
 {% endmacro %}

@@ -2,8 +2,8 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-side-by-side-split-view{% if _component_context.get('background') %} background="{{ _component_context.get('background') }}"{% endif %}{% if _component_context.get('panes') %} panes="{{ _component_context.get('panes') }}"{% endif %} data-lotc-component="side-by-side-split-view" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('pane-1') %}<template slot="pane-1">{{ _component_context['slots']['pane-1'] | safe }}</template>{% endif %}
-{% if _component_context.get('slots', {}).get('pane-2') %}<template slot="pane-2">{{ _component_context['slots']['pane-2'] | safe }}</template>{% endif %}
-{% if _component_context.get('slots', {}).get('pane-n') %}<template slot="pane-n">{{ _component_context['slots']['pane-n'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('pane-1') %}<div slot="pane-1">{{ _component_context['slots']['pane-1'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('pane-2') %}<div slot="pane-2">{{ _component_context['slots']['pane-2'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('pane-n') %}<div slot="pane-n">{{ _component_context['slots']['pane-n'] | safe }}</div>{% endif %}
 </nldd-side-by-side-split-view>
 {% endmacro %}

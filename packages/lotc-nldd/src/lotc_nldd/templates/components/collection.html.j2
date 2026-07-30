@@ -2,7 +2,7 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-collection{% if _component_context.get('layout') %} layout="{{ _component_context.get('layout') }}"{% endif %}{% if _component_context.get('show-load-more') %} show-load-more{% endif %}{% if _component_context.get('max-items') %} max-items="{{ _component_context.get('max-items') }}"{% endif %}{% if _component_context.get('lazy-load') %} lazy-load{% endif %}{% if _component_context.get('item-width') %} item-width="{{ _component_context.get('item-width') }}"{% endif %}{% if _component_context.get('gap') %} gap="{{ _component_context.get('gap') }}"{% endif %}{% if _component_context.get('translations') %} translations="{{ _component_context.get('translations') }}"{% endif %} data-lotc-component="collection" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('footer') %}<template slot="footer">{{ _component_context['slots']['footer'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('footer') %}<div slot="footer">{{ _component_context['slots']['footer'] | safe }}</div>{% endif %}
 {{ _component_context.get('content', '') | safe }}
 </nldd-collection>
 {% endmacro %}

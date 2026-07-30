@@ -2,7 +2,7 @@
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
 <nldd-inline-dialog{% if _component_context.get('variant') %} variant="{{ _component_context.get('variant') }}"{% endif %}{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('icon') %} icon="{{ _component_context.get('icon') }}"{% endif %}{% if _component_context.get('icon-color') %} icon-color="{{ _component_context.get('icon-color') }}"{% endif %}{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('supporting-text') %} supporting-text="{{ _component_context.get('supporting-text') }}"{% endif %}{% if _component_context.get('heading-level') %} heading-level="{{ _component_context.get('heading-level') }}"{% endif %} data-lotc-component="inline-dialog" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('actions') %}<template slot="actions">{{ _component_context['slots']['actions'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('actions') %}<div slot="actions">{{ _component_context['slots']['actions'] | safe }}</div>{% endif %}
 {{ _component_context.get('content', '') | safe }}
 </nldd-inline-dialog>
 {% endmacro %}
