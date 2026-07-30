@@ -127,7 +127,7 @@ def _make_transform(theme: str) -> Callable[[str], str]:
     # Theme-agnostic layout primitives (app-shell, auto-grid) render the same in
     # both themes, so their structural CSS is injected everywhere.
     layout_css = (
-        '    <link rel="stylesheet" href="/static/lotc/layout.css">\n'
+        '    <link rel="stylesheet" href="/static/lotc/layout/layout.css">\n'
         '    <link rel="stylesheet" href="/static/lotc/app-components.css">'
     )
     extra_css = _extra_ds_css(themes)
@@ -185,6 +185,8 @@ def create_jinja_env(theme: str = "rvo", on_missing: str = "error") -> Environme
         auto_reload=False,
     )
     themes = [t.strip() for t in theme.split(",") if t.strip()]
+    if "lotc-layout" not in themes:
+        themes = ["lotc-layout"] + themes
     setup_components(
         jinja_env,
         registry_path=str(REGISTRY_JSON),

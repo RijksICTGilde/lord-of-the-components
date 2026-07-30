@@ -17,7 +17,8 @@ PKG = Path(__file__).resolve().parent.parent / "src" / "lord_of_the_components"
 
 def _env(theme):
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
-    setup_components(env, registry_path=str(PKG / "registry.json"), theme=theme)
+    setup_components(env, registry_path=str(PKG / "registry.json"),
+                     design_systems=["lotc-layout", theme])
     return env
 
 

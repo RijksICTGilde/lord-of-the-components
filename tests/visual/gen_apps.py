@@ -71,7 +71,7 @@ def cards() -> str:
 
 
 def build() -> str:
-    return f"""<c-page title="Software-catalogus · Begane Grond" lang="nl" design-systems="nldd bgnldd">
+    return f"""<c-page title="Software-catalogus · Begane Grond" lang="nl" design-systems="lotc-layout nldd bgnldd">
 <c-app-shell width="16rem">
   <template slot="header">
     <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>

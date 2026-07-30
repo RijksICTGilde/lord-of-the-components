@@ -1072,7 +1072,6 @@
       ],
       "description": "Responsive column grid: as many columns as fit at a minimum width, then wrap",
       "category": "layout",
-      "system": true,
       "backend": "jinja",
       "content": {
         "allowed": true
@@ -1104,7 +1103,6 @@
       ],
       "description": "Application shell layout (header / sidebar / main / footer) via named grid areas; regions come from <template slot=\"header|sidebar|footer\">, main from the body",
       "category": "layout",
-      "system": true,
       "backend": "jinja",
       "content": {
         "allowed": true
@@ -1163,7 +1161,6 @@
       ],
       "description": "Flex stack with an explicit direction (vertical | horizontal), enforced uniformly across themes",
       "category": "layout",
-      "system": true,
       "backend": "jinja",
       "content": {
         "allowed": true
@@ -1205,7 +1202,6 @@
       ],
       "description": "Grid with an explicit column count and a mobile-first per-breakpoint fallback (cols = base; sm/md/lg override upward)",
       "category": "layout",
-      "system": true,
       "backend": "jinja",
       "content": {
         "allowed": true
