@@ -15,7 +15,34 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Bar size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). At 'lg', icon-button children stack their label below the icon (mob"
     },
     {
@@ -41,12 +68,44 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Button group size: 'sm' | 'md' (default: 'md')"
     },
     {
      "name": "orientation",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "horizontal",
+      "vertical"
+     ],
+     "default": "vertical",
      "description": "Layout direction: 'horizontal' | 'vertical' (default: 'vertical')"
     }
    ],
@@ -62,12 +121,61 @@
    "attributes": [
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "primary",
+      "secondary",
+      "destructive",
+      "accent-filled",
+      "accent-transparent",
+      "neutral-tinted",
+      "neutral-base",
+      "neutral-transparent",
+      "critical-tinted",
+      "critical-transparent",
+      "inherit-filled",
+      "inherit-tinted",
+      "box",
+      "simple",
+      "text",
+      "icon",
+      "icon-and-text",
+      "dot",
+      "step"
+     ],
+     "default": "neutral-tinted",
      "description": "Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | "
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')"
     },
     {
@@ -92,7 +200,13 @@
     },
     {
      "name": "type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "button",
+      "submit",
+      "reset"
+     ],
+     "default": "button",
      "description": "Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)"
     },
     {
@@ -204,7 +318,34 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')"
     },
     {
@@ -296,7 +437,12 @@
     },
     {
      "name": "align",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center"
+     ],
+     "default": "left",
      "description": "Text alignment: 'left' | 'center' (default: 'left')."
     },
     {
@@ -327,7 +473,34 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Toolbar size, propagated to all child controls: 'sm' | 'md' | 'lg' (default: 'md'). At 'lg' the overflow button (and lg-"
     },
     {
@@ -383,17 +556,42 @@
     },
     {
      "name": "type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "person",
+      "organization"
+     ],
+     "default": "person",
      "description": "`person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`"
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "default",
+      "inherit"
+     ],
+     "default": "default",
      "description": "`default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `curren"
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "full",
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
      "description": "`full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, "
     },
     {
@@ -561,12 +759,23 @@
     },
     {
      "name": "loading",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "lazy",
+      "eager"
+     ],
+     "default": "lazy",
      "description": "Loading strategy (default: 'lazy'). Lazy defers fetch until the image is near the viewport — the right choice for below-"
     },
     {
      "name": "decoding",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "async",
+      "sync",
+      "auto"
+     ],
+     "default": "async",
      "description": "Decoding hint (default: 'async')"
     },
     {
@@ -581,17 +790,39 @@
     },
     {
      "name": "object-fit",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "cover",
+      "contain",
+      "fill",
+      "scale-down",
+      "none"
+     ],
+     "default": "cover",
      "description": "default: 'cover'"
     },
     {
      "name": "object-position",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "center",
+      "top",
+      "bottom",
+      "left",
+      "right"
+     ],
+     "default": "center",
      "description": "default: 'center'"
     },
     {
      "name": "shape",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "square",
+      "rounded",
+      "circle"
+     ],
+     "default": "square",
      "description": "Corner shape (default: 'square')"
     },
     {
@@ -652,17 +883,95 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Grootte: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' neemt de font-size over van de container; bij de box-variant"
     },
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "primary",
+      "secondary",
+      "destructive",
+      "accent-filled",
+      "accent-transparent",
+      "neutral-tinted",
+      "neutral-base",
+      "neutral-transparent",
+      "critical-tinted",
+      "critical-transparent",
+      "inherit-filled",
+      "inherit-tinted",
+      "box",
+      "simple",
+      "text",
+      "icon",
+      "icon-and-text",
+      "dot",
+      "step"
+     ],
+     "default": "box",
      "description": "'box' (default) toont elke toets als keycap met vulling en highlight-rand; 'simple' toont de toetsen als platte tekst me"
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "inherit",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen",
+      "default",
+      "secondary"
+     ],
+     "default": "neutral",
      "description": "'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tek"
     },
     {
@@ -683,7 +992,14 @@
    "attributes": [
     {
      "name": "spacing",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "flat",
+      "tight",
+      "snug",
+      "loose"
+     ],
+     "default": "snug",
      "description": "Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'"
     },
     {
@@ -719,12 +1035,42 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "3",
      "description": "Visual size of the title: 1–6 (default: 3)"
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit"
+     ],
      "description": "'inherit' laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); over"
     }
    ],
@@ -745,7 +1091,13 @@
     },
     {
      "name": "control",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "dismiss",
+      "menu"
+     ],
+     "default": "none",
      "description": "Control type (default: 'none')"
     },
     {
@@ -796,12 +1148,26 @@
     },
     {
      "name": "placement",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "bottom",
+      "left",
+      "right",
+      "auto"
+     ],
+     "default": "bottom",
      "description": "Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')"
     },
     {
      "name": "timing",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "instant",
+      "default",
+      "never"
+     ],
+     "default": "default",
      "description": "Wanneer de tooltip verschijnt op hover: 'instant' — direct, zonder show-delay. 'default' — na de standaard show-delay (7"
     }
    ],
@@ -1018,12 +1384,23 @@
     },
     {
      "name": "resize",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "vertical",
+      "auto"
+     ],
+     "default": "auto",
      "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
     },
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "input-field",
+      "simple"
+     ],
+     "default": "simple",
      "description": "'simple' (default, bare) | 'input-field' (framed surface)"
     },
     {
@@ -1069,7 +1446,12 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md"
+     ],
+     "default": "md",
      "description": "Size: 'sm' | 'md' (default: 'md')"
     },
     {
@@ -1312,7 +1694,13 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md"
+     ],
+     "default": "md",
      "description": "Size: 'xs' | 'sm' | 'md' (default: 'md')"
     },
     {
@@ -1413,7 +1801,13 @@
     },
     {
      "name": "resize",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "vertical",
+      "auto"
+     ],
+     "default": "auto",
      "description": "'none' | 'vertical' | 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle."
     },
     {
@@ -1469,7 +1863,12 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md"
+     ],
+     "default": "md",
      "description": "Size: 'sm' | 'md' (default: 'md')"
     },
     {
@@ -1749,7 +2148,12 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md"
+     ],
+     "default": "md",
      "description": "Field size: 'sm' | 'md' (default: 'md')"
     },
     {
@@ -1810,17 +2214,34 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md",
+      "lg"
+     ],
+     "default": "md",
      "description": "Control size: 'sm' | 'md' | 'lg' (default: 'md'). Set by nldd-segmented-control."
     },
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "text",
+      "icon",
+      "icon-and-text"
+     ],
+     "default": "text",
      "description": "Content type: 'text' | 'icon' | 'icon-and-text' (default: 'text'). Set by nldd-segmented-control."
     },
     {
      "name": "input-type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "radio",
+      "checkbox"
+     ],
+     "default": "radio",
      "description": "Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control."
     },
     {
@@ -1856,17 +2277,34 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md",
+      "lg"
+     ],
+     "default": "md",
      "description": "Control size: 'sm' | 'md' | 'lg' (default: 'md')"
     },
     {
      "name": "type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "radio",
+      "checkbox"
+     ],
+     "default": "radio",
      "description": "Input type: 'radio' | 'checkbox' (default: 'radio')."
     },
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "text",
+      "icon",
+      "icon-and-text"
+     ],
+     "default": "text",
      "description": "Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')"
     },
     {
@@ -1932,7 +2370,13 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md"
+     ],
+     "default": "md",
      "description": "Size: 'xs' | 'sm' | 'md' (default: 'md')"
     },
     {
@@ -2009,7 +2453,12 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm"
+     ],
+     "default": "sm",
      "description": "Switch size: 'xs' | 'sm' (default: 'sm')"
     },
     {
@@ -2080,17 +2529,33 @@
     },
     {
      "name": "resize",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "vertical",
+      "auto"
+     ],
+     "default": "auto",
      "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
     },
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "input-field",
+      "simple"
+     ],
+     "default": "simple",
      "description": "'simple' (default, bare) | 'input-field' (framed surface)"
     },
     {
      "name": "font",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sans",
+      "mono"
+     ],
+     "default": "sans",
      "description": "'sans' (default) | 'mono'"
     },
     {
@@ -2156,7 +2621,14 @@
     },
     {
      "name": "type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "text",
+      "email",
+      "tel",
+      "url"
+     ],
+     "default": "text",
      "description": "Input type: 'text' | 'email' | 'tel' | 'url'"
     },
     {
@@ -2212,7 +2684,13 @@
    "attributes": [
     {
      "name": "type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "button",
+      "checkbox",
+      "radio"
+     ],
+     "default": "checkbox",
      "description": "Selection mode (default: 'checkbox')"
     },
     {
@@ -2222,7 +2700,14 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg"
+     ],
+     "default": "md",
      "description": "Forwarded to all buttons (default: 'md')"
     },
     {
@@ -2253,12 +2738,25 @@
    "attributes": [
     {
      "name": "type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "button",
+      "checkbox",
+      "radio"
+     ],
+     "default": "button",
      "description": "Underlying element (default: 'button')"
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg"
+     ],
+     "default": "md",
      "description": "Button size (default: 'md')"
     },
     {
@@ -2374,7 +2872,12 @@
     },
     {
      "name": "token-control",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "dismiss",
+      "menu"
+     ],
+     "default": "dismiss",
      "description": "Trailing control per token: 'dismiss' (default, a ✕ that removes it) or 'menu' (a ⌄ opening a per-token action menu supp"
     },
     {
@@ -2416,7 +2919,17 @@
    "attributes": [
     {
      "name": "layout",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "grid",
+      "stack",
+      "horizontal-scroll",
+      "row",
+      "wrap",
+      "columns",
+      "lanes"
+     ],
+     "default": "grid",
      "description": "Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')"
     },
     {
@@ -2683,12 +3196,25 @@
     },
     {
      "name": "background",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "base",
+      "tinted"
+     ],
+     "default": "inherit",
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
      "name": "scheme",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark",
+      "inverted"
+     ],
+     "default": "inherit",
      "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
     },
     {
@@ -2774,12 +3300,25 @@
     },
     {
      "name": "background",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "base",
+      "tinted"
+     ],
+     "default": "inherit",
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
      "name": "scheme",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark",
+      "inverted"
+     ],
+     "default": "inherit",
      "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
     },
     {
@@ -2865,12 +3404,25 @@
     },
     {
      "name": "background",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "base",
+      "tinted"
+     ],
+     "default": "inherit",
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
      "name": "scheme",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark",
+      "inverted"
+     ],
+     "default": "inherit",
      "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
     },
     {
@@ -2986,12 +3538,25 @@
     },
     {
      "name": "background",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "base",
+      "tinted"
+     ],
+     "default": "inherit",
      "description": ""
     },
     {
      "name": "scheme",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark",
+      "inverted"
+     ],
+     "default": "inherit",
      "description": ""
     },
     {
@@ -3077,12 +3642,25 @@
     },
     {
      "name": "background",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "base",
+      "tinted"
+     ],
+     "default": "inherit",
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
      "name": "scheme",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark",
+      "inverted"
+     ],
+     "default": "inherit",
      "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
     },
     {
@@ -3168,12 +3746,25 @@
     },
     {
      "name": "background",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "base",
+      "tinted"
+     ],
+     "default": "inherit",
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
      "name": "scheme",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark",
+      "inverted"
+     ],
+     "default": "inherit",
      "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
     },
     {
@@ -3259,7 +3850,15 @@
     },
     {
      "name": "placement",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "bottom",
+      "left",
+      "right",
+      "auto"
+     ],
+     "default": "bottom-start",
      "description": "Floating UI placement (default: 'bottom-start')"
     },
     {
@@ -3320,7 +3919,15 @@
    "attributes": [
     {
      "name": "placement",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "bottom",
+      "left",
+      "right",
+      "auto"
+     ],
+     "default": "right",
      "description": "Sheet position: 'left' | 'right' | 'bottom' (default: 'right')"
     },
     {
@@ -3356,7 +3963,29 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "flexible",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
+     "default": "16",
      "description": "Base spacer size. 'flexible' or one of the fixed tokens (2–96). Default: '16'."
     },
     {
@@ -3376,7 +4005,15 @@
     },
     {
      "name": "direction",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "horizontal",
+      "vertical",
+      "both",
+      "down",
+      "up"
+     ],
+     "default": "both",
      "description": "Direction: 'horizontal' | 'vertical' | 'both' (default: 'both')"
     }
    ],
@@ -3475,7 +4112,12 @@
    "attributes": [
     {
      "name": "orientation",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "horizontal",
+      "vertical"
+     ],
+     "default": "vertical",
      "description": "Orientation: 'vertical' | 'horizontal'"
     },
     {
@@ -3598,7 +4240,13 @@
     },
     {
      "name": "scheme",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark"
+     ],
+     "default": "inherit",
      "description": "Color scheme (default 'inherit')."
     }
    ],
@@ -3634,12 +4282,24 @@
     },
     {
      "name": "vertical-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
      "description": "Vertical alignment of slotted content (default: 'center')"
     },
     {
      "name": "horizontal-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center",
+      "right"
+     ],
+     "default": "left",
      "description": "Horizontal alignment of slotted content (default: 'left')"
     },
     {
@@ -3685,7 +4345,13 @@
     },
     {
      "name": "vertical-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
      "description": "Vertical alignment (default: 'center')"
     },
     {
@@ -3711,7 +4377,34 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Handle size: 'sm' | 'md' (default: 'md')"
     },
     {
@@ -3732,17 +4425,79 @@
    "attributes": [
     {
      "name": "vertical-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
      "description": "Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')"
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "24",
      "description": "Size: '16' | '20' | '24' | '32' (default: '24')"
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "inherit",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen",
+      "default",
+      "secondary"
+     ],
+     "default": "default",
      "description": "Color variant of the icon (default: 'default')"
     },
     {
@@ -3773,7 +4528,34 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "16",
      "description": "Spacer size in pixels: '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56"
     },
     {
@@ -3799,12 +4581,68 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
      "description": "Cell size: 'sm' | 'md' (default: 'md')"
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "inherit",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen",
+      "default",
+      "secondary"
+     ],
+     "default": "default",
      "description": "Text color variant: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' (default: 'default'). All no"
     },
     {
@@ -3829,12 +4667,24 @@
     },
     {
      "name": "horizontal-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center",
+      "right"
+     ],
+     "default": "left",
      "description": "Horizontal alignment: 'left' | 'center' | 'right' (default: 'left')"
     },
     {
      "name": "vertical-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
      "description": "Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')"
     },
     {
@@ -3859,7 +4709,12 @@
     },
     {
      "name": "query-mark-mode",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "match",
+      "predictive"
+     ],
+     "default": "predictive",
      "description": "'match' | 'predictive' (default: 'predictive')"
     },
     {
@@ -3885,12 +4740,41 @@
    "attributes": [
     {
      "name": "status",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "past",
+      "current",
+      "future",
+      "none"
+     ],
+     "default": "past",
      "description": "Status van deze stap (standaard 'past'); dezelfde waarden als `nldd-step-indicator-item`. `none` tekent alleen de lijn, "
     },
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "primary",
+      "secondary",
+      "destructive",
+      "accent-filled",
+      "accent-transparent",
+      "neutral-tinted",
+      "neutral-base",
+      "neutral-transparent",
+      "critical-tinted",
+      "critical-transparent",
+      "inherit-filled",
+      "inherit-tinted",
+      "box",
+      "simple",
+      "text",
+      "icon",
+      "icon-and-text",
+      "dot",
+      "step"
+     ],
+     "default": "dot",
      "description": "Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenli"
     },
     {
@@ -3900,12 +4784,26 @@
     },
     {
      "name": "direction",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "horizontal",
+      "vertical",
+      "both",
+      "down",
+      "up"
+     ],
+     "default": "down",
      "description": "Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige st"
     },
     {
      "name": "position",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "first",
+      "between",
+      "last"
+     ],
+     "default": "between",
      "description": "Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt"
     },
     {
@@ -3936,7 +4834,36 @@
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "inherit",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen",
+      "default",
+      "secondary"
+     ],
+     "default": "default",
      "description": "Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `acc"
     },
     {
@@ -3961,12 +4888,24 @@
     },
     {
      "name": "horizontal-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center",
+      "right"
+     ],
+     "default": "left",
      "description": "Horizontal alignment (default: 'left')"
     },
     {
      "name": "vertical-alignment",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
      "description": "Vertical alignment (default: 'center')"
     },
     {
@@ -3996,7 +4935,12 @@
     },
     {
      "name": "query-mark-mode",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "match",
+      "predictive"
+     ],
+     "default": "predictive",
      "description": "'match' | 'predictive' (default: 'predictive')"
     },
     {
@@ -4072,7 +5016,12 @@
     },
     {
      "name": "width",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "fit-content",
+      "full"
+     ],
+     "default": "fit-content",
      "description": "`full` lets the segmented action grow to fill the row (default: 'fit-content')"
     },
     {
@@ -4093,7 +5042,12 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md"
+     ],
+     "default": "md",
      "description": "Row size (default: 'md'). Pushed onto the cells whose `size` means the same scale (nldd-text-cell, nldd-drag-handle-cell"
     },
     {
@@ -4159,7 +5113,12 @@
    "attributes": [
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "simple",
+      "box"
+     ],
+     "default": "simple",
      "description": "Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded cor"
     },
     {
@@ -4169,7 +5128,14 @@
     },
     {
      "name": "type",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "list",
+      "navigation",
+      "listbox",
+      "tree"
+     ],
+     "default": "list",
      "description": "A11y role and behavior (default 'list'). See the docblock above."
     },
     {
@@ -4400,7 +5366,22 @@
    "attributes": [
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
+     "default": "32",
      "description": "Circle diameter on the icon scale: 16,20,24,28,32,40,44,48,56,64,80,96 (default '32')"
     },
     {
@@ -4415,7 +5396,12 @@
     },
     {
      "name": "timing",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "default",
+      "instant"
+     ],
+     "default": "default",
      "description": "'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'defa"
     },
     {
@@ -4446,7 +5432,15 @@
    "attributes": [
     {
      "name": "variant",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "accent",
+      "success",
+      "warning",
+      "critical"
+     ],
+     "default": "neutral",
      "description": "Color and default icon (default: 'neutral')"
     },
     {
@@ -4497,7 +5491,12 @@
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "md",
+      "lg"
+     ],
+     "default": "md",
      "description": "Typography size: 'md' (default) keeps body-md text + body-sm supporting; 'lg' bumps both up a step."
     },
     {
@@ -4553,7 +5552,15 @@
     },
     {
      "name": "placement",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "bottom",
+      "left",
+      "right",
+      "auto"
+     ],
+     "default": "auto",
      "description": "'auto' | 'top' | 'bottom' | 'left' | 'right' (standaard 'auto')."
     },
     {
@@ -4630,7 +5637,33 @@
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen"
+     ],
+     "default": "accent",
      "description": "Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'."
     },
     {
@@ -4656,7 +5689,12 @@
    "attributes": [
     {
      "name": "mode",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "progress",
+      "distribution"
+     ],
+     "default": "progress",
      "description": "Semantics for ARIA and visualization (default: 'progress')"
     },
     {
@@ -4671,12 +5709,44 @@
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen"
+     ],
+     "default": "accent",
      "description": "Color for the single-segment shorthand (default: 'accent')"
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md",
+      "lg"
+     ],
+     "default": "md",
      "description": "Height of the bar (default: 'md')"
     },
     {
@@ -4686,7 +5756,13 @@
     },
     {
      "name": "value-format",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "percentage",
+      "absolute",
+      "fraction"
+     ],
+     "default": "percentage",
      "description": "Format for the displayed value (default: 'percentage')"
     },
     {
@@ -4696,7 +5772,13 @@
     },
     {
      "name": "value-display",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inline",
+      "tooltip",
+      "none"
+     ],
+     "default": "inline",
      "description": "Where the value shows: inline in the caption, in a tooltip on the bar, or hidden (default: 'inline')"
     },
     {
@@ -4732,7 +5814,33 @@
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen"
+     ],
+     "default": "accent",
      "description": "Color (semantic or Rijkskleur). Default 'accent'."
     },
     {
@@ -4753,7 +5861,12 @@
    "attributes": [
     {
      "name": "mode",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "progress",
+      "distribution"
+     ],
+     "default": "progress",
      "description": "Semantics for ARIA and gap behavior (default: 'progress')"
     },
     {
@@ -4768,12 +5881,53 @@
     },
     {
      "name": "color",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen"
+     ],
+     "default": "accent",
      "description": "Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'."
     },
     {
      "name": "size",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
+     "default": "28",
      "description": "Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28')"
     },
     {
@@ -4783,7 +5937,13 @@
     },
     {
      "name": "value-format",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "percentage",
+      "absolute",
+      "fraction"
+     ],
+     "default": "percentage",
      "description": "Format of the displayed value (default: 'percentage')"
     },
     {
@@ -4793,7 +5953,13 @@
     },
     {
      "name": "value-display",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "inline",
+      "tooltip",
+      "none"
+     ],
+     "default": "tooltip",
      "description": "Where the value shows: inline below the label, in a tooltip, or hidden (default: 'tooltip')"
     },
     {
