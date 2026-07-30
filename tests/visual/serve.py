@@ -328,19 +328,92 @@ class FixtureHandler(SimpleHTTPRequestHandler):
             self.wfile.write(error_html.encode("utf-8"))
 
     def _serve_index(self) -> None:
-        """Serve an index page listing all available fixtures."""
-        fixtures = sorted(FIXTURES_DIR.rglob("*.html"))
-        links = []
-        for f in fixtures:
-            rel = f.relative_to(FIXTURES_DIR)
-            links.append(f'<li><a href="/{rel}">{rel}</a></li>')
+        """A curated landing page: the storybook and reference galleries up top,
+        then the demo apps (each with an NLDD/RVO toggle so the theme-agnostic
+        rendering is one click away), then the component-variant fixtures. The
+        raw internal compare artifacts (_cmp_*, _compare-*) are hidden."""
+        all_fixtures = {
+            f.relative_to(FIXTURES_DIR).as_posix()
+            for f in FIXTURES_DIR.rglob("*.html")
+            if not f.name.startswith("_")
+        }
+        used: set[str] = set()
 
-        html = (
-            "<!DOCTYPE html><html><head><title>LOTC Visual Test Fixtures</title></head>"
-            "<body><h1>LOTC Visual Test Fixtures</h1><ul>"
-            + "\n".join(links)
-            + "</ul></body></html>"
+        def ds_links(name: str, themes: list[tuple[str, str]]) -> str:
+            used.add(name)
+            parts = [
+                f'<a class="ds" href="/{name}?ds={val}">{lbl}</a>' for val, lbl in themes
+            ]
+            return " ".join(parts)
+
+        def card(name: str, title: str, desc: str, themes: list[tuple[str, str]]) -> str:
+            if name not in all_fixtures:
+                return ""
+            return (
+                f'<div class="card"><div class="ttl">{title}</div>'
+                f'<div class="dsc">{desc}</div>{ds_links(name, themes)}</div>'
+            )
+
+        NLDD = ("nldd,bgnldd", "NLDD")
+        RVO = ("rvo", "RVO")
+
+        # ── storybook + reference ──
+        ref = "".join([
+            card("nldd-storybook.html", "Component-storybook",
+                 "Alle 95 NLDD-componenten: attributen (met enum-waarden) + live rendering.", [NLDD]),
+            card("nldd-gallery.html", "Gallery",
+                 "Compacte galerij van alle gegenereerde componenten.", [NLDD]),
+            card("nldd-real.html", "Realistische voorbeelden",
+                 "Context-componenten met echte, samengestelde inhoud.", [NLDD]),
+            card("showcase.html", "Showcase", "Brede mix van componenten.", [NLDD, RVO]),
+        ])
+
+        # ── demo apps (same source, both design systems) ──
+        apps = "".join([
+            card("apps.html", "Software-catalogus",
+                 "Volledige app-pagina — één bron, twee design systems.", [NLDD, RVO]),
+            card("zelf.html", "Mijn overzicht",
+                 "Persoonlijk dashboard.", [NLDD, RVO]),
+            card("bg-overzicht.html", "Overzicht",
+                 "Landingspagina van het platform.", [NLDD, RVO]),
+            card("combined.html", "Combined", "Gecombineerde componenten-pagina.", [NLDD, RVO]),
+        ])
+        # -rvo twins are covered by the RVO toggle above; mark them used.
+        for twin in ("apps-rvo.html", "zelf-rvo.html", "bg-overzicht-rvo.html", "app-components-rvo.html"):
+            used.add(twin)
+
+        # ── everything else: variant/reference fixtures ──
+        rest = sorted(all_fixtures - used)
+        rest_links = "".join(
+            f'<li><a href="/{n}?ds=nldd,bgnldd">{n[:-5]}</a> '
+            f'<a class="mini" href="/{n}?ds=rvo">rvo</a></li>'
+            for n in rest
         )
+
+        html = f"""<!DOCTYPE html><html lang="nl"><head><meta charset="utf-8">
+<title>LOTC — overzicht</title><style>
+  body{{font-family:system-ui,sans-serif;margin:0;background:#f6f7f9;color:#1a1a1a}}
+  header{{background:#154273;color:#fff;padding:1.5rem 2rem}}
+  header h1{{margin:0;font-size:1.4rem}} header p{{margin:.3rem 0 0;opacity:.85;font-size:.9rem}}
+  main{{max-width:1000px;margin:0 auto;padding:1.5rem 2rem}}
+  h2{{color:#154273;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin:2rem 0 .8rem;border-bottom:2px solid #dde3ec;padding-bottom:.4rem}}
+  .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.9rem}}
+  .card{{background:#fff;border:1px solid #e5e8ec;border-radius:10px;padding:.9rem}}
+  .card .ttl{{font-weight:700;color:#154273}} .card .dsc{{font-size:.8rem;color:#666;margin:.3rem 0 .7rem}}
+  a.ds{{display:inline-block;padding:.2rem .6rem;border-radius:6px;background:#154273;color:#fff;text-decoration:none;font-size:.78rem;font-weight:600;margin-right:.3rem}}
+  a.ds:hover{{background:#0d2d4f}}
+  ul.rest{{columns:3;list-style:none;padding:0;font-size:.82rem}}
+  ul.rest li{{margin:.15rem 0;break-inside:avoid}}
+  ul.rest a{{color:#154273;text-decoration:none}} ul.rest a:hover{{text-decoration:underline}}
+  a.mini{{font-size:.68rem;color:#999}}
+</style></head><body>
+<header><h1>Lord of the Components</h1>
+<p>Thema-agnostische compiler — één <code>&lt;c-*&gt;</code>-bron, meerdere design systems (RVO · NLDD).</p></header>
+<main>
+<h2>Storybook &amp; referentie</h2><div class="grid">{ref}</div>
+<h2>Demo-apps — zelfde bron, beide design systems</h2><div class="grid">{apps}</div>
+<h2>Component-varianten &amp; losse fixtures</h2><ul class="rest">{rest_links}</ul>
+</main></body></html>"""
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
