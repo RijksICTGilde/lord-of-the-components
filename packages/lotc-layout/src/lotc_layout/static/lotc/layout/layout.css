@@ -89,3 +89,42 @@
 .lotc-box--border {
   border: 1px solid currentColor;
 }
+
+/* ── Grid: intrinsic equal-width columns (Every Layout: Grid) ──────────────── */
+.lotc-grid {
+  display: grid;
+  gap: var(--lotc-grid-gap, 1rem);
+  grid-template-columns: repeat(var(--lotc-grid-cols, 1), minmax(0, 1fr));
+}
+.lotc-grid[style*="--lotc-grid-template"] { grid-template-columns: var(--lotc-grid-template); }
+/* `min` given -> auto-fit: as many columns as fit, each >= min, no media query. */
+.lotc-grid--auto {
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--lotc-grid-min, 16rem), 100%), 1fr));
+}
+
+/* ── Layout: page shell (header / sidebar + main / footer) ─────────────────── */
+.lotc-layout {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100vh;
+}
+.lotc-layout__body {
+  flex: 1 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lotc-layout-gap, 1.5rem);
+  inline-size: 100%;
+  max-inline-size: var(--lotc-layout-max, none);
+  margin-inline: auto;
+}
+.lotc-layout__sidebar {
+  flex-basis: var(--lotc-layout-sidebar, 16rem);
+  flex-grow: 1;
+}
+.lotc-layout__main {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: 60%;
+}
+.lotc-layout--right .lotc-layout__body { flex-direction: row-reverse; }
+.lotc-layout__header, .lotc-layout__footer { flex: 0 0 auto; }

@@ -1,0 +1,23 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{#
+  lotc-layout Grid (Every Layout: Grid) — the design-system-agnostic <c-grid>.
+  Same contract as the RVO grid (columns / gap / division), rendered as an
+  intrinsic CSS grid. Give `min` for a truly responsive auto-fit grid (columns
+  are then derived from the available space; mobile-first, no media query).
+#}
+{% macro lotc_render(_component_context) %}
+{% set columns = _component_context.get('columns', '') %}
+{% set division = _component_context.get('division', '') %}
+{% set gap = _component_context.get('gap', '') %}
+{% set min = _component_context.get('min', '') %}
+{% set colmap = {'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,'ten':10,'eleven':11,'twelve':12} %}
+{% set gapmap = {'none':'0','xs':'.25rem','sm':'.5rem','md':'1rem','lg':'1.5rem','xl':'2rem'} %}
+{% set gapval = gapmap.get(gap, gap) %}
+{% set cls = ['lotc-grid'] %}
+{% if min %}{% set cls = cls + ['lotc-grid--auto'] %}{% endif %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="grid" {{ attrs.render_extra_attributes(_component_context) }}
+  style="{% if min %}--lotc-grid-min: {{ min }};{% elif division %}--lotc-grid-template: {{ division }};{% elif columns %}--lotc-grid-cols: {{ colmap.get(columns, columns) }};{% endif %}{% if gapval %}--lotc-grid-gap: {{ gapval }};{% endif %}">
+  {{ _component_context.get('content', '') | safe }}
+</div>
+{% endmacro %}

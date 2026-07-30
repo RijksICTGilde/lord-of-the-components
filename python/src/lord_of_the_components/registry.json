@@ -1028,6 +1028,11 @@
           "description": "Gap between grid items"
         },
         {
+          "name": "min",
+          "type": "string",
+          "description": "Min column width for an intrinsic auto-fit grid (lotc-layout), e.g. '16rem'"
+        },
+        {
           "name": "division",
           "type": "string",
           "description": "Custom grid-template-columns value (e.g., '2fr 1fr')"
@@ -3157,6 +3162,47 @@
         }
       ],
       "description": "A padded container with an optional border — the simplest layout unit (Every Layout: Box)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "layout",
+      "attributes": [
+        {
+          "name": "side",
+          "type": "enum",
+          "enum_values": [
+            "left",
+            "right"
+          ],
+          "default": "left",
+          "description": "Which side the sidebar sits on"
+        },
+        {
+          "name": "sidebar-width",
+          "type": "string",
+          "description": "Ideal sidebar width, e.g. '16rem' (--lotc-layout-sidebar)"
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "description": "Gap between sidebar and main (--lotc-layout-gap)"
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "description": "Max width of the content, centred, e.g. '80rem' (--lotc-layout-max)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Page shell: optional header + footer, and a main area with an optional sidebar that wraps below on narrow screens (intrinsic, mobile-first)",
       "category": "layout",
       "backend": "jinja",
       "content": {

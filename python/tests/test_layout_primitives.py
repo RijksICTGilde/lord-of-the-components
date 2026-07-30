@@ -81,3 +81,35 @@ def test_lotc_layout_is_impl_only_with_own_css():
     ds = discover_design_systems()["lotc-layout"]
     assert ds.templates_path is not None and ds.static_path is not None
     assert ds.css_urls == ("/static/lotc/layout/layout.css",)
+
+
+def test_grid_is_mix_and_match():
+    # <c-grid> is implemented by BOTH lotc-layout (agnostic) and rvo — the active
+    # system decides. Nothing is replaced: rvo-only still gets the RVO grid.
+    agnostic = _env(["lotc-layout", "rvo"]).from_string(
+        '<c-grid min="16rem" gap="lg"><div>a</div></c-grid>'
+    ).render()
+    rvo_only = _env(["rvo"]).from_string(
+        '<c-grid columns="three"><div>a</div></c-grid>'
+    ).render()
+    assert "lotc-grid lotc-grid--auto" in agnostic and "--lotc-grid-min: 16rem" in agnostic
+    assert "lotc-grid" not in rvo_only  # rvo keeps its own grid
+
+
+def test_grid_fixed_columns_agnostic():
+    html = _env(["lotc-layout", "rvo"]).from_string(
+        '<c-grid columns="three" gap="md"><div>a</div></c-grid>'
+    ).render()
+    assert "--lotc-grid-cols: 3" in html and "--lotc-grid-gap: 1rem" in html
+
+
+def test_layout_page_shell():
+    html = _env(["lotc-layout", "rvo"]).from_string(
+        '<c-layout side="left" sidebar-width="16rem" max="80rem">'
+        '<template slot="header">H</template><template slot="sidebar">S</template>'
+        "MAIN<template slot=\"footer\">F</template></c-layout>"
+    ).render()
+    assert "lotc-layout lotc-layout--left" in html
+    for region in ("lotc-layout__header", "lotc-layout__sidebar", "lotc-layout__main", "lotc-layout__footer"):
+        assert region in html
+    assert "--lotc-layout-sidebar: 16rem" in html and "--lotc-layout-max: 80rem" in html

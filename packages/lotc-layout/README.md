@@ -22,12 +22,19 @@ Only then do `<c-center>`, `<c-cluster>`, `<c-sidebar>`, `<c-switcher>`,
 
 | Component | Every Layout | Purpose |
 | --- | --- | --- |
+| `<c-grid min="16rem">` | Grid | intrinsic auto-fit grid (or `columns="three"` for fixed) |
 | `<c-center max="60rem">` | Center | max-width, horizontally centred column |
 | `<c-cluster gap=".5rem">` | Cluster | wrapping group (tags, buttons) |
 | `<c-sidebar width="18rem">` | Sidebar | content + side column, wraps intrinsically |
 | `<c-switcher threshold="30rem">` | Switcher | row that becomes a stack when narrow |
 | `<c-cover min="100vh">` | Cover | fills height, centres main content |
 | `<c-box pad="1rem" border>` | Box | padded container |
+| `<c-layout sidebar-width="16rem">` | — | page shell: header / sidebar + main / footer |
+
+`<c-grid>` is **mix-and-match**: it is also implemented by design systems that
+ship their own grid (e.g. RVO). Whichever you activate first wins — with
+`design_systems=["lotc-layout", "rvo"]` you get the agnostic grid; with `["rvo"]`
+alone you get RVO's. Nothing is replaced.
 
 `<c-stack>`, `<c-auto-grid>` and `<c-columns>` (the Stack/Grid primitives) live
 in core today; they will move here in a later phase so the whole layout layer is

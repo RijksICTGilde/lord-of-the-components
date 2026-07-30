@@ -93,3 +93,18 @@ export const box = defineComponent({
   },
   content: { allowed: true },
 });
+
+// ── layout: a page shell — header / (sidebar + main) / footer, intrinsic ────
+export const layout = defineComponent({
+  name: "layout",
+  description: "Page shell: optional header + footer, and a main area with an optional sidebar that wraps below on narrow screens (intrinsic, mobile-first)",
+  category: "layout",
+  props: {
+    side: { values: ["left", "right"], default: "left", description: "Which side the sidebar sits on" },
+    "sidebar-width": { description: "Ideal sidebar width, e.g. '16rem' (--lotc-layout-sidebar)" },
+    [PROPS.GAP]: { description: "Gap between sidebar and main (--lotc-layout-gap)" },
+    max: { description: "Max width of the content, centred, e.g. '80rem' (--lotc-layout-max)" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true }, // main content; header/sidebar/footer via <template slot="...">
+});
