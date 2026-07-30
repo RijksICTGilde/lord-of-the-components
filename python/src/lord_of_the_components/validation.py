@@ -50,6 +50,10 @@ class ItemSchema:
     required_keys: Optional[List[str]] = None
     optional_keys: Optional[List[str]] = None
     children_key: Optional[str] = None  # For nested items like menus
+    # Alternative key names accepted for the label / children (e.g. a menu item
+    # may use `name` for the label or `subitems` for its children).
+    label_aliases: Optional[List[str]] = None
+    children_aliases: Optional[List[str]] = None
 
 
 @dataclass
@@ -225,25 +229,27 @@ class DataValidator:
             self._add_error(path, "Expected a dict", item)
             return
 
-        # Check required keys
+        # Check required keys. The label may appear under an alias (e.g. `name`).
         required = schema.required_keys or [schema.label_key]
+        aliases = schema.label_aliases or []
         for key in required:
-            if key not in item:
+            satisfied = key in item or (
+                key == schema.label_key and any(a in item for a in aliases)
+            )
+            if not satisfied:
                 self._add_error(path, f"Missing required key '{key}'", item)
 
-        # Validate nested children
-        if schema.children_key and schema.children_key in item:
-            children = item[schema.children_key]
-            if isinstance(children, list):
-                for i, child in enumerate(children):
-                    child_path = f"{path}.{schema.children_key}[{i}]"
-                    self._validate_item(child, schema, child_path)
-            else:
-                self._add_error(
-                    f"{path}.{schema.children_key}",
-                    "Expected a list for children",
-                    children,
-                )
+        # Validate nested children (under children_key or any alias, e.g. `subitems`).
+        child_keys = [schema.children_key] if schema.children_key else []
+        child_keys += schema.children_aliases or []
+        for ckey in child_keys:
+            if ckey and ckey in item:
+                children = item[ckey]
+                if isinstance(children, list):
+                    for i, child in enumerate(children):
+                        self._validate_item(child, schema, f"{path}.{ckey}[{i}]")
+                else:
+                    self._add_error(f"{path}.{ckey}", "Expected a list for children", children)
 
     def _add_error(self, path: str, message: str, value: Any) -> None:
         """Add a validation error."""
@@ -266,6 +272,8 @@ def validate_items(
     label_key: str = "label",
     value_key: str = "value",
     children_key: Optional[str] = None,
+    label_aliases: Optional[List[str]] = None,
+    children_aliases: Optional[List[str]] = None,
 ) -> ValidationResult:
     """
     Validate an items array.
@@ -275,6 +283,8 @@ def validate_items(
         label_key: Key for item label
         value_key: Key for item value
         children_key: Key for nested children (for menus)
+        label_aliases: Alternative keys accepted for the label (e.g. ["name"])
+        children_aliases: Alternative keys accepted for children (e.g. ["subitems"])
 
     Returns:
         ValidationResult with errors if invalid
@@ -284,6 +294,8 @@ def validate_items(
         label_key=label_key,
         value_key=value_key,
         children_key=children_key,
+        label_aliases=label_aliases,
+        children_aliases=children_aliases,
     )
     return validator.validate_items(items, schema)
 
@@ -582,7 +594,10 @@ class DataValidationError(Exception):
 
 #: Binding type -> validator. TableRow[] has no required schema (free-form rows).
 _BINDING_VALIDATORS = {
-    "MenuItem[]": lambda v: validate_items(v, label_key="label", children_key="children"),
+    "MenuItem[]": lambda v: validate_items(
+        v, label_key="label", children_key="children",
+        label_aliases=["name"], children_aliases=["subitems"],
+    ),
     "SelectOption[]": lambda v: validate_items(v, label_key="label", value_key="value"),
     "BreadcrumbItem[]": lambda v: validate_items(v, label_key="label"),
     "TabItem[]": lambda v: validate_items(v, label_key="label"),

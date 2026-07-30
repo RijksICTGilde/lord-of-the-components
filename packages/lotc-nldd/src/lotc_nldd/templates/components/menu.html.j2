@@ -1,7 +1,21 @@
+{#
+  NLDD menu — hand-authored. Fills an <nldd-menu-bar> either declaratively
+  (<c-menu-item> children) or from data (<c-menu :items="array"/>). Each item is
+  a dict OR object: label|name, href|path, icon, active|selected, disabled,
+  children|subitems. Nested children slot inside their parent item as a submenu.
+#}
 {% macro lotc_render(_component_context) %}
+{% set children = _component_context.get('content', '') %}
 {% set aria = _component_context.get('aria-label', '') %}
 {% set slot = _component_context.get('slot', '') %}
-{% set children = _component_context.get('content', '') %}
 {% set extra = _component_context.get('class', '') %}
-<nldd-menu-bar{% if slot %} slot="{{ slot }}"{% endif %}{% if aria %} accessible-label="{{ aria }}"{% endif %}{% if extra %} class="{{ extra }}"{% endif %} data-lotc-component="menu">{{ children | safe }}</nldd-menu-bar>
+{% set items = _component_context.get('items', []) %}
+<nldd-menu-bar{% if slot %} slot="{{ slot }}"{% endif %}{% if aria %} accessible-label="{{ aria }}"{% endif %}{% if extra %} class="{{ extra }}"{% endif %} data-lotc-component="menu">
+{%- for it in items recursive %}
+  {%- set label = it.label or it.name %}
+  {%- set href = it.href or it.path %}
+  {%- set kids = it.children or it.subitems %}
+  {%- set active = it.active or it.selected %}
+  <nldd-menu-bar-item text="{{ label }}"{% if it.icon %} icon="{{ it.icon }}"{% endif %}{% if href %} href="{{ href }}"{% endif %}{% if kids %} expandable{% endif %}{% if active %} current{% endif %}{% if it.disabled %} disabled{% endif %} data-lotc-component="menu-item">{% if kids %}{{ loop(kids) }}{% endif %}</nldd-menu-bar-item>
+{%- endfor %}{{ children | safe }}</nldd-menu-bar>
 {% endmacro %}

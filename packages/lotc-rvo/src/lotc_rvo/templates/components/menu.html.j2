@@ -1,60 +1,53 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{#
+  RVO menu — hand-authored (see generate-all HAND_AUTHORED).
+  Two ways to fill it:
+    - declarative:  <c-menu><c-menu-item label=.. href=..>...</c-menu-item></c-menu>
+    - data-driven:  <c-menu :items="array"/>  where each item is a dict OR object:
+        label|name, href|path, icon, active|selected, disabled, children|subitems
+      Nested children render as a submenu, recursively.
+#}
 {% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
-{% set slots = _component_context.get('slots', {}) %}
 {% set aria_label = _component_context.get('aria-label', '') %}
 {% set size = _component_context.get('size', 'md') %}
 {% set type = _component_context.get('type', 'horizontal') %}
-{% set css_classes = ['rvo-menubar__background'] %}
-{% if _component_context.get('class') %}
-    {% set css_classes = css_classes + _component_context['class'].split() %}
-{% endif %}
-<div
-    class="{{ css_classes | join(' ') }}"
-    data-lotc-component="menu"
-    {{ attrs.render_extra_attributes(_component_context) }}>
-    {% set css_classes = ['rvo-menubar'] %}
-    {% if size %}{% set css_classes = css_classes + ['rvo-menubar--' ~ size] %}{% endif %}
-    <nav
-        {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
-        class="{{ css_classes | join(' ') }}">
-        {% set css_classes = ['rvo-menubar__ul'] %}
-        <ul
-            class="{{ css_classes | join(' ') }}">
-            {% set css_classes = ['rvo-menubar__list'] %}
-            {% if type == 'vertical' %}{% set css_classes = css_classes + ['rvo-menubar__list--vertical'] %}{% endif %}
-            <li
-                class="{{ css_classes | join(' ') }}">
-                {% set css_classes = ['rvo-menubar__group--flex'] %}
-                {% if type == 'vertical' %}{% set css_classes = css_classes + ['rvo-menubar__group--vertical'] %}{% endif %}
-                <ul
-                    class="{{ css_classes | join(' ') }}">
-                    {% for item in _component_context.get('items', []) %}
-                        {% set css_classes = ['rvo-menubar__item'] %}
-                        {% if item.active %}{% set css_classes = css_classes + ['rvo-menubar__item--active'] %}{% endif %}
-                        <li
-                            class="{{ css_classes | join(' ') }}">
-                            {% if item.href %}
-                            {% set css_classes = ['rvo-link', 'rvo-menubar__link'] %}
-                            <a
-                                href="{{ item.href }}"
-                                class="{{ css_classes | join(' ') }}">
-                                {{ item.label | safe }}
-                            </a>
-                            {% endif %}
-                            {% if not (item.href) %}
-                            {% set css_classes = ['rvo-link', 'rvo-menubar__link'] %}
-                            <span
-                                class="{{ css_classes | join(' ') }}">
-                                {{ item.label | safe }}
-                            </span>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                    {{ children | safe }}
-                </ul>
+{% set items = _component_context.get('items', []) %}
+{% set menu_class = ['rvo-menubar__background'] %}
+{% if _component_context.get('class') %}{% set menu_class = menu_class + _component_context['class'].split() %}{% endif %}
+<div class="{{ menu_class | join(' ') }}" data-lotc-component="menu" {{ attrs.render_extra_attributes(_component_context) }}>
+  <nav{% if aria_label %} aria-label="{{ aria_label }}"{% endif %} class="rvo-menubar{% if size %} rvo-menubar--{{ size }}{% endif %}">
+    <ul class="rvo-menubar__ul">
+      <li class="rvo-menubar__list{% if type == 'vertical' %} rvo-menubar__list--vertical{% endif %}">
+        <ul class="rvo-menubar__group--flex{% if type == 'vertical' %} rvo-menubar__group--vertical{% endif %}">
+          {% for it in items recursive %}
+            {% set label = it.label or it.name %}
+            {% set href = it.href or it.path %}
+            {% set kids = it.children or it.subitems %}
+            {% set active = it.active or it.selected %}
+            <li class="rvo-menubar__item{% if active %} rvo-menubar__item--active{% endif %}">
+              {% if kids %}
+              <div class="rvo-menubar__dropdown">
+                <button class="rvo-link rvo-menubar__link" type="button" aria-expanded="false"{% if it.disabled %} disabled{% endif %}>
+                  {% if it.icon %}{{ _lotc_rvo_icon(icon=it.icon, size="md", _class="rvo-menubar__icon--before") }}{% endif %}{{ label }}
+                </button>
+                <ul class="rvo-menubar__submenu">{{ loop(kids) }}</ul>
+              </div>
+              {% elif href %}
+              <a href="{{ href }}" class="rvo-link rvo-menubar__link{% if active %} rvo-link--active{% endif %}"{% if it.disabled %} aria-disabled="true"{% endif %}>
+                {% if it.icon %}{{ _lotc_rvo_icon(icon=it.icon, size="md", _class="rvo-menubar__icon--before") }}{% endif %}{{ label }}
+              </a>
+              {% else %}
+              <span class="rvo-link rvo-menubar__link">
+                {% if it.icon %}{{ _lotc_rvo_icon(icon=it.icon, size="md", _class="rvo-menubar__icon--before") }}{% endif %}{{ label }}
+              </span>
+              {% endif %}
             </li>
+          {% endfor %}
+          {{ children | safe }}
         </ul>
-    </nav>
+      </li>
+    </ul>
+  </nav>
 </div>
 {% endmacro %}
