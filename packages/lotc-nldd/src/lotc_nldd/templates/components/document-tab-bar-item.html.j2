@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-document-tab-bar-item{% if _component_context.get('selected') %} selected{% endif %}{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('supporting-text') %} supporting-text="{{ _component_context.get('supporting-text') }}"{% endif %}{% if _component_context.get('short-text') %} short-text="{{ _component_context.get('short-text') }}"{% endif %}{% if _component_context.get('short-supporting-text') %} short-supporting-text="{{ _component_context.get('short-supporting-text') }}"{% endif %}{% if _component_context.get('href') %} href="{{ _component_context.get('href') }}"{% endif %} data-lotc-component="document-tab-bar-item" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-document-tab-bar-item>
+{% endmacro %}

@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-code-viewer{% if _component_context.get('variant') %} variant="{{ _component_context.get('variant') }}"{% endif %}{% if _component_context.get('background') %} background="{{ _component_context.get('background') }}"{% endif %}{% if _component_context.get('language') %} language="{{ _component_context.get('language') }}"{% endif %}{% if _component_context.get('no-copy') %} no-copy{% endif %}{% if _component_context.get('wrap') %} wrap{% endif %}{% if _component_context.get('copy-unavailable') %} copy-unavailable{% endif %}{% if _component_context.get('translations') %} translations="{{ _component_context.get('translations') }}"{% endif %} data-lotc-component="code-viewer" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-code-viewer>
+{% endmacro %}

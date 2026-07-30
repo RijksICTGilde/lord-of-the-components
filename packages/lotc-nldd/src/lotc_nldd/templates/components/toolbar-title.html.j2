@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-toolbar-title{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('supporting-text') %} supporting-text="{{ _component_context.get('supporting-text') }}"{% endif %}{% if _component_context.get('align') %} align="{{ _component_context.get('align') }}"{% endif %}{% if _component_context.get('width') %} width="{{ _component_context.get('width') }}"{% endif %}{% if _component_context.get('min-width') %} min-width="{{ _component_context.get('min-width') }}"{% endif %}{% if _component_context.get('max-width') %} max-width="{{ _component_context.get('max-width') }}"{% endif %} data-lotc-component="toolbar-title" {{ attrs.render_extra_attributes(_component_context) }}>
+{% if _component_context.get('slots', {}).get('action') %}<template slot="action">{{ _component_context['slots']['action'] | safe }}</template>{% endif %}
+</nldd-toolbar-title>
+{% endmacro %}

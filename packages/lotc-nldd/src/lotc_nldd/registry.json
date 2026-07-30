@@ -1,0 +1,4885 @@
+{
+ "components": [
+  {
+   "name": "button-bar-divider",
+   "attributes": [],
+   "description": "NLDD button-bar-divider",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "button-bar",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Bar size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). At 'lg', icon-button children stack their label below the icon (mob"
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Button variant (default: 'neutral-tinted')"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    }
+   ],
+   "description": "A horizontal container for grouping buttons with a neutral background. Automatically propagates its size and variant to all child nldd-butto",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "button-group",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Button group size: 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "orientation",
+     "type": "string",
+     "description": "Layout direction: 'horizontal' | 'vertical' (default: 'vertical')"
+    }
+   ],
+   "description": "A container for grouping related buttons together, either horizontally or vertically.",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "icon-button",
+   "attributes": [
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | "
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')"
+    },
+    {
+     "name": "hide-lg-text",
+     "type": "boolean",
+     "description": "In lg size, hides the text label and enlarges the icon by one step (28px)"
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Loading state (default: false). Shows an activity indicator over the visually hidden icon, sets aria-busy on the inner c"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "no-highlight-border",
+     "type": "boolean",
+     "description": "Removes the per-variant highlight border (e.g. when a control group draws a single border instead)."
+    },
+    {
+     "name": "type",
+     "type": "string",
+     "description": "Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)"
+    },
+    {
+     "name": "expandable",
+     "type": "boolean",
+     "description": "Whether the button opens a menu or popover and shows chevron next to the icon"
+    },
+    {
+     "name": "expanded",
+     "type": "boolean",
+     "description": "Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; to"
+    },
+    {
+     "name": "no-tab",
+     "type": "boolean",
+     "description": "Takes the button out of the tab order (tabindex=\"-1\"), for a control owned by a roving container (e.g. an nldd-token in "
+    },
+    {
+     "name": "popup-type",
+     "type": "string",
+     "description": "Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the in"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')"
+    },
+    {
+     "name": "popovertarget",
+     "type": "string",
+     "description": "ID of a popover element to toggle; forwarded to the inner <button>"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Button text, used as aria-label and shown below the icon in lg size"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icon name for the nldd-icon element. Defaults to a placeholder icon when neither this attribute nor the icon slot is set"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label for screen readers. Overrides text as aria-label and title tooltip. Use when the visible text alone lac"
+    },
+    {
+     "name": "tooltip-timing",
+     "type": "string",
+     "description": "Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visua"
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "When set, renders an <a> element instead of <button>"
+    },
+    {
+     "name": "target",
+     "type": "string",
+     "description": "Link target (e.g. '_blank'); only used when href is set. With '_blank' the \"opens in new tab\" announcement is folded int"
+    },
+    {
+     "name": "rel",
+     "type": "string",
+     "description": "Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys (e.g. the \"opens in new tab\" announcement); unset keys fall back to Dutch."
+    }
+   ],
+   "description": "NLDD icon-button",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "menu-divider",
+   "attributes": [],
+   "description": "A horizontal rule between groups of items in an `nldd-menu`.",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "menu-group",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Group title text shown above the items."
+    }
+   ],
+   "description": "A labeled group of menu items inside an nldd-menu. Wraps its slotted",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "split-button",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')"
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Button variant (default: 'neutral-tinted')"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Width mode: 'full' (stretches to container) or any CSS length; the main action button fills the available space"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Button text for the primary action"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icon name shown before the text on the primary action button"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Translations; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button ",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "toolbar-item",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Fluid width: a percentage (e.g. '40%') or any CSS length (e.g. '240px'). Setting it (or min-width or max-width) makes th"
+    },
+    {
+     "name": "min-width",
+     "type": "string",
+     "description": "Minimum (fluid) width as a CSS length (e.g. '240px'). Setting it also makes the item fluid."
+    },
+    {
+     "name": "max-width",
+     "type": "string",
+     "description": "Maximum (fluid) width as a CSS length (e.g. '480px'). Setting it also makes the item fluid."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Text label shown below the item when the toolbar has show-item-labels."
+    },
+    {
+     "name": "priority",
+     "type": "string",
+     "description": "Overflow order: items with a lower priority move into the overflow menu first (default 0). Items sharing a priority over"
+    }
+   ],
+   "description": "NLDD toolbar-item",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "toolbar-title",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Title text."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Secondary supporting text shown below the title."
+    },
+    {
+     "name": "align",
+     "type": "string",
+     "description": "Text alignment: 'left' | 'center' (default: 'left')."
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Preferred (fluid) width as a CSS length or percentage; the title grows toward it and shrinks to min-width."
+    },
+    {
+     "name": "min-width",
+     "type": "string",
+     "description": "Minimum width as a CSS length (default: '0', so the title shrink-wraps its content and the next element sits against it)"
+    },
+    {
+     "name": "max-width",
+     "type": "string",
+     "description": "Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted"
+    }
+   ],
+   "description": "NLDD toolbar-title",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "toolbar",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Toolbar size, propagated to all child controls: 'sm' | 'md' | 'lg' (default: 'md'). At 'lg' the overflow button (and lg-"
+    },
+    {
+     "name": "show-item-labels",
+     "type": "boolean",
+     "description": "When true, shows a text label below each toolbar item and the overflow button"
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys (e.g. the overflow button label); unset keys fall back to Dutch."
+    }
+   ],
+   "description": "NLDD toolbar",
+   "category": "actions",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "avatar",
+   "attributes": [
+    {
+     "name": "src",
+     "type": "string",
+     "description": "Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon"
+    },
+    {
+     "name": "srcset",
+     "type": "string",
+     "description": "Responsive source set voor de afbeelding (het component zet zelf `sizes`)"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label"
+    },
+    {
+     "name": "initials",
+     "type": "string",
+     "description": "Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Overschrijft het type-afhankelijke terugval-icoon"
+    },
+    {
+     "name": "type",
+     "type": "string",
+     "description": "`person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "`default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `curren"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "`full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, "
+    },
+    {
+     "name": "icon-aligned",
+     "type": "boolean",
+     "description": "Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfd"
+    },
+    {
+     "name": "decorative",
+     "type": "boolean",
+     "description": "Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)"
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm"
+    },
+    {
+     "name": "button",
+     "type": "boolean",
+     "description": "Maakt de avatar een knop; genegeerd wanneer `href` is gezet"
+    },
+    {
+     "name": "target",
+     "type": "string",
+     "description": "Link target voor href (bijv. '_blank'); vult rel aan en meldt \"Opent in nieuw tabblad\""
+    },
+    {
+     "name": "rel",
+     "type": "string",
+     "description": "Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Naam van de link of knop; zonder deze wordt `name` gebruikt"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands"
+    }
+   ],
+   "description": "Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terug",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "byline",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Naamregel (bijv. \"Jan Jansen en Piet Pietersen\"); fallback wanneer de text-slot leeg is"
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is"
+    },
+    {
+     "name": "avatar-src",
+     "type": "string",
+     "description": "Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is"
+    },
+    {
+     "name": "avatar-srcset",
+     "type": "string",
+     "description": "Responsive source set voor de avatar-src-afbeelding"
+    },
+    {
+     "name": "avatar-alt",
+     "type": "string",
+     "description": "Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief"
+    }
+   ],
+   "description": "Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "code-viewer",
+   "attributes": [
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drop"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Surface fill when `variant=\"box\"`."
+    },
+    {
+     "name": "language",
+     "type": "string",
+     "description": "Grammar to highlight with. Empty disables highlighting."
+    },
+    {
+     "name": "no-copy",
+     "type": "boolean",
+     "description": "Hide the copy-to-clipboard button (shown by default)."
+    },
+    {
+     "name": "wrap",
+     "type": "boolean",
+     "description": "Wrap long lines instead of horizontal scroll"
+    },
+    {
+     "name": "copy-unavailable",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys (e.g. the copy button labels and the scroll-region label); unset keys fall back to Dutch."
+    }
+   ],
+   "description": "A read-only block of code/text built on a non-editable CodeMirror 6 view. Visually pairs with nldd-code-editor (same engine, same token pale",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "image",
+   "attributes": [
+    {
+     "name": "src",
+     "type": "string",
+     "description": "Image URL"
+    },
+    {
+     "name": "alt",
+     "type": "string",
+     "description": "Alt text. Required unless `decorative`."
+    },
+    {
+     "name": "srcset",
+     "type": "string",
+     "description": "Responsive source set"
+    },
+    {
+     "name": "sizes",
+     "type": "string",
+     "description": "Source sizes hint"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Display width. `full` (default) fills the parent. A numeric value sets host `max-width` AND the `<img>` layout-hint widt"
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Intrinsic height (for layout reservation)"
+    },
+    {
+     "name": "loading",
+     "type": "string",
+     "description": "Loading strategy (default: 'lazy'). Lazy defers fetch until the image is near the viewport — the right choice for below-"
+    },
+    {
+     "name": "decoding",
+     "type": "string",
+     "description": "Decoding hint (default: 'async')"
+    },
+    {
+     "name": "fetchpriority",
+     "type": "string",
+     "description": "Fetch priority hint"
+    },
+    {
+     "name": "aspect-ratio",
+     "type": "string",
+     "description": "Aspect ratio in CSS form (e.g. \"16/9\", \"1/1\", \"4/3\"). \"16:9\" colon notation is also accepted for convenience."
+    },
+    {
+     "name": "object-fit",
+     "type": "string",
+     "description": "default: 'cover'"
+    },
+    {
+     "name": "object-position",
+     "type": "string",
+     "description": "default: 'center'"
+    },
+    {
+     "name": "shape",
+     "type": "string",
+     "description": "Corner shape (default: 'square')"
+    },
+    {
+     "name": "caption",
+     "type": "string",
+     "description": "Caption text shown below the image"
+    },
+    {
+     "name": "credit",
+     "type": "string",
+     "description": "Smaller credit/attribution text shown beside the caption"
+    },
+    {
+     "name": "decorative",
+     "type": "boolean",
+     "description": "Decorative image: alt is forced empty + aria-hidden"
+    },
+    {
+     "name": "lqip",
+     "type": "string",
+     "description": "Low-quality image placeholder as a CSV string `\"base,c1,c2,c3,c4,c5,c6\"` — seven 0-255 bytes, each packing an 8-bit Okla"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys (e.g. the message shown when the image fails to load); unset keys fall back to Dutch."
+    }
+   ],
+   "description": "Wraps a native `<img>` with design-system styling: corner radius variants, aspect-ratio reservation, object-fit/position control, optional c",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "keyboard-shortcut",
+   "attributes": [
+    {
+     "name": "keys",
+     "type": "string",
+     "description": "Toetsen gescheiden door '+' (bijv. 'Cmd+K' of 'Ctrl+Shift+P'). Gebruik '+++' voor een letterlijke '+' toets: 'Ctrl+++' w"
+    },
+    {
+     "name": "mac-keys",
+     "type": "string",
+     "description": "Optionele override voor macOS (incl. iPhone/iPad/iPod)."
+    },
+    {
+     "name": "windows-keys",
+     "type": "string",
+     "description": "Optionele override voor Windows."
+    },
+    {
+     "name": "linux-keys",
+     "type": "string",
+     "description": "Optionele override voor Linux/ChromeOS."
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Grootte: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' neemt de font-size over van de container; bij de box-variant"
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "'box' (default) toont elke toets als keycap met vulling en highlight-rand; 'simple' toont de toetsen als platte tekst me"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tek"
+    },
+    {
+     "name": "always-visible",
+     "type": "boolean",
+     "description": "Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn."
+    }
+   ],
+   "description": "Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde container met semantische <kbd>-elementen per toets. Op touch",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "rich-text",
+   "attributes": [
+    {
+     "name": "spacing",
+     "type": "string",
+     "description": "Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'"
+    },
+    {
+     "name": "centered",
+     "type": "boolean",
+     "description": "Centers the main column inside the container; without it, content is left-aligned"
+    },
+    {
+     "name": "hyphens",
+     "type": "boolean",
+     "description": "Opt-in automatische woordafbreking voor doorlopende tekst (p, li, dd). Vereist een correcte `lang` op de pagina (bijv. `"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "'inherit' laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories). Links b"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested element",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "title",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Visual size of the title: 1–6 (default: 3)"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "'inherit' laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); over"
+    }
+   ],
+   "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot for actions on the right.",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "token",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Token text; falls back to the default slot when unset."
+    },
+    {
+     "name": "control",
+     "type": "string",
+     "description": "Control type (default: 'none')"
+    },
+    {
+     "name": "expanded",
+     "type": "boolean",
+     "description": "Reflects whether the token's menu is open (control=\"menu\"); managed by the token."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "dismiss-text",
+     "type": "string",
+     "description": "Accessible label for the dismiss button (default: 'Verwijder')"
+    },
+    {
+     "name": "menu-text",
+     "type": "string",
+     "description": "Accessible label for the menu button (default: 'Toon opties')"
+    },
+    {
+     "name": "roving",
+     "type": "boolean",
+     "description": "Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not"
+    }
+   ],
+   "description": "A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or i",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "tooltip",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Tooltip tekst"
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. \"Gekopieerd\"). Reset naar"
+    },
+    {
+     "name": "placement",
+     "type": "string",
+     "description": "Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')"
+    },
+    {
+     "name": "timing",
+     "type": "string",
+     "description": "Wanneer de tooltip verschijnt op hover: 'instant' — direct, zonder show-delay. 'default' — na de standaard show-delay (7"
+    }
+   ],
+   "description": "Wrapper component dat een tooltip toont bij hover of focus op het child element. Gebruikt `display: contents` zodat het de layout van het ch",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "form-actions",
+   "attributes": [
+    {
+     "name": "label-alignment",
+     "type": "string",
+     "description": "'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment."
+    }
+   ],
+   "description": "Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch een submit-button of button-group). Volgt dezelfde responsive layou",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "form-field",
+   "attributes": [
+    {
+     "name": "label-alignment",
+     "type": "string",
+     "description": "'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Field label text. Omit for no-label layout."
+    },
+    {
+     "name": "supporting-label",
+     "type": "string",
+     "description": "Short supporting text below the label. Same typography as optional badge."
+    },
+    {
+     "name": "optional",
+     "type": "boolean",
+     "description": "Shows an optional badge next to the label."
+    },
+    {
+     "name": "optional-label",
+     "type": "string",
+     "description": "Text for the optional badge. Defaults to 'Optioneel'."
+    }
+   ],
+   "description": "NLDD form-field",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "form-field-help-text",
+   "attributes": [],
+   "description": "NLDD form-field-help-text",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "form-field-error-text",
+   "attributes": [
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Visibility managed automatically by nldd-form-field."
+    }
+   ],
+   "description": "NLDD form-field-error-text",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "form-section",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Heading-tekst (gerenderd in `<legend>`)."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Korte beschrijving onder de heading. Houd ≤ ~80 tekens (zie a11y-note)."
+    }
+   ],
+   "description": "Nederlandse Digitale Dienst Form Section Component Plain custom element (extends HTMLElement, no Lit) — light-DOM render lost een NVDA + Fir",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "form",
+   "attributes": [
+    {
+     "name": "label-alignment",
+     "type": "string",
+     "description": "Default `label-alignment` voor descendant nldd-form-field en nldd-form-actions ('top' | 'right' | 'left'). Wordt naar de"
+    }
+   ],
+   "description": "Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit) — required for light-DOM autofill. Renders a r",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "checkbox-field",
+   "attributes": [
+    {
+     "name": "checked",
+     "type": "boolean",
+     "description": "Checked state"
+    },
+    {
+     "name": "indeterminate",
+     "type": "boolean",
+     "description": "Indeterminate state"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Value for form submission"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission"
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Label text for the checkbox"
+    }
+   ],
+   "description": "A checkbox with an inline label for use in forms. Form-associated: participates in native form submission under `name` with `value` when che",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "code-editor",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Editor content"
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Sets the id on the editable element. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder text shown while empty"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Field name for form submission"
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Readonly state (focusable and selectable, not editable)"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "wrap",
+     "type": "boolean",
+     "description": "Wrap long lines instead of horizontal scroll"
+    },
+    {
+     "name": "rows",
+     "type": "string",
+     "description": "Minimum visible rows (the floor in every resize mode). Default: 6."
+    },
+    {
+     "name": "resize",
+     "type": "string",
+     "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "'simple' (default, bare) | 'input-field' (framed surface)"
+    },
+    {
+     "name": "language",
+     "type": "string",
+     "description": "Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python)"
+    },
+    {
+     "name": "line-numbers",
+     "type": "boolean",
+     "description": "Show a line-number gutter"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded to the editor. Set automatically by nldd-form-field."
+    }
+   ],
+   "description": "A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with ",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "combo-box",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The selected form value"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "The text shown in the input. May differ from `value` (e.g. value=\"nl\" → text=\"Nederland\"). Set this when pre-populating "
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder text for the input"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Size: 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Marks the field as valid"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the field as invalid"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "allow-custom",
+     "type": "boolean",
+     "description": "Allow committing free-typed values that match no option (Enter/blur). Default false: only menu options are accepted."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Input name for form submission"
+    },
+    {
+     "name": "autocomplete",
+     "type": "string",
+     "description": "Browser autofill hint. Default 'off' to prevent the native autofill panel from competing with the menu dropdown. Set to "
+    },
+    {
+     "name": "max-items",
+     "type": "string",
+     "description": "Maximum visible items before scrolling (default: 8)"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded as aria-label to the input. Required for screen reader accessibility."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    },
+    {
+     "name": "no-spellcheck",
+     "type": "boolean",
+     "description": "Disables browser spellchecking on the inner input"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    }
+   ],
+   "description": "A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu with nldd-menu-item children to provide options. The slotted ",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "date-field",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "De datum als ISO (jjjj-mm-dd). Met `range` een ISO 8601-interval: `jjjj-mm-dd/jjjj-mm-dd`. Leeg wanneer er geen geldige "
+    },
+    {
+     "name": "range",
+     "type": "boolean",
+     "description": "Kies een periode: twee invoervelden en een kalender in bereikmodus."
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "description": "Vroegst toegestane datum als ISO (jjjj-mm-dd)."
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Laatst toegestane datum als ISO (jjjj-mm-dd)."
+    },
+    {
+     "name": "no-picker",
+     "type": "boolean",
+     "description": "Verbergt de kalenderknop. Standaard staat die knop er wel."
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Markeert het veld als ongeldig."
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Markeert het veld als geldig."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Uitgeschakelde staat."
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Alleen-lezen staat."
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Verplichte staat."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Naam voor formulierverzending."
+    },
+    {
+     "name": "autocomplete",
+     "type": "string",
+     "description": "Autocomplete-hint, bijvoorbeeld 'bday'."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "error-message-ids",
+     "type": "string",
+     "description": "Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container, of geef een eigen CSS-l"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+    }
+   ],
+   "description": "Een tekstveld voor een datum, met een optionele kalender in een popover. De waarde is altijd ISO (jjjj-mm-dd); op het scherm staat de Nederl",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "date-picker",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "De gekozen datum als ISO (jjjj-mm-dd). Alleen zonder `range`."
+    },
+    {
+     "name": "start",
+     "type": "string",
+     "description": "Begin van de periode als ISO. Alleen met `range`."
+    },
+    {
+     "name": "end",
+     "type": "string",
+     "description": "Einde van de periode als ISO. Alleen met `range`."
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Breedte: `full` (vult de container) of een CSS-lengte (bv. `560px`). Leeg (standaard) is de intrinsieke breedte van zeve"
+    },
+    {
+     "name": "range",
+     "type": "boolean",
+     "description": "Kies een periode in plaats van één datum."
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "description": "Vroegst toegestane datum: ISO, of `today` met een verschuiving (`today-18y`)."
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Laatst toegestane datum: ISO, of `today` met een verschuiving (`today+1y`)."
+    },
+    {
+     "name": "first-day-of-week",
+     "type": "string",
+     "description": "Eerste dag van de week, 0 is zondag. Standaard 1 (maandag)."
+    },
+    {
+     "name": "week-numbers",
+     "type": "boolean",
+     "description": "Toont ISO-weeknummers in een kolom links."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Toegankelijke naam van de kalender."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+    }
+   ],
+   "description": "Een kalender waarin een datum of een periode wordt gekozen. Het component is zelfstandig bruikbaar - inline op een pagina, in een filterpane",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "dropdown",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Size: 'xs' | 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Marks the field as valid"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the field as invalid"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state; also forwarded to the slotted select"
+    },
+    {
+     "name": "expanded",
+     "type": "boolean",
+     "description": "Reflects whether the native picker popup is open (driven internally)"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    }
+   ],
+   "description": "A visual wrapper around a native `<select>` element. The consumer provides a native `<select>` as a slotted child — this way the browser ret",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "multi-line-text-field",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "'md' (default) | 'sm'. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The textarea value"
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Sets the id on the native textarea. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder text"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the field as invalid"
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Marks the field as valid"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Textarea name for form submission"
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Readonly state"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "autocomplete",
+     "type": "string",
+     "description": "Autocomplete hint"
+    },
+    {
+     "name": "rows",
+     "type": "string",
+     "description": "Initial visible rows (minimum height). Default: 3."
+    },
+    {
+     "name": "resize",
+     "type": "string",
+     "description": "'none' | 'vertical' | 'auto' (default). 'auto' grows with content (native field-sizing), no manual handle."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "error-message-ids",
+     "type": "string",
+     "description": "Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "no-spellcheck",
+     "type": "boolean",
+     "description": "Disables browser spellchecking on the inner textarea"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    }
+   ],
+   "description": "NLDD multi-line-text-field",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "number-field",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Current value"
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "description": "Minimum value (default: -Infinity)"
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Maximum value (default: Infinity)"
+    },
+    {
+     "name": "step",
+     "type": "string",
+     "description": "Step size (default: 1)"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Size: 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')"
+    },
+    {
+     "name": "hide-spin-buttons",
+     "type": "boolean",
+     "description": "When set, hides the decrement and increment buttons"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label (aria-label) forwarded to the native input"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Translations; unspecified keys fall back to Dutch"
+    }
+   ],
+   "description": "A numeric input field with decrement and increment buttons.",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "password-field",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "'md' (default) | 'sm'. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The input value"
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Sets the id on the native input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder text"
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Marks the field as valid"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the field as invalid"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "masked",
+     "type": "boolean",
+     "description": "Whether the password is masked (default: true)"
+    },
+    {
+     "name": "show-button-text",
+     "type": "string",
+     "description": "Visible toggle button text when masked (default: 'Toon')"
+    },
+    {
+     "name": "hide-button-text",
+     "type": "string",
+     "description": "Visible toggle button text when unmasked (default: 'Verberg')"
+    },
+    {
+     "name": "show-button-accessible-label",
+     "type": "string",
+     "description": "aria-label for toggle when masked (default: 'Toon wachtwoord')"
+    },
+    {
+     "name": "hide-button-accessible-label",
+     "type": "string",
+     "description": "aria-label for toggle when unmasked (default: 'Verberg wachtwoord')"
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Readonly state"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Input name for form submission"
+    },
+    {
+     "name": "autocomplete",
+     "type": "string",
+     "description": "Autocomplete hint"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded to the inner input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "error-message-ids",
+     "type": "string",
+     "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    }
+   ],
+   "description": "A password input field with visibility toggle and validation states.",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "radio-button-field",
+   "attributes": [
+    {
+     "name": "checked",
+     "type": "boolean",
+     "description": "Checked state"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Value for form submission"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-g"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Label text for the radio button"
+    }
+   ],
+   "description": "A radio button with an inline label. Use inside nldd-radio-button-group for keyboard navigation and group semantics. The group sets the name",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "radio-button-group",
+   "attributes": [
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Forwarded to all slotted nldd-radio-button-field elements"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disables all slotted fields"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Marks the group as required"
+    },
+    {
+     "name": "accessible-labeled-by",
+     "type": "string",
+     "description": "Id of an external label element, set as aria-labelledby on the group"
+    }
+   ],
+   "description": "Groups nldd-radio-button-field elements, handles keyboard navigation, and forwards name and disabled state to all child fields. Use inside n",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "radio-button",
+   "attributes": [
+    {
+     "name": "checked",
+     "type": "boolean",
+     "description": "Checked state"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Radio group name for form submission; ties the buttons of one group together"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Value submitted with the form when this radio button is checked"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution"
+    }
+   ],
+   "description": "WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role=\"radiogroup\" and aria-labelledby for proper group semantics. ",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "search-field",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The search value"
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder text for the input"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label (aria-label) for the native input. Falls back to placeholder when not set. Set explicitly when a value "
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Field size: 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Input name for form submission"
+    },
+    {
+     "name": "show-search-button",
+     "type": "boolean",
+     "description": "When set, shows a search button on the right"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    },
+    {
+     "name": "no-spellcheck",
+     "type": "boolean",
+     "description": "Disables browser spellchecking on the inner input"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    }
+   ],
+   "description": "A search input with a leading search icon, an optional dismiss button, and an optional search button.",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "segmented-control-item",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Value for this item"
+    },
+    {
+     "name": "selected",
+     "type": "boolean",
+     "description": "Whether this item is selected (set by parent)"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Control size: 'sm' | 'md' | 'lg' (default: 'md'). Set by nldd-segmented-control."
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Content type: 'text' | 'icon' | 'icon-and-text' (default: 'text'). Set by nldd-segmented-control."
+    },
+    {
+     "name": "input-type",
+     "type": "string",
+     "description": "Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control."
+    },
+    {
+     "name": "group-name",
+     "type": "string",
+     "description": "Name of the group for form submission, put on the native input. Set by nldd-segmented-control."
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Text label (shown for variant \"text\" and \"icon-and-text\"; used as aria-label and tooltip for variant \"icon\")"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icon name for nldd-icon"
+    }
+   ],
+   "description": "NLDD segmented-control-item",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "segmented-control",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Selected value for radio type"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Control size: 'sm' | 'md' | 'lg' (default: 'md')"
+    },
+    {
+     "name": "type",
+     "type": "string",
+     "description": "Input type: 'radio' | 'checkbox' (default: 'radio')."
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state for all items"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission, forwarded to native inputs"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the group, set as aria-label"
+    },
+    {
+     "name": "accessible-labeled-by",
+     "type": "string",
+     "description": "Id of an external label element, set as aria-labelledby on the group"
+    }
+   ],
+   "description": "A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options. Exports both NLDDSegmentedControl and NLDDSegmentedCont",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "stepper",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Current value"
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "description": "Minimum value (default: 0)"
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Maximum value (default: Infinity)"
+    },
+    {
+     "name": "step",
+     "type": "string",
+     "description": "Step size (default: 1)"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Size: 'xs' | 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission; the value is submitted under this name"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Translations; unspecified keys fall back to Dutch"
+    }
+   ],
+   "description": "A numeric control with increment and decrement buttons.",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "switch-field",
+   "attributes": [
+    {
+     "name": "checked",
+     "type": "boolean",
+     "description": "Checked state"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Value for form submission"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission"
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Label text for the switch"
+    }
+   ],
+   "description": "A switch toggle with an inline label for use in forms.",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "switch",
+   "attributes": [
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission; nothing is submitted when the switch is off"
+    },
+    {
+     "name": "checked",
+     "type": "boolean",
+     "description": "Whether the switch is on/off"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Switch size: 'xs' | 'sm' (default: 'sm')"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Value submitted with the form when the switch is on (default: 'on')"
+    }
+   ],
+   "description": "A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label. Direct use o",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "text-editor",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Editor content (markdown)"
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Sets the id on the editable element. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder text shown while empty"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Field name for form submission"
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Readonly state (focusable and selectable, not editable)"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "wrap",
+     "type": "boolean",
+     "description": "Wrap long lines (default true; prose wraps)"
+    },
+    {
+     "name": "rows",
+     "type": "string",
+     "description": "Minimum visible rows (the floor in every resize mode). Default: 6."
+    },
+    {
+     "name": "resize",
+     "type": "string",
+     "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "'simple' (default, bare) | 'input-field' (framed surface)"
+    },
+    {
+     "name": "font",
+     "type": "string",
+     "description": "'sans' (default) | 'mono'"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded to the editor. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "annotatable",
+     "type": "boolean",
+     "description": "Enable the annotation overlay (off by default). Annotations only render when this is set."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys"
+    }
+   ],
+   "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown ",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "text-field",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "'md' (default) | 'sm'. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The input value"
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Sets the id on the native input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder text"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the field as invalid"
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Marks the field as valid"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "type",
+     "type": "string",
+     "description": "Input type: 'text' | 'email' | 'tel' | 'url'"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Input name for form submission"
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Readonly state"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "autocomplete",
+     "type": "string",
+     "description": "Autocomplete hint"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded to the inner input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "error-message-ids",
+     "type": "string",
+     "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "no-spellcheck",
+     "type": "boolean",
+     "description": "Disables browser spellchecking on the inner input"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    }
+   ],
+   "description": "NLDD text-field",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "toggle-button-group",
+   "attributes": [
+    {
+     "name": "type",
+     "type": "string",
+     "description": "Selection mode (default: 'checkbox')"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Forwarded to all buttons"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Forwarded to all buttons (default: 'md')"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disables all buttons"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the group (aria-label)"
+    },
+    {
+     "name": "accessible-labeled-by",
+     "type": "string",
+     "description": "ID of an external label element (aria-labelledby)"
+    }
+   ],
+   "description": "Groups nldd-toggle-button elements and manages selection, keyboard navigation, and forwarding of type, name, size, and disabled state to all",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "toggle-button",
+   "attributes": [
+    {
+     "name": "type",
+     "type": "string",
+     "description": "Underlying element (default: 'button')"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Button size (default: 'md')"
+    },
+    {
+     "name": "selected",
+     "type": "boolean",
+     "description": "Selected state"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Value for form submission (checkbox/radio)"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission (checkbox/radio)"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Button text"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icon name for nldd-icon"
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "What renders: text, icon, or both. Unset → auto-detect from text/icon attributes."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label; required for icon-only usage"
+    }
+   ],
+   "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "token-field",
+   "attributes": [
+    {
+     "name": "values",
+     "type": "string",
+     "description": "Initial token values as a comma-separated string (e.g. \"nl, be, de\"). Not reflected; the live value is the `.values` arr"
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholder shown in the input"
+    },
+    {
+     "name": "type",
+     "type": "string",
+     "description": "Input type forwarded to the inner input (e.g. 'email')"
+    },
+    {
+     "name": "autocomplete",
+     "type": "string",
+     "description": "Autocomplete hint forwarded to the inner input"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded as aria-label to the input"
+    },
+    {
+     "name": "allow-custom",
+     "type": "boolean",
+     "description": "Allow free-typed values (not just menu options)"
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Marks the field valid (shows the valid icon)"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the field invalid (shows the invalid icon)"
+    },
+    {
+     "name": "no-spellcheck",
+     "type": "boolean",
+     "description": "Disables browser spellchecking on the inner input"
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Readonly: static tokens, no input/picker, read-only surface"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Marks the field required (invalid when it has no tokens)"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "token-control",
+     "type": "string",
+     "description": "Trailing control per token: 'dismiss' (default, a ✕ that removes it) or 'menu' (a ⌄ opening a per-token action menu supp"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "app-view",
+   "attributes": [
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Background color (cascades to descendants)"
+    }
+   ],
+   "description": "The required root shell of a Nederlandse Digitale Dienst application. Always contains a split view or an nldd-page as direct content. Set ba",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "collection",
+   "attributes": [
+    {
+     "name": "layout",
+     "type": "string",
+     "description": "Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')"
+    },
+    {
+     "name": "show-load-more",
+     "type": "boolean",
+     "description": "Show load-more button in grid/stack (default: false)"
+    },
+    {
+     "name": "max-items",
+     "type": "string",
+     "description": "Number of visible items per page (default: 24)"
+    },
+    {
+     "name": "lazy-load",
+     "type": "boolean",
+     "description": "Automatically load more items when the button becomes visible"
+    },
+    {
+     "name": "item-width",
+     "type": "string",
+     "description": "Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be "
+    },
+    {
+     "name": "gap",
+     "type": "string",
+     "description": "Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Translation overrides; unset keys fall back to Dutch. Available keys: 'components.collection.previous-action', 'componen"
+    }
+   ],
+   "description": "A container for displaying collections of items. Supports grid, stack, and horizontal scroll layouts. In grid and stack modes, items are pag",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "container",
+   "attributes": [
+    {
+     "name": "layout",
+     "type": "string",
+     "description": "'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes' (default: 'stack')"
+    },
+    {
+     "name": "column-count",
+     "type": "string",
+     "description": "Force N columns (1-8) for layout=grid/columns/lanes"
+    },
+    {
+     "name": "sm-column-count",
+     "type": "string",
+     "description": "Column count when this container is sm-wide"
+    },
+    {
+     "name": "md-column-count",
+     "type": "string",
+     "description": "Column count when this container is md-wide"
+    },
+    {
+     "name": "lg-column-count",
+     "type": "string",
+     "description": "Column count when this container is lg-wide"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "string",
+     "description": "'left' | 'center' | 'right'"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "'top' | 'center' | 'bottom'"
+    },
+    {
+     "name": "gap",
+     "type": "string",
+     "description": "Gap between children"
+    },
+    {
+     "name": "sm-gap",
+     "type": "string",
+     "description": "Gap at sm breakpoint"
+    },
+    {
+     "name": "md-gap",
+     "type": "string",
+     "description": "Gap at md breakpoint"
+    },
+    {
+     "name": "lg-gap",
+     "type": "string",
+     "description": "Gap at lg breakpoint"
+    },
+    {
+     "name": "padding",
+     "type": "string",
+     "description": "Padding for all sides"
+    },
+    {
+     "name": "padding-inline",
+     "type": "string",
+     "description": "Padding for left and right"
+    },
+    {
+     "name": "padding-block",
+     "type": "string",
+     "description": "Padding for top and bottom"
+    },
+    {
+     "name": "padding-top",
+     "type": "string",
+     "description": "Padding top"
+    },
+    {
+     "name": "padding-right",
+     "type": "string",
+     "description": "Padding right"
+    },
+    {
+     "name": "padding-bottom",
+     "type": "string",
+     "description": "Padding bottom"
+    },
+    {
+     "name": "padding-left",
+     "type": "string",
+     "description": "Padding left Breakpoints for the sm/md/lg padding attributes below: sm is up to 640px, md is 641px to 1007px, lg is 1008"
+    },
+    {
+     "name": "sm-padding",
+     "type": "string",
+     "description": "Padding for all sides at sm"
+    },
+    {
+     "name": "sm-padding-inline",
+     "type": "string",
+     "description": "Padding left and right at sm"
+    },
+    {
+     "name": "sm-padding-block",
+     "type": "string",
+     "description": "Padding top and bottom at sm"
+    },
+    {
+     "name": "sm-padding-top",
+     "type": "string",
+     "description": "Padding top at sm"
+    },
+    {
+     "name": "sm-padding-right",
+     "type": "string",
+     "description": "Padding right at sm"
+    },
+    {
+     "name": "sm-padding-bottom",
+     "type": "string",
+     "description": "Padding bottom at sm"
+    },
+    {
+     "name": "sm-padding-left",
+     "type": "string",
+     "description": "Padding left at sm"
+    },
+    {
+     "name": "md-padding",
+     "type": "string",
+     "description": "Padding for all sides at md"
+    },
+    {
+     "name": "md-padding-inline",
+     "type": "string",
+     "description": "Padding left and right at md"
+    },
+    {
+     "name": "md-padding-block",
+     "type": "string",
+     "description": "Padding top and bottom at md"
+    },
+    {
+     "name": "md-padding-top",
+     "type": "string",
+     "description": "Padding top at md"
+    },
+    {
+     "name": "md-padding-right",
+     "type": "string",
+     "description": "Padding right at md"
+    },
+    {
+     "name": "md-padding-bottom",
+     "type": "string",
+     "description": "Padding bottom at md"
+    },
+    {
+     "name": "md-padding-left",
+     "type": "string",
+     "description": "Padding left at md"
+    },
+    {
+     "name": "lg-padding",
+     "type": "string",
+     "description": "Padding for all sides at lg"
+    },
+    {
+     "name": "lg-padding-inline",
+     "type": "string",
+     "description": "Padding left and right at lg"
+    },
+    {
+     "name": "lg-padding-block",
+     "type": "string",
+     "description": "Padding top and bottom at lg"
+    },
+    {
+     "name": "lg-padding-top",
+     "type": "string",
+     "description": "Padding top at lg"
+    },
+    {
+     "name": "lg-padding-right",
+     "type": "string",
+     "description": "Padding right at lg"
+    },
+    {
+     "name": "lg-padding-bottom",
+     "type": "string",
+     "description": "Padding bottom at lg"
+    },
+    {
+     "name": "lg-padding-left",
+     "type": "string",
+     "description": "Padding left at lg"
+    }
+   ],
+   "description": "A simple layout primitive: pick a layout mode, give it a gap, optionally align contents, and add padding. Padding can be set for all sides, ",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "divider",
+   "attributes": [],
+   "description": "Een scheidingslijn die secties van inhoud visueel van elkaar scheidt.",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "full-bleed-section",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+    },
+    {
+     "name": "scheme",
+     "type": "string",
+     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+    },
+    {
+     "name": "padding-block",
+     "type": "string",
+     "description": "Block (top and bottom) padding override (token 0-96; '0' strips it)."
+    },
+    {
+     "name": "padding-top",
+     "type": "string",
+     "description": "Top padding override."
+    },
+    {
+     "name": "padding-bottom",
+     "type": "string",
+     "description": "Bottom padding override."
+    },
+    {
+     "name": "sm-padding-block",
+     "type": "string",
+     "description": "Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom})."
+    },
+    {
+     "name": "sm-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    }
+   ],
+   "description": "A section that spans the full width without horizontal padding. Useful for background colors, images, or other content that runs edge to edg",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "one-half-one-half-section",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+    },
+    {
+     "name": "scheme",
+     "type": "string",
+     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+    },
+    {
+     "name": "padding-block",
+     "type": "string",
+     "description": "Block (top and bottom) padding override (token 0-96; '0' strips it)."
+    },
+    {
+     "name": "padding-top",
+     "type": "string",
+     "description": "Top padding override."
+    },
+    {
+     "name": "padding-bottom",
+     "type": "string",
+     "description": "Bottom padding override."
+    },
+    {
+     "name": "sm-padding-block",
+     "type": "string",
+     "description": "Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom})."
+    },
+    {
+     "name": "sm-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    }
+   ],
+   "description": "A section with two equal columns side by side. The columns wrap automatically when they become smaller than 280px. Padding and gap adjust vi",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "one-third-two-thirds-section",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+    },
+    {
+     "name": "scheme",
+     "type": "string",
+     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+    },
+    {
+     "name": "padding-block",
+     "type": "string",
+     "description": "Block (top and bottom) padding override (token 0-96; '0' strips it)."
+    },
+    {
+     "name": "padding-top",
+     "type": "string",
+     "description": "Top padding override."
+    },
+    {
+     "name": "padding-bottom",
+     "type": "string",
+     "description": "Bottom padding override."
+    },
+    {
+     "name": "sm-padding-block",
+     "type": "string",
+     "description": "Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom})."
+    },
+    {
+     "name": "sm-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    }
+   ],
+   "description": "A section with a 1/3 sidebar on the left and 2/3 main content on the right. The columns wrap automatically when they become smaller than 280",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "sidebar-section",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Body max-width: 'full' removes the constraint; any CSS length overrides the default."
+    },
+    {
+     "name": "sticky-top",
+     "type": "string",
+     "description": "Sticky top inset on lg (CSS length; default = 16px)."
+    },
+    {
+     "name": "sticky-bottom",
+     "type": "string",
+     "description": "Sticky bottom inset on lg (CSS length; default = 16px)."
+    },
+    {
+     "name": "sidebar-label",
+     "type": "string",
+     "description": "Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'."
+    },
+    {
+     "name": "no-collapse",
+     "type": "boolean",
+     "description": "Opt out of the sheet: a narrow section stacks the sidebar above the main instead of collapsing. `collapsed` then stays f"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys (sheet title fallback, dismiss label); unset keys fall back to Dutch."
+    },
+    {
+     "name": "collapsed",
+     "type": "boolean",
+     "description": "Read-only, reflected: true while the sidebar is a sheet (the section is narrower than lg). Target it via CSS to reveal s"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "scheme",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A page section with a left sidebar alongside the main content. - **Wide (section >= 1008px):** two columns. The sidebar is a sticky, scrolla",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "simple-section",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+    },
+    {
+     "name": "scheme",
+     "type": "string",
+     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+    },
+    {
+     "name": "padding-block",
+     "type": "string",
+     "description": "Block (top and bottom) padding override (token 0-96; '0' strips it)."
+    },
+    {
+     "name": "padding-top",
+     "type": "string",
+     "description": "Top padding override."
+    },
+    {
+     "name": "padding-bottom",
+     "type": "string",
+     "description": "Bottom padding override."
+    },
+    {
+     "name": "sm-padding-block",
+     "type": "string",
+     "description": "Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom})."
+    },
+    {
+     "name": "sm-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    }
+   ],
+   "description": "A basic section with responsive padding and gap based on container size. Contains optional header and footer slots. The padding and spacing ",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "two-thirds-one-third-section",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+    },
+    {
+     "name": "scheme",
+     "type": "string",
+     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+    },
+    {
+     "name": "padding-block",
+     "type": "string",
+     "description": "Block (top and bottom) padding override (token 0-96; '0' strips it)."
+    },
+    {
+     "name": "padding-top",
+     "type": "string",
+     "description": "Top padding override."
+    },
+    {
+     "name": "padding-bottom",
+     "type": "string",
+     "description": "Bottom padding override."
+    },
+    {
+     "name": "sm-padding-block",
+     "type": "string",
+     "description": "Responsive block padding (sm/md/lg, also per edge: {sm,md,lg}-padding-{top,bottom})."
+    },
+    {
+     "name": "sm-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "sm-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "md-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-block",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-top",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "lg-padding-bottom",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    }
+   ],
+   "description": "A section with 2/3 main content on the left and a 1/3 sidebar on the right. The columns wrap automatically when they become smaller than 280",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "popover",
+   "attributes": [
+    {
+     "name": "anchor",
+     "type": "string",
+     "description": "ID van het trigger-element voor positionering"
+    },
+    {
+     "name": "placement",
+     "type": "string",
+     "description": "Floating UI placement (default: 'bottom-start')"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Expliciete width (default: 320px via --components-popover-default-width)"
+    },
+    {
+     "name": "top",
+     "type": "string",
+     "description": "CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-position"
+    },
+    {
+     "name": "left",
+     "type": "string",
+     "description": "CSS left-positie. Zie `top` voor semantiek."
+    },
+    {
+     "name": "right",
+     "type": "string",
+     "description": "CSS right-positie. Zie `top` voor semantiek."
+    },
+    {
+     "name": "bottom",
+     "type": "string",
+     "description": "CSS bottom-positie. Zie `top` voor semantiek."
+    },
+    {
+     "name": "centered",
+     "type": "boolean",
+     "description": "Centreert beide assen op de viewport. Per as overrideable: `centered top=\"0\"` = horizontaal gecentreerd, top-aligned. Mi"
+    },
+    {
+     "name": "sm-full-height",
+     "type": "boolean",
+     "description": "Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar "
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "(verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Popover') als niet gezet — geef altijd een "
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys vallen terug op de Nederlandse default."
+    }
+   ],
+   "description": "Een non-modal floating panel dat is verankerd aan een trigger-element. Gebouwd op de native Popover API (popover=\"auto\") met Floating UI voo",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "sheet",
+   "attributes": [
+    {
+     "name": "placement",
+     "type": "string",
+     "description": "Sheet position: 'left' | 'right' | 'bottom' (default: 'right')"
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `"
+    },
+    {
+     "name": "modeless",
+     "type": "boolean",
+     "description": "Non-modal (no backdrop or focus lock); the sheet is modal by default"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the dialog, forwarded as aria-label (default: 'Venster')"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Custom width for side sheets (left/right) as a CSS length (e.g. '480px', '32rem'). Applied from the md breakpoint up; ig"
+    }
+   ],
+   "description": "An overlay component that slides in from the side or bottom of the screen. Based on the native <dialog> element for built-in accessibility, ",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "spacer",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Base spacer size. 'flexible' or one of the fixed tokens (2–96). Default: '16'."
+    },
+    {
+     "name": "sm-size",
+     "type": "string",
+     "description": "Spacer size at sm breakpoint (max-width: 640px)."
+    },
+    {
+     "name": "md-size",
+     "type": "string",
+     "description": "Spacer size at md breakpoint (641px–1007px)."
+    },
+    {
+     "name": "lg-size",
+     "type": "string",
+     "description": "Spacer size at lg breakpoint (min-width: 1008px)."
+    },
+    {
+     "name": "direction",
+     "type": "string",
+     "description": "Direction: 'horizontal' | 'vertical' | 'both' (default: 'both')"
+    }
+   ],
+   "description": "Add explicit space between elements. Components in this design system have no margins of their own — all whitespace is set by a spacer. Use ",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "bar-split-view",
+   "attributes": [
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Background color variant (default: inherit)"
+    }
+   ],
+   "description": "A vertical split view with a main area and an unlimited number of bar panels. Each child determines its order per breakpoint via sm-order, m",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "navigation-split-view",
+   "attributes": [
+    {
+     "name": "inspector-auto-hidden",
+     "type": "boolean",
+     "description": "Inspector hidden to free up space for other panes (read-only, set by the split view)"
+    },
+    {
+     "name": "inspector-as-sheet",
+     "type": "boolean",
+     "description": "Always show the inspector as a sheet regardless of available space"
+    },
+    {
+     "name": "primary-sidebar-as-sheet",
+     "type": "boolean",
+     "description": "Always show the primary sidebar as a sheet, keeping main visible at full width"
+    },
+    {
+     "name": "sidebar-as-sheet",
+     "type": "boolean",
+     "description": "@deprecated alias for primary-sidebar-as-sheet (kept for backwards compatibility)"
+    },
+    {
+     "name": "inspector-accessible-label",
+     "type": "string",
+     "description": "Accessible name for the inspector sheet dialog (default: 'Details')"
+    },
+    {
+     "name": "primary-sidebar-accessible-label",
+     "type": "string",
+     "description": "Accessible name for the primary sidebar sheet dialog (default: 'Navigatie')"
+    },
+    {
+     "name": "sidebar-accessible-label",
+     "type": "string",
+     "description": "@deprecated alias for primary-sidebar-accessible-label (kept for backwards compatibility)"
+    }
+   ],
+   "description": "A four-column layout with a primary sidebar, secondary sidebar, main content area, and inspector. The sidebars show navigation or lists, the",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "side-by-side-split-view",
+   "attributes": [
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Use a tinted background color (cascades to descendants)"
+    },
+    {
+     "name": "panes",
+     "type": "string",
+     "description": "Number of panes (default: 2)"
+    }
+   ],
+   "description": "A horizontal split view with multiple equal panes side by side. The number of panes is set via the `panes` attribute. Each pane automaticall",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "split-view-divider",
+   "attributes": [
+    {
+     "name": "orientation",
+     "type": "string",
+     "description": "Orientation: 'vertical' | 'horizontal'"
+    },
+    {
+     "name": "has-drag-handle",
+     "type": "boolean",
+     "description": "Show a drag handle"
+    }
+   ],
+   "description": "A divider line between panels in a split view. The divider runs from edge to edge in the direction perpendicular to the orientation. An opti",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "split-view-pane",
+   "attributes": [
+    {
+     "name": "has-content",
+     "type": "boolean",
+     "description": "The pane has content (default: false)"
+    },
+    {
+     "name": "hide-back",
+     "type": "boolean",
+     "description": "Hide the back button (set automatically by the split view)"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Use a tinted background color (cascades to descendants)"
+    }
+   ],
+   "description": "A simple pane container for use inside split views. The split view automatically sets context: whether a back button should be shown. The co",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "stacked-split-view",
+   "attributes": [
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Use a tinted background color (cascades to descendants)"
+    },
+    {
+     "name": "panes",
+     "type": "string",
+     "description": "Number of panes (default: 2)"
+    }
+   ],
+   "description": "A vertical split view with multiple stacked panes. The number of panes is set via the `panes` attribute. Each pane automatically gets a numb",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "window",
+   "attributes": [
+    {
+     "name": "modeless",
+     "type": "boolean",
+     "description": "Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal"
+    },
+    {
+     "name": "no-light-dismiss",
+     "type": "boolean",
+     "description": "Een klik op de backdrop sluit het venster niet. Voor vensters waar per ongeluk wegklikken werk kost: een wizard, een for"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "(verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Venster') als niet gezet — geef altijd een "
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys vallen terug op de Nederlandse default."
+    },
+    {
+     "name": "top",
+     "type": "string",
+     "description": "CSS top positie van de bovenrand (bijv. '0', '100px')"
+    },
+    {
+     "name": "left",
+     "type": "string",
+     "description": "CSS left positie van de linkerrand"
+    },
+    {
+     "name": "right",
+     "type": "string",
+     "description": "CSS right waarde"
+    },
+    {
+     "name": "bottom",
+     "type": "string",
+     "description": "CSS bottom waarde"
+    },
+    {
+     "name": "centered",
+     "type": "boolean",
+     "description": "Centreert beide assen op de viewport. Per as overrideable: `centered top=\"0\"` = horizontaal gecentreerd, top-aligned. Mi"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "CSS width (standaard: var(--components-window-default-width))"
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "CSS height (standaard: content height)"
+    },
+    {
+     "name": "scheme",
+     "type": "string",
+     "description": "Color scheme (default 'inherit')."
+    }
+   ],
+   "description": "Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via CSS-waarden.",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "cell",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "'full' | 'fit-content' | CSS length (e.g. '120px', '10rem'). Default: 'fit-content'"
+    },
+    {
+     "name": "min-width",
+     "type": "string",
+     "description": "Minimum width as CSS length (e.g. '80px', '5rem')"
+    },
+    {
+     "name": "max-width",
+     "type": "string",
+     "description": "Maximum width as CSS length (e.g. '200px', '20rem')"
+    },
+    {
+     "name": "min-height",
+     "type": "string",
+     "description": "Minimum height as CSS length (e.g. '44px', '3rem')"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Vertical alignment of slotted content (default: 'center')"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "string",
+     "description": "Horizontal alignment of slotted content (default: 'left')"
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. `ver",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "description-cell",
+   "attributes": [
+    {
+     "name": "width",
+     "type": "string",
+     "description": "'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'full'"
+    },
+    {
+     "name": "min-width",
+     "type": "string",
+     "description": "Minimum width as CSS length (e.g. '80px', '5rem')"
+    },
+    {
+     "name": "max-width",
+     "type": "string",
+     "description": "Maximum width as CSS length (e.g. '300px', '20rem')"
+    },
+    {
+     "name": "min-height",
+     "type": "string",
+     "description": "Minimum height as CSS length (e.g. '44px', '3rem')"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Vertical alignment (default: 'center')"
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A cell component for displaying a title-description pair in lists. `vertical-alignment=\"center\"` (default) stretches the cell to fill the fu",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "drag-handle-cell",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Handle size: 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch. Sets the handle's accessible label."
+    }
+   ],
+   "description": "A cell that displays a drag handle for reorderable list items. Always vertically centered and sized to fit the handle. To enable drag-to-reo",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "icon-cell",
+   "attributes": [
+    {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Size: '16' | '20' | '24' | '32' (default: '24')"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "Color variant of the icon (default: 'default')"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icon name (renders `<nldd-icon>`). Takes precedence over the default slot."
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A cell component for displaying icons in lists with configurable alignment and size. Set `icon` to render an `nldd-icon` by name, or slot cu",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "spacer-cell",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Spacer size in pixels: '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56"
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A cell component that provides fixed horizontal spacing within list items.",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "text-cell",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Cell size: 'sm' | 'md' (default: 'md')"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "Text color variant: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' (default: 'default'). All no"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'full'"
+    },
+    {
+     "name": "min-width",
+     "type": "string",
+     "description": "Minimum width as CSS length (e.g. '80px', '5rem')"
+    },
+    {
+     "name": "max-width",
+     "type": "string",
+     "description": "Maximum width as CSS length (e.g. '200px', '20rem')"
+    },
+    {
+     "name": "min-height",
+     "type": "string",
+     "description": "Minimum height as CSS length (e.g. '44px', '3rem')"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "string",
+     "description": "Horizontal alignment: 'left' | 'center' | 'right' (default: 'left')"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Main text content. Supports **bold** syntax for inline bold segments. Falls back to default slot."
+    },
+    {
+     "name": "overline",
+     "type": "string",
+     "description": "Optional overline text displayed above the main content. Supports **bold**. Falls back to `overline` slot."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Optional supporting text displayed below the main content. Supports **bold**. Falls back to `supporting-text` slot."
+    },
+    {
+     "name": "query",
+     "type": "string",
+     "description": "Query substring to bold-highlight across text fields. Empty = no marking."
+    },
+    {
+     "name": "query-mark-mode",
+     "type": "string",
+     "description": "'match' | 'predictive' (default: 'predictive')"
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A cell component for displaying text content in lists with configurable alignment, size and color. This is the most fundamental list cell co",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "timeline-track-cell",
+   "attributes": [
+    {
+     "name": "status",
+     "type": "string",
+     "description": "Status van deze stap (standaard 'past'); dezelfde waarden als `nldd-step-indicator-item`. `none` tekent alleen de lijn, "
+    },
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenli"
+    },
+    {
+     "name": "minor",
+     "type": "boolean",
+     "description": "Deze rij hoort onder de vorige: een kleinere stip in dezelfde baan, dus het spoor loopt recht door en er springt niets i"
+    },
+    {
+     "name": "direction",
+     "type": "string",
+     "description": "Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige st"
+    },
+    {
+     "name": "position",
+     "type": "string",
+     "description": "Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Cijfer of korte tekst in de stip"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icoonnaam in de stip; wint van `text`"
+    }
+   ],
+   "description": "A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state.",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "title-cell",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Visual size of the title (default: 5)"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `acc"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'full'"
+    },
+    {
+     "name": "min-width",
+     "type": "string",
+     "description": "Minimum width as CSS length (e.g. '80px', '5rem')"
+    },
+    {
+     "name": "max-width",
+     "type": "string",
+     "description": "Maximum width as CSS length (e.g. '300px', '20rem')"
+    },
+    {
+     "name": "min-height",
+     "type": "string",
+     "description": "Minimum height as CSS length (e.g. '44px', '3rem')"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "string",
+     "description": "Horizontal alignment (default: 'left')"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Vertical alignment (default: 'center')"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Title text content. Supports **bold** syntax for inline bold segments. Falls back to default slot."
+    },
+    {
+     "name": "overline",
+     "type": "string",
+     "description": "Optional overline text displayed above the title. Supports **bold**. Falls back to `overline` slot."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Optional supporting text displayed below the title. Supports **bold**. Falls back to `supporting-text` slot."
+    },
+    {
+     "name": "heading-level",
+     "type": "string",
+     "description": "Heading level for the title element: 1–6 (default: none, renders a <p>)"
+    },
+    {
+     "name": "query",
+     "type": "string",
+     "description": "Query substring to bold-highlight across text fields. Empty = no marking."
+    },
+    {
+     "name": "query-mark-mode",
+     "type": "string",
+     "description": "'match' | 'predictive' (default: 'predictive')"
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A cell component for displaying a title with optional overline and subtitle in lists. `vertical-alignment=\"center\"` (default) stretches the ",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "list-item-action",
+   "attributes": [
+    {
+     "name": "button",
+     "type": "boolean",
+     "description": "Renders the segmented action as a `<button>`; ignored when `href` is set"
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Renders the segmented action as an `<a>` with this URL; wins over `button` and `checkbox`"
+    },
+    {
+     "name": "target",
+     "type": "string",
+     "description": "Link target forwarded to the `<a>`; only applies with `href`"
+    },
+    {
+     "name": "rel",
+     "type": "string",
+     "description": "Link rel forwarded to the `<a>`; only applies with `href`"
+    },
+    {
+     "name": "checkbox",
+     "type": "boolean",
+     "description": "Makes the segmented action a `role=\"checkbox\"` control; ignored when `href` is set"
+    },
+    {
+     "name": "checked",
+     "type": "boolean",
+     "description": "Checked state of a `checkbox` action; it toggles on activation"
+    },
+    {
+     "name": "expanded",
+     "type": "string",
+     "description": "Disclosure state, reflected as `aria-expanded` on the control. Set it on the segmented action that opens something (e.g."
+    },
+    {
+     "name": "disclosure",
+     "type": "boolean",
+     "description": "Marks the segmented action as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so "
+    },
+    {
+     "name": "current",
+     "type": "boolean",
+     "description": "Marks the segmented action as the current page (`aria-current=\"page\"`)"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state; only applies to button and checkbox segmented actions"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "`full` lets the segmented action grow to fill the row (default: 'fit-content')"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the control. Set it when the segmented action holds only an icon, or when the cell text does not des"
+    }
+   ],
+   "description": "A segmented action inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "list-item",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Row size (default: 'md'). Pushed onto the cells whose `size` means the same scale (nldd-text-cell, nldd-drag-handle-cell"
+    },
+    {
+     "name": "selected",
+     "type": "boolean",
+     "description": "Marks the item as selected. Selection is consumer-managed; the list never sets it. In a `navigation` parent it puts `ari"
+    },
+    {
+     "name": "button",
+     "type": "boolean",
+     "description": "Renders the item as a `<button>`; ignored when `href` is set (a link wins)"
+    },
+    {
+     "name": "checkbox",
+     "type": "boolean",
+     "description": "Makes the whole row a `role=\"checkbox\"` control; ignored when `href` is set"
+    },
+    {
+     "name": "checked",
+     "type": "boolean",
+     "description": "Checked state of a `checkbox` row; the item toggles it on activation"
+    },
+    {
+     "name": "expanded",
+     "type": "string",
+     "description": "Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when "
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container"
+    },
+    {
+     "name": "target",
+     "type": "string",
+     "description": "Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden \"opens in "
+    },
+    {
+     "name": "rel",
+     "type": "string",
+     "description": "Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href`"
+    },
+    {
+     "name": "reorderable",
+     "type": "boolean",
+     "description": "Set by the parent `nldd-list` when its own `reorderable` is on (with `type=\"list\"`); consumers do not set this. Serves a"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, o",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "list",
+   "attributes": [
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded cor"
+    },
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Surface fill for `variant=\"box\"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant=\"si"
+    },
+    {
+     "name": "type",
+     "type": "string",
+     "description": "A11y role and behavior (default 'list'). See the docblock above."
+    },
+    {
+     "name": "reorderable",
+     "type": "boolean",
+     "description": "Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type=\"list\"`; wins over `arrow-navigat"
+    },
+    {
+     "name": "no-dividers",
+     "type": "boolean",
+     "description": "Hides the dividers between list items"
+    },
+    {
+     "name": "arrow-navigation",
+     "type": "boolean",
+     "description": "Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows, Home/End jump to first/last, and th"
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap."
+    },
+    {
+     "name": "empty-text",
+     "type": "string",
+     "description": "Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled."
+    },
+    {
+     "name": "empty-supporting-text",
+     "type": "string",
+     "description": "Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name, forwarded to the list in `type=\"list\"` and to the search field in `type=\"listbox\"`. For `type=\"navigati"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role=\"list",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "document-tab-bar-item",
+   "attributes": [
+    {
+     "name": "selected",
+     "type": "boolean",
+     "description": "Selected state (managed by nldd-document-tab-bar)"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Primary text"
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Supporting text"
+    },
+    {
+     "name": "short-text",
+     "type": "string",
+     "description": "Short primary text (visible below 200px width)"
+    },
+    {
+     "name": "short-supporting-text",
+     "type": "string",
+     "description": "Short supporting text (visible below 200px width)"
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Optional link URL; renders an anchor instead of a div"
+    }
+   ],
+   "description": "NLDD document-tab-bar-item",
+   "category": "navigation",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "document-tab-bar",
+   "attributes": [
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the navigation landmark"
+    },
+    {
+     "name": "navigation",
+     "type": "boolean",
+     "description": "Renders a nav landmark instead of tablist; use when items have hrefs"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Translation overrides; unset keys fall back to Dutch. Available keys: 'components.document-tab-bar.overflow-action' (def"
+    }
+   ],
+   "description": "A horizontal tab bar for document tabs with an automatic overflow button and an end slot for action buttons. Exports both NLDDDocumentTabBar",
+   "category": "navigation",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "pagination",
+   "attributes": [
+    {
+     "name": "current",
+     "type": "string",
+     "description": "Currently active page (1-based)"
+    },
+    {
+     "name": "total",
+     "type": "string",
+     "description": "Total number of pages (recommended max: 200 for compact select performance)"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "centered",
+     "type": "boolean",
+     "description": "Centreert de pagination in de container (host fills row, items grouped in the middle)"
+    },
+    {
+     "name": "href-pattern",
+     "type": "string",
+     "description": "URL patroon met {page} placeholder, rendert links in plaats van buttons"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands"
+    }
+   ],
+   "description": "A pagination control for navigating between pages of content.",
+   "category": "navigation",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "skip-link",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Tekst van de skip-link. Fallback naar i18n default."
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Optioneel extern doel-ID. Zonder href springt naar eind van eigen content."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "Accessibility-patroon dat keyboard-gebruikers toestaat om content over te slaan. Wraps content in een default slot — zonder href focust het ",
+   "category": "navigation",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "top-title-bar",
+   "attributes": [
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Title of the bar, rendered as the h1 in the title group."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Subtitle under the title."
+    },
+    {
+     "name": "collapse-anchor",
+     "type": "string",
+     "description": "Id of the element whose top edge triggers the compact state on scroll. Without it the state is static (see above)."
+    },
+    {
+     "name": "back-text",
+     "type": "string",
+     "description": "Text of the back button and its accessible name. Empty hides the back button (and the divider)."
+    },
+    {
+     "name": "back-href",
+     "type": "string",
+     "description": "URL for the back button; renders a link and suppresses the `back` event."
+    },
+    {
+     "name": "dismiss-text",
+     "type": "string",
+     "description": "Text of the dismiss button. Empty hides that button."
+    }
+   ],
+   "description": "A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back but",
+   "category": "navigation",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "activity-indicator",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Circle diameter on the icon scale: 16,20,24,28,32,40,44,48,56,64,80,96 (default '32')"
+    },
+    {
+     "name": "show-text",
+     "type": "boolean",
+     "description": "Show the label under the indicator (default false; the label still feeds the accessible name)"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Label text. Falls back to the translated \"Laden\" when unset."
+    },
+    {
+     "name": "timing",
+     "type": "string",
+     "description": "'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'defa"
+    },
+    {
+     "name": "complete",
+     "type": "boolean",
+     "description": "Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator."
+    },
+    {
+     "name": "no-backdrop",
+     "type": "boolean",
+     "description": "Overlay mode dims and blurs the wrapped content with a frosted backdrop by default; set this to show only the indicator "
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "Layout placeholder that fills its parent and centers an indeterminate activity indicator. By default the indicator is held back for 1000ms s",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "banner",
+   "attributes": [
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Color and default icon (default: 'neutral')"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-fi"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Main text (heading or paragraph, depending on heading-level)"
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Supporting text below the heading"
+    },
+    {
+     "name": "heading-level",
+     "type": "string",
+     "description": "Renders text as h1–h6; absent renders a p"
+    },
+    {
+     "name": "dismissible",
+     "type": "boolean",
+     "description": "Show a close button in the top-right; emits `dismiss` when clicked"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "An inline notification with a tinted background per variant. Use for persistent, page-level feedback (e.g. an error summary at the top of a ",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "inline-dialog",
+   "attributes": [
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Semantic variant. 'alert' / 'success' force a matching icon and color; 'loading' shows an nldd-activity-indicator (a rol"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Typography size: 'md' (default) keeps body-md text + body-sm supporting; 'lg' bumps both up a step."
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set."
+    },
+    {
+     "name": "icon-color",
+     "type": "string",
+     "description": "'secondary' | 'accent' | 'critical' | 'warning' | 'success'. Overrides the default and variant icon color."
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Main text (heading or paragraph, depending on heading-level)"
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Supporting text below the heading"
+    },
+    {
+     "name": "heading-level",
+     "type": "string",
+     "description": "Renders text as h1–h6; absent renders a p"
+    }
+   ],
+   "description": "An inline status component for empty state, confirmations and feedback. Fills the container and has no minimum width.",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "just-in-time-education",
+   "attributes": [
+    {
+     "name": "active",
+     "type": "boolean",
+     "description": "Toon de coach-mark. App-gestuurd; standaard false."
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Titel van de callout."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Ondersteunende tekst onder de titel."
+    },
+    {
+     "name": "placement",
+     "type": "string",
+     "description": "'auto' | 'top' | 'bottom' | 'left' | 'right' (standaard 'auto')."
+    },
+    {
+     "name": "dismissable",
+     "type": "boolean",
+     "description": "Toon de dismiss-knop en sta sluiten toe via 1 klik/toets buiten de coach-mark. Standaard false: dan beheert de consumer "
+    },
+    {
+     "name": "arrow-length",
+     "type": "string",
+     "description": "Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \\`333px\\`, \\`30vh\\`). Leeg = DS-standaard; on"
+    },
+    {
+     "name": "no-arrow",
+     "type": "boolean",
+     "description": "Verberg de pijl; de card staat dan dicht tegen het control."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "Een guided-discovery coach-mark. Plaats een control (bijv. nldd-search-field) in de default slot; zolang `active` is gezet tilt het componen",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "modal-dialog",
+   "attributes": [
+    {
+     "name": "variant",
+     "type": "string",
+     "description": "Forwarded to nldd-inline-dialog; 'alert' forces icon and color"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Forwarded to nldd-inline-dialog; absent when not set"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Forwarded to nldd-inline-dialog; main text"
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Forwarded to nldd-inline-dialog; supporting text"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the dialog (aria-label); falls back to text"
+    }
+   ],
+   "description": "A modal window with overlay backdrop, based on the native <dialog> element. Internally renders an <nldd-inline-dialog> for the visual struct",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "progress-bar-segment-indicator",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Share of the parent's total (default 0; <=0 hides segment)"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for screenreader text (optional)"
+    },
+    {
+     "name": "tooltip-text",
+     "type": "string",
+     "description": "Override of the auto-generated tooltip text"
+    }
+   ],
+   "description": "NLDD progress-bar-segment-indicator",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "progress-bar",
+   "attributes": [
+    {
+     "name": "mode",
+     "type": "string",
+     "description": "Semantics for ARIA and visualization (default: 'progress')"
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Total value (default: 100)"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Single-segment shorthand (ignored when segment children are present)"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "Color for the single-segment shorthand (default: 'accent')"
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Height of the bar (default: 'md')"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Label above the bar (left)"
+    },
+    {
+     "name": "value-format",
+     "type": "string",
+     "description": "Format for the displayed value (default: 'percentage')"
+    },
+    {
+     "name": "value-text",
+     "type": "string",
+     "description": "Full override of the displayed value"
+    },
+    {
+     "name": "value-display",
+     "type": "string",
+     "description": "Where the value shows: inline in the caption, in a tooltip on the bar, or hidden (default: 'inline')"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Full override of aria-valuetext"
+    },
+    {
+     "name": "indeterminate",
+     "type": "boolean",
+     "description": "Shows a sliding indicator animation (only without segments)"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "Exports both NLDDProgressBar and NLDDProgressBarSegmentIndicator. A progress bar that supports a single value (loading-style) or multiple se",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "progress-circle-segment-indicator",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Share of the parent's total (default 0; <=0 hides segment)"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "Color (semantic or Rijkskleur). Default 'accent'."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Optional name used in the combined tooltip + screenreader text"
+    }
+   ],
+   "description": "NLDD progress-circle-segment-indicator",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "progress-circle",
+   "attributes": [
+    {
+     "name": "mode",
+     "type": "string",
+     "description": "Semantics for ARIA and gap behavior (default: 'progress')"
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Total value (default: 100)"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "Single-segment shorthand (ignored when segment children exist)"
+    },
+    {
+     "name": "color",
+     "type": "string",
+     "description": "Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'."
+    },
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Circle diameter in px. Matches nldd-icon sizes: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96 (default: '28')"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Label below the circle"
+    },
+    {
+     "name": "value-format",
+     "type": "string",
+     "description": "Format of the displayed value (default: 'percentage')"
+    },
+    {
+     "name": "value-text",
+     "type": "string",
+     "description": "Full override of the displayed value (inline + tooltip)"
+    },
+    {
+     "name": "value-display",
+     "type": "string",
+     "description": "Where the value shows: inline below the label, in a tooltip, or hidden (default: 'tooltip')"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Full override of aria-valuetext"
+    },
+    {
+     "name": "indeterminate",
+     "type": "boolean",
+     "description": "Renders the rotating elastic arc animation"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "Exports both NLDDProgressCircle and NLDDProgressCircleSegmentIndicator. A circular progress indicator that mirrors the API of nldd-progress-",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "step-indicator-item",
+   "attributes": [
+    {
+     "name": "status",
+     "type": "string",
+     "description": "`past` | `current` | `future`; overschrijft wat de ouder afleidt"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Label onder de bol"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icoon in de bol in plaats van het cijfer of het vinkje"
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Maakt de stap een link (bijvoorbeeld terug naar een afgeronde stap)"
+    },
+    {
+     "name": "button",
+     "type": "boolean",
+     "description": "For flows without a URL per step (a wizard inside one window). Ignored"
+    }
+   ],
+   "description": "Eén stap in een `nldd-step-indicator`. De ouder bepaalt de status en het",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "step-indicator",
+   "attributes": [
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Naam van de nav; standaard de i18n-waarde (\"Voortgang\")"
+    },
+    {
+     "name": "current",
+     "type": "string",
+     "description": "1-based nummer van de huidige stap (standaard 1)"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Overschrijf vertaalsleutels; niet gezette vallen terug op Nederlands"
+    }
+   ],
+   "description": "Toont waar je staat in een proces van meerdere stappen: een rij bollen met een cijfer (of een vinkje op wat af is), een label eronder en een",
+   "category": "feedback",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  }
+ ]
+}

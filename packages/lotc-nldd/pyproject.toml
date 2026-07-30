@@ -21,4 +21,4 @@ nldd = "lotc_nldd:DESIGN_SYSTEM"
 where = ["src"]
 
 [tool.setuptools.package-data]
-lotc_nldd = ["templates/**/*.j2", "static/**/*"]
+lotc_nldd = ["templates/**/*.j2", "static/**/*", "registry.json"]

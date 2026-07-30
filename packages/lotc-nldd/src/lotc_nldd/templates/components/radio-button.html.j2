@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-radio-button{% if _component_context.get('checked') %} checked{% endif %}{% if _component_context.get('disabled') %} disabled{% endif %}{% if _component_context.get('required') %} required{% endif %}{% if _component_context.get('name') %} name="{{ _component_context.get('name') }}"{% endif %}{% if _component_context.get('value') %} value="{{ _component_context.get('value') }}"{% endif %}{% if _component_context.get('accessible-label') %} accessible-label="{{ _component_context.get('accessible-label') }}"{% endif %} data-lotc-component="radio-button" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-radio-button>
+{% endmacro %}

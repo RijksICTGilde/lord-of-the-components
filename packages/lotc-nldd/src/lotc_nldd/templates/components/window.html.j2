@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-window{% if _component_context.get('modeless') %} modeless{% endif %}{% if _component_context.get('no-light-dismiss') %} no-light-dismiss{% endif %}{% if _component_context.get('accessible-label') %} accessible-label="{{ _component_context.get('accessible-label') }}"{% endif %}{% if _component_context.get('translations') %} translations="{{ _component_context.get('translations') }}"{% endif %}{% if _component_context.get('top') %} top="{{ _component_context.get('top') }}"{% endif %}{% if _component_context.get('left') %} left="{{ _component_context.get('left') }}"{% endif %}{% if _component_context.get('right') %} right="{{ _component_context.get('right') }}"{% endif %}{% if _component_context.get('bottom') %} bottom="{{ _component_context.get('bottom') }}"{% endif %}{% if _component_context.get('centered') %} centered{% endif %}{% if _component_context.get('width') %} width="{{ _component_context.get('width') }}"{% endif %}{% if _component_context.get('height') %} height="{{ _component_context.get('height') }}"{% endif %}{% if _component_context.get('scheme') %} scheme="{{ _component_context.get('scheme') }}"{% endif %} data-lotc-component="window" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-window>
+{% endmacro %}

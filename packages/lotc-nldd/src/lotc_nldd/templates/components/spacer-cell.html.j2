@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-spacer-cell{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('hide-below') %} hide-below="{{ _component_context.get('hide-below') }}"{% endif %}{% if _component_context.get('hide-above') %} hide-above="{{ _component_context.get('hide-above') }}"{% endif %} data-lotc-component="spacer-cell" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-spacer-cell>
+{% endmacro %}

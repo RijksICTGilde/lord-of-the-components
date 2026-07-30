@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-icon-cell{% if _component_context.get('vertical-alignment') %} vertical-alignment="{{ _component_context.get('vertical-alignment') }}"{% endif %}{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('color') %} color="{{ _component_context.get('color') }}"{% endif %}{% if _component_context.get('icon') %} icon="{{ _component_context.get('icon') }}"{% endif %}{% if _component_context.get('hide-below') %} hide-below="{{ _component_context.get('hide-below') }}"{% endif %}{% if _component_context.get('hide-above') %} hide-above="{{ _component_context.get('hide-above') }}"{% endif %} data-lotc-component="icon-cell" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-icon-cell>
+{% endmacro %}
