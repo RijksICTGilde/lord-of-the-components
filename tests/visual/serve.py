@@ -12,6 +12,7 @@ import argparse
 import json
 import logging
 import mimetypes
+import re
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
@@ -195,22 +196,64 @@ def create_jinja_env(theme: str = "rvo", on_missing: str = "error") -> Environme
 
 # Shared Jinja2 environment (created once, rebound in main() when --theme is set)
 _jinja_env = create_jinja_env()
+_default_theme = "rvo"
+
+# Lazily-built envs per design system, so a single server can switch design
+# systems per request via ?ds=... (the live gallery switcher).
+_env_cache: dict = {}
+
+# Design systems offered in the switcher banner.
+SWITCHER_THEMES = [("rvo", "RVO"), ("nldd,bgnldd", "NLDD")]
 
 
-def render_fixture(fixture_path: str) -> str:
+def _env_for(theme: str) -> Environment:
+    """Return (and cache) an env for a design system. Uses placeholder mode so
+    switching never 500s on a component the system doesn't implement."""
+    if theme not in _env_cache:
+        _env_cache[theme] = create_jinja_env(theme, on_missing="placeholder")
+    return _env_cache[theme]
+
+
+def _switcher_bar(current: str, path: str) -> str:
+    """A fixed banner that swaps the active design system via ?ds=."""
+    links = []
+    for value, label in SWITCHER_THEMES:
+        on = value == current
+        style = (
+            "padding:.25rem .7rem;border-radius:6px;text-decoration:none;font:600 13px system-ui;"
+            + ("background:#154273;color:#fff;" if on else "color:#154273;")
+        )
+        links.append(f'<a href="/{path}?ds={value}" style="{style}">{label}</a>')
+    return (
+        '<div style="position:fixed;top:0;left:0;right:0;z-index:99999;display:flex;gap:.5rem;'
+        "align-items:center;justify-content:center;padding:.4rem;background:#eef0f4;"
+        'border-bottom:1px solid #d1d5db;font:13px system-ui">'
+        '<span style="color:#555">Design system:</span>' + "".join(links) + "</div>"
+    )
+
+
+def render_fixture(fixture_path: str, theme: str | None = None, switcher: bool = False) -> str:
     """Render a fixture file through the LOTC Jinja2 pipeline.
 
-    The fixture HTML is treated as a Jinja2 template, so <c-*> tags
-    get preprocessed by the ComponentExtension into real HTML. The compiled
-    template is served from the Environment cache on repeat requests.
+    The fixture HTML is treated as a Jinja2 template, so <c-*> tags get
+    preprocessed by the ComponentExtension into real HTML. With `theme` set
+    (from ?ds=), a per-design-system env renders it; `switcher` injects the
+    design-system switcher bar after <body>.
     """
     from jinja2 import TemplateNotFound
 
+    env = _env_for(theme) if theme else _jinja_env
     try:
-        template = _jinja_env.get_template(fixture_path)
+        template = env.get_template(fixture_path)
     except TemplateNotFound:
         return f"<h1>404</h1><p>Fixture not found: {fixture_path}</p>"
-    return template.render()
+    html = template.render()
+    if switcher:
+        bar = _switcher_bar(theme or _default_theme, fixture_path)
+        html = re.sub(r"(<body[^>]*>)", r"\1" + bar, html, count=1)
+        if "<body" not in html:  # non-c-page fixture: just prepend
+            html = bar + html
+    return html
 
 
 class FixtureHandler(SimpleHTTPRequestHandler):
@@ -229,7 +272,12 @@ class FixtureHandler(SimpleHTTPRequestHandler):
             return
 
         if path.endswith(".html"):
-            self._serve_fixture(path)
+            from urllib.parse import parse_qs
+
+            # ?ds=<design system> switches the active system live (gallery mode)
+            # and shows a switcher bar; absent -> the server's --theme, no bar.
+            ds = parse_qs(parsed.query).get("ds", [None])[0]
+            self._serve_fixture(path, theme=ds, switcher=ds is not None)
             return
 
         self.send_error(404, f"Not found: {path}")
@@ -257,10 +305,10 @@ class FixtureHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(file_path.read_bytes())
 
-    def _serve_fixture(self, fixture_path: str) -> None:
+    def _serve_fixture(self, fixture_path: str, theme: str | None = None, switcher: bool = False) -> None:
         """Render and serve a fixture file."""
         try:
-            html = render_fixture(fixture_path)
+            html = render_fixture(fixture_path, theme=theme, switcher=switcher)
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Cache-Control", "no-cache")

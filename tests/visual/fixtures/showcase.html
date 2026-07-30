@@ -1,0 +1,300 @@
+<c-page title="LOTC Component Showcase" theme="rvo">
+<c-header text="Lord of the Components" subtitle="Component Showcase"></c-header>
+
+<c-hero title="Component Showcase" subtitle="All components · All variants · Generated from definitions"></c-hero>
+
+<c-max-width-layout size="lg">
+<c-layout-flow gap="lg">
+
+    <!-- Typography: Inline elements -->
+    <c-heading type="h2" label="Inline Typography"></c-heading>
+    <c-paragraph>
+        This paragraph contains <c-strong>bold text</c-strong>,
+        <c-em>italic text</c-em>,
+        and a <c-link href="#">hyperlink</c-link>.
+    </c-paragraph>
+
+    <!-- Actions -->
+
+    <c-heading type="h2" label="Button"></c-heading>
+    <c-paragraph label="Interactive button for user actions"></c-paragraph>
+    <c-paragraph label="Visual style (type)"></c-paragraph>
+    <c-layout-flow gap="sm" row>
+        <c-button type="primary" label="primary"></c-button>
+        <c-button type="secondary" label="secondary"></c-button>
+        <c-button type="tertiary" label="tertiary"></c-button>
+        <c-button type="quaternary" label="quaternary"></c-button>
+        <c-button type="warning" label="warning"></c-button>
+        <c-button type="subtle" label="subtle"></c-button>
+        <c-button type="warning-subtle" label="warning-subtle"></c-button>
+    </c-layout-flow>
+    <c-paragraph label="Size"></c-paragraph>
+    <c-layout-flow gap="sm" row align-items="end">
+        <c-button size="xs" label="xs"></c-button>
+        <c-button size="sm" label="sm"></c-button>
+        <c-button size="md" label="md"></c-button>
+        <c-button size="lg" label="lg"></c-button>
+        <c-button size="xl" label="xl"></c-button>
+    </c-layout-flow>
+    <c-paragraph label="Boolean states"></c-paragraph>
+    <c-layout-flow gap="sm" row>
+        <c-button full-width label="full-width"></c-button>
+        <c-button disabled label="disabled"></c-button>
+        <c-button loading label="loading"></c-button>
+        <c-button active label="active"></c-button>
+    </c-layout-flow>
+    <c-paragraph label="With icon"></c-paragraph>
+    <c-layout-flow gap="sm" row>
+        <c-button type="primary" label="Save" show-icon="before" icon="vinkje"></c-button>
+        <c-button type="secondary" label="Search" show-icon="before" icon="zoek"></c-button>
+        <c-button type="warning" label="Delete" show-icon="before" icon="kruis"></c-button>
+        <c-button type="tertiary" label="Next" show-icon="after" icon="delta-omlaag"></c-button>
+    </c-layout-flow>
+
+    <!-- Feedback -->
+
+    <c-heading type="h2" label="Alert"></c-heading>
+    <c-paragraph label="Status alert with icon, heading, and optional close button"></c-paragraph>
+    <c-paragraph label="Alert types"></c-paragraph>
+    <c-layout-flow gap="md">
+        <c-alert type="info" heading="Info">This is an info alert message.</c-alert>
+        <c-alert type="success" heading="Success">This is a success alert message.</c-alert>
+        <c-alert type="warning" heading="Warning">This is a warning alert message.</c-alert>
+        <c-alert type="error" heading="Error">This is an error alert message.</c-alert>
+    </c-layout-flow>
+    <c-paragraph label="Closable alert"></c-paragraph>
+    <c-alert type="info" heading="Closable" closable>This alert can be dismissed.</c-alert>
+
+    <c-heading type="h2" label="Badge"></c-heading>
+    <c-paragraph label="Small count or notification badge"></c-paragraph>
+    <c-paragraph label="type"></c-paragraph>
+    <c-layout-flow gap="sm" row>
+        <c-badge type="default">default</c-badge>
+        <c-badge type="info">info</c-badge>
+        <c-badge type="success">success</c-badge>
+        <c-badge type="warning">warning</c-badge>
+        <c-badge type="error">error</c-badge>
+    </c-layout-flow>
+
+    <c-heading type="h2" label="Tag"></c-heading>
+    <c-paragraph label="Small labelled status chip"></c-paragraph>
+    <c-paragraph label="type"></c-paragraph>
+    <c-layout-flow gap="sm" row>
+        <c-tag type="default">default</c-tag>
+        <c-tag type="info">info</c-tag>
+        <c-tag type="success">success</c-tag>
+        <c-tag type="warning">warning</c-tag>
+        <c-tag type="error">error</c-tag>
+    </c-layout-flow>
+
+    <!-- Navigation -->
+
+    <c-heading type="h2" label="Breadcrumbs"></c-heading>
+    <c-paragraph label="Breadcrumb navigation trail"></c-paragraph>
+    <c-paragraph label="Size: sm"></c-paragraph>
+    <c-breadcrumbs size="sm" aria-label="Breadcrumbs example">
+        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
+    </c-breadcrumbs>
+    <c-paragraph label="Size: md"></c-paragraph>
+    <c-breadcrumbs size="md" aria-label="Breadcrumbs example">
+        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
+    </c-breadcrumbs>
+    <c-paragraph label="Size: lg"></c-paragraph>
+    <c-breadcrumbs size="lg" aria-label="Breadcrumbs example">
+        <c-breadcrumbs-item label="Home" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Section" href="#"></c-breadcrumbs-item>
+        <c-breadcrumbs-item label="Current Page"></c-breadcrumbs-item>
+    </c-breadcrumbs>
+
+    <c-heading type="h2" label="Menu"></c-heading>
+    <c-paragraph label="Navigation menu with items"></c-paragraph>
+    <c-paragraph label="Menu type: horizontal"></c-paragraph>
+    <c-menu type="horizontal" aria-label="horizontal menu example">
+        <c-menu-item label="Home" href="#" icon="huis" active></c-menu-item>
+        <c-menu-item label="Products" href="#"></c-menu-item>
+        <c-menu-item label="About" href="#"></c-menu-item>
+        <c-menu-item label="Contact" href="#"></c-menu-item>
+    </c-menu>
+    <c-paragraph label="Menu type: vertical"></c-paragraph>
+    <c-menu type="vertical" aria-label="vertical menu example">
+        <c-menu-item label="Home" href="#" icon="huis" active></c-menu-item>
+        <c-menu-item label="Products" href="#"></c-menu-item>
+        <c-menu-item label="About" href="#"></c-menu-item>
+        <c-menu-item label="Contact" href="#"></c-menu-item>
+    </c-menu>
+    <c-paragraph label="Menu type: bar"></c-paragraph>
+    <c-menu type="bar" aria-label="bar menu example">
+        <c-menu-item label="Home" href="#" icon="huis" active></c-menu-item>
+        <c-menu-item label="Products" href="#"></c-menu-item>
+        <c-menu-item label="About" href="#"></c-menu-item>
+        <c-menu-item label="Contact" href="#"></c-menu-item>
+    </c-menu>
+    <c-paragraph label="With disabled item"></c-paragraph>
+    <c-menu type="horizontal" aria-label="Menu with disabled item">
+        <c-menu-item label="Enabled" href="#"></c-menu-item>
+        <c-menu-item label="Disabled" href="#" disabled></c-menu-item>
+    </c-menu>
+
+    <c-heading type="h2" label="Tab"></c-heading>
+    <c-paragraph label="A single tab; label via prop or content"></c-paragraph>
+    <c-paragraph label="Boolean props"></c-paragraph>
+    <c-layout-flow gap="sm" row>
+        <c-tab active>active</c-tab>
+    </c-layout-flow>
+
+    <c-heading type="h2" label="Tabs"></c-heading>
+    <c-paragraph label="Tab bar; fill it declaratively with &lt;c-tab&gt; or from data via :items"></c-paragraph>
+
+    <!-- Data Display -->
+
+    <c-heading type="h2" label="Card"></c-heading>
+    <c-paragraph label="Content container with optional image and link"></c-paragraph>
+    <c-paragraph label="Card variants"></c-paragraph>
+    <c-grid columns="two" gap="md">
+        <c-card title="Basic Card" outline>
+            <c-paragraph label="A simple card with outline."></c-paragraph>
+        </c-card>
+        <c-card title="Linked Card" href="#" show-link-indicator full-card-link outline>
+            <c-paragraph label="A clickable card with link indicator."></c-paragraph>
+        </c-card>
+    </c-grid>
+    <c-paragraph label="Layout direction"></c-paragraph>
+    <c-card title="Layout: column" layout="column" outline padding="md">
+        <c-paragraph label="This card uses column layout."></c-paragraph>
+    </c-card>
+    <c-card title="Layout: row" layout="row" outline padding="md">
+        <c-paragraph label="This card uses row layout."></c-paragraph>
+    </c-card>
+    <c-paragraph label="Padding"></c-paragraph>
+    <c-grid columns="three" gap="sm">
+        <c-card title="padding: none" padding="none" outline><c-paragraph label="none"></c-paragraph></c-card>
+        <c-card title="padding: sm" padding="sm" outline><c-paragraph label="sm"></c-paragraph></c-card>
+        <c-card title="padding: md" padding="md" outline><c-paragraph label="md"></c-paragraph></c-card>
+        <c-card title="padding: lg" padding="lg" outline><c-paragraph label="lg"></c-paragraph></c-card>
+        <c-card title="padding: xl" padding="xl" outline><c-paragraph label="xl"></c-paragraph></c-card>
+    </c-grid>
+    <c-paragraph label="Boolean props"></c-paragraph>
+    <c-grid columns="two" gap="md">
+        <c-card title="Outline" outline><c-paragraph label="Card with outline border."></c-paragraph></c-card>
+        <c-card title="Inverted Colors" inverted-colors background-color="donkerblauw"><c-paragraph label="Card with inverted colors."></c-paragraph></c-card>
+    </c-grid>
+
+    <c-heading type="h2" label="Data-list"></c-heading>
+    <c-paragraph label="Key-value pair display using a definition list"></c-paragraph>
+    <c-data-list>
+        <dt>Component count</dt>
+        <dd>22</dd>
+        <dt>Template engine</dt>
+        <dd>Jinja2</dd>
+        <dt>CSS framework</dt>
+        <dd>RVO / Utrecht</dd>
+        <dt>Generated from</dt>
+        <dd>Component definitions</dd>
+    </c-data-list>
+
+    <!-- Visual -->
+
+    <c-heading type="h2" label="Icon"></c-heading>
+    <c-paragraph label="Decorative or informative icon"></c-paragraph>
+    <c-paragraph label="Icon samples"></c-paragraph>
+    <c-layout-flow gap="md" row>
+        <c-icon icon="vinkje" size="lg" aria-label="vinkje"/>
+        <c-icon icon="kruis" size="lg" aria-label="kruis"/>
+        <c-icon icon="info" size="lg" aria-label="info"/>
+        <c-icon icon="waarschuwing" size="lg" aria-label="waarschuwing"/>
+        <c-icon icon="delta-omlaag" size="lg" aria-label="delta-omlaag"/>
+        <c-icon icon="huis" size="lg" aria-label="huis"/>
+        <c-icon icon="zoek" size="lg" aria-label="zoek"/>
+        <c-icon icon="telefoon" size="lg" aria-label="telefoon"/>
+    </c-layout-flow>
+    <c-paragraph label="Sizes"></c-paragraph>
+    <c-layout-flow gap="sm" row align-items="end">
+        <c-icon icon="info" size="2xs" aria-label="2xs icon"/>
+        <c-icon icon="info" size="xs" aria-label="xs icon"/>
+        <c-icon icon="info" size="sm" aria-label="sm icon"/>
+        <c-icon icon="info" size="md" aria-label="md icon"/>
+        <c-icon icon="info" size="lg" aria-label="lg icon"/>
+        <c-icon icon="info" size="xl" aria-label="xl icon"/>
+        <c-icon icon="info" size="2xl" aria-label="2xl icon"/>
+        <c-icon icon="info" size="3xl" aria-label="3xl icon"/>
+        <c-icon icon="info" size="4xl" aria-label="4xl icon"/>
+    </c-layout-flow>
+
+    <!-- Typography -->
+
+    <c-heading type="h2" label="Heading"></c-heading>
+    <c-paragraph label="Semantic heading element with dynamic level"></c-paragraph>
+    <c-paragraph label="Heading levels"></c-paragraph>
+    <c-heading type="h1" label="Heading h1"></c-heading>
+    <c-heading type="h2" label="Heading h2"></c-heading>
+    <c-heading type="h3" label="Heading h3"></c-heading>
+    <c-heading type="h4" label="Heading h4"></c-heading>
+    <c-heading type="h5" label="Heading h5"></c-heading>
+    <c-heading type="h6" label="Heading h6"></c-heading>
+
+    <c-heading type="h2" label="Label"></c-heading>
+    <c-paragraph label="Form field label with size and type variants"></c-paragraph>
+    <c-layout-flow gap="sm">
+        <c-label label="Label (default)" type="default"></c-label>
+        <c-label label="Label (optional)" type="optional"></c-label>
+        <c-label label="Label (required)" type="required"></c-label>
+    </c-layout-flow>
+    <c-layout-flow gap="sm">
+        <c-label label="Size: sm" size="sm"></c-label>
+        <c-label label="Size: md" size="md"></c-label>
+    </c-layout-flow>
+
+    <c-heading type="h2" label="Link"></c-heading>
+    <c-paragraph label="Styled anchor link with optional icon"></c-paragraph>
+    <c-heading type="h3" label="Link colors"></c-heading>
+    <c-layout-flow gap="sm" row>
+        <c-link href="#" color="hemelblauw" label="hemelblauw"></c-link>
+        <c-link href="#" color="donkerblauw" label="donkerblauw"></c-link>
+        <c-link href="#" color="lintblauw" label="lintblauw"></c-link>
+        <c-link href="#" color="wit" label="wit"></c-link>
+        <c-link href="#" color="zwart" label="zwart"></c-link>
+        <c-link href="#" color="grijs-700" label="grijs-700"></c-link>
+    </c-layout-flow>
+    <c-heading type="h3" label="Link weights"></c-heading>
+    <c-layout-flow gap="sm" row>
+        <c-link href="#" weight="normal" label="weight: normal"></c-link>
+        <c-link href="#" weight="bold" label="weight: bold"></c-link>
+    </c-layout-flow>
+    <c-heading type="h3" label="Link with icon"></c-heading>
+    <c-layout-flow gap="sm" row>
+        <c-link href="#" label="Icon before" show-icon="before" icon="delta-omlaag"></c-link>
+        <c-link href="#" label="Icon after" show-icon="after" icon="delta-omlaag"></c-link>
+    </c-layout-flow>
+    <c-heading type="h3" label="Link states"></c-heading>
+    <c-layout-flow gap="sm" row>
+        <c-link href="#" label="hover" hover></c-link>
+        <c-link href="#" label="active" active></c-link>
+        <c-link href="#" label="focus" focus></c-link>
+        <c-link href="#" label="no-underline" no-underline></c-link>
+    </c-layout-flow>
+
+    <c-heading type="h2" label="Paragraph"></c-heading>
+    <c-paragraph label="Text paragraph with color, size, and spacing options"></c-paragraph>
+    <c-heading type="h3" label="Paragraph colors"></c-heading>
+    <c-paragraph color="logoblauw" label="Color: logoblauw"></c-paragraph>
+    <c-paragraph color="wit" label="Color: wit"></c-paragraph>
+    <c-paragraph color="zwart" label="Color: zwart"></c-paragraph>
+    <c-paragraph color="grijs-500" label="Color: grijs-500"></c-paragraph>
+    <c-paragraph color="grijs-900" label="Color: grijs-900"></c-paragraph>
+    <c-heading type="h3" label="Paragraph sizes"></c-heading>
+    <c-paragraph size="sm" label="Size: sm"></c-paragraph>
+    <c-paragraph size="md" label="Size: md"></c-paragraph>
+    <c-paragraph size="lg" label="Size: lg"></c-paragraph>
+    <c-heading type="h3" label="No spacing"></c-heading>
+    <c-paragraph no-spacing label="This paragraph has no bottom spacing."></c-paragraph>
+    <c-paragraph label="This follows immediately."></c-paragraph>
+
+</c-layout-flow>
+</c-max-width-layout>
+
+<c-footer pay-off="Auto-generated from component definitions"></c-footer>
+</c-page>
