@@ -1,0 +1,10 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-toolbar{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('show-item-labels') %} show-item-labels{% endif %}{% if _component_context.get('label') %} label="{{ _component_context.get('label') }}"{% endif %}{% if _component_context.get('translations') %} translations="{{ _component_context.get('translations') }}"{% endif %} data-lotc-component="toolbar" {{ attrs.render_extra_attributes(_component_context) }}>
+{% if _component_context.get('slots', {}).get('start') %}<template slot="start">{{ _component_context['slots']['start'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('center') %}<template slot="center">{{ _component_context['slots']['center'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('end') %}<template slot="end">{{ _component_context['slots']['end'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('overflow') %}<template slot="overflow">{{ _component_context['slots']['overflow'] | safe }}</template>{% endif %}
+</nldd-toolbar>
+{% endmacro %}

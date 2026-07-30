@@ -1,0 +1,10 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-title{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('color') %} color="{{ _component_context.get('color') }}"{% endif %} data-lotc-component="title" {{ attrs.render_extra_attributes(_component_context) }}>
+{% if _component_context.get('slots', {}).get('overline') %}<template slot="overline">{{ _component_context['slots']['overline'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('subtitle') %}<template slot="subtitle">{{ _component_context['slots']['subtitle'] | safe }}</template>{% endif %}
+{% if _component_context.get('slots', {}).get('actions') %}<template slot="actions">{{ _component_context['slots']['actions'] | safe }}</template>{% endif %}
+{{ _component_context.get('content', '') | safe }}
+</nldd-title>
+{% endmacro %}

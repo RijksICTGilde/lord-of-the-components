@@ -42,6 +42,8 @@ DESIGN_SYSTEM = DesignSystem(
     renderers_module="lotc_nldd.renderers",
     # Jinja templates for NLDD's jinja-backend components (card, alert, …).
     templates_path=_HERE / "templates",
+    # NLDD-specific component definitions (auto-generated from the CEM).
+    registry_path=_HERE / "registry.json",
     # Root for the /static/lotc/... URL space (holds the webpack CSS/JS bundle).
     static_path=_HERE / "static",
     css_urls=_CSS,
