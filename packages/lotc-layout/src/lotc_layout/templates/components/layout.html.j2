@@ -1,0 +1,24 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{#
+  lotc-layout page shell: header / (sidebar + main) / footer. The sidebar sits
+  beside main and wraps below it on narrow screens (intrinsic, no media query);
+  the footer sticks to the bottom. Regions via <template slot="header|sidebar|footer">.
+#}
+{% macro lotc_render(_component_context) %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set side = _component_context.get('side', 'left') %}
+{% set sw = _component_context.get('sidebar-width', '') %}
+{% set gap = _component_context.get('gap', '') %}
+{% set max = _component_context.get('max', '') %}
+{% set cls = ['lotc-layout', 'lotc-layout--' ~ side] %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="layout" {{ attrs.render_extra_attributes(_component_context) }}
+  {% if sw or gap or max %}style="{% if sw %}--lotc-layout-sidebar: {{ sw }};{% endif %}{% if gap %}--lotc-layout-gap: {{ gap }};{% endif %}{% if max %}--lotc-layout-max: {{ max }};{% endif %}"{% endif %}>
+  {% if slots.header %}<header class="lotc-layout__header">{{ slots.get('header', '') | safe }}</header>{% endif %}
+  <div class="lotc-layout__body">
+    {% if slots.sidebar %}<aside class="lotc-layout__sidebar">{{ slots.get('sidebar', '') | safe }}</aside>{% endif %}
+    <main class="lotc-layout__main">{{ _component_context.get('content', '') | safe }}</main>
+  </div>
+  {% if slots.footer %}<footer class="lotc-layout__footer">{{ slots.get('footer', '') | safe }}</footer>{% endif %}
+</div>
+{% endmacro %}

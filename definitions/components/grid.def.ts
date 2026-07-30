@@ -51,6 +51,10 @@ export const grid = defineComponent({
      * Custom CSS grid-template-columns value (e.g., "2fr 1fr")
      * Overrides responsive column behavior.
      */
+    min: {
+      description: "Min column width for an intrinsic auto-fit grid (lotc-layout), e.g. '16rem'",
+    },
+
     [PROPS.DIVISION]: {
       description: "Custom grid-template-columns value (e.g., '2fr 1fr')",
     },

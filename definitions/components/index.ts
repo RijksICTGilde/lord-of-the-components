@@ -87,7 +87,7 @@ export { select, type SelectDefinition } from "./select.def.js";
 export { option, type OptionDefinition } from "./option.def.js";
 
 // Layout primitives (opt-in lotc-layout design system)
-export { center, cluster, sidebar, switcher, cover, box } from "./layout-primitives.def.js";
+export { center, cluster, sidebar, switcher, cover, box, layout } from "./layout-primitives.def.js";
 
 // Visual components
 export { icon, type IconDefinition } from "./icon.def.js";
@@ -169,7 +169,7 @@ import {
   filterSelect,
   siteFooter,
 } from "./app-components.def.js";
-import { center, cluster, sidebar, switcher, cover, box } from "./layout-primitives.def.js";
+import { center, cluster, sidebar, switcher, cover, box, layout } from "./layout-primitives.def.js";
 import type { ComponentDefinition } from "../component.js";
 
 export const COMPONENTS: Record<string, ComponentDefinition> = {
@@ -252,6 +252,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   switcher,
   cover,
   box,
+  layout,
 };
 
 /**
