@@ -1,0 +1,38 @@
+<c-page title="Data-driven nav · :items" theme="rvo" design-systems="rvo">
+<style>
+  body { background:#fff; }
+  .demo { max-width: 720px; margin: 0 auto; padding: 2rem; font-family: "Fira Sans", system-ui, sans-serif; }
+  .demo h1 { font-size: 1.4rem; }
+  .demo h2 { margin: 2rem 0 0.6rem; font-size: 1rem; color:#154273; }
+  .demo p.note { color:#555; font-size:.85rem; margin:.2rem 0 1rem; }
+  /* reveal RVO hover-dropdowns inline so the nesting is visible in a screenshot */
+  .rvo-menubar__dropdown { display:block; }
+  .rvo-menubar__submenu { display:block !important; position:static !important; box-shadow:none; margin:.15rem 0 .15rem 1.1rem; padding:0; border-left:2px solid #e2e2e6; }
+</style>
+<div class="demo">
+  <h1>Data-driven navigatie via <code>:items</code></h1>
+
+  <h2>Genest menu &mdash; <code>&lt;c-menu :items&gt;</code></h2>
+  <p class="note">Eén array met children → het component bouwt de submenu's zelf (submenu's hier inline gemaakt voor de screenshot).</p>
+  {% set NAV = [
+    {'label':'Overzicht','href':'/','icon':'home','active':True},
+    {'label':'Beheer','icon':'gear','children':[
+      {'label':'Gebruikers','href':'/beheer/users','icon':'person'},
+      {'label':'Rollen','href':'/beheer/roles','icon':'shield-check-mark','children':[
+        {'label':'Systeemrollen','href':'/beheer/roles/system'},
+        {'label':'Teamrollen','href':'/beheer/roles/team'}
+      ]}
+    ]},
+    {'label':'Rapporten','href':'/rapporten','icon':'chart-x-y-axis-line'}
+  ] %}
+  <c-menu type="vertical" aria-label="Hoofdmenu" :items="NAV"/>
+
+  <h2>Tabs &mdash; <code>&lt;c-tabs :items&gt;</code></h2>
+  {% set TABS = [
+    {'label':'Overzicht','href':'#o','active':True},
+    {'label':'Details','href':'#d'},
+    {'label':'Historie','href':'#h'}
+  ] %}
+  <c-tabs aria-label="Secties" :items="TABS"/>
+</div>
+</c-page>
