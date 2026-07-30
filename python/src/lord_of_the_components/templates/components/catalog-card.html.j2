@@ -1,4 +1,9 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic catalog card: a PURE COMPOSITION of c-* primitives (card,
+   icon, heading, tag, link). Every design system renders it correctly with
+   ZERO per-theme template — each primitive maps itself to the active theme
+   (e.g. c-tag type="info" -> nldd color="accent" / rvo rvo-tag--info). Only
+   the layout comes from the shared, theme-neutral lotc-catalog-* CSS. #}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get("icon", "") %}
 {% set title = _component_context.get("title", "") %}
@@ -9,21 +14,21 @@
 {% set open_label = _component_context.get("open-label", "") %}
 {% set href = _component_context.get("href", "") %}
 {% set children = _component_context.get("content", "") %}
-<div class="rvo-card rvo-card--outline rvo-card--padding-md" data-lotc-component="catalog-card" {{ attrs.render_extra_attributes(_component_context) }}>
-  <div class="lotc-catalog">
+<c-card outline padding="md">
+  <div class="lotc-catalog" data-lotc-component="catalog-card" {{ attrs.render_extra_attributes(_component_context) }}>
     <div class="lotc-catalog-top">
-      {% if icon %}<span class="lotc-catalog-icon">{{ _lotc_rvo_icon(icon=icon, size="md") }}</span>{% endif %}
+      {% if icon %}<span class="lotc-catalog-icon"><c-icon :icon="icon" size="md"/></span>{% endif %}
       <div class="lotc-catalog-headtext">
-        {% if title %}{{ _lotc_rvo_heading(type="h3", label=title, _class="lotc-catalog-title") }}{% endif %}
+        {% if title %}<c-heading type="h3" :label="title" class="lotc-catalog-title"/>{% endif %}
         {% if subtitle %}<span class="lotc-catalog-team">{{ subtitle }}</span>{% endif %}
       </div>
-      {% if status %}{{ _lotc_rvo_tag(type=stype, label=status) }}{% endif %}
+      {% if status %}<c-tag :type="stype" :label="status"/>{% endif %}
     </div>
     {% if children %}<div class="lotc-catalog-stack">{{ children | safe }}</div>{% endif %}
     {% if (maturity and maturity != "none") or open_label %}<div class="lotc-catalog-foot">
       {% if maturity and maturity != "none" %}<span class="lotc-catalog-maturity"><span class="lotc-medal lotc-mat-{{ maturity }}"></span> {{ maturity }}</span>{% endif %}
-      {% if open_label %}<a class="lotc-catalog-open"{% if href %} href="{{ href }}"{% endif %}>{{ open_label }} {{ _lotc_rvo_icon(icon="chevron-right", size="sm") }}</a>{% endif %}
+      {% if open_label %}<c-link :href="href" class="lotc-catalog-open">{{ open_label }} <c-icon icon="chevron-right" size="sm"/></c-link>{% endif %}
     </div>{% endif %}
   </div>
-</div>
+</c-card>
 {% endmacro %}

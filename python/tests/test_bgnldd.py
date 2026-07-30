@@ -196,7 +196,9 @@ def test_catalog_card_renders(render):
     assert 'class="lotc-catalog"' in html
     assert "Paspoortaanvraag" in html and "Burgerzaken" in html
     assert "lotc-catalog-team" in html
-    assert '<nldd-tag color="success">ok</nldd-tag>' in html  # status routed to nldd tag
+    # catalog-card composes c-tag for its status, so the status routes through
+    # the theme's tag primitive (here nldd-tag, semantic type -> nldd color).
+    assert '<nldd-tag' in html and 'color="success"' in html and 'text="ok"' in html
     assert "lotc-medal lotc-mat-goud" in html  # gold maturity medal
     assert "lotc-catalog-open" in html and 'href="/apps/x"' in html
 
