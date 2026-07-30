@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lotc-layout"
+version = "0.1.0"
+description = "Opt-in, theme-agnostic layout primitives (Every Layout) for Lord of the Components"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = ["lord-of-the-components"]
+
+# Core discovers this design system via the entry-point group. It is opt-in:
+# nothing loads unless you install it AND activate it with
+# setup_components(design_systems=["lotc-layout", ...]).
+[project.entry-points."lord_of_the_components.design_systems"]
+lotc-layout = "lotc_layout:DESIGN_SYSTEM"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+lotc_layout = ["templates/**/*.j2", "static/**/*"]

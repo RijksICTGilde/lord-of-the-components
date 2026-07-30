@@ -2964,6 +2964,204 @@
       "content": {
         "allowed": true
       }
+    },
+    {
+      "name": "center",
+      "attributes": [
+        {
+          "name": "max",
+          "type": "string",
+          "description": "Max inline size, e.g. '60rem' / '70ch' (--lotc-center-max)"
+        },
+        {
+          "name": "gutters",
+          "type": "string",
+          "description": "Inline padding so content never touches the edge (--lotc-center-gutters)"
+        },
+        {
+          "name": "text",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "intrinsic",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Max-width, horizontally centred container (Every Layout: Center)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "cluster",
+      "attributes": [
+        {
+          "name": "gap",
+          "type": "string",
+          "description": "Gap between items, e.g. '0.5rem' (--lotc-cluster-gap)"
+        },
+        {
+          "name": "justify",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end",
+            "between"
+          ],
+          "description": "Main-axis distribution"
+        },
+        {
+          "name": "align",
+          "type": "enum",
+          "enum_values": [
+            "start",
+            "center",
+            "end",
+            "stretch"
+          ],
+          "description": "Cross-axis alignment"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Wrapping group of inline items with a uniform gap (Every Layout: Cluster)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "sidebar",
+      "attributes": [
+        {
+          "name": "side",
+          "type": "enum",
+          "enum_values": [
+            "left",
+            "right"
+          ],
+          "default": "left",
+          "description": "Which side the sidebar sits on"
+        },
+        {
+          "name": "width",
+          "type": "string",
+          "description": "Ideal sidebar width, e.g. '18rem' (--lotc-sidebar-width)"
+        },
+        {
+          "name": "content-min",
+          "type": "string",
+          "description": "Min content width before wrapping, e.g. '50%' (--lotc-sidebar-content-min)"
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "description": "Gap between the two (--lotc-sidebar-gap)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Content + a fixed-ish side column that wraps below when space runs out (Every Layout: Sidebar)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "switcher",
+      "attributes": [
+        {
+          "name": "threshold",
+          "type": "string",
+          "description": "Container width at which it switches, e.g. '30rem' (--lotc-switcher-threshold)"
+        },
+        {
+          "name": "gap",
+          "type": "string",
+          "description": "Gap between items (--lotc-switcher-gap)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Items in a row that switch to a vertical stack below a threshold width (Every Layout: Switcher)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "cover",
+      "attributes": [
+        {
+          "name": "min",
+          "type": "string",
+          "description": "Minimum block size, e.g. '100vh' / '60vh' (--lotc-cover-min)"
+        },
+        {
+          "name": "space",
+          "type": "string",
+          "description": "Padding + gap around content (--lotc-cover-space)"
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "Min-height region that vertically centres its main content, with optional top/bottom items (Every Layout: Cover)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
+    },
+    {
+      "name": "box",
+      "attributes": [
+        {
+          "name": "pad",
+          "type": "string",
+          "description": "Padding, e.g. '1rem' (--lotc-box-pad)"
+        },
+        {
+          "name": "border",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "description": "Additional CSS classes"
+        }
+      ],
+      "description": "A padded container with an optional border — the simplest layout unit (Every Layout: Box)",
+      "category": "layout",
+      "backend": "jinja",
+      "content": {
+        "allowed": true
+      }
     }
   ]
 }

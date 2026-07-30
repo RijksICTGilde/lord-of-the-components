@@ -1,0 +1,13 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set side = _component_context.get('side', 'left') %}
+{% set width = _component_context.get('width', '') %}
+{% set cmin = _component_context.get('content-min', '') %}
+{% set gap = _component_context.get('gap', '') %}
+{% set cls = ['lotc-sidebar', 'lotc-sidebar--' ~ side] %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="sidebar" {{ attrs.render_extra_attributes(_component_context) }}
+  {% if width or cmin or gap %}style="{% if width %}--lotc-sidebar-width: {{ width }};{% endif %}{% if cmin %}--lotc-sidebar-content-min: {{ cmin }};{% endif %}{% if gap %}--lotc-sidebar-gap: {{ gap }};{% endif %}"{% endif %}>
+  {{ _component_context.get('content', '') | safe }}
+</div>
+{% endmacro %}
