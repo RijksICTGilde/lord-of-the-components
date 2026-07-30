@@ -149,7 +149,7 @@ def activity() -> str:
 
 
 def build() -> str:
-    return f"""<c-page title="Overzicht · Begane Grond" lang="nl" design-systems="nldd bgnldd">
+    return f"""<c-page title="Overzicht · Begane Grond" lang="nl" design-systems="lotc-layout nldd bgnldd">
 <!-- Mix-and-match: NLDD primitives + BGNLDD app components. c-page loads the
      CSS/JS for both declared design systems itself. -->
 <!-- GAP still: no c-status-bar; c-header has no utility-menu slot. -->

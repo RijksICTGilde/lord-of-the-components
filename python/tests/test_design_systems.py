@@ -33,7 +33,8 @@ def _render(env, src):
 
 def test_system_component_renders_without_design_system():
     env = _env()  # nothing declared
-    assert 'class="lotc-stack"' in _render(env, "<c-stack>x</c-stack>")
+    # div/span/... (html) stay system-level; layout comps (stack, …) moved to
+    # the opt-in lotc-layout design system in phase 2.
     assert "<div" in _render(env, "<c-div>hi</c-div>")
 
 

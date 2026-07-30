@@ -8,7 +8,6 @@ export const columns = defineComponent({
     "Grid with an explicit column count and a mobile-first per-breakpoint fallback " +
     "(cols = base; sm/md/lg override upward)",
   category: "layout",
-  system: true,
   props: {
     // Base (mobile) column count. sm/md/lg override at wider breakpoints and
     // fall back through the smaller ones when unset.

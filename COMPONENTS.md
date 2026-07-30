@@ -7,8 +7,6 @@
 | accordion | data | 1 | 0 | 0 | ✅ | — |
 | accordion-item | data | 3 | 0 | 0 | ✅ | — |
 | alert | feedback | 6 | 0 | 0 | ✅ | — |
-| app-shell | layout | 3 | 0 | 0 | ✅ | — |
-| auto-grid | layout | 3 | 0 | 0 | ✅ | — |
 | b | html | 1 | 0 | 0 | ✅ | — |
 | badge | feedback | 3 | 0 | 0 | ✅ | — |
 | blockquote | html | 1 | 0 | 0 | ✅ | — |
@@ -17,12 +15,11 @@
 | card | data-display | 15 | 1 | 0 | ✅ | — |
 | checkbox | forms | 7 | 0 | 0 | ✅ | — |
 | code | html | 1 | 0 | 0 | ✅ | — |
-| columns | layout | 6 | 0 | 0 | ✅ | — |
 | data-list | data-display | 1 | 0 | 0 | ✅ | — |
 | div | html | 1 | 0 | 0 | ✅ | — |
 | em | typography | 2 | 0 | 0 | ✅ | — |
 | footer | layout | 3 | 0 | 0 | ✅ | — |
-| grid | layout | 4 | 0 | 0 | ✅ | — |
+| grid | layout | 5 | 0 | 0 | ✅ | — |
 | header | layout | 4 | 0 | 0 | ✅ | — |
 | heading | typography | 4 | 0 | 0 | ✅ | — |
 | hero | layout | 7 | 0 | 0 | ✅ | — |
@@ -42,7 +39,6 @@
 | select | forms | 6 | 0 | 0 | ✅ | — |
 | small | html | 1 | 0 | 0 | ✅ | — |
 | span | html | 1 | 0 | 0 | ✅ | — |
-| stack | layout | 6 | 0 | 0 | ✅ | — |
 | strong | typography | 2 | 0 | 0 | ✅ | — |
 | tab | navigation | 4 | 0 | 0 | ✅ | — |
 | table | data | 2 | 0 | 0 | ✅ | — |
@@ -90,32 +86,6 @@ Status alert with icon, heading, and optional close button
 | padding | enum | xs sm md lg xl 2xl | md |  |
 | max-width | enum | sm md lg |  |  |
 | closable | boolean | — |  |  |
-| class | string | — |  |  |
-
-events: —    bindings: —
-content: yes
-
-## app-shell  (layout)
-
-Application shell layout (header / sidebar / main / footer) via named grid areas; regions come from <template slot="header|sidebar|footer">, main from the body
-
-| prop | type | values | default | required |
-|---|---|---|---|---|
-| direction | enum | left right | left |  |
-| width | string | — |  |  |
-| class | string | — |  |  |
-
-events: —    bindings: —
-content: yes
-
-## auto-grid  (layout)
-
-Responsive column grid: as many columns as fit at a minimum width, then wrap
-
-| prop | type | values | default | required |
-|---|---|---|---|---|
-| min | string | — |  |  |
-| gap | string | — |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —
@@ -247,22 +217,6 @@ Inline code
 events: —    bindings: —
 content: yes
 
-## columns  (layout)
-
-Grid with an explicit column count and a mobile-first per-breakpoint fallback (cols = base; sm/md/lg override upward)
-
-| prop | type | values | default | required |
-|---|---|---|---|---|
-| columns | string | — |  |  |
-| sm | string | — |  |  |
-| md | string | — |  |  |
-| lg | string | — |  |  |
-| gap | string | — |  |  |
-| class | string | — |  |  |
-
-events: —    bindings: —
-content: yes
-
 ## data-list  (data-display)
 
 Key-value pair display using a definition list
@@ -318,6 +272,7 @@ Auto-fill grid layout with equal-width columns
 |---|---|---|---|---|
 | columns | enum | one two three four five six seven eight nine ten eleven twelve | one |  |
 | gap | enum | 0 3xs 2xs xs sm md lg xl 2xl 3xl 4xl 5xl | md |  |
+| min | string | — |  |  |
 | division | string | — |  |  |
 | class | string | — |  |  |
 
@@ -601,22 +556,6 @@ Generic inline container
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
-| class | string | — |  |  |
-
-events: —    bindings: —
-content: yes
-
-## stack  (layout)
-
-Flex stack with an explicit direction (vertical | horizontal), enforced uniformly across themes
-
-| prop | type | values | default | required |
-|---|---|---|---|---|
-| direction | enum | vertical horizontal | vertical |  |
-| gap | string | — |  |  |
-| wrap | boolean | — |  |  |
-| align | enum | start center end stretch |  |  |
-| justify | enum | start center end between |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —

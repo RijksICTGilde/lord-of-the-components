@@ -36,9 +36,9 @@ ship their own grid (e.g. RVO). Whichever you activate first wins — with
 `design_systems=["lotc-layout", "rvo"]` you get the agnostic grid; with `["rvo"]`
 alone you get RVO's. Nothing is replaced.
 
-`<c-stack>`, `<c-auto-grid>` and `<c-columns>` (the Stack/Grid primitives) live
-in core today; they will move here in a later phase so the whole layout layer is
-one opt-in unit.
+`<c-stack>`, `<c-auto-grid>`, `<c-columns>` and `<c-app-shell>` now live here too
+(they used to be always-on in core) — so the whole layout layer is a single
+opt-in unit. Any page that uses them must activate `lotc-layout`.
 
 ## Example
 

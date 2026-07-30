@@ -20,7 +20,7 @@ PKG = Path(__file__).resolve().parent.parent / "src" / "lord_of_the_components"
 def render():
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(
-        env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+        env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
     )
     return lambda s: env.from_string(s).render()
 
@@ -86,7 +86,7 @@ def test_layer_and_activity_render(render):
 def test_design_system_assets_global_emits_the_declared_bundles():
     # A page declaring nldd loads its web-components bundle via this global.
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
-    setup_components(env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json"))
+    setup_components(env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json"))
     html = env.from_string("{{ get_design_system_assets() }}").render()
     assert 'src="/static/lotc/nldd/dist/nldd.js"' in html  # NLDD web components
 
@@ -173,7 +173,7 @@ def test_zelf_page_fixture_renders_fully():
     # nldd+bgnldd with every app component resolving (no missing-impl error).
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(
-        env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+        env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
     )
     fixture = Path(__file__).resolve().parents[2] / "tests" / "visual" / "fixtures" / "zelf.html"
     html = env.from_string(fixture.read_text(encoding="utf-8")).render()
@@ -253,7 +253,7 @@ def test_apps_page_fixture_renders_fully():
     # nldd+bgnldd with every component resolving (no missing-impl error).
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(
-        env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+        env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
     )
     fixture = Path(__file__).resolve().parents[2] / "tests" / "visual" / "fixtures" / "apps.html"
     html = env.from_string(fixture.read_text(encoding="utf-8")).render()

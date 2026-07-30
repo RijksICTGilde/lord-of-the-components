@@ -8,8 +8,6 @@
 | accordion | rvo | 5 | ✅ | pending | — |
 | accordion-item | rvo | 6 | ✅ | pending | — |
 | alert | rvo | 20 | ✅ | pending | — |
-| app-shell | rvo | 8 | ✅ | pending | — |
-| auto-grid | rvo | 7 | ✅ | pending | — |
 | b | rvo | 5 | ✅ | pending | — |
 | badge | rvo | 12 | ✅ | pending | — |
 | blockquote | rvo | 5 | ✅ | pending | — |
@@ -18,7 +16,6 @@
 | card | rvo | 24 | ✅ | pending | — |
 | checkbox | rvo | 8 | ✅ | pending | — |
 | code | rvo | 5 | ✅ | pending | — |
-| columns | rvo | 10 | ✅ | pending | — |
 | data-list | rvo | 5 | ✅ | pending | — |
 | div | rvo | 5 | ✅ | pending | — |
 | em | rvo | 7 | ✅ | pending | — |
@@ -43,7 +40,6 @@
 | select | rvo | 9 | ✅ | pending | — |
 | small | rvo | 5 | ✅ | pending | — |
 | span | rvo | 5 | ✅ | pending | — |
-| stack | rvo | 17 | ✅ | pending | — |
 | strong | rvo | 7 | ✅ | pending | — |
 | tab | rvo | 9 | ✅ | pending | — |
 | table | rvo | 5 | ✅ | pending | — |

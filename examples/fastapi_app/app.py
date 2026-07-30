@@ -27,7 +27,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from lord_of_the_components import get_static_roots, setup_components
 
-DESIGN_SYSTEMS = ["rvo"]
+DESIGN_SYSTEMS = ["lotc-layout", "rvo"]
 
 BASE = Path(__file__).resolve().parent
 
