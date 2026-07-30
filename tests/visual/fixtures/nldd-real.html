@@ -1,0 +1,39 @@
+<c-page title="NLDD context-componenten (realistisch)" theme="nldd" design-systems="nldd bgnldd">
+<style>
+  body{font-family:system-ui;padding:1rem;max-width:1100px;margin:0 auto}
+  h2{margin:1.5rem 0 .5rem;color:#154273;text-transform:uppercase;font-size:.78rem;border-top:1px solid #ddd;padding-top:.8rem}
+  .cell{margin:.5rem 0 1rem;padding:.6rem;border:1px solid #eee;border-radius:8px}
+  .cell code{font-size:.72rem;color:#888;display:block;margin-bottom:.4rem}
+</style>
+<h1>NLDD context-componenten — realistische voorbeelden</h1>
+
+<h2>Composites</h2>
+<div class="cell"><code>c-toolbar</code><c-toolbar><template slot="start"><c-button type="secondary" label="Terug"/></template><template slot="center"><c-toolbar-title text="Documenttitel"/></template><template slot="end"><c-button type="primary" label="Opslaan"/></template></c-toolbar></div>
+<div class="cell"><code>c-title</code><c-title><template slot="overline">Sectie</template>Hoofdtitel<template slot="subtitle">Een ondertitel die context geeft</template></c-title></div>
+<div class="cell"><code>c-byline</code><c-byline><template slot="avatars"><c-avatar initials="AS"/></template><template slot="text">Anne Schuth</template><template slot="supporting-text">2 uur geleden</template></c-byline></div>
+<div class="cell"><code>c-banner</code><c-banner text="Let op: dit is een demo-omgeving."><template slot="actions"><c-button type="secondary" label="Sluiten"/></template></c-banner></div>
+<div class="cell"><code>c-collection</code><c-collection><c-card outline padding="md">Item A</c-card><c-card outline padding="md">Item B</c-card><template slot="footer"><c-button type="secondary" label="Meer laden"/></template></c-collection></div>
+<div class="cell"><code>c-activity-indicator</code><c-activity-indicator text="Bezig met laden…" show-text/></div>
+<div class="cell"><code>c-document-tab-bar</code><c-document-tab-bar><c-document-tab-bar-item text="Document 1" supporting-text="gewijzigd" selected/><c-document-tab-bar-item text="Document 2"/></c-document-tab-bar></div>
+
+<h2>Sections</h2>
+<div class="cell"><code>c-simple-section</code><c-simple-section><template slot="header"><c-title>Sectiekop</c-title></template><c-p>De inhoud van de sectie.</c-p><template slot="footer"><c-button type="secondary" label="Actie"/></template></c-simple-section></div>
+<div class="cell"><code>c-one-half-one-half-section</code><c-one-half-one-half-section><template slot="left"><c-card outline padding="md">Links</c-card></template><template slot="right"><c-card outline padding="md">Rechts</c-card></template></c-one-half-one-half-section></div>
+<div class="cell"><code>c-two-thirds-one-third-section</code><c-two-thirds-one-third-section><template slot="left"><c-card outline padding="md">Hoofd (2/3)</c-card></template><template slot="right"><c-card outline padding="md">Zij (1/3)</c-card></template></c-two-thirds-one-third-section></div>
+
+<h2>Lists &amp; cells</h2>
+<div class="cell"><code>c-list + c-list-item + cells</code><c-list><c-list-item><c-title-cell overline="Regel" text="Eerste item" supporting-text="met toelichting"/></c-list-item><c-list-item><c-text-cell>Tweede item</c-text-cell></c-list-item><c-list-item><c-description-cell><template slot="title">Derde</template><template slot="description">een beschrijving</template></c-description-cell></c-list-item></c-list></div>
+
+<h2>Groepen (parent + item)</h2>
+<div class="cell"><code>c-step-indicator</code><c-step-indicator><c-step-indicator-item text="Gegevens" status="past"/><c-step-indicator-item text="Controle" status="current"/><c-step-indicator-item text="Verzenden" status="future"/></c-step-indicator></div>
+<div class="cell"><code>c-segmented-control</code><c-segmented-control><c-segmented-control-item text="Dag" selected/><c-segmented-control-item text="Week"/><c-segmented-control-item text="Maand"/></c-segmented-control></div>
+<div class="cell"><code>c-radio-button-group</code><c-radio-button-group><c-radio-button-field label="Optie A"/><c-radio-button-field label="Optie B"/></c-radio-button-group></div>
+<div class="cell"><code>c-toggle-button-group</code><c-toggle-button-group><c-toggle-button text="Vet"/><c-toggle-button text="Cursief"/></c-toggle-button-group></div>
+<div class="cell"><code>c-button-bar</code><c-button-bar><c-button type="secondary" label="Annuleren"/><c-button type="primary" label="Bevestigen"/></c-button-bar></div>
+<div class="cell"><code>c-progress-bar</code><c-progress-bar value="60" max="100"/></div>
+<div class="cell"><code>c-progress-circle</code><c-progress-circle value="40" max="100"/></div>
+
+<h2>Overlays</h2>
+<div class="cell"><code>c-inline-dialog</code><c-inline-dialog text="Weet je het zeker?"><template slot="actions"><c-button type="primary" label="Ja"/><c-button type="secondary" label="Nee"/></template></c-inline-dialog></div>
+<div class="cell"><code>c-modal-dialog</code><c-modal-dialog text="Bevestigen">Wil je doorgaan?<template slot="actions"><c-button type="primary" label="Doorgaan"/></template></c-modal-dialog></div>
+</c-page>

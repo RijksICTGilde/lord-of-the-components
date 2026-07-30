@@ -29,8 +29,11 @@ const SEMANTIC_DUPES = new Set([
   "page-footer", "page-footer-legal-bar", "page-footer-legal-bar-item",
 ]);
 // existing hand-authored lotc-nldd templates (don't overwrite)
+const AUTOMARK = "Auto-generated from the NLDD custom-elements manifest";
 const existingTpl = new Set(
-  existsSync(NLDD_TPL_DIR) ? readdirSync(NLDD_TPL_DIR).filter((f) => f.endsWith(".html.j2")).map((f) => f.replace(".html.j2", "")) : [],
+  (existsSync(NLDD_TPL_DIR) ? readdirSync(NLDD_TPL_DIR).filter((f) => f.endsWith(".html.j2")) : [])
+    .filter((f) => !readFileSync(resolve(NLDD_TPL_DIR, f), "utf8").includes(AUTOMARK))
+    .map((f) => f.replace(".html.j2", "")),
 );
 
 // collect elements with their owning module group (for a category)
@@ -73,7 +76,7 @@ for (const el of els) {
   }
   open += ` data-lotc-component="${cname}" {{ attrs.render_extra_attributes(_component_context) }}>`;
   L.push(open);
-  for (const s of slots) L.push(`{% if _component_context.get('slots', {}).get('${s}') %}<template slot="${s}">{{ _component_context['slots']['${s}'] | safe }}</template>{% endif %}`);
+  for (const s of slots) L.push(`{% if _component_context.get('slots', {}).get('${s}') %}<div slot="${s}">{{ _component_context['slots']['${s}'] | safe }}</div>{% endif %}`);
   if (hasDefaultSlot || slots.length === 0) L.push("{{ _component_context.get('content', '') | safe }}");
   L.push(`</${el.tagName}>`);
   L.push("{% endmacro %}");
