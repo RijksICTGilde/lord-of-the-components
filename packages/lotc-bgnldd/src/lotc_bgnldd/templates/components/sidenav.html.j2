@@ -1,5 +1,6 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set extra = _component_context.get('class', '') %}
-<nav class="lotc-sidenav{% if extra %} {{ extra }}{% endif %}" data-lotc-component="sidenav"><ul>{{ children | safe }}</ul></nav>
+<nav class="lotc-sidenav{% if extra %} {{ extra }}{% endif %}" data-lotc-component="sidenav" {{ attrs.render_extra_attributes(_component_context) }}><ul>{{ children | safe }}</ul></nav>
 {% endmacro %}

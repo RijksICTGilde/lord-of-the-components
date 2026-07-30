@@ -1,5 +1,6 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set extra = _component_context.get('class', '') %}
-<span class="lotc-layer-chip{% if extra %} {{ extra }}{% endif %}" data-lotc-component="chip">{{ children | safe }}</span>
+<span class="lotc-layer-chip{% if extra %} {{ extra }}{% endif %}" data-lotc-component="chip" {{ attrs.render_extra_attributes(_component_context) }}>{{ children | safe }}</span>
 {% endmacro %}

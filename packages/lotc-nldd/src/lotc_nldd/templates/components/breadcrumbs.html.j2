@@ -1,4 +1,5 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
-<nldd-breadcrumbs data-lotc-component="breadcrumbs">{{ children | safe }}</nldd-breadcrumbs>
+<nldd-breadcrumbs data-lotc-component="breadcrumbs" {{ attrs.render_extra_attributes(_component_context) }}>{{ children | safe }}</nldd-breadcrumbs>
 {% endmacro %}

@@ -1,10 +1,11 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set placeholder = _component_context.get("placeholder", "") %}
 {% set search_label = _component_context.get("search-label", "Zoeken") %}
 {% set count = _component_context.get("count", "") %}
 {% set clear_label = _component_context.get("clear-label", "") %}
 {% set children = _component_context.get("content", "") %}
-<nldd-card data-lotc-component="filter-bar"><nldd-container padding="20">
+<nldd-card data-lotc-component="filter-bar" {{ attrs.render_extra_attributes(_component_context) }}><nldd-container padding="20">
   <div class="lotc-filterbar">
     <div class="lotc-filter-search">
       {% if search_label %}<span class="lotc-filter-label">{{ search_label }}</span>{% endif %}

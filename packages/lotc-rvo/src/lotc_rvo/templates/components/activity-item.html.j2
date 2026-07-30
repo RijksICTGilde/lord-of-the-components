@@ -1,3 +1,4 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get("icon", "") %}
 {% set actor = _component_context.get("actor", "") %}
@@ -5,7 +6,7 @@
 {% set res = _component_context.get("res", "") %}
 {% set at = _component_context.get("at", "") %}
 {% set href = _component_context.get("href", "") %}
-<li class="lotc-activity-item" data-lotc-component="activity-item">
+<li class="lotc-activity-item" data-lotc-component="activity-item" {{ attrs.render_extra_attributes(_component_context) }}>
   <span class="lotc-activity-dot">{% if icon %}{{ _lotc_rvo_icon(icon=icon, size="sm") }}{% endif %}</span>
   <span class="lotc-activity-body">
     <span class="lotc-activity-line">{% if href %}<a href="{{ href }}" class="lotc-activity-actor">{{ actor }}</a>{% else %}<span class="lotc-activity-actor">{{ actor }}</span>{% endif %} <span class="lotc-activity-action">{{ action }}</span></span>

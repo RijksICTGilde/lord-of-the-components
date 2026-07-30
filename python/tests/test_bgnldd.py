@@ -294,6 +294,21 @@ def test_tabs_items_binding_nldd(render):
     assert 'text="B"' in html and 'href="#b"' in html  # name/path aliases
 
 
+def test_custom_attribute_passthrough_on_handauthored_nldd(render):
+    # @events / hx-* / data-* / aria-* pass through onto the host element of the
+    # hand-authored app-component templates too (not only python-backend ones),
+    # so they work on NLDD web components (the click bubbles from shadow DOM to
+    # the host that carries onclick).
+    for markup in (
+        '<c-menu type="bar" @click="go()" hx-get="/a" data-x="1"><c-menu-item label="A"/></c-menu>',
+        '<c-catalog-card title="A" @click="go()" hx-get="/a" data-x="1"/>',
+        '<c-metric value="1" label="L" @click="go()" hx-get="/a" data-x="1"/>',
+    ):
+        html = render(markup)
+        assert 'onclick="go()"' in html, markup
+        assert 'hx-get="/a"' in html and 'data-x="1"' in html, markup
+
+
 def test_app_components_are_global_and_bgnldd_is_impl_only():
     # The app components (metric, sidenav, …) are GLOBAL: their definitions live
     # in core's registry, not owned by any theme. BGNLDD is implementation-only

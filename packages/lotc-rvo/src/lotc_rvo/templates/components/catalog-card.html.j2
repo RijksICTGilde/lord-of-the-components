@@ -1,3 +1,4 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get("icon", "") %}
 {% set title = _component_context.get("title", "") %}
@@ -8,7 +9,7 @@
 {% set open_label = _component_context.get("open-label", "") %}
 {% set href = _component_context.get("href", "") %}
 {% set children = _component_context.get("content", "") %}
-<div class="rvo-card rvo-card--outline rvo-card--padding-md" data-lotc-component="catalog-card">
+<div class="rvo-card rvo-card--outline rvo-card--padding-md" data-lotc-component="catalog-card" {{ attrs.render_extra_attributes(_component_context) }}>
   <div class="lotc-catalog">
     <div class="lotc-catalog-top">
       {% if icon %}<span class="lotc-catalog-icon">{{ _lotc_rvo_icon(icon=icon, size="md") }}</span>{% endif %}
