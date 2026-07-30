@@ -1,0 +1,15 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{#
+  RVO tabs — hand-authored (see generate-all HAND_AUTHORED). Fill it either
+  declaratively (<c-tab> children) or from data (<c-tabs :items="array"/>) where
+  each item is a dict OR object: label|name, href|path, active|selected.
+#}
+{% macro lotc_render(_component_context) %}
+{% set content = _component_context.get('content', '') %}
+{% set aria = _component_context.get('aria-label', '') %}
+{% set items = _component_context.get('items', []) %}
+{% set cls = ['rvo-tabs', 'rvo-ul', 'rvo-ul--no-margin', 'rvo-ul--no-padding'] %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+<ul class="{{ cls | join(' ') }}" data-lotc-component="tabs" role="tablist"{% if aria %} aria-label="{{ aria }}"{% endif %} {{ attrs.render_extra_attributes(_component_context) }}>
+{%- for it in items %}{{ _lotc_rvo_tab(label=(it.label or it.name), href=(it.href or it.path), active=(it.active or it.selected)) }}{%- endfor %}{{ content | safe }}</ul>
+{% endmacro %}

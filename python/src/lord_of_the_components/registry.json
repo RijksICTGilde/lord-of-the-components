@@ -2091,9 +2091,12 @@
           "description": "Additional CSS classes"
         }
       ],
-      "description": "Tab bar; <c-tab> items go in the content",
+      "description": "Tab bar; fill it declaratively with <c-tab> or from data via :items",
       "category": "navigation",
-      "backend": "python",
+      "backend": "jinja",
+      "bindings": {
+        "items": "TabItem[]"
+      },
       "content": {
         "allowed": true
       }

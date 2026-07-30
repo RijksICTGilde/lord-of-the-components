@@ -599,8 +599,8 @@ _BINDING_VALIDATORS = {
         label_aliases=["name"], children_aliases=["subitems"],
     ),
     "SelectOption[]": lambda v: validate_items(v, label_key="label", value_key="value"),
+    "TabItem[]": lambda v: validate_items(v, label_key="label", label_aliases=["name"]),
     "BreadcrumbItem[]": lambda v: validate_items(v, label_key="label"),
-    "TabItem[]": lambda v: validate_items(v, label_key="label"),
     "ProgressStep[]": lambda v: validate_steps(v),
     "TableColumn[]": lambda v: validate_columns(v),
 }

@@ -100,7 +100,7 @@ function main(): void {
   // because their rendering needs recursion the declarative IR can't express —
   // e.g. `<c-menu :items>` builds arbitrarily nested submenus. They stay in the
   // matrix/registry via their .impl.ts; only template emission is skipped.
-  const HAND_AUTHORED = new Set(["menu"]);
+  const HAND_AUTHORED = new Set(["menu", "tabs"]);
 
   let templateCount = 0;
   for (const impl of implementations) {
@@ -167,6 +167,10 @@ function main(): void {
   );
   mkdirSync(NLDD_TEMPLATES_DIR, { recursive: true });
   for (const impl of nlddJinjaImpls) {
+    if (HAND_AUTHORED.has(impl.component.name)) {
+      console.log(`  ↷ lotc-nldd template: ${impl.component.name}.html.j2 -> hand-authored (skipped)`);
+      continue;
+    }
     const template = generator.generateTemplate(impl);
     writeFileSync(resolve(NLDD_TEMPLATES_DIR, `${impl.component.name}.html.j2`), template, "utf-8");
     console.log(`  ✓ lotc-nldd template: ${impl.component.name}.html.j2`);

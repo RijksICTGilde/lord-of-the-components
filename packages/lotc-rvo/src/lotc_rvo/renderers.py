@@ -735,25 +735,6 @@ def table_row(*, content=None, _extra=None, _class=''):
     parts.append('</tr>')
     return Markup(''.join(parts))
 
-def tabs(*, aria_label='', content=None, _extra=None, _class=''):
-    parts = []
-    cls0 = 'rvo-tabs rvo-ul rvo-ul--no-margin rvo-ul--no-padding'
-    cls0 = merge_class(cls0, _class)
-    parts.append('<ul')
-    if cls0:
-        parts.append(' class="' + cls0 + '"')
-    parts.append(' data-lotc-component="tabs"')
-    parts.append(' role="tablist"')
-    if aria_label:
-        parts.append(' aria-label="')
-        parts.append(esc(aria_label))
-        parts.append('"')
-    parts.append(render_extra(_extra))
-    parts.append('>')
-    parts.append((content or ''))
-    parts.append('</ul>')
-    return Markup(''.join(parts))
-
 def tag(*, type='default', label='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = 'rvo-tag'
