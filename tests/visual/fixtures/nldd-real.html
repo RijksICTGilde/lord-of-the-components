@@ -36,4 +36,11 @@
 <h2>Overlays</h2>
 <div class="cell"><code>c-inline-dialog</code><c-inline-dialog text="Weet je het zeker?"><template slot="actions"><c-button type="primary" label="Ja"/><c-button type="secondary" label="Nee"/></template></c-inline-dialog></div>
 <div class="cell"><code>c-modal-dialog</code><c-modal-dialog text="Bevestigen">Wil je doorgaan?<template slot="actions"><c-button type="primary" label="Doorgaan"/></template></c-modal-dialog></div>
+
+<h2>Split-views, forms &amp; media</h2>
+<div class="cell"><code>c-side-by-side-split-view</code><div style="height:120px"><c-side-by-side-split-view><template slot="pane-1"><c-card outline padding="md">Pane 1</c-card></template><template slot="pane-2"><c-card outline padding="md">Pane 2</c-card></template></c-side-by-side-split-view></div></div>
+<div class="cell"><code>c-form + c-form-field + c-form-actions</code><c-form><c-form-field label="Naam"><c-text-field placeholder="Vul je naam in"/></c-form-field><c-form-field label="E-mail" supporting-label="We delen dit niet"><c-text-field placeholder="naam@voorbeeld.nl"/></c-form-field><c-form-actions><c-button type="primary" label="Versturen"/><c-button type="secondary" label="Annuleren"/></c-form-actions></c-form></div>
+<div class="cell"><code>c-image</code><c-image src="data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22100%22><rect width=%22200%22 height=%22100%22 fill=%22%23154273%22/></svg>" alt="Voorbeeldafbeelding" width="200" height="100"><template slot="caption">Een bijschrift</template></c-image></div>
+<div class="cell"><code>c-code-viewer</code><c-code-viewer language="python">print("Hallo, wereld")</c-code-viewer></div>
+<div class="cell"><code>c-rich-text</code><c-rich-text><p>Tekst met <strong>vet</strong> en <em>cursief</em>.</p><ul><li>Punt een</li><li>Punt twee</li></ul></c-rich-text></div>
 </c-page>
