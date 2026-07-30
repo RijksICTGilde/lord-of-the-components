@@ -1,0 +1,36 @@
+<c-page title="lotc-layout · Every Layout" theme="rvo" design-systems="lotc-layout rvo">
+<style>
+  body { background:#fff; }
+  .demo { padding: 1.25rem 1.5rem; font-family: system-ui, sans-serif; }
+  .demo h1 { font-size: 1.2rem; }
+  .demo h2 { font-size:.85rem; color:#154273; margin:1.25rem 0 .4rem; text-transform:uppercase; letter-spacing:.03em; }
+  .b { background:#dbeafe; border:1px solid #93c5fd; padding:.55rem .75rem; border-radius:6px; font-size:.85rem; }
+  .b2 { background:#fce7f3; border-color:#f9a8d4; }
+</style>
+<div class="demo">
+  <h1>lotc-layout — opt-in, thema-agnostisch, mobile-first</h1>
+
+  <h2>Center · max-breedte, gecentreerd</h2>
+  <c-center max="26rem"><div class="b">gecentreerde kolom (max 26rem)</div></c-center>
+
+  <h2>Cluster · wrappende groep</h2>
+  <c-cluster gap=".4rem">
+    <span class="b">alpha</span><span class="b">bravo</span><span class="b">charlie</span>
+    <span class="b">delta</span><span class="b">echo</span><span class="b">wrapt vanzelf</span>
+  </c-cluster>
+
+  <h2>Sidebar · zijbalk + inhoud (wrapt intrinsiek)</h2>
+  <c-sidebar width="11rem" gap="1rem">
+    <div class="b b2">zijbalk · 11rem</div>
+    <div class="b">hoofdinhoud groeit mee en wrapt onder de zijbalk zodra het te smal wordt — geen media query</div>
+  </c-sidebar>
+
+  <h2>Switcher · rij → stapel onder drempel</h2>
+  <c-switcher threshold="24rem" gap=".6rem">
+    <div class="b">een</div><div class="b">twee</div><div class="b">drie</div>
+  </c-switcher>
+
+  <h2>Box · padding + rand</h2>
+  <c-box pad=".9rem" border>een box</c-box>
+</div>
+</c-page>

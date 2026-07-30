@@ -1,0 +1,12 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set pad = _component_context.get('pad', '') %}
+{% set border = _component_context.get('border', false) %}
+{% set cls = ['lotc-box'] %}
+{% if border %}{% set cls = cls + ['lotc-box--border'] %}{% endif %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="box" {{ attrs.render_extra_attributes(_component_context) }}
+  {% if pad %}style="--lotc-box-pad: {{ pad }};"{% endif %}>
+  {{ _component_context.get('content', '') | safe }}
+</div>
+{% endmacro %}

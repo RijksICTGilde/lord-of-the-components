@@ -1,0 +1,11 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set threshold = _component_context.get('threshold', '') %}
+{% set gap = _component_context.get('gap', '') %}
+{% set cls = ['lotc-switcher'] %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="switcher" {{ attrs.render_extra_attributes(_component_context) }}
+  {% if threshold or gap %}style="{% if threshold %}--lotc-switcher-threshold: {{ threshold }};{% endif %}{% if gap %}--lotc-switcher-gap: {{ gap }};{% endif %}"{% endif %}>
+  {{ _component_context.get('content', '') | safe }}
+</div>
+{% endmacro %}

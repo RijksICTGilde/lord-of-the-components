@@ -1,0 +1,15 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set max = _component_context.get('max', '') %}
+{% set gutters = _component_context.get('gutters', '') %}
+{% set text = _component_context.get('text', false) %}
+{% set intrinsic = _component_context.get('intrinsic', false) %}
+{% set cls = ['lotc-center'] %}
+{% if text %}{% set cls = cls + ['lotc-center--text'] %}{% endif %}
+{% if intrinsic %}{% set cls = cls + ['lotc-center--intrinsic'] %}{% endif %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="center" {{ attrs.render_extra_attributes(_component_context) }}
+  {% if max or gutters %}style="{% if max %}--lotc-center-max: {{ max }};{% endif %}{% if gutters %}--lotc-center-gutters: {{ gutters }};{% endif %}"{% endif %}>
+  {{ _component_context.get('content', '') | safe }}
+</div>
+{% endmacro %}

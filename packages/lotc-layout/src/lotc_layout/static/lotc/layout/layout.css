@@ -1,0 +1,91 @@
+/*
+ * lotc-layout — opt-in, theme-agnostic layout primitives.
+ *
+ * Modelled on Every Layout (every-layout.dev). Intrinsically responsive: they
+ * reflow based on available space (flex-wrap, min()/clamp, no media queries), so
+ * they are mobile-first by construction. Design-system-agnostic — they carry no
+ * colours or fonts, only structure, and compose with any component library.
+ *
+ * Every primitive is driven by CSS custom properties (set inline from props),
+ * so a consumer can tune spacing/sizes per instance.
+ */
+
+/* ── Center: a max-width, horizontally-centred measure ────────────────────── */
+.lotc-center {
+  box-sizing: content-box;
+  max-inline-size: var(--lotc-center-max, 60rem);
+  margin-inline: auto;
+  padding-inline: var(--lotc-center-gutters, 1rem);
+}
+.lotc-center--text { text-align: center; }
+.lotc-center--intrinsic { display: flex; flex-direction: column; align-items: center; }
+
+/* ── Cluster: a wrapping group of inline items with a uniform gap ──────────── */
+.lotc-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lotc-cluster-gap, 1rem);
+  align-items: center;
+  justify-content: flex-start;
+}
+.lotc-cluster--justify-start { justify-content: flex-start; }
+.lotc-cluster--justify-center { justify-content: center; }
+.lotc-cluster--justify-end { justify-content: flex-end; }
+.lotc-cluster--justify-between { justify-content: space-between; }
+.lotc-cluster--align-start { align-items: flex-start; }
+.lotc-cluster--align-center { align-items: center; }
+.lotc-cluster--align-end { align-items: flex-end; }
+.lotc-cluster--align-stretch { align-items: stretch; }
+
+/* ── Sidebar: content + a side column that wraps below when space runs out ──
+   No media query: the content has a min width; when it can't fit beside the
+   sidebar the whole thing wraps. */
+.lotc-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lotc-sidebar-gap, 1rem);
+}
+.lotc-sidebar > * {
+  flex-grow: 1;
+}
+.lotc-sidebar--left > :first-child,
+.lotc-sidebar--right > :last-child {
+  flex-basis: var(--lotc-sidebar-width, 18rem);
+  flex-grow: 1;
+}
+.lotc-sidebar--left > :last-child,
+.lotc-sidebar--right > :first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--lotc-sidebar-content-min, 50%);
+}
+
+/* ── Switcher: a row that becomes a stack below a threshold width ──────────── */
+.lotc-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lotc-switcher-gap, 1rem);
+}
+.lotc-switcher > * {
+  flex-grow: 1;
+  flex-basis: calc((var(--lotc-switcher-threshold, 30rem) - 100%) * 999);
+}
+
+/* ── Cover: fills a min height and vertically centres its main content ─────── */
+.lotc-cover {
+  display: flex;
+  flex-direction: column;
+  min-block-size: var(--lotc-cover-min, 100vh);
+  padding: var(--lotc-cover-space, 1rem);
+  gap: var(--lotc-cover-space, 1rem);
+}
+.lotc-cover > * { margin-block: 0; }
+.lotc-cover > .lotc-cover-center { margin-block: auto; }
+
+/* ── Box: a padded container, optional 1px border in the current colour ────── */
+.lotc-box {
+  padding: var(--lotc-box-pad, 1rem);
+}
+.lotc-box--border {
+  border: 1px solid currentColor;
+}
