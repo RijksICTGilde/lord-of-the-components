@@ -165,3 +165,42 @@ def test_raw_icon_name_passes_through():
     env = Environment(loader=FileSystemLoader([str(TEMPLATES_DIR)]), autoescape=True)
     setup_components(env, registry_path=str(REGISTRY_JSON), theme="rvo")
     assert "rvo-icon-delta-naar-rechts" in env.from_string('<c-icon icon="delta-naar-rechts"/>').render()
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# {{ }} attribute forms — the Jinja-style alternative to :attr bindings
+# ═══════════════════════════════════════════════════════════════════════════════
+
+
+class TestMustacheAttributes:
+    """attr="{{ expr }}" works for every attribute (mirrors :attr), and mixed
+    literal+{{ }} values interpolate as strings."""
+
+    def _render(self, source: str, **ctx: object) -> str:
+        env = _env()
+        return env.from_string(source).render(**ctx)
+
+    def test_whole_mustache_string_attr(self):
+        html = self._render('{% set L = "Opslaan" %}<c-button type="primary" label="{{ L }}"/>')
+        assert "Opslaan" in html
+
+    def test_mixed_interpolation_string_attr(self):
+        html = self._render('{% set uid = 42 %}<c-link href="/user/{{ uid }}">P</c-link>')
+        assert "/user/42" in html
+
+    def test_whole_mustache_binding_equals_colon_form(self):
+        # items="{{ NAV }}" passes the actual list (object-preserving), like :items
+        nav = [{"label": "Home", "href": "/"}, {"label": "P", "children": [{"label": "A", "href": "/a"}]}]
+        html = self._render('<c-menu type="vertical" items="{{ NAV }}"/>', NAV=nav)
+        assert "Home" in html and "A" in html
+        assert "rvo-menubar__submenu" in html  # nested, so it was a real list not a string
+
+    def test_whole_mustache_boolean_attr(self):
+        on = self._render('{% set flag = True %}<c-button type="primary" label="X" disabled="{{ flag }}"/>')
+        off = self._render('{% set flag = False %}<c-button type="primary" label="X" disabled="{{ flag }}"/>')
+        assert "disabled" in on and "disabled" not in off
+
+    def test_binding_validation_still_applies(self):
+        # A bad shape via items="{{ ... }}" is validated just like :items.
+        with pytest.raises(DataValidationError):
+            self._render('<c-menu items="{{ BAD }}"/>', BAD=[{"no_label": 1}])

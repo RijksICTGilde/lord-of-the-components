@@ -99,6 +99,18 @@ def _has_jinja(text: Optional[str]) -> bool:
     return text is not None and any(d in text for d in _JINJA_DELIMS)
 
 
+def _mustache_expr(value: Optional[str]) -> Optional[str]:
+    """If `value` is a single whole ``{{ expr }}`` (nothing else), return the
+    inner expression; otherwise None. Lets ``attr="{{ x }}"`` behave exactly like
+    the ``:attr="x"`` bound form (object-preserving), for every attribute."""
+    if value is None:
+        return None
+    s = value.strip()
+    if s.startswith("{{") and s.endswith("}}") and s.count("{{") == 1 and s.count("}}") == 1:
+        return s[2:-2].strip()
+    return None
+
+
 def _is_foldable(attrs: Dict[str, Any], content: Optional[str]) -> bool:
     """A component instance can be folded when every attribute is a literal and its
     content is already a static (Jinja-free) string."""
@@ -411,6 +423,9 @@ class ComponentExtension(Extension):
             if any(c.isupper() for c in attr.name):
                 valid_attrs[attr.name.lower()] = attr.name
         valid_attrs.update({"class": "class", "id": "id", "style": "style"})
+        # Data-binding names (e.g. `items`) are addressable without the ':' prefix
+        # too — `items="{{ x }}"` is the Jinja-style equivalent of `:items="x"`.
+        valid_attrs.update({b.lower(): b for b in getattr(component_def, "bindings", {})})
 
         for parsed in attr_list:
             attr_name = parsed.name
@@ -535,6 +550,19 @@ class ComponentExtension(Extension):
             elif key.startswith("@"):
                 escaped_value = value.replace('"', '\\"')
                 context_items.append(f"'{key}': \"{escaped_value}\"")
+            elif (mexpr := _mustache_expr(value)) is not None:
+                # attr="{{ expr }}" — the Jinja-style equivalent of :attr="expr":
+                # evaluate the expression (object-preserving), validated if a binding.
+                if mexpr in ("true", "false"):
+                    context_items.append(f'"{key}": {mexpr.capitalize()}')
+                else:
+                    context_items.append(f'"{key}": {self._wrap_binding(key, mexpr, component_def)}')
+            elif _has_jinja(value):
+                # Mixed literal + {{ }} / {% %} (e.g. href="/u/{{ id }}") — render it
+                # to a string via a capture block, so Jinja evaluates the embedded code.
+                cap = f"_attr_{self._generate_id(state)}"
+                set_statements.append(f"{{% set {cap} %}}{value}{{% endset %}}")
+                context_items.append(f'"{key}": {cap}')
             else:
                 # Check if this is a boolean attribute
                 attr_def = component_def.get_attribute(key) if component_def else None
@@ -644,8 +672,13 @@ class ComponentExtension(Extension):
                     from .registry import AttributeType
 
                     if attr_def.type == AttributeType.BOOLEAN:
-                        falsy = str(value).lower() in ("false", "0", "no", "off")
-                        kwargs.append(f"{_py_ident(key)}={'False' if falsy else 'True'}")
+                        bexpr = _mustache_expr(value)
+                        if bexpr is not None:
+                            # disabled="{{ flag }}" — evaluate, like :disabled="flag".
+                            kwargs.append(f"{_py_ident(key)}=({bexpr})")
+                        else:
+                            falsy = str(value).lower() in ("false", "0", "no", "off")
+                            kwargs.append(f"{_py_ident(key)}={'False' if falsy else 'True'}")
                     else:
                         kwargs.append(f"{_py_ident(key)}={value_expr(value)}")
                     if is_generic:
