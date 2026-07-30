@@ -9,13 +9,27 @@
  * cover semantically under a different name (tabs/menu/header/site-footer), and
  * any component that already has a hand-authored lotc-nldd template.
  */
-import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, statSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const CEM = JSON.parse(readFileSync(resolve(ROOT, "node_modules/@nldd/design-system/custom-elements.json"), "utf8"));
 const CORE_REG = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_components/registry.json"), "utf8"));
+// Resolve NLDD union-type aliases (AvatarSize = '' | 'md' | …) from the .d.ts so enum
+// attributes get validated values, not free strings.
+function buildEnums() {
+  const walk = (dir, acc = []) => { for (const f of readdirSync(dir)) { const p = resolve(dir, f); const st = statSync(p); if (st.isDirectory()) walk(p, acc); else if (f.endsWith(".d.ts")) acc.push(p); } return acc; };
+  const map = {};
+  const re = /(?:export )?(?:declare )?type ([A-Z][A-Za-z0-9]+) = ((?:'[^']*' ?\| ?)*'[^']*');/g;
+  for (const f of walk(resolve(ROOT, "node_modules/@nldd/design-system/dist"))) {
+    const src = readFileSync(f, "utf8"); let m;
+    while ((m = re.exec(src))) { const vals = m[2].split("|").map((v) => v.trim().replace(/^'|'$/g, "")).filter((v) => v !== ""); if (vals.length) map[m[1]] = [...new Set([...(map[m[1]] || []), ...vals])]; }
+  }
+  return map;
+}
+const ENUMS = buildEnums();
+
 const NLDD_TPL_DIR = resolve(ROOT, "packages/lotc-nldd/src/lotc_nldd/templates/components");
 const FRAGMENT = resolve(ROOT, "packages/lotc-nldd/src/lotc_nldd/registry.json");
 
@@ -54,11 +68,16 @@ for (const el of els) {
   const cname = el.tagName.replace(/^nldd-/, "");
   if (coreNames.has(cname) || SEMANTIC_DUPES.has(cname) || existingTpl.has(cname)) continue;
 
-  const attrs = (el.attributes || []).map((a) => ({
-    name: a.name,
-    boolean: (a.type?.text || "").trim() === "boolean",
-    description: (a.description || "").split("\n")[0].slice(0, 120),
-  }));
+  const attrs = (el.attributes || []).map((a) => {
+    const tt = (a.type?.text || "").trim();
+    return {
+      name: a.name,
+      boolean: tt === "boolean",
+      enumValues: ENUMS[tt] || null,
+      default: a.default != null ? String(a.default).replace(/^['"]|['"]$/g, "") : undefined,
+      description: (a.description || "").split("\n")[0].slice(0, 120),
+    };
+  });
   const slots = (el.slots || []).map((s) => s.name).filter(Boolean); // named slots
   const hasDefaultSlot = (el.slots || []).some((s) => !s.name);
 
@@ -85,7 +104,9 @@ for (const el of els) {
   // ── registry entry ──
   fragment.push({
     name: cname,
-    attributes: attrs.map((a) => ({ name: a.name, type: a.boolean ? "boolean" : "string", description: a.description })),
+    attributes: attrs.map((a) => a.enumValues
+      ? { name: a.name, type: "enum", enum_values: a.enumValues, ...(a.default ? { default: a.default } : {}), description: a.description }
+      : { name: a.name, type: a.boolean ? "boolean" : "string", description: a.description }),
     description: (el.summary || el.description || `NLDD ${cname}`).split("\n")[0].slice(0, 140),
     category: CAT[el._group] || "content",
     backend: "jinja",

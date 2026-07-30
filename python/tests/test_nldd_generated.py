@@ -58,6 +58,52 @@ def test_nldd_fragment_registers_many_components():
         assert name in names, name
 
 
+@pytest.fixture
+def render_debug():
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
+    setup_components(
+        env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json"), debug=True
+    )
+    return lambda s: env.from_string(s).render()
+
+
+def test_generated_enum_attribute_carries_values():
+    # The generator resolves NLDD union-type aliases (AvatarSize = '' | '16' | …)
+    # from the .d.ts, so enum attributes ship their allowed set — not free strings.
+    from lord_of_the_components.registry import AttributeType
+
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
+    setup_components(env, design_systems=["nldd"], registry_path=str(PKG / "registry.json"))
+    reg = env.extensions[ComponentExtension.identifier].registry
+    banner = reg._components["banner"]
+    variant = banner.get_attribute("variant")
+    assert variant is not None and variant.type == AttributeType.ENUM
+    assert {"neutral", "success", "warning", "critical"} <= set(variant.enum_values)
+
+
+@pytest.mark.parametrize(
+    "markup",
+    ['<c-avatar size="16"/>', '<c-banner variant="critical"/>', '<c-avatar type="person"/>'],
+)
+def test_valid_enum_value_renders(render_debug, markup):
+    render_debug(markup)  # no raise
+
+
+@pytest.mark.parametrize(
+    "markup,bad",
+    [
+        ('<c-avatar size="notavalue"/>', "notavalue"),
+        ('<c-banner variant="bogus"/>', "bogus"),
+        ('<c-avatar type="alien"/>', "alien"),
+    ],
+)
+def test_invalid_enum_value_is_rejected(render_debug, markup, bad):
+    from lord_of_the_components import ComponentError
+
+    with pytest.raises(ComponentError, match=f"Invalid value '{bad}'"):
+        render_debug(markup)
+
+
 def test_generated_component_absent_without_nldd():
     # The fragment is owned by lotc-nldd: without nldd active the component is
     # not even in the registry -> a hard "unknown component" error.
