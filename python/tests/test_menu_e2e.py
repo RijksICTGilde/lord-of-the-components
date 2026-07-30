@@ -470,3 +470,52 @@ class TestMenuCombined:
         assert "rvo-menubar__dropdown" in norm
         assert "Advies" in norm
         assert "Ondersteuning" in norm
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DATA-DRIVEN MENU (:items binding, recursive)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+
+class TestMenuItemsBinding:
+    """`<c-menu :items="...">` builds the menu (incl. nested submenus) from data."""
+
+    # A menu tree mixing the canonical shape and aliases (name/path/selected/subitems).
+    DATA = (
+        "{% set NAV = ["
+        "{'label':'Overzicht','href':'/','icon':'home','active':True},"
+        "{'label':'Producten','icon':'documenten','children':["
+        "  {'label':'Widget A','href':'/p/a'},"
+        "  {'name':'Widget B','path':'/p/b','subitems':[{'name':'Diep','path':'/p/b/d'}]}"
+        "]},"
+        "{'name':'Contact','path':'/contact','selected':True}"
+        "] %}"
+    )
+
+    def test_flat_items_render(self, render):
+        html = render(self.DATA + '<c-menu type="vertical" :items="NAV"/>')
+        assert "Overzicht" in html and "Producten" in html and "Contact" in html
+
+    def test_nested_children_render_as_submenu(self, render):
+        html = render(self.DATA + '<c-menu :items="NAV"/>')
+        # two submenus: Producten's, and (deeper) Widget B's
+        assert html.count("rvo-menubar__submenu") == 2
+        assert "Widget A" in html and "Widget B" in html and "Diep" in html
+
+    def test_active_and_icon_from_data(self, render):
+        html = render(self.DATA + '<c-menu :items="NAV"/>')
+        assert "rvo-menubar__item--active" in html  # Overzicht active
+        assert "rvo-icon-home" in html  # icon mapped
+
+    def test_field_aliases(self, render):
+        # name->label, path->href, selected->active, subitems->children all work.
+        html = render(self.DATA + '<c-menu :items="NAV"/>')
+        assert 'href="/contact"' in html and "Contact" in html
+        assert 'href="/p/b/d"' in html and "Diep" in html  # via subitems alias
+
+    def test_items_and_declarative_children_combine(self, render):
+        html = render(
+            "{% set NAV = [{'label':'A','href':'/a'}] %}"
+            '<c-menu :items="NAV"><c-menu-item label="B" href="/b"/></c-menu>'
+        )
+        assert "A" in html and "B" in html

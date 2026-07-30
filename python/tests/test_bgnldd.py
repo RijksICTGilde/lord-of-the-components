@@ -265,6 +265,25 @@ def test_apps_page_fixture_renders_fully():
     assert "not implemented" not in html  # no placeholder gaps
 
 
+def test_menu_items_binding_nested_nldd(render):
+    # <c-menu :items="..."> builds nldd-menu-bar-items from data, recursively:
+    # children become nested (slotted) items with an `expandable` parent, and
+    # aliases (name/path/selected/subitems) are accepted.
+    nav = (
+        "{% set NAV = ["
+        "{'label':'Overzicht','href':'/','icon':'house','active':True},"
+        "{'label':'Producten','children':[{'name':'Widget B','path':'/p/b',"
+        "'subitems':[{'name':'Diep','path':'/p/b/d'}]}]}"
+        "] %}"
+    )
+    html = render(nav + '<c-menu type="vertical" :items="NAV"/>')
+    assert "<nldd-menu-bar" in html
+    assert '<nldd-menu-bar-item text="Overzicht"' in html
+    assert html.count("expandable") == 2  # Producten + Widget B have children
+    assert 'text="Diep"' in html and 'href="/p/b/d"' in html  # deep alias nesting
+    assert "current" in html  # Overzicht active -> current
+
+
 def test_app_components_are_global_and_bgnldd_is_impl_only():
     # The app components (metric, sidenav, …) are GLOBAL: their definitions live
     # in core's registry, not owned by any theme. BGNLDD is implementation-only

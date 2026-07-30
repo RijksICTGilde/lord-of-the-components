@@ -96,9 +96,19 @@ function main(): void {
       .map((c) => c.name),
   );
 
+  // Components whose Jinja template is hand-authored (kept out of generation)
+  // because their rendering needs recursion the declarative IR can't express —
+  // e.g. `<c-menu :items>` builds arbitrarily nested submenus. They stay in the
+  // matrix/registry via their .impl.ts; only template emission is skipped.
+  const HAND_AUTHORED = new Set(["menu"]);
+
   let templateCount = 0;
   for (const impl of implementations) {
     const name = impl.component.name;
+    if (HAND_AUTHORED.has(name)) {
+      console.log(`  ↷ ${name}.html.j2 -> hand-authored (skipped)`);
+      continue;
+    }
     const template = generator.generateTemplate(impl);
     const inCore = SYSTEM.has(name) || PYTHON_BACKEND.has(name);
     const dir = inCore ? TEMPLATES_DIR : RVO_TEMPLATES_DIR;
