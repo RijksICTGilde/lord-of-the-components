@@ -72,7 +72,15 @@ instead, so they are not NLDD-locked):
   page layout is expressed with `c-app-shell`)
 - `c-status-bar` → the theme-neutral banner above (not `nldd-status-bar`)
 
-**Minor genuine gaps** (native sub-parts not individually exposed):
-`nldd-page-footer-legal-bar` / `-legal-bar-item` (the footer's legal sub-row —
-`c-footer` renders `nldd-page-footer` but not the legal bar) and `nldd-table-row`
-(rows inside `c-table`). Add if a page needs them.
+Everything else is reachable, including the footer's legal sub-bar and table
+rows, both of which are now covered:
+
+- **Footer legal bar** — `c-page-footer-legal-bar` (+ `-item`) are generated from
+  the manifest and fill `nldd-page-footer`'s `legal-bar` slot:
+  `<c-footer><template slot="legal-bar"><c-page-footer-legal-bar><template
+  slot="start"><c-page-footer-legal-bar-item href="…" text="…"/>…`.
+- **Table rows** — `c-table-row` already works in every theme (`<nldd-table-row>`
+  under NLDD, `<tr>` under RVO). Its only missing piece is the optional
+  `selected` boolean; adding it is a small change to `table-row.def.ts` +
+  `table-row.impl.ts` through the TS build (not done here to avoid regenerating
+  the whole registry, which would drop the hand-authored app composites).

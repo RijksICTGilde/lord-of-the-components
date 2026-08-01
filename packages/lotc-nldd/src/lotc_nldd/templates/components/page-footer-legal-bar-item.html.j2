@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-page-footer-legal-bar-item{% if _component_context.get('href') %} href="{{ _component_context.get('href') }}"{% endif %}{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %} data-lotc-component="page-footer-legal-bar-item" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-page-footer-legal-bar-item>
+{% endmacro %}

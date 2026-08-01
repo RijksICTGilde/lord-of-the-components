@@ -3187,6 +3187,48 @@
    }
   },
   {
+   "name": "page-footer-legal-bar-item",
+   "attributes": [
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Link target. When omitted, the item renders as plain text."
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Item label. Falls back to the default slot."
+    }
+   ],
+   "description": "A single entry in an `nldd-page-footer-legal-bar`. Renders as a link",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "page-footer-legal-bar",
+   "attributes": [
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Override the nav's aria-label. Defaults to the i18n value (NL: \"Juridische links\")."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to the Dutch default."
+    }
+   ],
+   "description": "Holds the legal links row at the bottom of a `nldd-page-footer`. Items",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
    "name": "full-bleed-section",
    "attributes": [
     {

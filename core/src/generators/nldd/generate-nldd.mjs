@@ -40,7 +40,9 @@ const coreNames = new Set(coreComps.map((c) => c.name));
 // NLDD tags we already cover under a different (semantic) c- name.
 const SEMANTIC_DUPES = new Set([
   "tab-bar", "tab-bar-item", "menu-bar", "menu-bar-item", "top-navigation-bar",
-  "page-footer", "page-footer-legal-bar", "page-footer-legal-bar-item",
+  // page-footer maps to c-footer; its legal-bar sub-elements have no semantic
+  // equivalent, so they are generated as their own c-* bindings.
+  "page-footer",
 ]);
 // existing hand-authored lotc-nldd templates (don't overwrite)
 const AUTOMARK = "Auto-generated from the NLDD custom-elements manifest";
