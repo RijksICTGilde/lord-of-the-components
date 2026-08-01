@@ -77,7 +77,26 @@ A component can carry base attributes (always valid) + extension attributes owne
 
 - `<c-box>` — theme-owned: `pad` (lotc-layout), `border` (lotc-layout), `background` (nldd)
 
-## 6. Component catalog
+## 6. Chart set (opt-in — Chart.js)
+
+An opt-in capability set: activate it alongside a design system and it loads Chart.js + draws request/limit lines. Only then do these resolve.
+
+```python
+setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-charts"])
+```
+- `<c-line-chart>` — Line chart (Chart.js) — time-series metrics (CPU, memory, network…)
+  <br>attrs: `data`, `id`, `height`, `legend` (bool), `title`, `current`, `limit`, `request`
+- `<c-gauge>` — Radial gauge (Chart.js doughnut) — a utilization percentage
+  <br>attrs: `value`, `label`, `sublabel`, `id`, `color`
+```html
+<c-line-chart id="cpu" title="CPU (millicores)" limit="500" request="250"
+              current="Current: 148m / 500m (30%)"
+              :data="{'labels': [...], 'datasets': [{'label':'CPU','data':[...],'borderColor':'#39870c','fill':true}]}"/>
+<c-gauge value="72" label="CPU" sublabel="2.9 / 4 cores"/>
+```
+Each chart needs a unique `id`. `limit`/`request` draw dashed threshold lines.
+
+## 7. Component catalog
 
 Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks extension attrs.
 
@@ -355,7 +374,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-th>` — Table header cell; label via content
   <br>attrs: `numeric` (bool)
 
-## 7. Full page example — BG "Software-catalogus"
+## 8. Full page example — BG "Software-catalogus"
 
 A complete page, 100% `c-*`: app-shell → header (status-bar + menu) + sidenav + metric grid + filter-bar + catalog cards + footer. Copy and adapt — this is the BG look. Two more complete pages live in `tests/visual/fixtures/{zelf,bg-overzicht}.html` (built by `tests/visual/gen_{apps,zelf,bg_overzicht}.py`).
 
@@ -483,7 +502,7 @@ A complete page, 100% `c-*`: app-shell → header (status-bar + menu) + sidenav 
 </c-page>
 ```
 
-## 8. Recipes
+## 9. Recipes
 
 **Card grid** (as many columns as fit):
 ```html
@@ -508,7 +527,7 @@ A complete page, 100% `c-*`: app-shell → header (status-bar + menu) + sidenav 
 </c-form>
 ```
 
-## 9. Rules
+## 10. Rules
 
 - **Slots**: named slots via `<template slot="name">…</template>`; default content is the rest.
 - **Enums are validated**: an out-of-set value (e.g. `type="bogus"`) errors (debug mode) with the allowed set.

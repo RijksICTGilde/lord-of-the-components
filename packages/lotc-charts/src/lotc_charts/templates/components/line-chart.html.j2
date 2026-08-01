@@ -6,6 +6,8 @@
 {% set legend = _component_context.get('legend', false) %}
 {% set title = _component_context.get('title', '') %}
 {% set current = _component_context.get('current', '') %}
+{% set limit = _component_context.get('limit', '') %}
+{% set request = _component_context.get('request', '') %}
 <figure class="lotc-chart" data-lotc-component="line-chart" {{ attrs.render_extra_attributes(_component_context) }}>
   {% if title %}<figcaption class="lotc-chart__title">{{ title }}</figcaption>{% endif %}
   <div class="lotc-chart__canvas" style="height: {{ height }}"><canvas id="{{ cid }}-canvas"></canvas></div>
@@ -15,12 +17,15 @@
 (function(){
   var el = document.getElementById({{ (cid ~ '-canvas') | tojson }});
   if (!el || !window.Chart) return;
+  var ann = {};
+  {% if limit != '' %}ann.limit = { type: 'line', yMin: {{ limit }}, yMax: {{ limit }}, borderColor: '#d52b1e', borderWidth: 2, borderDash: [6, 4], label: { display: true, content: 'Limit', position: 'end', backgroundColor: '#d52b1e', color: '#fff', font: { size: 10 } } };{% endif %}
+  {% if request != '' %}ann.request = { type: 'line', yMin: {{ request }}, yMax: {{ request }}, borderColor: '#007bc7', borderWidth: 2, borderDash: [3, 3], label: { display: true, content: 'Request', position: 'start', backgroundColor: '#007bc7', color: '#fff', font: { size: 10 } } };{% endif %}
   new Chart(el, {
     type: 'line',
     data: {{ data | tojson }},
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: {{ 'true' if legend else 'false' }}, labels: { font: { family: 'RijksSans, system-ui, sans-serif' } } } },
+      plugins: { legend: { display: {{ 'true' if legend else 'false' }}, labels: { font: { family: 'RijksSans, system-ui, sans-serif' } } }, annotation: { annotations: ann } },
       scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(0,0,0,.06)' } } },
       elements: { line: { tension: 0.4, borderWidth: 2 }, point: { radius: 0, hoverRadius: 4 } },
       interaction: { intersect: false, mode: 'index' }

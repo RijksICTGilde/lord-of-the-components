@@ -38,9 +38,9 @@
   <!-- Deployment metrics: CPU / Memory / Network / Disk line charts -->
   <c-heading type="h2" size="3">Deployment metrics — toeslagenmotor</c-heading>
   <c-auto-grid min="320px" gap="lg">
-    <c-card outline padding="lg"><c-line-chart id="dm-cpu" title="CPU (millicores)" height="160px" current="Current: 148m / 500m (30%)"
+    <c-card outline padding="lg"><c-line-chart id="dm-cpu" title="CPU (millicores)" height="160px" current="Current: 148m / 500m (30%)" limit="500" request="250"
       :data="{'labels': t, 'datasets': [{'label':'CPU','data':[90,110,105,160,140,148,155,130,120,145,138,148],'borderColor':'#39870c','backgroundColor':'rgba(57,135,12,.1)','fill':true}]}"/></c-card>
-    <c-card outline padding="lg"><c-line-chart id="dm-mem" title="Memory (MB)" height="160px" current="Current: 612 MB / 1024 MB (60%)"
+    <c-card outline padding="lg"><c-line-chart id="dm-mem" title="Memory (MB)" height="160px" current="Current: 612 MB / 1024 MB (60%)" limit="1024" request="512"
       :data="{'labels': t, 'datasets': [{'label':'Memory','data':[420,440,455,480,510,540,560,585,600,608,610,612],'borderColor':'#154273','backgroundColor':'rgba(21,66,115,.1)','fill':true}]}"/></c-card>
     <c-card outline padding="lg"><c-line-chart id="dm-net" title="Network (KB/s)" height="160px" current="Current: 74 KB/s in · 35 KB/s uit"
       :data="{'labels': t, 'datasets': [{'label':'In','data':[12,45,30,60,48,72,55,68,50,63,58,74],'borderColor':'#154273'},{'label':'Uit','data':[8,20,15,28,22,30,26,33,24,29,27,35],'borderColor':'#a90061'}]}"/></c-card>

@@ -24,6 +24,10 @@ DESIGN_SYSTEM = DesignSystem(
     registry_path=_HERE / "registry.json",
     css_urls=("/static/lotc/charts/charts.css",),
     # Chart.js is a UMD global (not an ES module), so load it via extra_head
-    # rather than js_urls (which emits <script type="module">).
-    extra_head='<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>',
+    # rather than js_urls (which emits <script type="module">). The annotation
+    # plugin draws the request/limit threshold lines on metric charts.
+    extra_head=(
+        '<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>'
+        '<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>'
+    ),
 )

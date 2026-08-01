@@ -24,6 +24,8 @@ const FRAG = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-nldd/src/lotc_
 // so the extended-component mechanism is visible with owner badges.
 const CORE = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_components/registry.json"), "utf8"));
 const EXTENDED = CORE.components.filter((c) => (c.attributes || []).some((a) => a.owner));
+// Opt-in capability set: chart components (own registry fragment, Chart.js-backed).
+const CHARTS = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-charts/src/lotc_charts/registry.json"), "utf8"));
 
 // index CEM declarations by tag so we can read slots per component
 const byTag = {};
@@ -65,6 +67,8 @@ const OVERRIDES = {
   "rich-text": `<c-rich-text><p>Tekst met <strong>vet</strong> en <em>cursief</em>.</p><ul><li>Punt een</li><li>Punt twee</li></ul></c-rich-text>`,
   avatar: `<c-avatar initials="AS" name="Anne Schuth" size="40"/>`,
   box: `<c-box pad="1.25rem" border background="accent">Een box met <code>pad</code> + <code>border</code> (lotc-layout) én <code>background</code> (nldd) — de basis blijft, de thema-eigen extra's komen erbij.</c-box>`,
+  "line-chart": `<c-line-chart id="sb-line" title="CPU (millicores)" height="180px" limit="80" request="50" current="Current: 62m / 80m (78%)" :data="{'labels':['09:00','09:05','09:10','09:15','09:20','09:25'],'datasets':[{'label':'CPU','data':[30,45,38,60,54,62],'borderColor':'#39870c','backgroundColor':'rgba(57,135,12,.1)','fill':true}]}"/>`,
+  gauge: `<c-gauge id="sb-gauge" value="68" label="CPU" sublabel="2.7 / 4 cores" color="#154273"/>`,
   cell: `<c-list><c-list-item><c-text-cell>Een cel</c-text-cell></c-list-item></c-list>`,
   "text-cell": `<c-list><c-list-item><c-text-cell>Tekst in een cel</c-text-cell></c-list-item></c-list>`,
   "title-cell": `<c-list><c-list-item><c-title-cell overline="Regel" text="Titel" supporting-text="toelichting"/></c-list-item></c-list>`,
@@ -179,6 +183,26 @@ if (EXTENDED.length) {
   }
 }
 
+// ── charts (opt-in capability set — Chart.js-backed) ──
+if (CHARTS.components && CHARTS.components.length) {
+  const comps = CHARTS.components;
+  nav += `<div class="navcat">Charts <span>${comps.length}</span></div>`;
+  nav += comps.map((c) => `<a href="#c-${c.name}">c-${esc(c.name)}</a>`).join("");
+  body += `<h2 id="cat-charts">Charts — opt-in set <span>${comps.length}</span></h2>`;
+  body += `<p class="desc" style="margin:0 0 1rem">Een activatbare capability-set (Chart.js, NLDD-gestyled): <code>design_systems=["…","lotc-charts"]</code>. Buiten die set bestaan deze componenten niet.</p>`;
+  for (const c of comps) {
+    const example = autoExample(c);
+    body +=
+      `<section class="story" id="c-${esc(c.name)}">` +
+      `<div class="story-head"><h3>&lt;c-${esc(c.name)}&gt;</h3><span class="own">lotc-charts</span></div>` +
+      (c.description ? `<p class="desc">${esc(c.description)}</p>` : "") +
+      `<div class="canvas">${example}</div>` +
+      `<pre class="code">${esc(example)}</pre>` +
+      attrTable(c) +
+      `</section>`;
+  }
+}
+
 const STYLE = `
   *{box-sizing:border-box}
   body{font-family:system-ui,-apple-system,sans-serif;margin:0;color:#1a1a1a;background:#fafafa}
@@ -211,7 +235,7 @@ const STYLE = `
   .own{display:inline-block;background:#eef4fb;color:#154273;border:1px solid #cdddf0;border-radius:4px;padding:0 .32rem;font-size:.62rem;font-weight:700;letter-spacing:.02em;vertical-align:middle;font-family:ui-monospace,monospace}
 `;
 
-const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="lotc-layout nldd">
+const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="lotc-layout nldd lotc-charts">
 <style>${STYLE}</style>
 <div class="wrap">
 <nav class="index"><strong style="color:#154273">Storybook</strong>${nav}</nav>
