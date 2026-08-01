@@ -68,6 +68,20 @@ export const switcher = defineComponent({
   content: { allowed: true },
 });
 
+// ── bar: a horizontal bar with start / center / end regions ─────────────────
+export const bar = defineComponent({
+  name: "bar",
+  description:
+    "A horizontal bar with start / center / end regions — the nav/toolbar pattern (e.g. links left, an action right). Fill regions via <template slot=\"start|center|end\">; plain children go to start.",
+  category: "layout",
+  props: {
+    [PROPS.GAP]: { description: "Gap between items in a region — a scale token (3xs…3xl) or a raw value (--lotc-bar-gap)" },
+    [PROPS.ALIGN]: { values: ["start", "center", "end", "stretch"], default: "center", description: "Cross-axis (vertical) alignment" },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+  content: { allowed: true },
+});
+
 // ── cover: fills the viewport height, centring its main content ──────────────
 export const cover = defineComponent({
   name: "cover",

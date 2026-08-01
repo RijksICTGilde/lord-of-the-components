@@ -1,0 +1,18 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set gap = _component_context.get('gap', '') %}
+{% set align = _component_context.get('align', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set children = _component_context.get('content', '') %}
+{% set cls = ['lotc-bar'] %}
+{% if align in ['start', 'end', 'stretch'] %}{% set cls = cls + ['lotc-bar--align-' ~ align] %}{% endif %}
+{% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
+{# gap: a scale token (3xs..3xl) resolves to the spacing config var; else a raw value. #}
+{% set tokens = ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] %}
+{% set gapval = ('var(--lotc-space-' ~ gap ~ ')') if gap in tokens else gap %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="bar" {{ attrs.render_extra_attributes(_component_context) }}{% if gapval %} style="--lotc-bar-gap: {{ gapval }};"{% endif %}>
+  <div class="lotc-bar__start">{{ slots.get('start', '') | safe }}{{ children | safe }}</div>
+  {% if slots.get('center') %}<div class="lotc-bar__center">{{ slots['center'] | safe }}</div>{% endif %}
+  {% if slots.get('end') %}<div class="lotc-bar__end">{{ slots['end'] | safe }}</div>{% endif %}
+</div>
+{% endmacro %}

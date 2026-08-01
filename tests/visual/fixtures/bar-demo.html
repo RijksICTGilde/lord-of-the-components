@@ -1,0 +1,21 @@
+<c-page title="c-bar demo" lang="nl" design-systems="lotc-layout nldd">
+<style>body{font-family:system-ui;padding:2rem;max-width:900px;margin:0 auto} .demo{border:1px solid #ddd;border-radius:8px;padding:.6rem 1rem;margin:1rem 0}</style>
+<h1>c-bar — start / center / end</h1>
+
+<div class="demo">
+  <c-bar gap="sm">
+    <template slot="start"><c-link href="#">Overzicht</c-link><c-link href="#">Apps</c-link><c-link href="#">Code</c-link></template>
+    <template slot="end"><c-button type="primary" label="Nieuw"/></template>
+  </c-bar>
+</div>
+<p>↑ 3 links, 1 rechts (de klassieke nav-structuur)</p>
+
+<div class="demo">
+  <c-bar gap="md">
+    <template slot="start"><strong>Begane Grond</strong></template>
+    <template slot="center"><c-link href="#">Zoeken</c-link></template>
+    <template slot="end"><c-link href="#">Profiel</c-link><c-button type="secondary" label="Uitloggen"/></template>
+  </c-bar>
+</div>
+<p>↑ start / center / end — links een logo, midden gecentreerd, rechts een groep</p>
+</c-page>
