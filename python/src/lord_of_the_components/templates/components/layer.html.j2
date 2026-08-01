@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic resource-layer row: composes c-icon; shared lotc-layer-* layout. #}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get("icon", "") %}
 {% set title = _component_context.get("title", "") %}
@@ -7,12 +8,12 @@
 {% set href = _component_context.get("href", "") %}
 {% set children = _component_context.get("content", "") %}
 <a{% if href %} href="{{ href }}"{% endif %} class="lotc-layer" data-lotc-component="layer" {{ attrs.render_extra_attributes(_component_context) }}>
-  <span class="lotc-layer-icon">{% if icon %}{{ _lotc_rvo_icon(icon=icon, size="md") }}{% endif %}</span>
+  <span class="lotc-layer-icon">{% if icon %}<c-icon :icon="icon" size="md"/>{% endif %}</span>
   <span class="lotc-layer-body">
     <span class="lotc-layer-head"><span class="lotc-layer-title">{{ title }}</span>{% if count %}<span class="lotc-layer-count">{{ count }}</span>{% endif %}</span>
     {% if sub %}<span class="lotc-layer-sub">{{ sub }}</span>{% endif %}
     {% if children %}<span class="lotc-layer-chips">{{ children | safe }}</span>{% endif %}
   </span>
-  {{ _lotc_rvo_icon(icon="delta-naar-rechts", size="sm", _class="lotc-layer-go") }}
+  <c-icon icon="chevron-right" size="sm" class="lotc-layer-go"/>
 </a>
 {% endmacro %}

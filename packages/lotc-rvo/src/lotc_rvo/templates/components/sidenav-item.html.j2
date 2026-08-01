@@ -1,9 +1,0 @@
-{% import 'components/_generic_attributes.j2' as attrs %}
-{% macro lotc_render(_component_context) %}
-{% set icon = _component_context.get("icon", "") %}
-{% set label = _component_context.get("label", "") %}
-{% set href = _component_context.get("href", "") %}
-{% set active = _component_context.get("active", false) %}
-{% set children = _component_context.get("content", "") %}
-<li data-lotc-component="sidenav-item" {{ attrs.render_extra_attributes(_component_context) }}><a{% if href %} href="{{ href }}"{% endif %} class="lotc-sidenav-link{% if active %} lotc-active{% endif %}"{% if active %} aria-current="page"{% endif %}>{% if icon %}{{ _lotc_rvo_icon(icon=icon, size="sm") }}{% endif %}<span>{{ label }}{{ children | safe }}</span></a></li>
-{% endmacro %}
