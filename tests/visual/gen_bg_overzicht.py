@@ -64,7 +64,7 @@ SIDENAV: list[tuple[str | None, list[tuple[str, str, str]]]] = [
         ("check-mark-circle", "Standaarden", "/standaarden"),
         ("check-list", "NeRDS-richtlijnen", "/nerds"),
         ("brackets-ellipsis", "Algoritmeregister", "/algoritmes"),
-        ("clipboard-rectangle", "Privacy & DPIA", "/verwerkingen"),
+        ("clipboard", "Privacy & DPIA", "/verwerkingen"),
         ("file-text", "Woo & archief", "/openbaarheid"),
         ("eyeglasses", "Toegankelijkheid", "/toegankelijkheid"),
         ("heart", "Duurzaamheid", "/duurzaamheid"),

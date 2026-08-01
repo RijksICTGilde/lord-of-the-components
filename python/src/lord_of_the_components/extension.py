@@ -10,10 +10,12 @@ tree is walked once, components become includes, and all other text passes
 through as unmodified slices of the original source.
 """
 
+import json
 import logging
 from dataclasses import dataclass
 from difflib import get_close_matches
 from functools import lru_cache
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from jinja2 import Environment
@@ -97,6 +99,19 @@ _JINJA_DELIMS = ("{{", "{%", "{#")
 
 def _has_jinja(text: Optional[str]) -> bool:
     return text is not None and any(d in text for d in _JINJA_DELIMS)
+
+
+@lru_cache(maxsize=1)
+def _load_icons() -> Optional[dict]:
+    """The icon vocabulary for validation: {aliases: {name: {rvo, nldd}},
+    sets: {theme: [names]}}, generated from definitions/icons.ts + the theme icon
+    assets. Returns None if the file is absent. Membership sets are pre-built."""
+    try:
+        data = json.loads((Path(__file__).resolve().parent / "icons.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    data["_sets"] = {t: set(names) for t, names in data.get("sets", {}).items()}
+    return data
 
 
 def _mustache_expr(value: Optional[str]) -> Optional[str]:
@@ -467,6 +482,14 @@ class ComponentExtension(Extension):
                         self._validate_enum_value(
                             source, component_def, real_name, attr_value, parsed, tag_name
                         )
+                        # icon-NAME attrs only — skip enum icon attrs like
+                        # `show-icon` (a before/after/no position, not a name).
+                        if (real_name == "icon" or real_name.endswith("-icon")) and not getattr(
+                            attr_def, "enum_values", None
+                        ):
+                            self._validate_icon_value(
+                                source, attr_value, parsed, tag_name, real_name
+                            )
                 else:
                     available = sorted(set(valid_attrs.values()))
                     suggestion = None
@@ -517,6 +540,33 @@ class ComponentExtension(Extension):
         raise ComponentError(
             f"Invalid value '{value}' for attribute '{attr_name}' on '{tag_name}'. "
             f"Allowed: {allowed}",
+            location=_source_location(source, parsed.span.start),
+            suggestion=close[0] if close else None,
+        )
+
+    def _validate_icon_value(
+        self, source: str, value: str, parsed: Attr, tag_name: str, attr_name: str
+    ) -> None:
+        """Debug-only: an icon name that resolves to no icon in an active theme's
+        set renders as a blank box. Catches typos and one-theme-only icons — the
+        jinja-roos-style diagnostic the icon vocabulary was missing."""
+        icons = _load_icons()
+        if not icons or not value or _has_jinja(value):
+            return
+        active = [t for t in getattr(self, "design_systems", ()) if t in icons["_sets"]]
+        if not active:  # no theme with an icon set (e.g. lotc-layout only)
+            return
+        aliases = icons.get("aliases", {})
+        missing = [
+            t for t in active if aliases.get(value, {}).get(t, value) not in icons["_sets"][t]
+        ]
+        if not missing:
+            return
+        pool = list(aliases.keys()) + [n for t in active for n in icons["sets"][t]]
+        close = get_close_matches(value, pool, n=1, cutoff=0.5)
+        raise ComponentError(
+            f"Unknown icon '{value}' for '{attr_name}' on '{tag_name}' — not in the "
+            f"{', '.join(missing)} icon set, so it renders as a blank box.",
             location=_source_location(source, parsed.span.start),
             suggestion=close[0] if close else None,
         )

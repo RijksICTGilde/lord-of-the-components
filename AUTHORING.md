@@ -416,7 +416,7 @@ A complete page, 100% `c-*`: app-shell → header (status-bar + menu) + sidenav 
       <c-sidenav-item icon="check-mark-circle" label="Standaarden" href="/standaarden"/>
       <c-sidenav-item icon="check-list" label="NeRDS-richtlijnen" href="/nerds"/>
       <c-sidenav-item icon="brackets-ellipsis" label="Algoritmeregister" href="/algoritmes"/>
-      <c-sidenav-item icon="clipboard-rectangle" label="Privacy & DPIA" href="/verwerkingen"/>
+      <c-sidenav-item icon="clipboard" label="Privacy & DPIA" href="/verwerkingen"/>
       <c-sidenav-item icon="file-text" label="Woo & archief" href="/openbaarheid"/>
       <c-sidenav-item icon="eyeglasses" label="Toegankelijkheid" href="/toegankelijkheid"/>
       <c-sidenav-item icon="heart" label="Duurzaamheid" href="/duurzaamheid"/>
