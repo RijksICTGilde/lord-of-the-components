@@ -38,7 +38,7 @@ for(const [cat,names] of Object.entries(groups)){
     body+=`  <div class="cell"><code>c-${n}</code><div class="demo">${example(n)}</div></div>\n`;
   }
 }
-const html=`<c-page title="NLDD component gallery" theme="nldd" design-systems="nldd bgnldd">
+const html=`<c-page title="NLDD component gallery" theme="nldd" design-systems="nldd">
 <style>
   body{font-family:system-ui;padding:1rem}
   h2{margin:1.5rem 0 .5rem;color:#154273;text-transform:uppercase;font-size:.8rem;border-top:1px solid #ddd;padding-top:1rem}

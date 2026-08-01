@@ -184,7 +184,7 @@ const STYLE = `
   .noattr{margin:0 1rem 1rem;color:#999;font-size:.8rem;font-style:italic}
 `;
 
-const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="nldd bgnldd">
+const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="nldd">
 <style>${STYLE}</style>
 <div class="wrap">
 <nav class="index"><strong style="color:#154273">Storybook</strong>${nav}</nav>

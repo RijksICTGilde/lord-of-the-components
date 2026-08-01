@@ -118,7 +118,7 @@ def _extra_ds_css(themes: list[str]) -> str:
 def _make_transform(theme: str) -> Callable[[str], str]:
     """Return a fixture transform that injects the CSS/JS for the declared systems.
 
-    `theme` may be a comma-separated list (e.g. "nldd,bgnldd") for mix-and-match;
+    `theme` may be a comma-separated list (e.g. "nldd") for mix-and-match;
     the first entry is primary and picks the base bundle.
     """
     themes = [t.strip() for t in theme.split(",") if t.strip()]
@@ -205,7 +205,7 @@ _default_theme = "rvo"
 _env_cache: dict = {}
 
 # Design systems offered in the switcher banner.
-SWITCHER_THEMES = [("rvo", "RVO"), ("nldd,bgnldd", "NLDD")]
+SWITCHER_THEMES = [("rvo", "RVO"), ("nldd", "NLDD")]
 
 
 def _env_for(theme: str) -> Environment:
@@ -354,7 +354,7 @@ class FixtureHandler(SimpleHTTPRequestHandler):
                 f'<div class="dsc">{desc}</div>{ds_links(name, themes)}</div>'
             )
 
-        NLDD = ("nldd,bgnldd", "NLDD")
+        NLDD = ("nldd", "NLDD")
         RVO = ("rvo", "RVO")
 
         # ── storybook + reference ──
@@ -385,7 +385,7 @@ class FixtureHandler(SimpleHTTPRequestHandler):
         # ── everything else: variant/reference fixtures ──
         rest = sorted(all_fixtures - used)
         rest_links = "".join(
-            f'<li><a href="/{n}?ds=nldd,bgnldd">{n[:-5]}</a> '
+            f'<li><a href="/{n}?ds=nldd">{n[:-5]}</a> '
             f'<a class="mini" href="/{n}?ds=rvo">rvo</a></li>'
             for n in rest
         )
@@ -432,7 +432,7 @@ def main() -> None:
         "--theme",
         default="rvo",
         help="Design system(s) to render fixtures with. Comma-separated for "
-        "mix-and-match (e.g. 'nldd,bgnldd'); the first is primary.",
+        "mix-and-match (e.g. 'nldd'); the first is primary.",
     )
     parser.add_argument(
         "--on-missing",

@@ -4,7 +4,7 @@ This is the "gewenste situatie": the page is built entirely from LOTC `<c-*>`
 components. NLDD renders the primitives (card, button, header, heading); the
 BGNLDD theme renders Begane Grond's own app components (metric, sidenav, layer,
 section-head, activity) that aren't in NLDD proper. Declared with
-`design_systems=["nldd", "bgnldd"]`.
+`design_systems=["nldd"]`.
 
 Data (icons, labels, grouping) is extracted verbatim from the live site DOM.
 Run:  python tests/visual/gen_bg_overzicht.py  ->  fixtures/bg-overzicht.html
@@ -149,7 +149,7 @@ def activity() -> str:
 
 
 def build() -> str:
-    return f"""<c-page title="Overzicht · Begane Grond" lang="nl" design-systems="lotc-layout nldd bgnldd">
+    return f"""<c-page title="Overzicht · Begane Grond" lang="nl" design-systems="lotc-layout nldd">
 <!-- Mix-and-match: NLDD primitives + BGNLDD app components. c-page loads the
      CSS/JS for both declared design systems itself. -->
 <!-- GAP still: no c-status-bar; c-header has no utility-menu slot. -->

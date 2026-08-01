@@ -1,9 +1,9 @@
-"""BGNLDD theme: mix-and-match with NLDD.
+"""Global app components (metric, sidenav, catalog-card, identity, …).
 
-BGNLDD is a separate theme layer that owns Begane Grond's app components
-(c-metric, c-sidenav, …), absent from NLDD proper. A page declares both; NLDD
-renders the primitives, BGNLDD its own components, each routed by owner theme.
-Requires the lotc-bgnldd package to be installed (editable).
+These are Begane Grond's dashboard/app composites. Their definitions live in
+core (theme-agnostic) and — since the theme-agnostic sweep — so do their
+templates: each is a composition of c-* primitives, so it renders through
+whichever design system is active. Here they're exercised under NLDD.
 """
 
 from pathlib import Path
@@ -20,13 +20,14 @@ PKG = Path(__file__).resolve().parent.parent / "src" / "lord_of_the_components"
 def render():
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(
-        env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+        env, design_systems=["lotc-layout", "nldd"], registry_path=str(PKG / "registry.json")
     )
     return lambda s: env.from_string(s).render()
 
 
-def test_metric_is_a_global_component_rendered_by_bgnldd(render):
-    # c-metric is a global (core) component; BGNLDD provides its NLDD impl.
+def test_metric_is_a_global_component(render):
+    # c-metric is a global (core) component; its core template composes c-card +
+    # c-icon, so it renders through the active theme (here NLDD).
     html = render('<c-metric icon="apartment-building" value="5" label="Datacenters"/>')
     assert 'class="lotc-metric-link"' in html
     assert "lotc-metric-value" in html and ">5<" in html
@@ -87,7 +88,7 @@ def test_layer_and_activity_render(render):
 def test_design_system_assets_global_emits_the_declared_bundles():
     # A page declaring nldd loads its web-components bundle via this global.
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
-    setup_components(env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json"))
+    setup_components(env, design_systems=["lotc-layout", "nldd"], registry_path=str(PKG / "registry.json"))
     html = env.from_string("{{ get_design_system_assets() }}").render()
     assert 'src="/static/lotc/nldd/dist/nldd.js"' in html  # NLDD web components
 
@@ -95,7 +96,7 @@ def test_design_system_assets_global_emits_the_declared_bundles():
 def test_cpage_loads_declared_bundles_and_app_css(render):
     # <c-page> renders the full document, loads NLDD's bundle, and the global
     # app-component styles (theme-agnostic, in core — always loaded).
-    html = render('<c-page title="Overzicht" design-systems="nldd bgnldd"><p>x</p></c-page>')
+    html = render('<c-page title="Overzicht" design-systems="nldd"><p>x</p></c-page>')
     assert "<!DOCTYPE html>" in html
     assert 'src="/static/lotc/nldd/dist/nldd.js"' in html  # NLDD web components (JS module)
     assert 'href="/static/lotc/nldd/dist/css/reset.css"' in html  # NLDD base CSS
@@ -159,7 +160,7 @@ def test_section_link_chip(render):
 
 def test_breadcrumbs_has_nldd_impl(render):
     # c-breadcrumbs is a global component; NLDD provides a real impl
-    # (nldd-breadcrumbs), so /zelf's breadcrumb resolves under nldd+bgnldd.
+    # (nldd-breadcrumbs), so /zelf's breadcrumb resolves under nldd.
     html = render(
         '<c-breadcrumbs><c-breadcrumbs-item label="Home" href="/"/>'
         '<c-breadcrumbs-item label="Mijn overzicht"/></c-breadcrumbs>'
@@ -171,10 +172,10 @@ def test_breadcrumbs_has_nldd_impl(render):
 
 def test_zelf_page_fixture_renders_fully():
     # The full /zelf ("Mijn overzicht") recreation renders end-to-end under
-    # nldd+bgnldd with every app component resolving (no missing-impl error).
+    # nldd with every app component resolving (no missing-impl error).
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(
-        env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+        env, design_systems=["lotc-layout", "nldd"], registry_path=str(PKG / "registry.json")
     )
     fixture = Path(__file__).resolve().parents[2] / "tests" / "visual" / "fixtures" / "zelf.html"
     html = env.from_string(fixture.read_text(encoding="utf-8")).render()
@@ -253,10 +254,10 @@ def test_site_footer_lands_in_app_shell_footer_slot(render):
 
 def test_apps_page_fixture_renders_fully():
     # The full /apps ("Software-catalogus") recreation renders end-to-end under
-    # nldd+bgnldd with every component resolving (no missing-impl error).
+    # nldd with every component resolving (no missing-impl error).
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(
-        env, design_systems=["lotc-layout", "nldd", "bgnldd"], registry_path=str(PKG / "registry.json")
+        env, design_systems=["lotc-layout", "nldd"], registry_path=str(PKG / "registry.json")
     )
     fixture = Path(__file__).resolve().parents[2] / "tests" / "visual" / "fixtures" / "apps.html"
     html = env.from_string(fixture.read_text(encoding="utf-8")).render()
@@ -312,11 +313,11 @@ def test_custom_attribute_passthrough_on_handauthored_nldd(render):
         assert 'hx-get="/a"' in html and 'data-x="1"' in html, markup
 
 
-def test_app_components_are_global_and_bgnldd_is_impl_only():
+def test_app_components_are_global_core_definitions_and_templates():
     # The app components (metric, sidenav, …) are GLOBAL: their definitions live
-    # in core's registry, not owned by any theme. BGNLDD is implementation-only
-    # (it ships templates + CSS, no registry fragment).
-    from lord_of_the_components.design_system import discover_design_systems
+    # in core's registry (theme=None), and — since the theme-agnostic sweep —
+    # their templates live in core too, composed from c-* primitives. No owning
+    # design-system package is involved.
     from lord_of_the_components.registry import ComponentRegistry
 
     reg = ComponentRegistry(PKG / "registry.json")
@@ -324,7 +325,6 @@ def test_app_components_are_global_and_bgnldd_is_impl_only():
         assert reg.has_component(name), name
         assert reg.get_component(name).theme is None  # global, no owner
 
-    bg = discover_design_systems()["bgnldd"]
-    assert bg.registry_path is None  # impl-only: no definitions of its own
-    assert bg.templates_path is not None  # ships templates
-    assert not bg.css_urls  # app CSS is global (core), not per-theme
+    core_templates = PKG / "templates" / "components"
+    for name in ("metric", "sidenav", "layer", "activity", "chip", "catalog-card"):
+        assert (core_templates / f"{name}.html.j2").exists(), name

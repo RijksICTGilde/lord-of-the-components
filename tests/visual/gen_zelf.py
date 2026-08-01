@@ -2,7 +2,7 @@
 
 Reuses the Overzicht sidenav + header, adds the personal-dashboard components
 (c-identity, c-action, c-detail-list, c-notification, c-section-link). Built
-100% from c-* components under design_systems=["nldd", "bgnldd"].
+100% from c-* components under design_systems=["nldd"].
 
 Run:  python tests/visual/gen_zelf.py  ->  fixtures/zelf.html
 """
@@ -104,7 +104,7 @@ def doorklikken() -> str:
 
 
 def build() -> str:
-    return f"""<c-page title="Mijn overzicht · Begane Grond" lang="nl" design-systems="lotc-layout nldd bgnldd">
+    return f"""<c-page title="Mijn overzicht · Begane Grond" lang="nl" design-systems="lotc-layout nldd">
 <c-app-shell width="16rem">
   <template slot="header">
     <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
