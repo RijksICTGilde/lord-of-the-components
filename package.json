@@ -17,7 +17,10 @@
     "test:visual": "npx playwright test --config=tests/visual/playwright.config.ts",
     "test:visual:update": "npx playwright test --config=tests/visual/playwright.config.ts --update-snapshots",
     "lint": "npm run lint -w core",
-    "lotc": "node core/dist/cli/index.js"
+    "lotc": "node core/dist/cli/index.js",
+    "gen:authoring": "node core/src/generators/docs/generate-authoring.mjs",
+    "gen:storybook": "node core/src/generators/nldd/generate-storybook.mjs",
+    "gen:docs": "npm run gen:authoring && npm run gen:storybook"
   },
   "keywords": [
     "components",
