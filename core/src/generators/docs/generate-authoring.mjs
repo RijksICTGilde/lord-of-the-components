@@ -15,6 +15,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const CORE = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_components/registry.json"), "utf8"));
 const NLDD = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-nldd/src/lotc_nldd/registry.json"), "utf8"));
+const CHARTS = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-charts/src/lotc_charts/registry.json"), "utf8"));
 const LAYOUT_CSS = readFileSync(resolve(ROOT, "packages/lotc-layout/src/lotc_layout/static/lotc/layout/layout.css"), "utf8");
 
 // ── spacing tokens (parsed from the config in layout.css) ──
@@ -141,7 +142,24 @@ for (const c of extended) {
 }
 L.push(``);
 
-L.push(`## 6. Component catalog\n`);
+L.push(`## 6. Chart set (opt-in — Chart.js)\n`);
+L.push(
+  `An opt-in capability set: activate it alongside a design system and it loads` +
+    ` Chart.js + draws request/limit lines. Only then do these resolve.\n`,
+);
+L.push("```python");
+L.push(`setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-charts"])`);
+L.push("```");
+for (const c of CHARTS.components) L.push(compLine(c));
+L.push("```html");
+L.push(`<c-line-chart id="cpu" title="CPU (millicores)" limit="500" request="250"`);
+L.push(`              current="Current: 148m / 500m (30%)"`);
+L.push(`              :data="{'labels': [...], 'datasets': [{'label':'CPU','data':[...],'borderColor':'#39870c','fill':true}]}"/>`);
+L.push(`<c-gauge value="72" label="CPU" sublabel="2.9 / 4 cores"/>`);
+L.push("```");
+L.push(`Each chart needs a unique \`id\`. \`limit\`/\`request\` draw dashed threshold lines.\n`);
+
+L.push(`## 7. Component catalog\n`);
 L.push(`Grouped by category. Enum attrs show their allowed values; \`[theme-only]\` marks extension attrs.\n`);
 for (const cat of cats) {
   const comps = catalog[cat].sort((a, b) => a.name.localeCompare(b.name));
@@ -152,7 +170,7 @@ for (const cat of cats) {
 
 // ── full page example (a real BG page, embedded from the fixture so it stays in sync) ──
 const FULL_PAGE = readFileSync(resolve(ROOT, "tests/visual/fixtures/apps.html"), "utf8").trim();
-L.push(`## 7. Full page example — BG "Software-catalogus"\n`);
+L.push(`## 8. Full page example — BG "Software-catalogus"\n`);
 L.push(
   `A complete page, 100% \`c-*\`: app-shell → header (status-bar + menu) + sidenav +` +
     ` metric grid + filter-bar + catalog cards + footer. Copy and adapt — this is the` +
@@ -163,7 +181,7 @@ L.push("```html");
 L.push(FULL_PAGE);
 L.push("```\n");
 
-L.push(`## 8. Recipes\n`);
+L.push(`## 9. Recipes\n`);
 L.push(`**Card grid** (as many columns as fit):`);
 L.push("```html");
 L.push(`<c-auto-grid min="280px" gap="md">`);
@@ -187,7 +205,7 @@ L.push(`  <c-form-actions><c-button type="primary" label="Versturen"/></c-form-a
 L.push(`</c-form>`);
 L.push("```\n");
 
-L.push(`## 9. Rules\n`);
+L.push(`## 10. Rules\n`);
 L.push(`- **Slots**: named slots via \`<template slot="name">…</template>\`; default content is the rest.`);
 L.push(`- **Enums are validated**: an out-of-set value (e.g. \`type="bogus"\`) errors (debug mode) with the allowed set.`);
 L.push(`- **Theme-owned attrs** (§5) only work while their owner is active, else a clear error.`);

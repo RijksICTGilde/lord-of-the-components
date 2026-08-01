@@ -35,6 +35,16 @@
           "description": "Current-value caption below the chart (e.g. \"Current: 120m / 500m (24%)\")"
         },
         {
+          "name": "limit",
+          "type": "string",
+          "description": "Draw a red dashed \"Limit\" threshold line at this y-value"
+        },
+        {
+          "name": "request",
+          "type": "string",
+          "description": "Draw a blue dashed \"Request\" threshold line at this y-value"
+        },
+        {
           "name": "class",
           "type": "string",
           "description": "Additional CSS classes"
