@@ -14,7 +14,7 @@
 <div
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="columns"
-    {% if columns or sm or md or lg or gap %}style="{% if columns %}--lotc-cols: {{ columns }};{% endif %}{% if sm %}--lotc-cols-sm: {{ sm }};{% endif %}{% if md %}--lotc-cols-md: {{ md }};{% endif %}{% if lg %}--lotc-cols-lg: {{ lg }};{% endif %}{% if gap %}--lotc-columns-gap: {{ gap }};{% endif %}"{% endif %}
+    {% if columns or sm or md or lg or gap %}style="{% if columns %}--lotc-cols: {{ columns }};{% endif %}{% if sm %}--lotc-cols-sm: {{ sm }};{% endif %}{% if md %}--lotc-cols-md: {{ md }};{% endif %}{% if lg %}--lotc-cols-lg: {{ lg }};{% endif %}{% if gap %}--lotc-columns-gap: {{ attrs.space(gap) }};{% endif %}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children | safe }}
 </div>

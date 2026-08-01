@@ -8,7 +8,7 @@
 {% if background %}{% set cls = cls + ['lotc-box--bg'] %}{% endif %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
 {% set styles = [] %}
-{% if pad %}{% set styles = styles + ['--lotc-box-pad: ' ~ pad] %}{% endif %}
+{% if pad %}{% set styles = styles + ['--lotc-box-pad: ' ~ attrs.space(pad)] %}{% endif %}
 {% if background %}{% set styles = styles + ['--lotc-box-bg: ' ~ background] %}{% endif %}
 <div class="{{ cls | join(' ') }}" data-lotc-component="box" {{ attrs.render_extra_attributes(_component_context) }}{% if styles %} style="{{ styles | join('; ') }};"{% endif %}>
   {{ _component_context.get('content', '') | safe }}

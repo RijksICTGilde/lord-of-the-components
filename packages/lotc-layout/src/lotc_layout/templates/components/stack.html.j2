@@ -24,7 +24,7 @@
 <div
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="stack"
-    {% if gap %}style="{% if gap %}--lotc-stack-gap: {{ gap }};{% endif %}"{% endif %}
+    {% if gap %}style="{% if gap %}--lotc-stack-gap: {{ attrs.space(gap) }};{% endif %}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
     {{ children | safe }}
 </div>

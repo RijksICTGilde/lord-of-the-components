@@ -100,7 +100,8 @@ def test_grid_fixed_columns_agnostic():
     html = _env(["lotc-layout", "rvo"]).from_string(
         '<c-grid columns="three" gap="md"><div>a</div></c-grid>'
     ).render()
-    assert "--lotc-grid-cols: 3" in html and "--lotc-grid-gap: 1rem" in html
+    # gap tokens now resolve to the overridable spacing config (md -> the token).
+    assert "--lotc-grid-cols: 3" in html and "--lotc-grid-gap: var(--lotc-space-md)" in html
 
 
 def test_layout_page_shell():

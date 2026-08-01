@@ -13,7 +13,7 @@
 {% set cls = ['lotc-layout', 'lotc-layout--' ~ side] %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
 <div class="{{ cls | join(' ') }}" data-lotc-component="layout" {{ attrs.render_extra_attributes(_component_context) }}
-  {% if sw or gap or max %}style="{% if sw %}--lotc-layout-sidebar: {{ sw }};{% endif %}{% if gap %}--lotc-layout-gap: {{ gap }};{% endif %}{% if max %}--lotc-layout-max: {{ max }};{% endif %}"{% endif %}>
+  {% if sw or gap or max %}style="{% if sw %}--lotc-layout-sidebar: {{ sw }};{% endif %}{% if gap %}--lotc-layout-gap: {{ attrs.space(gap) }};{% endif %}{% if max %}--lotc-layout-max: {{ max }};{% endif %}"{% endif %}>
   {% if slots.header %}<header class="lotc-layout__header">{{ slots.get('header', '') | safe }}</header>{% endif %}
   <div class="lotc-layout__body">
     {% if slots.sidebar %}<aside class="lotc-layout__sidebar">{{ slots.get('sidebar', '') | safe }}</aside>{% endif %}

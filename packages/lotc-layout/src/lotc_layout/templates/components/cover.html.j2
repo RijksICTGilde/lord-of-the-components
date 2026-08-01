@@ -5,7 +5,7 @@
 {% set cls = ['lotc-cover'] %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
 <div class="{{ cls | join(' ') }}" data-lotc-component="cover" {{ attrs.render_extra_attributes(_component_context) }}
-  {% if min or space %}style="{% if min %}--lotc-cover-min: {{ min }};{% endif %}{% if space %}--lotc-cover-space: {{ space }};{% endif %}"{% endif %}>
+  {% if min or space %}style="{% if min %}--lotc-cover-min: {{ min }};{% endif %}{% if space %}--lotc-cover-space: {{ attrs.space(space) }};{% endif %}"{% endif %}>
   {{ _component_context.get('content', '') | safe }}
 </div>
 {% endmacro %}

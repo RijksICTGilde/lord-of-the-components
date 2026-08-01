@@ -11,8 +11,7 @@
 {% set gap = _component_context.get('gap', '') %}
 {% set min = _component_context.get('min', '') %}
 {% set colmap = {'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,'ten':10,'eleven':11,'twelve':12} %}
-{% set gapmap = {'none':'0','xs':'.25rem','sm':'.5rem','md':'1rem','lg':'1.5rem','xl':'2rem'} %}
-{% set gapval = gapmap.get(gap, gap) %}
+{% set gapval = attrs.space(gap) %}
 {% set cls = ['lotc-grid'] %}
 {% if min %}{% set cls = cls + ['lotc-grid--auto'] %}{% endif %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}

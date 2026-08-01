@@ -8,7 +8,7 @@
 {% if align %}{% set cls = cls + ['lotc-cluster--align-' ~ align] %}{% endif %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
 <div class="{{ cls | join(' ') }}" data-lotc-component="cluster" {{ attrs.render_extra_attributes(_component_context) }}
-  {% if gap %}style="--lotc-cluster-gap: {{ gap }};"{% endif %}>
+  {% if gap %}style="--lotc-cluster-gap: {{ attrs.space(gap) }};"{% endif %}>
   {{ _component_context.get('content', '') | safe }}
 </div>
 {% endmacro %}
