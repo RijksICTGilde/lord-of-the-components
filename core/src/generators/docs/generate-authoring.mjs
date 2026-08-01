@@ -150,7 +150,20 @@ for (const cat of cats) {
   L.push(``);
 }
 
-L.push(`## 7. Recipes\n`);
+// ── full page example (a real BG page, embedded from the fixture so it stays in sync) ──
+const FULL_PAGE = readFileSync(resolve(ROOT, "tests/visual/fixtures/apps.html"), "utf8").trim();
+L.push(`## 7. Full page example — BG "Software-catalogus"\n`);
+L.push(
+  `A complete page, 100% \`c-*\`: app-shell → header (status-bar + menu) + sidenav +` +
+    ` metric grid + filter-bar + catalog cards + footer. Copy and adapt — this is the` +
+    ` BG look. Two more complete pages live in \`tests/visual/fixtures/{zelf,bg-overzicht}.html\`` +
+    ` (built by \`tests/visual/gen_{apps,zelf,bg_overzicht}.py\`).\n`,
+);
+L.push("```html");
+L.push(FULL_PAGE);
+L.push("```\n");
+
+L.push(`## 8. Recipes\n`);
 L.push(`**Card grid** (as many columns as fit):`);
 L.push("```html");
 L.push(`<c-auto-grid min="280px" gap="md">`);
@@ -174,7 +187,7 @@ L.push(`  <c-form-actions><c-button type="primary" label="Versturen"/></c-form-a
 L.push(`</c-form>`);
 L.push("```\n");
 
-L.push(`## 8. Rules\n`);
+L.push(`## 9. Rules\n`);
 L.push(`- **Slots**: named slots via \`<template slot="name">…</template>\`; default content is the rest.`);
 L.push(`- **Enums are validated**: an out-of-set value (e.g. \`type="bogus"\`) errors (debug mode) with the allowed set.`);
 L.push(`- **Theme-owned attrs** (§5) only work while their owner is active, else a clear error.`);
