@@ -75,3 +75,20 @@ def test_hyphenated_prop_in_text_resolves(nldd):
     # resolve to its snake_cased var, not `pay-off` (which Jinja reads as pay minus off).
     html = nldd('<c-footer pay-off="Tekst met streepje">x</c-footer>')
     assert "Tekst met streepje" in html
+
+
+def test_footer_legal_bar(nldd):
+    # The footer's legal sub-bar: c-page-footer-legal-bar (+ -item) fill
+    # nldd-page-footer's `legal-bar` slot, items go in the bar's `start`/`end`.
+    html = nldd(
+        "<c-footer>"
+        '<template slot="legal-bar"><c-page-footer-legal-bar>'
+        '<template slot="start">'
+        '<c-page-footer-legal-bar-item href="/toegankelijkheid" text="Toegankelijkheid"/>'
+        "</template></c-page-footer-legal-bar></template></c-footer>"
+    )
+    assert '<div slot="legal-bar">' in html
+    assert "<nldd-page-footer-legal-bar" in html
+    assert '<nldd-page-footer-legal-bar-item' in html
+    assert 'text="Toegankelijkheid"' in html and 'href="/toegankelijkheid"' in html
+    assert "not implemented" not in html
