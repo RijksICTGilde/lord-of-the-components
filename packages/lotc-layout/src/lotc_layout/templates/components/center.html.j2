@@ -9,7 +9,7 @@
 {% if intrinsic %}{% set cls = cls + ['lotc-center--intrinsic'] %}{% endif %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
 <div class="{{ cls | join(' ') }}" data-lotc-component="center" {{ attrs.render_extra_attributes(_component_context) }}
-  {% if max or gutters %}style="{% if max %}--lotc-center-max: {{ max }};{% endif %}{% if gutters %}--lotc-center-gutters: {{ gutters }};{% endif %}"{% endif %}>
+  {% if max or gutters %}style="{% if max %}--lotc-center-max: {{ max }};{% endif %}{% if gutters %}--lotc-center-gutters: {{ attrs.space(gutters) }};{% endif %}"{% endif %}>
   {{ _component_context.get('content', '') | safe }}
 </div>
 {% endmacro %}

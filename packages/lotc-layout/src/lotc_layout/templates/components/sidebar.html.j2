@@ -7,7 +7,7 @@
 {% set cls = ['lotc-sidebar', 'lotc-sidebar--' ~ side] %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
 <div class="{{ cls | join(' ') }}" data-lotc-component="sidebar" {{ attrs.render_extra_attributes(_component_context) }}
-  {% if width or cmin or gap %}style="{% if width %}--lotc-sidebar-width: {{ width }};{% endif %}{% if cmin %}--lotc-sidebar-content-min: {{ cmin }};{% endif %}{% if gap %}--lotc-sidebar-gap: {{ gap }};{% endif %}"{% endif %}>
+  {% if width or cmin or gap %}style="{% if width %}--lotc-sidebar-width: {{ width }};{% endif %}{% if cmin %}--lotc-sidebar-content-min: {{ cmin }};{% endif %}{% if gap %}--lotc-sidebar-gap: {{ attrs.space(gap) }};{% endif %}"{% endif %}>
   {{ _component_context.get('content', '') | safe }}
 </div>
 {% endmacro %}

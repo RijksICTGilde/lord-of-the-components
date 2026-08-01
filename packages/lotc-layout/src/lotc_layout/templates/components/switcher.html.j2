@@ -5,7 +5,7 @@
 {% set cls = ['lotc-switcher'] %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
 <div class="{{ cls | join(' ') }}" data-lotc-component="switcher" {{ attrs.render_extra_attributes(_component_context) }}
-  {% if threshold or gap %}style="{% if threshold %}--lotc-switcher-threshold: {{ threshold }};{% endif %}{% if gap %}--lotc-switcher-gap: {{ gap }};{% endif %}"{% endif %}>
+  {% if threshold or gap %}style="{% if threshold %}--lotc-switcher-threshold: {{ threshold }};{% endif %}{% if gap %}--lotc-switcher-gap: {{ attrs.space(gap) }};{% endif %}"{% endif %}>
   {{ _component_context.get('content', '') | safe }}
 </div>
 {% endmacro %}

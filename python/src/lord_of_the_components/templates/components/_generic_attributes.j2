@@ -117,3 +117,9 @@
 {% macro render_extra_attributes(component_context) -%}
     {{ render_events(component_context) }} {{ render_data_attributes(component_context) }} {{ render_aria_attributes(component_context) }} {{ render_htmx_attributes(component_context) }} {{ render_html_attributes(component_context) }}
 {%- endmacro %}
+
+{# Resolve a spacing value: a scale token (3xs..3xl) -> the overridable
+   --lotc-space-* config var; any other value (e.g. "1.25rem") passes through. #}
+{% macro space(v) -%}
+{%- if v in ['0', 'none'] -%}0{%- elif v in ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] -%}var(--lotc-space-{{ v }}){%- else -%}{{ v }}{%- endif -%}
+{%- endmacro %}
