@@ -19,6 +19,11 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const CEM = JSON.parse(readFileSync(resolve(ROOT, "node_modules/@nldd/design-system/custom-elements.json"), "utf8"));
 const FRAG = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-nldd/src/lotc_nldd/registry.json"), "utf8"));
+// Extended components: core components that carry theme-owned extension attrs
+// (owner-tagged). They're not in the NLDD fragment, but belong in the storybook
+// so the extended-component mechanism is visible with owner badges.
+const CORE = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_components/registry.json"), "utf8"));
+const EXTENDED = CORE.components.filter((c) => (c.attributes || []).some((a) => a.owner));
 
 // index CEM declarations by tag so we can read slots per component
 const byTag = {};
@@ -59,6 +64,7 @@ const OVERRIDES = {
   "code-viewer": `<c-code-viewer language="python">print("Hallo, wereld")</c-code-viewer>`,
   "rich-text": `<c-rich-text><p>Tekst met <strong>vet</strong> en <em>cursief</em>.</p><ul><li>Punt een</li><li>Punt twee</li></ul></c-rich-text>`,
   avatar: `<c-avatar initials="AS" name="Anne Schuth" size="40"/>`,
+  box: `<c-box pad="1.25rem" border background="accent">Een box met <code>pad</code> + <code>border</code> (lotc-layout) én <code>background</code> (nldd) — de basis blijft, de thema-eigen extra's komen erbij.</c-box>`,
   cell: `<c-list><c-list-item><c-text-cell>Een cel</c-text-cell></c-list-item></c-list>`,
   "text-cell": `<c-list><c-list-item><c-text-cell>Tekst in een cel</c-text-cell></c-list-item></c-list>`,
   "title-cell": `<c-list><c-list-item><c-title-cell overline="Regel" text="Titel" supporting-text="toelichting"/></c-list-item></c-list>`,
@@ -112,7 +118,7 @@ function attrTable(comp) {
   const rows = comp.attributes
     .map(
       (a) =>
-        `<tr><td><code>${esc(a.name)}</code></td><td>${typeCell(a)}</td><td>${a.default != null ? `<code>${esc(a.default)}</code>` : "—"}</td><td>${esc(a.description || "")}</td></tr>`
+        `<tr><td><code>${esc(a.name)}</code>${a.owner ? ` <span class="own">${esc(a.owner)}</span>` : ""}</td><td>${typeCell(a)}</td><td>${a.default != null ? `<code>${esc(a.default)}</code>` : "—"}</td><td>${esc(a.description || "")}</td></tr>`
     )
     .join("");
   return `<table class="attrs"><thead><tr><th>Attribuut</th><th>Type / waarden</th><th>Default</th><th>Omschrijving</th></tr></thead><tbody>${rows}</tbody></table>`;
@@ -153,6 +159,26 @@ for (const cat of cats) {
   }
 }
 
+// ── extended components (shared base + theme-owned extension attributes) ──
+if (EXTENDED.length) {
+  nav += `<div class="navcat">Extended <span>${EXTENDED.length}</span></div>`;
+  nav += EXTENDED.map((c) => `<a href="#c-${c.name}">c-${esc(c.name)}</a>`).join("");
+  body += `<h2 id="cat-extended">Extended — thema-eigen attributen <span>${EXTENDED.length}</span></h2>`;
+  body += `<p class="desc" style="margin:0 0 1rem">Componenten met een gedeelde basis + extra attributen die bij één design system horen (de <span class="own">owner</span>-badge). Zo'n attribuut is alleen geldig als dat thema actief is.</p>`;
+  for (const c of EXTENDED) {
+    const owners = [...new Set((c.attributes || []).map((a) => a.owner).filter(Boolean))];
+    const example = autoExample(c);
+    body +=
+      `<section class="story" id="c-${esc(c.name)}">` +
+      `<div class="story-head"><h3>&lt;c-${esc(c.name)}&gt;</h3>${owners.map((o) => `<span class="own">${esc(o)}</span>`).join(" ")}</div>` +
+      (c.description ? `<p class="desc">${esc(c.description)}</p>` : "") +
+      `<div class="canvas">${example}</div>` +
+      `<pre class="code">${esc(example)}</pre>` +
+      attrTable(c) +
+      `</section>`;
+  }
+}
+
 const STYLE = `
   *{box-sizing:border-box}
   body{font-family:system-ui,-apple-system,sans-serif;margin:0;color:#1a1a1a;background:#fafafa}
@@ -182,15 +208,16 @@ const STYLE = `
   table.attrs code{background:#f2f4f7;padding:.05rem .3rem;border-radius:3px;font-size:.72rem}
   .t{color:#7a5}.t.enum{color:#a56}
   .noattr{margin:0 1rem 1rem;color:#999;font-size:.8rem;font-style:italic}
+  .own{display:inline-block;background:#eef4fb;color:#154273;border:1px solid #cdddf0;border-radius:4px;padding:0 .32rem;font-size:.62rem;font-weight:700;letter-spacing:.02em;vertical-align:middle;font-family:ui-monospace,monospace}
 `;
 
-const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="nldd">
+const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="lotc-layout nldd">
 <style>${STYLE}</style>
 <div class="wrap">
 <nav class="index"><strong style="color:#154273">Storybook</strong>${nav}</nav>
 <main>
 <h1>NLDD component-storybook</h1>
-<p class="lead">Alle ${FRAG.components.length} gegenereerde <code>c-*</code>-componenten — hun attributen (met toegestane enum-waarden) en een live rendering in het NLDD design system.</p>
+<p class="lead">Alle ${FRAG.components.length} gegenereerde <code>c-*</code>-componenten${EXTENDED.length ? ` + ${EXTENDED.length} extended component${EXTENDED.length > 1 ? "s" : ""}` : ""} — hun attributen (met toegestane enum-waarden en <span class="own">owner</span>-badges voor thema-eigen extensies) en een live rendering.</p>
 ${body}
 </main>
 </div>
