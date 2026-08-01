@@ -1,95 +1,78 @@
-# bg.rijks.app Overzicht — components recreation & gap report
+# bg.rijks.app Overzicht — components recreation & coverage report
 
-> **Update — BGNLDD theme.** The custom app components below (sidenav, metric,
-> layer, section-head, activity, shortcut) are now provided by the **BGNLDD**
-> theme (`packages/lotc-bgnldd`), a mix-and-match layer on top of NLDD. The
-> recreation (`gen_bg_overzicht.py`) is now built 100% from `c-*` components
-> under `design_systems=["nldd", "bgnldd"]`, rendered end-to-end through
-> `<c-page design-systems="nldd bgnldd">`. The header **utility menu** is now
-> provided too (`c-menu-bar` + `c-menu-bar-item` → `nldd-menu-bar` in the top-nav
-> utility slot; `c-header` renders its children inside the nav bar), and section
-> titles use the real `nldd-title` component. **Only the status bar remains** as a
-> gap. The original "pure NLDD-only" measurement is kept below for the record.
+Recreation of the [bg.rijks.app](https://bg.rijks.app/) Overzicht / Software-
+catalogus / Mijn-overzicht pages built entirely from LOTC `<c-*>` components.
 
----
+> **Status — resolved.** Every gap the original report listed is now a real
+> component. The recreation is built 100% from theme-agnostic `<c-*>` components
+> that live in **core** (no per-theme app-component package anymore — the former
+> `lotc-bgnldd` layer has been removed). The same source renders end-to-end
+> through **both** NLDD and RVO: `design-systems="lotc-layout nldd"` or `"…rvo"`.
+> Source: `gen_bg_overzicht.py` / `gen_apps.py` / `gen_zelf.py` →
+> `fixtures/{bg-overzicht,apps,zelf}.html`. Shots in `screenshots/recreate/`.
 
-# (original) pure-components recreation & gap report
+## What renders correctly (component output == intended design system)
 
-Recreation of the [bg.rijks.app](https://bg.rijks.app/) Overzicht page built with
-**only** LOTC `<c-*>` components under the NLDD backend, using **no** app-specific
-CSS. The real site is NLDD web components **plus** a substantial layer of bespoke
-Vue-scoped CSS (`.rp-*` classes). This exercise measures what the component system
-can express on its own — everything that looks off below is a genuine gap, not a
-missing stylesheet.
+Layout — `c-app-shell` (header / sidebar / main / footer regions), `c-auto-grid`,
+`c-columns`, `c-stack`, `c-grid`. Primitives — `c-header`, `c-button`, `c-icon`,
+`c-card`, `c-tag`, `c-heading`/`c-h1..h6`, `c-p`, `c-link`, `c-small`, `c-badge`,
+`c-checkbox`, `c-table`, `c-menu`(+item), `c-tabs`, `c-breadcrumbs`, `c-footer`.
 
-- Source of truth: `tests/visual/gen_bg_overzicht.py` (icons/labels/grouping
-  extracted verbatim from the live DOM) → `fixtures/bg-overzicht.html`.
-- Shots: `screenshots/recreate/bg-overzicht-{reference,lotc,compare}.png`.
-- Regenerate: `python tests/visual/gen_bg_overzicht.py`, serve with
-  `python tests/visual/serve.py --port 5811 --theme nldd`, shoot `bg_shoot.mjs`.
+App composites (all theme-agnostic core templates composing the primitives, so
+they render in every design system): `c-metric`, `c-sidenav`(+group/+item, with
+active state), `c-catalog-card`, `c-filter-bar`(+`c-filter-select`), `c-identity`,
+`c-action`, `c-detail-list`(+item), `c-notification`(+item), `c-section-link`,
+`c-section-head`, `c-layer`, `c-shortcut`, `c-activity`(+item), `c-chip`,
+`c-status-bar`.
 
-## What renders correctly (component output == intended NLDD)
+## Former gaps — now resolved
 
-- `c-header` → `nldd-top-navigation-bar` (logo title/subtitle/href).
-- `c-button` (+ `icon`/`show-icon`) → `nldd-button` with `start-icon`.
-- `c-icon` → `nldd-icon` with the correct semantic-name → NLDD-name mapping.
-- `c-card` → `nldd-card`; `c-tag` → `nldd-tag`; `c-heading`/`c-h1..h6`, `c-p`,
-  `c-link`, `c-small`.
-- `c-app-shell` (header + sidebar + main regions), `c-auto-grid`, `c-columns`,
-  `c-stack` — all lay out correctly.
+1. **Status bar** — now `c-status-bar`, a theme-neutral `lotc-statusbar` banner
+   (semantic `type` → variant colour), renders in every theme.
+2. **Header utility menu** — `c-menu type="bar" slot="utility"` inside `c-header`
+   → `nldd-menu-bar` in the top-nav utility slot.
+3. **Nav item / sidebar** — `c-sidenav` + `c-sidenav-item` (icon + label + active
+   state via `aria-current`), a real component, not a `c-link` stand-in.
+4. **Metric / stat value** — `c-metric` (composes `c-card` + `c-icon`), no more
+   `c-h2` semantic hack.
+5. **Layer rows** ("De lagen") — `c-layer` (icon tile + title/count + chip row +
+   chevron), composed from `c-icon`.
 
 ## Bug found & fixed: `c-icon` size mapping (NLDD)
 
 `nldd-icon`'s default is `--_size: 100%` (**fills its parent**) and its `size`
-attribute only accepts numeric spacer tokens (`16 20 24 28 32 40 44 48 56 64 80 96`).
-Our impl emitted the t-shirt value verbatim (`size="md"`), which NLDD does not
-recognise → every icon fell back to filling its parent → giant icons that blew out
-the sidebar and wrapped the metric numbers.
-
-Fix: `themes/nldd/components/icon.impl.ts` now maps `2xs..4xl → 16..96` via a
-`sizes` valueMap. Regression test: `python/tests/test_icon_size_nldd.py`.
-(Before/after is the difference between the first and second `bg-overzicht-lotc.png`.)
+attribute only accepts numeric spacer tokens (`16 20 24 28 32 40 44 48 56 64 80
+96`). Our impl emitted the t-shirt value verbatim (`size="md"`), which NLDD does
+not recognise → giant icons that blew out the sidebar. Fix:
+`themes/nldd/components/icon.impl.ts` maps `2xs..4xl → 16..96` via a `sizes`
+valueMap. Regression: `python/tests/test_icon_size_nldd.py`.
 
 ## Bug found & fixed: `c-card` had no padding (NLDD)
 
-`nldd-card` has **no intrinsic padding** — `.card__main` is a bare slot
-(`card.styles.ts`), so NLDD composes padding with a wrapping `<nldd-container
-padding="…">` (the site uses `20` for metric cards, `24` for section cards). Our
-impl emitted a bare `<div>` for the body **and ignored the card's own `padding`
-prop** (which defaults to `md`), so all card content sat flush against the edge.
+`nldd-card` has **no intrinsic padding** — `.card__main` is a bare slot, so NLDD
+composes padding with a wrapping `<nldd-container padding="…">`. Our impl emitted
+a bare `<div>` and ignored the card's own `padding` prop. Fix:
+`themes/nldd/components/card.impl.ts` wraps the body in `<nldd-container>` and maps
+`padding` (`none/sm/md/lg/xl → 0/16/20/24/32`). `<c-card>` →
+`<nldd-card><nldd-container padding="20">…`. Regression: `test_card_alert_nldd.py`.
 
-Fix: `themes/nldd/components/card.impl.ts` now wraps the body in `<nldd-container>`
-and maps the `padding` prop (`none/sm/md/lg/xl → 0/16/20/24/32`) onto NLDD's spacer
-scale. `<c-card>` → `<nldd-card><nldd-container padding="20">…` — the site's exact
-pattern. Regression: `test_card_alert_nldd.py`.
+## NLDD element coverage
 
-### Audited faithful (no change needed)
+Of the 121 custom elements in NLDD's manifest, all but a handful are reachable as
+a `<c-*>` — the 95-component generated fragment plus the core primitives and the
+semantic composites (`c-menu`→`menu-bar`, `c-header`→`top-navigation-bar`,
+`c-tabs`→`tab-bar`, `c-footer`→`page-footer`).
 
-`c-button` (`size="md"` — NLDD button accepts `xs/sm/md/lg`), `c-tag`
-(`type="default" → color="neutral"`, matches the site). `c-heading`/`c-h1..h6` map
-heading level → `nldd-title size` correctly; the site's smaller visual sizes
-(`size="2"` for its h1) are a per-page usage choice, not a component defect.
+**Intentionally not mapped to the native NLDD element** (rendered theme-agnostic
+instead, so they are not NLDD-locked):
 
-## Remaining gaps (no component today — documented, not worked around)
+- `c-blockquote` → plain `<blockquote>` (not `nldd-blockquote`)
+- `c-box` → the lotc-layout Every-Layout box (not `nldd-box`)
+- `c-page` → the `<!DOCTYPE html>` document shell (not the `nldd-page` sticky-layout;
+  page layout is expressed with `c-app-shell`)
+- `c-status-bar` → the theme-neutral banner above (not `nldd-status-bar`)
 
-1. **Status bar** — the site's top `nldd-status-bar` ("… demo / mock-up …") has no
-   LOTC component. Omitted.
-2. **Header utility menu** — `c-header` renders only the logo lockup; the site's
-   `nldd-menu-bar slot="utility"` (Zoeken / Notificaties / Nieuw / Thema / profiel)
-   has no slot on `c-header`. Missing in the recreation.
-3. **Nav item** — the sidebar is faked with `c-stack` + `c-icon` + `c-link`.
-   `c-link` → `nldd-link` renders as a blue hyperlink; a sidebar item should inherit
-   text colour and carry an active/hover state. There is no nav-item component and
-   `c-menu`/`c-menu-item` have **no NLDD template** (`menu-item.html.j2` missing), so
-   a real sidenav cannot be built with components yet. No active-state on "Overzicht".
-4. **Metric / stat value** — the big number uses `c-h2` as a stand-in (semantic
-   hack). There is no display-typography / metric component.
-5. **Layer rows** (the "De lagen" card) — the site renders per-row icon tiles +
-   chevron via `.rp-layer*`; recreated as plain stacked text.
-
-## Other components missing an NLDD template (surfaced while building)
-
-`c-page`, `c-menu` / `c-menu-item`, `c-grid`, `c-layout-row`, `c-layout-column`,
-`c-max-width-layout` all raise `TemplateNotFound` under NLDD, and `c-data-list-item`
-is not registered. These are theme-agnostic/layout components that generate no NLDD
-output today.
+**Minor genuine gaps** (native sub-parts not individually exposed):
+`nldd-page-footer-legal-bar` / `-legal-bar-item` (the footer's legal sub-row —
+`c-footer` renders `nldd-page-footer` but not the legal bar) and `nldd-table-row`
+(rows inside `c-table`). Add if a page needs them.
