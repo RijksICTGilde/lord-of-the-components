@@ -7,7 +7,7 @@ export const tableRowImpl = defineImplementation({
   root: {
     element: "tr",
     isRoot: true,
-    classes: ["rvo-table-row"],
+    classes: ["rvo-table-row", { prop: "selected", class: "rvo-table-row--selected" }],
     text: { content: true },
   },
   mixins: { genericAttributes: true },

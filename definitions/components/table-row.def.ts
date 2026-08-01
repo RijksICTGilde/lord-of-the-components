@@ -7,6 +7,8 @@ export const tableRow = defineComponent({
   description: "Table body row; <c-td> cells go in the content",
   category: "data",
   props: {
+    // Marks the row as selected (checkbox/selectable tables). Boolean: presence = true.
+    [PROPS.SELECTED]: null,
     [PROPS.CLASS]: { description: "Additional CSS classes" },
   },
   content: { allowed: true },

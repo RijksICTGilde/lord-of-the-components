@@ -578,7 +578,7 @@ def table_head(*, content=None, _extra=None, _class=''):
     parts.append('</nldd-table-row>')
     return Markup(''.join(parts))
 
-def table_row(*, content=None, _extra=None, _class=''):
+def table_row(*, selected=False, content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
     cls0 = merge_class(cls0, _class)
@@ -586,6 +586,8 @@ def table_row(*, content=None, _extra=None, _class=''):
     if cls0:
         parts.append(' class="' + cls0 + '"')
     parts.append(' data-lotc-component="table-row"')
+    if selected:
+        parts.append(' selected')
     parts.append(render_extra(_extra))
     parts.append('>')
     parts.append((content or ''))

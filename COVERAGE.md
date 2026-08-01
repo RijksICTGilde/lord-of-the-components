@@ -44,7 +44,7 @@
 | tab | rvo | 9 | ✅ | pending | — |
 | table | rvo | 5 | ✅ | pending | — |
 | table-head | rvo | 5 | ✅ | pending | — |
-| table-row | rvo | 5 | ✅ | pending | — |
+| table-row | rvo | 6 | ✅ | pending | — |
 | tabs | rvo | 6 | ✅ | pending | — |
 | tag | rvo | 12 | ✅ | pending | — |
 | td | rvo | 6 | ✅ | pending | — |

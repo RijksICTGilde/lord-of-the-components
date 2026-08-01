@@ -6371,6 +6371,19 @@
     },
     {
       "component": "table-row",
+      "case_id": "selected",
+      "theme": "rvo",
+      "markup": "<c-table-row selected>Voorbeeld</c-table-row>",
+      "props": {
+        "selected": true
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "selected=true"
+      ]
+    },
+    {
+      "component": "table-row",
       "case_id": "content--amp",
       "theme": "rvo",
       "markup": "<c-table-row>Tom & Jerry</c-table-row>",
