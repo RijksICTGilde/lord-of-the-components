@@ -1,4 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic filter dropdown: pure, theme-neutral lotc-filter-* markup —
+   no design-system primitives, so one core template serves every theme. #}
 {% macro lotc_render(_component_context) %}
 {% set label = _component_context.get("label", "") %}
 {% set value = _component_context.get("value", "") %}

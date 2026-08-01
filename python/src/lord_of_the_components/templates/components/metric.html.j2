@@ -1,0 +1,18 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic metric card: a PURE COMPOSITION of c-card + c-icon, so it
+   inherits the active design system with zero per-theme template. The clickable
+   <a> wrapper + the shared, theme-neutral lotc-metric-* CSS carry the layout. #}
+{% macro lotc_render(_component_context) %}
+{% set icon = _component_context.get("icon", "") %}
+{% set value = _component_context.get("value", "") %}
+{% set label = _component_context.get("label", "") %}
+{% set sub = _component_context.get("sub", "") %}
+{% set href = _component_context.get("href", "") %}
+{% set extra = _component_context.get("class", "") %}
+<a{% if href %} href="{{ href }}"{% endif %} class="lotc-metric-link{% if extra %} {{ extra }}{% endif %}"{% if label %} aria-label="{{ label }}"{% endif %} data-lotc-component="metric" {{ attrs.render_extra_attributes(_component_context) }}>
+  <c-card outline padding="md">
+    <div class="lotc-metric-top">{% if icon %}<c-icon :icon="icon" size="lg"/>{% endif %}<span class="lotc-metric-value">{{ value }}</span></div>
+    <div class="lotc-metric-label">{{ label }}</div>{% if sub %}<div class="lotc-metric-sub">{{ sub }}</div>{% endif %}
+  </c-card>
+</a>
+{% endmacro %}
