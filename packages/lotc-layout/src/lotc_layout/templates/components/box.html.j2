@@ -2,11 +2,15 @@
 {% macro lotc_render(_component_context) %}
 {% set pad = _component_context.get('pad', '') %}
 {% set border = _component_context.get('border', false) %}
+{% set background = _component_context.get('background', '') %}
 {% set cls = ['lotc-box'] %}
 {% if border %}{% set cls = cls + ['lotc-box--border'] %}{% endif %}
+{% if background %}{% set cls = cls + ['lotc-box--bg'] %}{% endif %}
 {% if _component_context.get('class') %}{% set cls = cls + _component_context['class'].split() %}{% endif %}
-<div class="{{ cls | join(' ') }}" data-lotc-component="box" {{ attrs.render_extra_attributes(_component_context) }}
-  {% if pad %}style="--lotc-box-pad: {{ pad }};"{% endif %}>
+{% set styles = [] %}
+{% if pad %}{% set styles = styles + ['--lotc-box-pad: ' ~ pad] %}{% endif %}
+{% if background %}{% set styles = styles + ['--lotc-box-bg: ' ~ background] %}{% endif %}
+<div class="{{ cls | join(' ') }}" data-lotc-component="box" {{ attrs.render_extra_attributes(_component_context) }}{% if styles %} style="{{ styles | join('; ') }};"{% endif %}>
   {{ _component_context.get('content', '') | safe }}
 </div>
 {% endmacro %}

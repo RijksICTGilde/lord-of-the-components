@@ -87,8 +87,11 @@ export const box = defineComponent({
   description: "A padded container with an optional border — the simplest layout unit (Every Layout: Box)",
   category: "layout",
   props: {
-    pad: { description: "Padding, e.g. '1rem' (--lotc-box-pad)" },
-    border: null, // boolean — show a 1px border in the current colour
+    // Base props (always valid) + theme-owned EXTENSION props (only valid while
+    // their owning design system is active — the "extended component" mechanism).
+    pad: { owner: "lotc-layout", description: "Padding, e.g. '1rem' (--lotc-box-pad)" },
+    border: { boolean: true, owner: "lotc-layout", description: "Show a 1px border in the current colour" },
+    background: { owner: "nldd", description: "Background tint on the box — an NLDD-only extension" },
     [PROPS.CLASS]: { description: "Additional CSS classes" },
   },
   content: { allowed: true },

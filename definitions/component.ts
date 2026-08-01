@@ -42,6 +42,21 @@ export interface PropDefinition {
    * Human-readable description for documentation/errors.
    */
   description?: string;
+
+  /**
+   * Marks this as a boolean prop (presence = true) while still allowing the
+   * other fields (e.g. `owner`). Equivalent to a `null` spec, but object-form.
+   */
+  boolean?: boolean;
+
+  /**
+   * Owning design system for a theme-specific EXTENSION prop. When set, the prop
+   * is only valid while that design system is active (e.g. box's `background` is
+   * owned by "nldd"; `pad`/`border` by "lotc-layout"). Base props omit `owner`
+   * and are always valid. This is the "extended component" mechanism: one shared
+   * base contract plus per-theme extra attributes.
+   */
+  owner?: string;
 }
 
 /**

@@ -32,6 +32,10 @@ class AttributeDefinition:
     default: Any = None
     description: str = ""
     enum_values: Optional[List[str]] = None
+    #: Owning design system for a theme-specific EXTENSION attribute. When set,
+    #: the attribute is only valid while that design system is active (the
+    #: "extended component" mechanism). None = a base attribute, always valid.
+    owner: Optional[str] = None
 
     def __post_init__(self) -> None:
         if self.type == AttributeType.ENUM and not self.enum_values:
@@ -167,6 +171,7 @@ class ComponentRegistry:
                     default=attr_data.get("default"),
                     description=attr_data.get("description", ""),
                     enum_values=attr_data.get("enum_values", attr_data.get("enumValues")),
+                    owner=attr_data.get("owner"),
                 )
             )
 
