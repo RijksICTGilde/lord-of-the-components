@@ -1,4 +1,5 @@
 /** NLDD component implementations (plan v7 F6). */
+export { blockquoteImpl } from "./blockquote.impl.js";
 export { buttonImpl } from "./button.impl.js";
 export { cardImpl } from "./card.impl.js";
 export { alertImpl } from "./alert.impl.js";

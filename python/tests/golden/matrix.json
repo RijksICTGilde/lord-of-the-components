@@ -581,6 +581,19 @@
     },
     {
       "component": "blockquote",
+      "case_id": "cite--text",
+      "theme": "rvo",
+      "markup": "<c-blockquote cite=\"Voorbeeld\">Voorbeeld</c-blockquote>",
+      "props": {
+        "cite": "Voorbeeld"
+      },
+      "content": "Voorbeeld",
+      "covers": [
+        "cite=set"
+      ]
+    },
+    {
+      "component": "blockquote",
       "case_id": "content--amp",
       "theme": "rvo",
       "markup": "<c-blockquote>Tom & Jerry</c-blockquote>",
