@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-neutral label/value row — pure markup, one core template. #}
 {% macro lotc_render(_component_context) %}
 {% set label = _component_context.get("label", "") %}
 {% set value = _component_context.get("value", "") %}

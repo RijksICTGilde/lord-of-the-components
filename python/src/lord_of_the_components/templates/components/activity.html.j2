@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-neutral activity feed list — pure lotc-activity markup, one core template. #}
 {% macro lotc_render(_component_context) %}
-{% set children = _component_context.get('content', '') %}
-{% set extra = _component_context.get('class', '') %}
+{% set children = _component_context.get("content", "") %}
+{% set extra = _component_context.get("class", "") %}
 <ul class="lotc-activity{% if extra %} {{ extra }}{% endif %}" data-lotc-component="activity" {{ attrs.render_extra_attributes(_component_context) }}>{{ children | safe }}</ul>
 {% endmacro %}
