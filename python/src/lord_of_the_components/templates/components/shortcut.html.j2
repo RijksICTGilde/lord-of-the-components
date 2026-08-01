@@ -1,4 +1,5 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic shortcut tile: composes c-icon; shared lotc-shortcut-* layout. #}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get("icon", "") %}
 {% set title = _component_context.get("title", "") %}
@@ -6,8 +7,8 @@
 {% set cta = _component_context.get("cta", "") %}
 {% set href = _component_context.get("href", "") %}
 <a{% if href %} href="{{ href }}"{% endif %} class="lotc-shortcut" data-lotc-component="shortcut" {{ attrs.render_extra_attributes(_component_context) }}>
-  <span class="lotc-shortcut-icon">{% if icon %}{{ _lotc_rvo_icon(icon=icon, size="md") }}{% endif %}</span>
+  <span class="lotc-shortcut-icon">{% if icon %}<c-icon :icon="icon" size="md"/>{% endif %}</span>
   <span class="lotc-shortcut-title">{{ title }}</span>{% if desc %}<span class="lotc-shortcut-desc">{{ desc }}</span>{% endif %}
-  {% if cta %}<span class="lotc-shortcut-cta">{{ cta }}{{ _lotc_rvo_icon(icon="pijl-naar-rechts", size="sm") }}</span>{% endif %}
+  {% if cta %}<span class="lotc-shortcut-cta">{{ cta }}<c-icon icon="arrow-right" size="sm" class="lotc-shortcut-cta-icon"/></span>{% endif %}
 </a>
 {% endmacro %}

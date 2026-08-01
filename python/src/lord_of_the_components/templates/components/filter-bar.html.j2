@@ -1,15 +1,16 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic filter toolbar: composes c-card + c-icon; shared lotc-filter* CSS. #}
 {% macro lotc_render(_component_context) %}
 {% set placeholder = _component_context.get("placeholder", "") %}
 {% set search_label = _component_context.get("search-label", "Zoeken") %}
 {% set count = _component_context.get("count", "") %}
 {% set clear_label = _component_context.get("clear-label", "") %}
 {% set children = _component_context.get("content", "") %}
-<div class="rvo-card rvo-card--outline rvo-card--padding-md" data-lotc-component="filter-bar" {{ attrs.render_extra_attributes(_component_context) }}>
-  <div class="lotc-filterbar">
+<c-card outline padding="md">
+  <div class="lotc-filterbar" data-lotc-component="filter-bar" {{ attrs.render_extra_attributes(_component_context) }}>
     <div class="lotc-filter-search">
       {% if search_label %}<span class="lotc-filter-label">{{ search_label }}</span>{% endif %}
-      <div class="lotc-filter-searchbox">{{ _lotc_rvo_icon(icon="search", size="md") }}<input type="search" class="lotc-filter-input" placeholder="{{ placeholder }}" aria-label="{{ search_label }}"></div>
+      <div class="lotc-filter-searchbox"><c-icon icon="search" size="md"/><input type="search" class="lotc-filter-input" placeholder="{{ placeholder }}" aria-label="{{ search_label }}"></div>
     </div>
     {% if children %}<div class="lotc-filter-fields">{{ children | safe }}</div>{% endif %}
   </div>
@@ -17,5 +18,5 @@
     {% if count %}<span class="lotc-filter-count">{{ count }}</span>{% endif %}
     {% if clear_label %}<button type="button" class="lotc-filter-clear"><span aria-hidden="true">&#10005;</span> {{ clear_label }}</button>{% endif %}
   </div>{% endif %}
-</div>
+</c-card>
 {% endmacro %}

@@ -1,0 +1,12 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic section header: composes c-heading + c-icon. Optional children
+   (e.g. a count badge) sit in the aside next to the title. #}
+{% macro lotc_render(_component_context) %}
+{% set title = _component_context.get("title", "") %}
+{% set icon = _component_context.get("icon", "") %}
+{% set children = _component_context.get("content", "") %}
+<div class="lotc-section-head" data-lotc-component="section-head" {{ attrs.render_extra_attributes(_component_context) }}>
+  {% if title %}<c-heading type="h4" :label="title" class="lotc-section-title"/>{% endif %}
+  {% if icon or children %}<div class="lotc-section-head-aside">{{ children | safe }}{% if icon %}<c-icon :icon="icon" size="sm" class="lotc-head-icon"/>{% endif %}</div>{% endif %}
+</div>
+{% endmacro %}

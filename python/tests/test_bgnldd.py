@@ -70,10 +70,11 @@ def test_header_utility_menu(render):
 
 
 def test_section_head_uses_nldd_title(render):
-    # Section titles render via the real nldd-title (not a hand-styled span), so
-    # they match the design system's title typography.
+    # Section titles compose c-heading, which renders via the real nldd-title
+    # (not a hand-styled span), so they match the design system's title
+    # typography (visual size 4, semantic h4).
     html = render('<c-section-head title="De lagen" icon="timer"/>')
-    assert '<nldd-title size="4"><h2' in html and "De lagen" in html
+    assert "<nldd-title" in html and 'size="4"' in html and "<h4>De lagen</h4>" in html
 
 
 def test_layer_and_activity_render(render):
