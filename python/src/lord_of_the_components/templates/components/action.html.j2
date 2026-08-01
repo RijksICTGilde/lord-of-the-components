@@ -1,4 +1,6 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic action row: composes c-icon; shared lotc-action-* layout.
+   Now renders in every theme (was NLDD-only). #}
 {% macro lotc_render(_component_context) %}
 {% set icon = _component_context.get("icon", "") %}
 {% set title = _component_context.get("title", "") %}
@@ -6,7 +8,7 @@
 {% set tone = _component_context.get("tone", "neutral") %}
 {% set children = _component_context.get("content", "") %}
 <div class="lotc-action{% if tone != "neutral" %} lotc-action--{{ tone }}{% endif %}" data-lotc-component="action" {{ attrs.render_extra_attributes(_component_context) }}>
-  {% if icon %}{{ _lotc_nldd_icon(icon=icon, _class="lotc-action-icon") }}{% endif %}
+  {% if icon %}<c-icon :icon="icon" class="lotc-action-icon"/>{% endif %}
   <div class="lotc-action-body"><div class="lotc-action-title">{{ title }}</div>{% if sub %}<div class="lotc-action-sub">{{ sub }}</div>{% endif %}</div>
   {{ children | safe }}
 </div>
