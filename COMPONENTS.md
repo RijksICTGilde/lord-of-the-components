@@ -9,7 +9,7 @@
 | alert | feedback | 6 | 0 | 0 | ✅ | — |
 | b | html | 1 | 0 | 0 | ✅ | — |
 | badge | feedback | 3 | 0 | 0 | ✅ | — |
-| blockquote | html | 1 | 0 | 0 | ✅ | — |
+| blockquote | html | 2 | 0 | 0 | ✅ | — |
 | breadcrumbs | navigation | 3 | 0 | 0 | ✅ | — |
 | button | actions | 15 | 3 | 0 | ✅ | — |
 | card | data-display | 15 | 1 | 0 | ✅ | — |
@@ -121,6 +121,7 @@ Block quotation
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
+| cite | string | — |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —

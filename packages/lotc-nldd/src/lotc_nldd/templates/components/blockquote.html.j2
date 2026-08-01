@@ -1,0 +1,17 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set children = _component_context.get('content', '') %}
+{% set slots = _component_context.get('slots', {}) %}
+{% set cite = _component_context.get('cite', '') %}
+{% set css_classes = [] %}
+{% if _component_context.get('class') %}
+    {% set css_classes = css_classes + _component_context['class'].split() %}
+{% endif %}
+<nldd-blockquote
+    class="{{ css_classes | join(' ') }}"
+    data-lotc-component="blockquote"
+    {% if cite %}cite="{{ cite }}"{% endif %}
+    {{ attrs.render_extra_attributes(_component_context) }}>
+    {{ children | safe }}
+</nldd-blockquote>
+{% endmacro %}

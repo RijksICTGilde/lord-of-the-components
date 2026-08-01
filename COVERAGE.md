@@ -10,7 +10,7 @@
 | alert | rvo | 20 | ✅ | pending | — |
 | b | rvo | 5 | ✅ | pending | — |
 | badge | rvo | 12 | ✅ | pending | — |
-| blockquote | rvo | 5 | ✅ | pending | — |
+| blockquote | rvo | 6 | ✅ | pending | — |
 | breadcrumbs | rvo | 9 | ✅ | pending | — |
 | button | rvo | 36 | ✅ | pending | — |
 | card | rvo | 24 | ✅ | pending | — |

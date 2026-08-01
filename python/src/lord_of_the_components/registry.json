@@ -1697,6 +1697,11 @@
       "name": "blockquote",
       "attributes": [
         {
+          "name": "cite",
+          "type": "string",
+          "description": "Source URL of the quotation (native <blockquote cite>)"
+        },
+        {
           "name": "class",
           "type": "string",
           "description": "Additional CSS classes"
@@ -1704,7 +1709,6 @@
       ],
       "description": "Block quotation",
       "category": "html",
-      "system": true,
       "backend": "jinja",
       "content": {
         "allowed": true,
