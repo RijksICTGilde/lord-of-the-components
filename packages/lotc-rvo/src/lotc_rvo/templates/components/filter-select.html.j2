@@ -1,9 +1,0 @@
-{% import 'components/_generic_attributes.j2' as attrs %}
-{% macro lotc_render(_component_context) %}
-{% set label = _component_context.get("label", "") %}
-{% set value = _component_context.get("value", "") %}
-<div class="lotc-filter-field" data-lotc-component="filter-select" {{ attrs.render_extra_attributes(_component_context) }}>
-  {% if label %}<span class="lotc-filter-label">{{ label }}</span>{% endif %}
-  <div class="lotc-filter-dropdown">{{ value }}<span class="lotc-filter-caret" aria-hidden="true">&#9662;</span></div>
-</div>
-{% endmacro %}
