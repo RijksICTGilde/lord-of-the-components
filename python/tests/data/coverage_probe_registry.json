@@ -1,0 +1,14 @@
+{
+  "components": [
+    {
+      "name": "coverage-probe",
+      "attributes": [
+        {"name": "text", "type": "string", "description": "Probe text"}
+      ],
+      "description": "Test-only: a component defined in the registry but implemented by no theme, used to probe missing-implementation handling (error / placeholder).",
+      "category": "feedback",
+      "backend": "jinja",
+      "content": {"allowed": true}
+    }
+  ]
+}

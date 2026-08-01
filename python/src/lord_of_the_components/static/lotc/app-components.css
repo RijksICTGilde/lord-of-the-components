@@ -110,6 +110,14 @@
 .lotc-section-title { margin: 0; }
 .lotc-head-icon { opacity: 0.5; flex: 0 0 auto; width: 1.2rem; height: 1.2rem; }
 
+/* ── status-bar (slim full-width notice; theme-agnostic, semantic variants) ── */
+.lotc-statusbar { box-sizing: border-box; width: 100%; padding: 0.4rem 1rem; font-size: 0.85rem; line-height: 1.4; text-align: center; text-decoration: none; color: inherit; display: block; }
+.lotc-statusbar--neutral { background: #eef0f4; color: #333; }
+.lotc-statusbar--info { background: #e5f0fb; color: #154273; }
+.lotc-statusbar--success { background: #e7f4e4; color: #274a1c; }
+.lotc-statusbar--warning { background: #fdf3e2; color: #63450a; }
+.lotc-statusbar--error { background: #fce9e9; color: #7a1a1a; }
+
 /* ── activity ────────────────────────────────────────────────────────────── */
 .lotc-activity {
     flex-direction: column;
