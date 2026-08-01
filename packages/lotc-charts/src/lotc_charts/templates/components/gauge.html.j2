@@ -1,0 +1,28 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{% macro lotc_render(_component_context) %}
+{% set value = _component_context.get('value', '0') %}
+{% set label = _component_context.get('label', '') %}
+{% set sublabel = _component_context.get('sublabel', '') %}
+{% set cid = _component_context.get('id', 'lotc-gauge') %}
+{% set color = _component_context.get('color', '#154273') %}
+<figure class="lotc-gauge" data-lotc-component="gauge" {{ attrs.render_extra_attributes(_component_context) }}>
+  <div class="lotc-gauge__ring">
+    <canvas id="{{ cid }}-canvas"></canvas>
+    <div class="lotc-gauge__value"><span class="lotc-gauge__pct">{{ value }}%</span>{% if sublabel %}<span class="lotc-gauge__sub">{{ sublabel }}</span>{% endif %}</div>
+  </div>
+  {% if label %}<figcaption class="lotc-gauge__label">{{ label }}</figcaption>{% endif %}
+</figure>
+<script>
+(function(){
+  var el = document.getElementById({{ (cid ~ '-canvas') | tojson }});
+  if (!el || !window.Chart) return;
+  var v = parseFloat({{ value | tojson }}) || 0;
+  new Chart(el, {
+    type: 'doughnut',
+    data: { labels: [], datasets: [{ data: [v, 100 - v], backgroundColor: [{{ color | tojson }}, 'rgba(0,0,0,.08)'], borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '72%', circumference: 270, rotation: 225,
+               plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+  });
+})();
+</script>
+{% endmacro %}

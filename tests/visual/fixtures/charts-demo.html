@@ -1,0 +1,15 @@
+<c-page title="lotc-charts demo" lang="nl" design-systems="lotc-layout nldd lotc-charts">
+<style>body{font-family:system-ui;padding:2rem;max-width:1000px;margin:0 auto}</style>
+<h1>lotc-charts — Chart.js, opt-in, NLDD-gestyled</h1>
+
+<c-card outline padding="lg">
+  <c-line-chart id="net" title="Netwerkverkeer (KB/s)" height="220px" legend
+    :data="{'labels':['09:00','09:05','09:10','09:15','09:20','09:25'],'datasets':[{'label':'Inbound','data':[12,45,30,60,48,72],'borderColor':'#154273','backgroundColor':'rgba(21,66,115,.1)','fill':true},{'label':'Outbound','data':[8,20,15,28,22,30],'borderColor':'#a90061','backgroundColor':'rgba(169,0,97,.1)','fill':true}]}"/>
+</c-card>
+
+<c-auto-grid min="200px" gap="lg">
+  <c-card outline padding="lg"><c-gauge id="g1" value="72" label="CPU" sublabel="2/4 cores" color="#154273"/></c-card>
+  <c-card outline padding="lg"><c-gauge id="g2" value="45" label="Geheugen" sublabel="3.6 / 8 GB" color="#39870c"/></c-card>
+  <c-card outline padding="lg"><c-gauge id="g3" value="88" label="Opslag" sublabel="88 / 100 GB" color="#e17000"/></c-card>
+</c-auto-grid>
+</c-page>

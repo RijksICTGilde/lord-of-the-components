@@ -1,0 +1,30 @@
+{
+  "components": [
+    {
+      "name": "line-chart",
+      "attributes": [
+        {"name": "data", "type": "string", "description": "Chart.js data object {labels, datasets} — pass via :data"},
+        {"name": "id", "type": "string", "description": "Canvas id (unique per chart on the page)"},
+        {"name": "height", "type": "string", "description": "CSS height, e.g. '220px'"},
+        {"name": "legend", "type": "boolean", "default": false, "description": "Show the legend"},
+        {"name": "title", "type": "string", "description": "Caption above the chart"},
+        {"name": "class", "type": "string", "description": "Additional CSS classes"}
+      ],
+      "description": "Line chart (Chart.js) — time-series metrics (CPU, memory, network…)",
+      "category": "data-display", "backend": "jinja", "content": {"allowed": false}
+    },
+    {
+      "name": "gauge",
+      "attributes": [
+        {"name": "value", "type": "string", "description": "Percentage 0–100"},
+        {"name": "label", "type": "string", "description": "Label under the gauge"},
+        {"name": "sublabel", "type": "string", "description": "Small text inside (e.g. '2/4 cores')"},
+        {"name": "id", "type": "string", "description": "Canvas id (unique per gauge)"},
+        {"name": "color", "type": "string", "description": "Fill colour (default NLDD blue)"},
+        {"name": "class", "type": "string", "description": "Additional CSS classes"}
+      ],
+      "description": "Radial gauge (Chart.js doughnut) — a utilization percentage",
+      "category": "data-display", "backend": "jinja", "content": {"allowed": false}
+    }
+  ]
+}

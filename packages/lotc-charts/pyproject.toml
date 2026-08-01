@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lotc-charts"
+version = "0.1.0"
+description = "Opt-in chart components (Chart.js) for Lord of the Components — NLDD-styled."
+requires-python = ">=3.9"
+
+# Discovered by core; activate with setup_components(design_systems=["…", "lotc-charts"]).
+[project.entry-points."lord_of_the_components.design_systems"]
+lotc-charts = "lotc_charts:DESIGN_SYSTEM"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+lotc_charts = ["templates/**/*.j2", "static/**/*", "registry.json"]

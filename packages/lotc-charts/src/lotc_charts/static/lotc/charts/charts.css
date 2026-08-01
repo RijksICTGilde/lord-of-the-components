@@ -1,0 +1,10 @@
+/* lotc-charts — structural styling for the chart components (Chart.js draws the rest). */
+.lotc-chart { margin: 0; }
+.lotc-chart__title { font-weight: 600; margin: 0 0 .4rem; font-size: .9rem; }
+.lotc-chart__canvas { position: relative; }
+.lotc-gauge { margin: 0; text-align: center; }
+.lotc-gauge__ring { position: relative; width: 140px; height: 140px; margin: 0 auto; }
+.lotc-gauge__value { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.lotc-gauge__pct { font-size: 1.4rem; font-weight: 700; line-height: 1; }
+.lotc-gauge__sub { font-size: .68rem; opacity: .7; margin-top: .15rem; }
+.lotc-gauge__label { margin-top: .5rem; font-weight: 600; font-size: .85rem; }
