@@ -62,7 +62,7 @@ def test_app_components_are_agnostic_rvo_and_nldd():
     src = '<c-metric icon="home" value="5" label="Datacenters"/>'
     rvo = _env(["rvo"]).from_string(src).render()
     assert "rvo-card" in rvo and "rvo-icon" in rvo and "lotc-metric-value" in rvo
-    nldd = _env(["nldd", "bgnldd"]).from_string(src).render()
+    nldd = _env(["nldd"]).from_string(src).render()
     assert "<nldd-card" in nldd and "<nldd-icon" in nldd and "lotc-metric-value" in nldd
 
 

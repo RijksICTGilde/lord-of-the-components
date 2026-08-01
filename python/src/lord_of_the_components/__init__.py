@@ -68,7 +68,7 @@ def get_static_roots() -> list[str]:
     first match wins.
 
     Returns the core static dir first, then each installed design system's own
-    static dir (systems without bundled assets, e.g. bgnldd, are skipped). See
+    static dir (systems without bundled assets are skipped). See
     the Flask/FastAPI examples in ``examples/`` for the three-line wiring.
     """
     from .design_system import discover_design_systems

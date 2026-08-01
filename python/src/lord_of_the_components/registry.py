@@ -59,7 +59,7 @@ class ComponentDefinition:
     #: System components render under any theme and need no design system loaded.
     system: bool = False
     backend: str = "jinja"
-    #: Owner theme for a theme-specific component (e.g. "bgnldd" for c-metric).
+    #: Owner theme for a theme-specific component (e.g. "nldd" for c-avatar).
     #: None = a shared/core component (renders under the page's primary theme).
     theme: Optional[str] = None
     attributes: List[AttributeDefinition] = field(default_factory=list)

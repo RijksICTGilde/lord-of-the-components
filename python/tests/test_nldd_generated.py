@@ -20,7 +20,7 @@ PKG = Path(__file__).resolve().parent.parent / "src" / "lord_of_the_components"
 @pytest.fixture
 def render():
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
-    setup_components(env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json"))
+    setup_components(env, design_systems=["nldd"], registry_path=str(PKG / "registry.json"))
     return lambda s: env.from_string(s).render()
 
 
@@ -62,7 +62,7 @@ def test_nldd_fragment_registers_many_components():
 def render_debug():
     env = Environment(loader=FileSystemLoader([str(PKG / "templates")]), autoescape=True)
     setup_components(
-        env, design_systems=["nldd", "bgnldd"], registry_path=str(PKG / "registry.json"), debug=True
+        env, design_systems=["nldd"], registry_path=str(PKG / "registry.json"), debug=True
     )
     return lambda s: env.from_string(s).render()
 

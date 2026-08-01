@@ -3,7 +3,7 @@
 Reuses the Overzicht sidenav + header, adds the catalog page: three metrics, a
 filter-bar (search + Team/Type/Maturity dropdowns), and a grid of catalog-cards
 (one per application: icon + title/team + status, a tag row, and a maturity +
-open footer). Built 100% from c-* components under nldd + bgnldd.
+open footer). Built 100% from c-* components under nldd.
 
 Run (from tests/visual/):  python gen_apps.py  ->  fixtures/apps.html
 """
@@ -71,7 +71,7 @@ def cards() -> str:
 
 
 def build() -> str:
-    return f"""<c-page title="Software-catalogus · Begane Grond" lang="nl" design-systems="lotc-layout nldd bgnldd">
+    return f"""<c-page title="Software-catalogus · Begane Grond" lang="nl" design-systems="lotc-layout nldd">
 <c-app-shell width="16rem">
   <template slot="header">
     <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
