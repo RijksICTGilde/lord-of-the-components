@@ -1,0 +1,53 @@
+<c-page title="Metrics · RIG-Cluster" lang="nl" design-systems="lotc-layout nldd lotc-charts">
+{% set t = ['09:00','09:05','09:10','09:15','09:20','09:25','09:30','09:35','09:40','09:45','09:50','09:55'] %}
+<style>body{background:#f4f6f8;margin:0} .wrap{max-width:1100px;margin:0 auto;padding:2rem}</style>
+<div class="wrap">
+<c-stack gap="lg">
+
+  <c-bar>
+    <template slot="start"><c-heading type="h1" size="2">Dashboard</c-heading></template>
+    <template slot="end"><c-button type="secondary" label="Vernieuwen" icon="arrows-clockwise" show-icon="before"/></template>
+  </c-bar>
+
+  <c-alert type="info">Live-metrics ververst elke 30s · laatste update 09:55.</c-alert>
+
+  <!-- Stats -->
+  <c-auto-grid min="220px" gap="md">
+    <c-card outline padding="lg"><c-metric icon="rectangle-stack" value="12" label="Actieve projecten" sub="47 deployments"/></c-card>
+    <c-card outline padding="lg"><c-metric icon="arrow-up-arrow-down" value="47" label="Deployments" sub="42 healthy"/></c-card>
+    <c-card outline padding="lg"><c-metric icon="person-2" value="128" label="Gebruikers" sub="19 teams"/></c-card>
+    <c-card outline padding="lg"><c-metric icon="cylinder-split" value="386" label="Pods" sub="374 running"/></c-card>
+  </c-auto-grid>
+
+  <!-- Resource usage: gauges + network -->
+  <c-heading type="h2" size="3">Resource usage</c-heading>
+  <c-columns columns="1" lg="2" gap="lg">
+    <c-card outline padding="lg">
+      <c-auto-grid min="150px" gap="md">
+        <c-gauge id="cpu" value="72" label="CPU" sublabel="2.9 / 4 cores" color="#154273"/>
+        <c-gauge id="mem" value="45" label="Geheugen" sublabel="3.6 / 8 GB" color="#39870c"/>
+        <c-gauge id="sto" value="88" label="Opslag" sublabel="88 / 100 GB" color="#e17000"/>
+      </c-auto-grid>
+    </c-card>
+    <c-card outline padding="lg">
+      <c-line-chart id="net" title="Netwerkverkeer (KB/s)" height="200px" legend
+        :data="{'labels': t, 'datasets': [{'label':'Inbound','data':[12,45,30,60,48,72,55,68,50,63,58,74],'borderColor':'#154273','backgroundColor':'rgba(21,66,115,.1)','fill':true},{'label':'Outbound','data':[8,20,15,28,22,30,26,33,24,29,27,35],'borderColor':'#a90061','backgroundColor':'rgba(169,0,97,.1)','fill':true}]}"/>
+    </c-card>
+  </c-columns>
+
+  <!-- Deployment metrics: CPU / Memory / Network / Disk line charts -->
+  <c-heading type="h2" size="3">Deployment metrics — toeslagenmotor</c-heading>
+  <c-auto-grid min="320px" gap="lg">
+    <c-card outline padding="lg"><c-line-chart id="dm-cpu" title="CPU (millicores)" height="160px" current="Current: 148m / 500m (30%)"
+      :data="{'labels': t, 'datasets': [{'label':'CPU','data':[90,110,105,160,140,148,155,130,120,145,138,148],'borderColor':'#39870c','backgroundColor':'rgba(57,135,12,.1)','fill':true}]}"/></c-card>
+    <c-card outline padding="lg"><c-line-chart id="dm-mem" title="Memory (MB)" height="160px" current="Current: 612 MB / 1024 MB (60%)"
+      :data="{'labels': t, 'datasets': [{'label':'Memory','data':[420,440,455,480,510,540,560,585,600,608,610,612],'borderColor':'#154273','backgroundColor':'rgba(21,66,115,.1)','fill':true}]}"/></c-card>
+    <c-card outline padding="lg"><c-line-chart id="dm-net" title="Network (KB/s)" height="160px" current="Current: 74 KB/s in · 35 KB/s uit"
+      :data="{'labels': t, 'datasets': [{'label':'In','data':[12,45,30,60,48,72,55,68,50,63,58,74],'borderColor':'#154273'},{'label':'Uit','data':[8,20,15,28,22,30,26,33,24,29,27,35],'borderColor':'#a90061'}]}"/></c-card>
+    <c-card outline padding="lg"><c-line-chart id="dm-disk" title="Disk I/O (KB/s)" height="160px" current="Current: 210 KB/s lees · 90 KB/s schrijf"
+      :data="{'labels': t, 'datasets': [{'label':'Lees','data':[120,140,180,160,200,190,220,210,205,215,208,210],'borderColor':'#b23100'},{'label':'Schrijf','data':[40,60,55,70,65,80,88,92,85,90,87,90],'borderColor':'#e17000'}]}"/></c-card>
+  </c-auto-grid>
+
+</c-stack>
+</div>
+</c-page>
