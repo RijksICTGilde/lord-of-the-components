@@ -20,7 +20,8 @@
     "lotc": "node core/dist/cli/index.js",
     "gen:authoring": "node core/src/generators/docs/generate-authoring.mjs",
     "gen:storybook": "node core/src/generators/nldd/generate-storybook.mjs",
-    "gen:docs": "npm run gen:authoring && npm run gen:storybook"
+    "gen:docs": "npm run gen:icons && npm run gen:authoring && npm run gen:storybook",
+    "gen:icons": "npx tsx core/src/generators/icons/generate-icons.ts"
   },
   "keywords": [
     "components",
