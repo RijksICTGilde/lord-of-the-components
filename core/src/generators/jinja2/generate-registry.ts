@@ -23,6 +23,10 @@ export interface PropSpec {
   default?: string | number | boolean;
   required?: boolean;
   description?: string;
+  /** Object-form boolean prop (presence = true) that can also carry `owner`. */
+  boolean?: boolean;
+  /** Owning design system for a theme-specific extension prop. */
+  owner?: string;
 }
 
 /** Content definition from a component definition. */
@@ -69,6 +73,8 @@ export interface RegistryAttribute {
   required?: boolean;
   description?: string;
   enum_values?: readonly string[];
+  /** Owning design system for a theme-specific extension prop (see PropDefinition.owner). */
+  owner?: string;
 }
 
 /** A single component in the registry JSON. */
@@ -118,6 +124,14 @@ function propSpecToAttribute(
     };
   }
 
+  // Boolean prop (object form: { boolean: true, owner?, ... })
+  if (spec.boolean) {
+    const attr: RegistryAttribute = { name, type: "boolean", default: false };
+    if (spec.description) attr.description = spec.description;
+    if (spec.owner) attr.owner = spec.owner;
+    return attr;
+  }
+
   // Enum prop (has values array)
   if (spec.values && spec.values.length > 0) {
     const attr: RegistryAttribute = {
@@ -128,6 +142,7 @@ function propSpecToAttribute(
     if (spec.default !== undefined) attr.default = spec.default;
     if (spec.required) attr.required = true;
     if (spec.description) attr.description = spec.description;
+    if (spec.owner) attr.owner = spec.owner;
     return attr;
   }
 
@@ -139,6 +154,7 @@ function propSpecToAttribute(
   if (spec.default !== undefined) attr.default = spec.default;
   if (spec.required) attr.required = true;
   if (spec.description) attr.description = spec.description;
+  if (spec.owner) attr.owner = spec.owner;
   return attr;
 }
 

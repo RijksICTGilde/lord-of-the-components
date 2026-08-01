@@ -451,6 +451,17 @@ class ComponentExtension(Extension):
                 clean_name = attr_name.lower()
                 if clean_name in valid_attrs:
                     real_name = valid_attrs[clean_name]
+                    # Extended-component gating: a theme-owned extension attribute
+                    # is only valid while its owning design system is active.
+                    attr_def = component_def.get_attribute(real_name)
+                    owner = getattr(attr_def, "owner", None) if attr_def else None
+                    if owner and owner not in getattr(self, "design_systems", ()):
+                        raise ComponentError(
+                            f"Attribute '{attr_name}' on '{tag_name}' is an extension "
+                            f"provided by the '{owner}' design system, which is not active",
+                            location=_source_location(source, parsed.span.start),
+                            suggestion=f"activate '{owner}' (design_systems=[…, '{owner}'])",
+                        )
                     attrs[real_name] = attr_value
                     if self.debug:
                         self._validate_enum_value(

@@ -89,6 +89,11 @@
 .lotc-box--border {
   border: 1px solid currentColor;
 }
+/* `background` is an NLDD-owned extension attribute (see the extended-component
+   mechanism); it sets a tint on the base box. */
+.lotc-box--bg {
+  background: var(--lotc-box-bg, transparent);
+}
 
 /* ── Grid: intrinsic equal-width columns (Every Layout: Grid) ──────────────── */
 .lotc-grid {

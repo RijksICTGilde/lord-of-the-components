@@ -3153,12 +3153,21 @@
         {
           "name": "pad",
           "type": "string",
-          "description": "Padding, e.g. '1rem' (--lotc-box-pad)"
+          "description": "Padding, e.g. '1rem' (--lotc-box-pad)",
+          "owner": "lotc-layout"
         },
         {
           "name": "border",
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Show a 1px border in the current colour",
+          "owner": "lotc-layout"
+        },
+        {
+          "name": "background",
+          "type": "string",
+          "description": "Background tint on the box — an NLDD-only extension",
+          "owner": "nldd"
         },
         {
           "name": "class",
