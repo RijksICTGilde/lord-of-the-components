@@ -40,6 +40,7 @@ dev = [
     "lotc-rvo",
     "lotc-nldd",
     "lotc-layout",
+    "lotc-charts",
 ]
 
 # Resolve the in-repo design-system packages editably for development/tests.
@@ -47,6 +48,7 @@ dev = [
 lotc-rvo = { path = "../packages/lotc-rvo", editable = true }
 lotc-nldd = { path = "../packages/lotc-nldd", editable = true }
 lotc-layout = { path = "../packages/lotc-layout", editable = true }
+lotc-charts = { path = "../packages/lotc-charts", editable = true }
 
 [tool.setuptools.packages.find]
 where = ["src"]
