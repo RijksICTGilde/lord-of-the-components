@@ -1,6 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-neutral side-nav group label — pure markup, one core template. #}
 {% macro lotc_render(_component_context) %}
-{% set label = _component_context.get('label', '') %}
-{% set children = _component_context.get('content', '') %}
+{% set label = _component_context.get("label", "") %}
+{% set children = _component_context.get("content", "") %}
 <li class="lotc-sidenav-group" data-lotc-component="sidenav-group" {{ attrs.render_extra_attributes(_component_context) }}>{{ label }}{{ children | safe }}</li>
 {% endmacro %}
