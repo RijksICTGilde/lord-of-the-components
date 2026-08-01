@@ -43,7 +43,7 @@
 | tab | navigation | 4 | 0 | 0 | ✅ | — |
 | table | data | 2 | 0 | 0 | ✅ | — |
 | table-head | data | 1 | 0 | 0 | ✅ | — |
-| table-row | data | 1 | 0 | 0 | ✅ | — |
+| table-row | data | 2 | 0 | 0 | ✅ | — |
 | tabs | navigation | 2 | 0 | 1 | ✅ | — |
 | tag | feedback | 3 | 0 | 0 | ✅ | — |
 | td | data | 2 | 0 | 0 | ✅ | — |
@@ -616,6 +616,7 @@ Table body row; <c-td> cells go in the content
 
 | prop | type | values | default | required |
 |---|---|---|---|---|
+| selected | boolean | — |  |  |
 | class | string | — |  |  |
 
 events: —    bindings: —

@@ -2,7 +2,9 @@
 {% macro lotc_render(_component_context) %}
 {% set children = _component_context.get('content', '') %}
 {% set slots = _component_context.get('slots', {}) %}
+{% set selected = _component_context.get('selected', false) %}
 {% set css_classes = ['rvo-table-row'] %}
+{% if selected %}{% set css_classes = css_classes + ['rvo-table-row--selected'] %}{% endif %}
 {% if _component_context.get('class') %}
     {% set css_classes = css_classes + _component_context['class'].split() %}
 {% endif %}

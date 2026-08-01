@@ -721,9 +721,11 @@ def table_head(*, content=None, _extra=None, _class=''):
     parts.append('</tr>')
     return Markup(''.join(parts))
 
-def table_row(*, content=None, _extra=None, _class=''):
+def table_row(*, selected=False, content=None, _extra=None, _class=''):
     parts = []
     cls0 = 'rvo-table-row'
+    if selected:
+        cls0 += ' rvo-table-row--selected'
     cls0 = merge_class(cls0, _class)
     parts.append('<tr')
     if cls0:

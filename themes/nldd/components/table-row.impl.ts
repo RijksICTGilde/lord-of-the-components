@@ -8,6 +8,7 @@ export const tableRowImpl = defineImplementation({
     element: "nldd-table-row",
     isRoot: true,
     text: { content: true },
+    attributes: [{ prop: "selected", attr: "selected", type: "boolean" }],
   },
   mixins: { genericAttributes: true },
 });

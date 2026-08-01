@@ -2174,6 +2174,11 @@
       "name": "table-row",
       "attributes": [
         {
+          "name": "selected",
+          "type": "boolean",
+          "default": false
+        },
+        {
           "name": "class",
           "type": "string",
           "description": "Additional CSS classes"
