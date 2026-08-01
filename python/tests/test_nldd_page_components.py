@@ -42,16 +42,17 @@ def test_header_nldd(nldd):
     assert 'website-href="/"' in html
 
 
-def test_status_bar_nldd(nldd):
+def test_status_bar_renders(nldd):
+    # status-bar is now a theme-agnostic banner (no native per-theme element);
+    # the semantic type becomes a lotc-statusbar--<type> variant class.
     html = nldd('<c-status-bar text="Demo / mock-up. Geen productiedata."/>')
-    assert "<nldd-status-bar" in html
-    assert 'text="Demo / mock-up. Geen productiedata."' in html
-    assert 'variant="neutral"' in html  # default type
+    assert "lotc-statusbar" in html and "lotc-statusbar--neutral" in html
+    assert "Demo / mock-up. Geen productiedata." in html
 
 
-def test_status_bar_type_maps_to_variant(nldd):
-    assert 'variant="warning"' in nldd('<c-status-bar type="warning" text="Storing"/>')
-    assert 'variant="critical"' in nldd('<c-status-bar type="error" text="Down"/>')
+def test_status_bar_type_variant(nldd):
+    assert "lotc-statusbar--warning" in nldd('<c-status-bar type="warning" text="Storing"/>')
+    assert "lotc-statusbar--error" in nldd('<c-status-bar type="error" text="Down"/>')
 
 
 def test_hero_nldd(nldd):

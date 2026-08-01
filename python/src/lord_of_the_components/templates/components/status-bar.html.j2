@@ -1,0 +1,13 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Theme-agnostic status bar: a slim, full-width notice for persistent system
+   state (demo banner, outage...). Semantic variant via CSS, so it renders in
+   every theme with one template and needs no native per-theme element. #}
+{% macro lotc_render(_component_context) %}
+{% set text = _component_context.get("text", "") %}
+{% set type = _component_context.get("type", "neutral") %}
+{% set href = _component_context.get("href", "") %}
+{% set children = _component_context.get("content", "") %}
+{% set extra = _component_context.get("class", "") %}
+{% set cls = "lotc-statusbar lotc-statusbar--" ~ type ~ ((" " ~ extra) if extra else "") %}
+{% if href %}<a href="{{ href }}" class="{{ cls }}" data-lotc-component="status-bar" {{ attrs.render_extra_attributes(_component_context) }}>{{ text }}{{ children | safe }}</a>{% else %}<div class="{{ cls }}" data-lotc-component="status-bar" role="status" {{ attrs.render_extra_attributes(_component_context) }}>{{ text }}{{ children | safe }}</div>{% endif %}
+{% endmacro %}
