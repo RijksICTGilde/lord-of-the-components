@@ -5,9 +5,11 @@
 {% set height = _component_context.get('height', '220px') %}
 {% set legend = _component_context.get('legend', false) %}
 {% set title = _component_context.get('title', '') %}
+{% set current = _component_context.get('current', '') %}
 <figure class="lotc-chart" data-lotc-component="line-chart" {{ attrs.render_extra_attributes(_component_context) }}>
   {% if title %}<figcaption class="lotc-chart__title">{{ title }}</figcaption>{% endif %}
   <div class="lotc-chart__canvas" style="height: {{ height }}"><canvas id="{{ cid }}-canvas"></canvas></div>
+  {% if current %}<figcaption class="lotc-chart__current">{{ current }}</figcaption>{% endif %}
 </figure>
 <script>
 (function(){

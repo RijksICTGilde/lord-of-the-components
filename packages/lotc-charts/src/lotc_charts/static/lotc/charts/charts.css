@@ -8,3 +8,4 @@
 .lotc-gauge__pct { font-size: 1.4rem; font-weight: 700; line-height: 1; }
 .lotc-gauge__sub { font-size: .68rem; opacity: .7; margin-top: .15rem; }
 .lotc-gauge__label { margin-top: .5rem; font-weight: 600; font-size: .85rem; }
+.lotc-chart__current { margin: .35rem 0 0; font-size: .78rem; opacity: .7; }
