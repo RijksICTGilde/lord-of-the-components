@@ -15,6 +15,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const CEM = JSON.parse(readFileSync(resolve(ROOT, "node_modules/@nldd/design-system/custom-elements.json"), "utf8"));
+// Provenance: the exact NLDD version this fragment is generated from.
+const NLDD_VERSION = JSON.parse(readFileSync(resolve(ROOT, "node_modules/@nldd/design-system/package.json"), "utf8")).version;
 const CORE_REG = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_components/registry.json"), "utf8"));
 // Resolve NLDD union-type aliases (AvatarSize = '' | 'md' | …) from the .d.ts so enum
 // attributes get validated values, not free strings.
@@ -64,8 +66,11 @@ for (const mod of CEM.modules || []) {
 const CAT = { actions: "actions", content: "content", forms: "forms", inputs: "forms", layout: "layout",
   "lists-and-tables": "data-display", navigation: "navigation", "status-and-feedback": "feedback" };
 
-let genCount = 0;
+// Build the fragment (with provenance meta) + templates in memory, so the same
+// logic backs both writing (default) and --check (compare, don't touch disk).
+export function buildOutputs() {
 const fragment = [];
+const templates = new Map();
 for (const el of els) {
   const cname = el.tagName.replace(/^nldd-/, "");
   if (coreNames.has(cname) || SEMANTIC_DUPES.has(cname) || existingTpl.has(cname)) continue;
@@ -101,7 +106,7 @@ for (const el of els) {
   if (hasDefaultSlot || slots.length === 0) L.push("{{ _component_context.get('content', '') | safe }}");
   L.push(`</${el.tagName}>`);
   L.push("{% endmacro %}");
-  writeFileSync(resolve(NLDD_TPL_DIR, `${cname}.html.j2`), L.join("\n") + "\n", "utf8");
+  templates.set(cname, L.join("\n") + "\n");
 
   // ── registry entry ──
   fragment.push({
@@ -114,10 +119,39 @@ for (const el of els) {
     backend: "jinja",
     content: { allowed: true },
   });
-  genCount++;
+}
+  return {
+    fragment: { meta: { nldd_version: NLDD_VERSION, components: fragment.length }, components: fragment },
+    templates,
+  };
 }
 
-mkdirSync(dirname(FRAGMENT), { recursive: true });
-writeFileSync(FRAGMENT, JSON.stringify({ components: fragment }, null, 1) + "\n", "utf8");
-console.log(`Generated ${genCount} NLDD components -> lotc-nldd templates + registry fragment`);
-console.log("Names:", fragment.map((c) => c.name).join(", "));
+export { NLDD_VERSION, FRAGMENT, NLDD_TPL_DIR };
+
+function main() {
+  const check = process.argv.includes("--check");
+  const { fragment, templates } = buildOutputs();
+  const fragmentJson = JSON.stringify(fragment, null, 1) + "\n";
+  if (check) {
+    const stale = [];
+    if (!existsSync(FRAGMENT) || readFileSync(FRAGMENT, "utf8") !== fragmentJson) stale.push("registry.json");
+    for (const [name, content] of templates) {
+      const p = resolve(NLDD_TPL_DIR, `${name}.html.j2`);
+      if (!existsSync(p) || readFileSync(p, "utf8") !== content) stale.push(`${name}.html.j2`);
+    }
+    if (stale.length) {
+      console.error(`✗ lotc-nldd is stale vs NLDD ${NLDD_VERSION} — run \`npm run gen:nldd\`.`);
+      console.error(`  outdated (${stale.length}): ${stale.slice(0, 12).join(", ")}${stale.length > 12 ? " …" : ""}`);
+      process.exit(1);
+    }
+    console.log(`✓ lotc-nldd fragment + ${templates.size} templates match NLDD ${NLDD_VERSION}`);
+    return;
+  }
+  mkdirSync(dirname(FRAGMENT), { recursive: true });
+  for (const [name, content] of templates) writeFileSync(resolve(NLDD_TPL_DIR, `${name}.html.j2`), content, "utf8");
+  writeFileSync(FRAGMENT, fragmentJson, "utf8");
+  console.log(`Generated ${templates.size} NLDD components (NLDD ${NLDD_VERSION}) -> lotc-nldd fragment + templates`);
+}
+
+// Run only when invoked directly (not when imported by nldd-diff).
+if (import.meta.url === `file://${process.argv[1]}`) main();
