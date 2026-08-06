@@ -37,7 +37,8 @@ The packages aren't on PyPI yet, so install them from this checkout:
 
 ```bash
 pip install -e python -e packages/lotc-rvo
-# add -e packages/lotc-nldd -e packages/lotc-bgnldd for the NLDD design system
+# add -e packages/lotc-nldd for the NLDD design system
+# add -e packages/lotc-layout for the layout primitives, -e packages/lotc-charts for charts
 ```
 
 **No Node/npm as a consumer.** The packages ship the full built frontend (the
@@ -109,7 +110,8 @@ lord-of-the-components/
 ├── packages/               # design-system packages (each = one installable dist)
 │   ├── lotc-rvo/           #   RVO renderers + templates + built CSS/JS bundle
 │   ├── lotc-nldd/          #   NLDD renderers + web-component module bundle
-│   └── lotc-bgnldd/        #   app components as an impl-only layer on NLDD
+│   ├── lotc-layout/        #   theme-agnostic layout primitives + layout.css
+│   └── lotc-charts/        #   opt-in chart set (Chart.js, NLDD-styled)
 │
 ├── examples/               # Flask / FastAPI / stdlib quick-starts
 └── tests/visual/           # fixtures + Playwright screenshots
