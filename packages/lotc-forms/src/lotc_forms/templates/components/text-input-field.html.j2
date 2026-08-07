@@ -1,0 +1,19 @@
+{% import 'components/_forms.j2' as f %}
+{% macro lotc_render(_component_context) %}
+{% set c = _component_context %}
+{% set id = c.get('id', '') %}{% set name = c.get('name', '') %}{% set label = c.get('label', '') %}
+{% set help = c.get('help', '') %}{% set error = c.get('error', '') %}
+{% set required = c.get('required', false) %}{% set disabled = c.get('disabled', false) %}{% set readonly = c.get('readonly', false) %}
+{% set type = c.get('type', 'text') %}{% set value = c.get('value', '') %}
+{% set placeholder = c.get('placeholder', '') %}{% set autocomplete = c.get('autocomplete', '') %}
+{% set db = f.describedby(id, help, error) %}
+{% if 'nldd' in lotc_design_systems %}
+{% call f.nldd_field(id, label, help, error, required, 'text-input-field') %}
+<nldd-text-field input-id="{{ id }}" name="{{ name }}" type="{{ type }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}></nldd-text-field>
+{% endcall %}
+{% else %}
+{% call f.rvo_field(id, label, help, error, required, 'text-input-field') %}
+<input id="{{ id }}" name="{{ name }}" type="{{ type }}" value="{{ value }}" placeholder="{{ placeholder }}" dir="auto" class="utrecht-textbox utrecht-textbox--html-input{% if error %} utrecht-textbox--invalid{% endif %}"{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %} />
+{% endcall %}
+{% endif %}
+{% endmacro %}

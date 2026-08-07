@@ -1,7 +1,7 @@
 {
  "meta": {
   "nldd_version": "0.8.72",
-  "components": 97
+  "components": 95
  },
  "components": [
   {
@@ -1298,47 +1298,6 @@
    }
   },
   {
-   "name": "checkbox-field",
-   "attributes": [
-    {
-     "name": "checked",
-     "type": "boolean",
-     "description": "Checked state"
-    },
-    {
-     "name": "indeterminate",
-     "type": "boolean",
-     "description": "Indeterminate state"
-    },
-    {
-     "name": "disabled",
-     "type": "boolean",
-     "description": "Disabled state"
-    },
-    {
-     "name": "value",
-     "type": "string",
-     "description": "Value for form submission"
-    },
-    {
-     "name": "name",
-     "type": "string",
-     "description": "Name for form submission"
-    },
-    {
-     "name": "label",
-     "type": "string",
-     "description": "Label text for the checkbox"
-    }
-   ],
-   "description": "A checkbox with an inline label for use in forms. Form-associated: participates in native form submission under `name` with `value` when che",
-   "category": "forms",
-   "backend": "jinja",
-   "content": {
-    "allowed": true
-   }
-  },
-  {
    "name": "code-editor",
    "attributes": [
     {
@@ -2013,47 +1972,6 @@
     }
    ],
    "description": "A password input field with visibility toggle and validation states.",
-   "category": "forms",
-   "backend": "jinja",
-   "content": {
-    "allowed": true
-   }
-  },
-  {
-   "name": "radio-button-field",
-   "attributes": [
-    {
-     "name": "checked",
-     "type": "boolean",
-     "description": "Checked state"
-    },
-    {
-     "name": "disabled",
-     "type": "boolean",
-     "description": "Disabled state"
-    },
-    {
-     "name": "value",
-     "type": "string",
-     "description": "Value for form submission"
-    },
-    {
-     "name": "name",
-     "type": "string",
-     "description": "Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-g"
-    },
-    {
-     "name": "required",
-     "type": "boolean",
-     "description": "Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group."
-    },
-    {
-     "name": "label",
-     "type": "string",
-     "description": "Label text for the radio button"
-    }
-   ],
-   "description": "A radio button with an inline label. Use inside nldd-radio-button-group for keyboard navigation and group semantics. The group sets the name",
    "category": "forms",
    "backend": "jinja",
    "content": {

@@ -1,0 +1,24 @@
+{% import 'components/_forms.j2' as f %}
+{% macro lotc_render(_component_context) %}
+{% set c = _component_context %}
+{% set id = c.get('id', '') %}{% set name = c.get('name', '') %}{% set label = c.get('label', '') %}
+{% set help = c.get('help', '') %}{% set error = c.get('error', '') %}
+{% set required = c.get('required', false) %}{% set disabled = c.get('disabled', false) %}
+{% set placeholder = c.get('placeholder', '') %}{% set content = c.get('content', '') %}
+{% set db = f.describedby(id, help, error) %}
+{% if 'nldd' in lotc_design_systems %}
+{% call f.nldd_field(id, label, help, error, required, 'select-field') %}
+<nldd-dropdown{% if error %} invalid{% endif %}{% if disabled %} disabled{% endif %}>
+<select id="{{ id }}" name="{{ name }}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}>
+{% if placeholder %}<option value="">{{ placeholder }}</option>{% endif %}{{ content | safe }}</select>
+</nldd-dropdown>
+{% endcall %}
+{% else %}
+{% call f.rvo_field(id, label, help, error, required, 'select-field') %}
+<div class="rvo-select-wrapper">
+<select id="{{ id }}" name="{{ name }}" class="utrecht-select utrecht-select--html-select{% if error %} utrecht-select--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}>
+{% if placeholder %}<option value="">{{ placeholder }}</option>{% endif %}{{ content | safe }}</select>
+</div>
+{% endcall %}
+{% endif %}
+{% endmacro %}

@@ -1,0 +1,46 @@
+<c-page title="lotc-forms demo" lang="nl" design-systems="lotc-layout nldd lotc-forms">
+  <c-app-shell width="16rem">
+    <c-center max="46rem">
+      <c-stack gap="lg">
+        <c-heading type="h1" size="2">Nieuw project</c-heading>
+
+        <form method="post" action="#">
+          <c-fieldset legend="Projectgegevens">
+            <c-stack gap="md">
+              <c-text-input-field id="naam" name="naam" label="Projectnaam"
+                                  help="Zoals het in de catalogus verschijnt" required="true"/>
+              <c-select-field id="afdeling" name="afdeling" label="Afdeling" placeholder="Kies…" required="true">
+                <c-option value="bz" label="Burgerzaken"/>
+                <c-option value="fin" label="Financiën"/>
+              </c-select-field>
+              <c-textarea-field id="oms" name="oms" label="Omschrijving" rows="4"
+                                help="Kort, één alinea"/>
+              <c-date-input-field id="start" name="start" label="Startdatum"/>
+            </c-stack>
+          </c-fieldset>
+
+          <c-fieldset legend="Toegang">
+            <c-stack gap="md">
+              <c-radio-button-field id="zicht" label="Zichtbaarheid" required="true"
+                                    error="Maak een keuze">
+                <c-radio name="zicht" value="pub" label="Openbaar"/>
+                <c-radio name="zicht" value="int" label="Intern"/>
+              </c-radio-button-field>
+              <c-checkbox-field id="opties" label="Opties">
+                <c-checkbox name="opties" value="mail" label="E-mailmeldingen"/>
+                <c-checkbox name="opties" value="log" label="Auditlog"/>
+              </c-checkbox-field>
+              <c-file-input-field id="bijlage" name="bijlage" label="Bijlage" accept=".pdf"
+                                  help="Alleen PDF"/>
+            </c-stack>
+          </c-fieldset>
+
+          <c-action-group align="end">
+            <c-button type="secondary" label="Annuleren"/>
+            <c-button type="primary" label="Opslaan"/>
+          </c-action-group>
+        </form>
+      </c-stack>
+    </c-center>
+  </c-app-shell>
+</c-page>
