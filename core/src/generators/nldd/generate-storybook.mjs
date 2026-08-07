@@ -222,7 +222,7 @@ if (FORMS.components && FORMS.components.length) {
   const comps = FORMS.components;
   nav += `<div class="navcat">Formulieren <span>${comps.length}</span></div>`;
   nav += comps.map((c) => `<a href="#c-${c.name}">c-${esc(c.name)}</a>`).join("");
-  body += `<h2 id="cat-forms">Formulieren — opt-in set <span>${comps.length}</span></h2>`;
+  body += `<h2 id="cat-lotc-forms">Formulieren — opt-in set <span>${comps.length}</span></h2>`;
   body += `<p class="desc" style="margin:0 0 1rem">Een activatbare capability-set: <code>design_systems=["…","nldd","lotc-forms"]</code> (als laatste). Dezelfde markup rendert een thema-correct veld met gegarandeerde ARIA-bedrading (label for/id, hulptekst+fout via <code>aria-describedby</code>, <code>aria-invalid</code> bij een fout). Hier onder NLDD.</p>`;
   for (const c of comps) {
     const example = FORM_EXAMPLES[c.name] || autoExample(c);
