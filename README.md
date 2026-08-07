@@ -111,7 +111,8 @@ lord-of-the-components/
 │   ├── lotc-rvo/           #   RVO renderers + templates + built CSS/JS bundle
 │   ├── lotc-nldd/          #   NLDD renderers + web-component module bundle
 │   ├── lotc-layout/        #   theme-agnostic layout primitives + layout.css
-│   └── lotc-charts/        #   opt-in chart set (Chart.js, NLDD-styled)
+│   ├── lotc-charts/        #   opt-in chart set (Chart.js, NLDD-styled)
+│   └── lotc-forms/         #   opt-in form-field set (per-theme fields + ARIA)
 │
 ├── examples/               # Flask / FastAPI / stdlib quick-starts
 └── tests/visual/           # fixtures + Playwright screenshots

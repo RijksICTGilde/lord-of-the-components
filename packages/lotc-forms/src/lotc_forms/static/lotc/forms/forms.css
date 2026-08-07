@@ -1,0 +1,9 @@
+/* lotc-forms — cross-theme frame bits only; the visual theme (roos / NLDD) styles the rest. */
+.rvo-form-field__control > .rvo-radio-button__group,
+.rvo-form-field__control > .rvo-checkbox__group { display: flex; flex-direction: column; gap: .5rem; }
+.lotc-action-group { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.lotc-action-group--end { justify-content: flex-end; }
+.lotc-action-group--between { justify-content: space-between; }
+.lotc-file-fallback { display: inline-block; margin-top: .25rem; font-size: .8rem; color: #7a1212; }
+.lotc-fieldset { border: 0; margin: 0 0 1.5rem; padding: 0; }
+.lotc-fieldset__legend { font-weight: 700; margin-bottom: .5rem; }

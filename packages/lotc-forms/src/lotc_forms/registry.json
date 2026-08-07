@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "set": "lotc-forms",
+    "note": "Labelled form fields with guaranteed ARIA wiring; renders per active theme."
+  },
+  "components": [
+    {
+      "name": "text-input-field",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Field id — drives label for/id and aria-describedby" },
+        { "name": "name", "type": "string", "description": "Input name" },
+        { "name": "label", "type": "string", "description": "Field label" },
+        { "name": "type", "type": "enum", "enum_values": ["text", "email", "tel", "url", "number", "search"], "description": "Input type" },
+        { "name": "value", "type": "string", "description": "Input value" },
+        { "name": "placeholder", "type": "string", "description": "Placeholder text" },
+        { "name": "autocomplete", "type": "string", "description": "autocomplete token" },
+        { "name": "help", "type": "string", "description": "Help text (linked via aria-describedby)" },
+        { "name": "error", "type": "string", "description": "Error text (sets aria-invalid + aria-describedby)" },
+        { "name": "required", "type": "boolean", "description": "Required field" },
+        { "name": "disabled", "type": "boolean", "description": "Disabled field" },
+        { "name": "readonly", "type": "boolean", "description": "Read-only field" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Labelled single-line text input with help/error and ARIA wiring",
+      "category": "forms", "backend": "jinja", "content": { "allowed": false }
+    },
+    {
+      "name": "textarea-field",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Field id" },
+        { "name": "name", "type": "string", "description": "Input name" },
+        { "name": "label", "type": "string", "description": "Field label" },
+        { "name": "value", "type": "string", "description": "Value" },
+        { "name": "placeholder", "type": "string", "description": "Placeholder" },
+        { "name": "rows", "type": "string", "description": "Visible rows" },
+        { "name": "help", "type": "string", "description": "Help text" },
+        { "name": "error", "type": "string", "description": "Error text" },
+        { "name": "required", "type": "boolean", "description": "Required" },
+        { "name": "disabled", "type": "boolean", "description": "Disabled" },
+        { "name": "readonly", "type": "boolean", "description": "Read-only" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Labelled multi-line text input with help/error and ARIA wiring",
+      "category": "forms", "backend": "jinja", "content": { "allowed": false }
+    },
+    {
+      "name": "select-field",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Field id" },
+        { "name": "name", "type": "string", "description": "Select name" },
+        { "name": "label", "type": "string", "description": "Field label" },
+        { "name": "value", "type": "string", "description": "Selected value" },
+        { "name": "placeholder", "type": "string", "description": "Empty-option label" },
+        { "name": "help", "type": "string", "description": "Help text" },
+        { "name": "error", "type": "string", "description": "Error text" },
+        { "name": "required", "type": "boolean", "description": "Required" },
+        { "name": "disabled", "type": "boolean", "description": "Disabled" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Labelled select; options are <c-option> children",
+      "category": "forms", "backend": "jinja", "content": { "allowed": true }
+    },
+    {
+      "name": "radio-button-field",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Group id (labels the radiogroup)" },
+        { "name": "name", "type": "string", "description": "Shared name for the radios" },
+        { "name": "label", "type": "string", "description": "Group label (legend)" },
+        { "name": "help", "type": "string", "description": "Help text" },
+        { "name": "error", "type": "string", "description": "Error text" },
+        { "name": "required", "type": "boolean", "description": "Required" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Labelled radio group; radios are <c-radio> children",
+      "category": "forms", "backend": "jinja", "content": { "allowed": true }
+    },
+    {
+      "name": "checkbox-field",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Group id (labels the group)" },
+        { "name": "name", "type": "string", "description": "Shared name for the checkboxes" },
+        { "name": "label", "type": "string", "description": "Group label (legend)" },
+        { "name": "help", "type": "string", "description": "Help text" },
+        { "name": "error", "type": "string", "description": "Error text" },
+        { "name": "required", "type": "boolean", "description": "Required" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Labelled checkbox group; checkboxes are <c-checkbox> children",
+      "category": "forms", "backend": "jinja", "content": { "allowed": true }
+    },
+    {
+      "name": "date-input-field",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Field id" },
+        { "name": "name", "type": "string", "description": "Input name" },
+        { "name": "label", "type": "string", "description": "Field label" },
+        { "name": "value", "type": "string", "description": "ISO date value" },
+        { "name": "min", "type": "string", "description": "Earliest date" },
+        { "name": "max", "type": "string", "description": "Latest date" },
+        { "name": "help", "type": "string", "description": "Help text" },
+        { "name": "error", "type": "string", "description": "Error text" },
+        { "name": "required", "type": "boolean", "description": "Required" },
+        { "name": "disabled", "type": "boolean", "description": "Disabled" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Labelled date input with help/error and ARIA wiring",
+      "category": "forms", "backend": "jinja", "content": { "allowed": false }
+    },
+    {
+      "name": "file-input-field",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Field id" },
+        { "name": "name", "type": "string", "description": "Input name" },
+        { "name": "label", "type": "string", "description": "Field label" },
+        { "name": "accept", "type": "string", "description": "Accepted file types" },
+        { "name": "multiple", "type": "boolean", "description": "Allow multiple files" },
+        { "name": "help", "type": "string", "description": "Help text" },
+        { "name": "error", "type": "string", "description": "Error text" },
+        { "name": "required", "type": "boolean", "description": "Required" },
+        { "name": "disabled", "type": "boolean", "description": "Disabled" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Labelled file input. NLDD has no native file field, so under NLDD it renders the RVO field with a visible fallback badge.",
+      "category": "forms", "backend": "jinja", "content": { "allowed": false }
+    },
+    {
+      "name": "fieldset",
+      "attributes": [
+        { "name": "id", "type": "string", "description": "Fieldset id" },
+        { "name": "legend", "type": "string", "description": "Legend (group title)" },
+        { "name": "label", "type": "string", "description": "Alias for legend" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "Groups related fields under a legend; fields are children",
+      "category": "forms", "backend": "jinja", "content": { "allowed": true }
+    },
+    {
+      "name": "action-group",
+      "attributes": [
+        { "name": "align", "type": "enum", "enum_values": ["start", "end", "between"], "description": "Button alignment" },
+        { "name": "class", "type": "string", "description": "Extra CSS classes" }
+      ],
+      "description": "A row of form actions (buttons); buttons are children",
+      "category": "forms", "backend": "jinja", "content": { "allowed": true }
+    }
+  ]
+}

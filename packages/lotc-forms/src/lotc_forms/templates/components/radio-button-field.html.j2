@@ -1,0 +1,16 @@
+{% import 'components/_forms.j2' as f %}
+{% macro lotc_render(_component_context) %}
+{% set c = _component_context %}
+{% set id = c.get('id', '') %}{% set label = c.get('label', '') %}
+{% set help = c.get('help', '') %}{% set error = c.get('error', '') %}
+{% set required = c.get('required', false) %}{% set content = c.get('content', '') %}
+{% if 'nldd' in lotc_design_systems %}
+{% call f.nldd_field(id, label, help, error, required, 'radio-button-field') %}
+<div role="radiogroup" aria-labelledby="{{ id }}-label">{{ content | safe }}</div>
+{% endcall %}
+{% else %}
+{% call f.rvo_group(id, label, help, error, required, 'radio-button-field') %}
+<div class="rvo-radio-button__group{% if error %} rvo-radio-button__group--error{% endif %}">{{ content | safe }}</div>
+{% endcall %}
+{% endif %}
+{% endmacro %}

@@ -1079,6 +1079,11 @@ def setup_components(
         static_url_prefix, htmx, user_css_files, user_js_files
     )
     jinja_env.globals["lotc_theme"] = primary or "system"
+    # The active design systems, in declared order. Templates that must branch on
+    # the *visual* theme (e.g. a capability set like lotc-forms rendering NLDD vs
+    # RVO field markup) check membership here — robust regardless of which entry is
+    # primary, since a layout/forms set is often declared before the visual theme.
+    jinja_env.globals["lotc_design_systems"] = tuple(ds.name for ds in resolved)
     jinja_env.globals["lotc_htmx"] = htmx
     jinja_env.globals["lotc_validate_data"] = validate_data
 

@@ -45,6 +45,11 @@ const SEMANTIC_DUPES = new Set([
   // page-footer maps to c-footer; its legal-bar sub-elements have no semantic
   // equivalent, so they are generated as their own c-* bindings.
   "page-footer",
+  // Labelled field GROUPS are provided by the opt-in lotc-forms set (as
+  // <c-radio-button-field>/<c-checkbox-field> composing primitives with full
+  // ARIA wiring), so we don't also expose NLDD's raw single-control bindings
+  // under the same names — that would shadow lotc-forms.
+  "radio-button-field", "checkbox-field",
 ]);
 // existing hand-authored lotc-nldd templates (don't overwrite)
 const AUTOMARK = "Auto-generated from the NLDD custom-elements manifest";
