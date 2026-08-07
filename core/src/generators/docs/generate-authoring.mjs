@@ -16,6 +16,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const CORE = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_components/registry.json"), "utf8"));
 const NLDD = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-nldd/src/lotc_nldd/registry.json"), "utf8"));
 const CHARTS = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-charts/src/lotc_charts/registry.json"), "utf8"));
+const FORMS = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-forms/src/lotc_forms/registry.json"), "utf8"));
 const LAYOUT_CSS = readFileSync(resolve(ROOT, "packages/lotc-layout/src/lotc_layout/static/lotc/layout/layout.css"), "utf8");
 
 // ── spacing tokens (parsed from the config in layout.css) ──
@@ -159,7 +160,37 @@ L.push(`<c-gauge value="72" label="CPU" sublabel="2.9 / 4 cores"/>`);
 L.push("```");
 L.push(`Each chart needs a unique \`id\`. \`limit\`/\`request\` draw dashed threshold lines.\n`);
 
-L.push(`## 7. Component catalog\n`);
+L.push(`## 7. Form set (opt-in — labelled fields + ARIA)\n`);
+L.push(
+  `An opt-in capability set of labelled form fields. Activate it **last**, after` +
+    ` the visual theme. The same markup renders a theme-correct field (NLDD native` +
+    ` \`nldd-form-field\`, RVO \`rvo-form-field\`) with the ARIA wiring guaranteed:` +
+    ` label \`for\`/\`id\`, help + error via \`aria-describedby\`, \`aria-invalid\` on error.\n`,
+);
+L.push("```python");
+L.push(`setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-forms"])`);
+L.push("```");
+for (const c of FORMS.components) L.push(compLine(c));
+L.push(``);
+L.push(
+  `Every field takes the same base — \`id\`, \`name\`, \`label\` (+ \`help\`, \`error\`,` +
+    ` \`required\`, \`disabled\`). \`file-input-field\`: NLDD has no native file field, so` +
+    ` it renders the RVO field with a visible fallback badge.\n`,
+);
+L.push("```html");
+L.push(`<form method="post">`);
+L.push(`  <c-fieldset legend="Projectgegevens">`);
+L.push(`    <c-text-input-field id="naam" name="naam" label="Projectnaam" help="…" required/>`);
+L.push(`    <c-select-field id="afd" name="afd" label="Afdeling" placeholder="Kies…">`);
+L.push(`      <c-option value="bz" label="Burgerzaken"/></c-select-field>`);
+L.push(`    <c-radio-button-field id="zicht" label="Zichtbaarheid" error="Maak een keuze">`);
+L.push(`      <c-radio name="zicht" value="pub" label="Openbaar"/></c-radio-button-field>`);
+L.push(`  </c-fieldset>`);
+L.push(`  <c-action-group align="end"><c-button type="primary" label="Opslaan"/></c-action-group>`);
+L.push(`</form>`);
+L.push("```\n");
+
+L.push(`## 8. Component catalog\n`);
 L.push(`Grouped by category. Enum attrs show their allowed values; \`[theme-only]\` marks extension attrs.\n`);
 for (const cat of cats) {
   const comps = catalog[cat].sort((a, b) => a.name.localeCompare(b.name));
@@ -170,7 +201,7 @@ for (const cat of cats) {
 
 // ── full page example (a real BG page, embedded from the fixture so it stays in sync) ──
 const FULL_PAGE = readFileSync(resolve(ROOT, "tests/visual/fixtures/apps.html"), "utf8").trim();
-L.push(`## 8. Full page example — BG "Software-catalogus"\n`);
+L.push(`## 9. Full page example — BG "Software-catalogus"\n`);
 L.push(
   `A complete page, 100% \`c-*\`: app-shell → header (status-bar + menu) + sidenav +` +
     ` metric grid + filter-bar + catalog cards + footer. Copy and adapt — this is the` +
@@ -181,7 +212,7 @@ L.push("```html");
 L.push(FULL_PAGE);
 L.push("```\n");
 
-L.push(`## 9. Recipes\n`);
+L.push(`## 10. Recipes\n`);
 L.push(`**Card grid** (as many columns as fit):`);
 L.push("```html");
 L.push(`<c-auto-grid min="280px" gap="md">`);
@@ -205,7 +236,7 @@ L.push(`  <c-form-actions><c-button type="primary" label="Versturen"/></c-form-a
 L.push(`</c-form>`);
 L.push("```\n");
 
-L.push(`## 10. Rules\n`);
+L.push(`## 11. Rules\n`);
 L.push(`- **Slots**: named slots via \`<template slot="name">…</template>\`; default content is the rest.`);
 L.push(`- **Enums are validated**: an out-of-set value (e.g. \`type="bogus"\`) errors (debug mode) with the allowed set.`);
 L.push(`- **Theme-owned attrs** (§5) only work while their owner is active, else a clear error.`);
