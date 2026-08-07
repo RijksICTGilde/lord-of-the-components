@@ -26,6 +26,20 @@ const CORE = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_compo
 const EXTENDED = CORE.components.filter((c) => (c.attributes || []).some((a) => a.owner));
 // Opt-in capability set: chart components (own registry fragment, Chart.js-backed).
 const CHARTS = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-charts/src/lotc_charts/registry.json"), "utf8"));
+// lotc-forms — the opt-in form-field set (per-theme fields + ARIA wiring).
+const FORMS = JSON.parse(readFileSync(resolve(ROOT, "packages/lotc-forms/src/lotc_forms/registry.json"), "utf8"));
+// Curated examples: fields need id/name/label (and options/children) to render meaningfully.
+const FORM_EXAMPLES = {
+  "text-input-field": `<c-text-input-field id="sb-naam" name="naam" label="Naam" help="Zoals in je paspoort"/>`,
+  "textarea-field": `<c-textarea-field id="sb-oms" name="oms" label="Omschrijving" rows="3" help="Kort, één alinea"/>`,
+  "select-field": `<c-select-field id="sb-land" name="land" label="Land" placeholder="Kies…"><c-option value="nl" label="Nederland"/><c-option value="be" label="België"/></c-select-field>`,
+  "radio-button-field": `<c-radio-button-field id="sb-zicht" label="Zichtbaarheid"><c-radio name="zicht" value="pub" label="Openbaar"/><c-radio name="zicht" value="int" label="Intern"/></c-radio-button-field>`,
+  "checkbox-field": `<c-checkbox-field id="sb-opt" label="Opties"><c-checkbox name="opt" value="mail" label="E-mailmeldingen"/><c-checkbox name="opt" value="log" label="Auditlog"/></c-checkbox-field>`,
+  "date-input-field": `<c-date-input-field id="sb-dob" name="dob" label="Geboortedatum"/>`,
+  "file-input-field": `<c-file-input-field id="sb-cv" name="cv" label="Bijlage" accept=".pdf" help="Alleen PDF"/>`,
+  fieldset: `<c-fieldset legend="Adres"><c-text-input-field id="sb-straat" name="straat" label="Straat" error="Verplicht veld"/></c-fieldset>`,
+  "action-group": `<c-action-group align="end"><c-button type="secondary" label="Annuleren"/><c-button type="primary" label="Opslaan"/></c-action-group>`,
+};
 
 // index CEM declarations by tag so we can read slots per component
 const byTag = {};
@@ -203,6 +217,26 @@ if (CHARTS.components && CHARTS.components.length) {
   }
 }
 
+// ── forms (opt-in capability set — per-theme fields + ARIA) ──
+if (FORMS.components && FORMS.components.length) {
+  const comps = FORMS.components;
+  nav += `<div class="navcat">Formulieren <span>${comps.length}</span></div>`;
+  nav += comps.map((c) => `<a href="#c-${c.name}">c-${esc(c.name)}</a>`).join("");
+  body += `<h2 id="cat-forms">Formulieren — opt-in set <span>${comps.length}</span></h2>`;
+  body += `<p class="desc" style="margin:0 0 1rem">Een activatbare capability-set: <code>design_systems=["…","nldd","lotc-forms"]</code> (als laatste). Dezelfde markup rendert een thema-correct veld met gegarandeerde ARIA-bedrading (label for/id, hulptekst+fout via <code>aria-describedby</code>, <code>aria-invalid</code> bij een fout). Hier onder NLDD.</p>`;
+  for (const c of comps) {
+    const example = FORM_EXAMPLES[c.name] || autoExample(c);
+    body +=
+      `<section class="story" id="c-${esc(c.name)}">` +
+      `<div class="story-head"><h3>&lt;c-${esc(c.name)}&gt;</h3><span class="own">lotc-forms</span></div>` +
+      (c.description ? `<p class="desc">${esc(c.description)}</p>` : "") +
+      `<div class="canvas">${example}</div>` +
+      `<pre class="code">${esc(example)}</pre>` +
+      attrTable(c) +
+      `</section>`;
+  }
+}
+
 const STYLE = `
   *{box-sizing:border-box}
   body{font-family:system-ui,-apple-system,sans-serif;margin:0;color:#1a1a1a;background:#fafafa}
@@ -235,7 +269,7 @@ const STYLE = `
   .own{display:inline-block;background:#eef4fb;color:#154273;border:1px solid #cdddf0;border-radius:4px;padding:0 .32rem;font-size:.62rem;font-weight:700;letter-spacing:.02em;vertical-align:middle;font-family:ui-monospace,monospace}
 `;
 
-const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="lotc-layout nldd lotc-charts">
+const html = `<c-page title="NLDD component storybook" theme="nldd" design-systems="lotc-layout nldd lotc-charts lotc-forms">
 <style>${STYLE}</style>
 <div class="wrap">
 <nav class="index"><strong style="color:#154273">Storybook</strong>${nav}</nav>
