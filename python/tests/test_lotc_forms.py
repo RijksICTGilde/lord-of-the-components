@@ -138,6 +138,42 @@ def test_attrs_spread_works_for_every_field(name, src):
         assert 'hx-post="/save"' in out
 
 
+def test_select_field_options_are_valid_in_the_dom():
+    # A browser drops non-<option> children of a native <select>. Under RVO the
+    # options must be native <option>; under NLDD the select must be an
+    # nldd-combo-box/nldd-menu (where c-option -> nldd-menu-item is valid), never a
+    # raw <select> holding nldd-menu-item.
+    src = (
+        '<c-select-field id="s" name="s" label="S">'
+        '<c-option value="a" label="A"/><c-option value="b" label="B"/></c-select-field>'
+    )
+    rvo = render(RVO, src)
+    assert "<option" in rvo and "nldd-menu-item" not in rvo
+    nldd = render(NLDD, src)
+    assert "nldd-combo-box" in nldd and "nldd-menu-item" in nldd
+    assert "<select" not in nldd  # no native select wrapping menu-items
+
+
+def test_checkbox_field_single_renders_a_control():
+    # A single labelled checkbox (no children) must render a real control, not an
+    # empty <div>, and carry `checked`.
+    single = '<c-checkbox-field id="a" name="a" label="Akkoord" checked="true"/>'
+    rvo = render(RVO, single)
+    assert 'type="checkbox"' in rvo and "checked" in rvo
+    assert "<div></div>" not in rvo
+    nldd = render(NLDD, single)
+    assert "nldd-checkbox-field" in nldd and "checked" in nldd
+    assert "<div></div>" not in nldd
+
+
+def test_checkbox_field_group_still_renders_children():
+    grp = ALL_FIELDS["checkbox-field"]
+    for ds in (RVO, NLDD):
+        out = render(ds, grp)
+        assert "<div></div>" not in out
+        assert 'type="checkbox"' in out or "nldd-checkbox-field" in out
+
+
 def test_required_marks_optional_convention_under_nldd():
     # Dutch-gov convention marks OPTIONAL, so a required field is not marked optional.
     req = render(NLDD, '<c-text-input-field id="a" name="a" label="A" required="true"/>')

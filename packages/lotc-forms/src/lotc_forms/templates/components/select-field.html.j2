@@ -8,10 +8,11 @@
 {% set db = f.describedby(id, help, error) %}
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'select-field') %}
-<nldd-dropdown{% if error %} invalid{% endif %}{% if disabled %} disabled{% endif %}>
-<select id="{{ id }}" name="{{ name }}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{{ f.render_attrs(c) }}>
-{% if placeholder %}<option value="">{{ placeholder }}</option>{% endif %}{{ content | safe }}</select>
-</nldd-dropdown>
+{# NLDD's native select is nldd-combo-box > nldd-menu > nldd-menu-item; a raw
+   <select> would DROP the nldd-menu-item options a browser can't nest there. #}
+<nldd-combo-box id="{{ id }}" name="{{ name }}"{% if error %} invalid{% endif %}{% if disabled %} disabled{% endif %}{% if required %} required{% endif %}{% if db %} aria-describedby="{{ db }}"{% endif %}{{ f.render_attrs(c) }}>
+<nldd-menu>{% if placeholder %}<c-option value="" label="{{ placeholder }}"/>{% endif %}{{ content | safe }}</nldd-menu>
+</nldd-combo-box>
 {% endcall %}
 {% else %}
 {% call f.rvo_field(id, label, help, error, required, 'select-field') %}
