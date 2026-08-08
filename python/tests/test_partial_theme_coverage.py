@@ -68,7 +68,9 @@ def test_app_components_are_agnostic_rvo_and_nldd():
 
 def test_app_components_render_across_the_set_in_rvo():
     env = _env(["rvo"])
-    r = lambda s: env.from_string(s).render()
+    def r(s):
+        return env.from_string(s).render()
+
     assert "lotc-sidenav-link" in r('<c-sidenav-item icon="home" label="X" href="/"/>')
     assert "lotc-layer" in r('<c-layer icon="home" title="Apps" count="5"/>')
     assert "lotc-activity-item" in r('<c-activity-item icon="home" actor="A" action="did"/>')
