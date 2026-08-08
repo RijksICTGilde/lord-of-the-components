@@ -10,7 +10,7 @@
 {% set accept = c.get('accept', '') %}{% set multiple = c.get('multiple', false) %}
 {% set db = f.describedby(id, help, error) %}
 {% call f.rvo_field(id, label, help, error, required, 'file-input-field') %}
-<input id="{{ id }}" name="{{ name }}" type="file"{% if accept %} accept="{{ accept }}"{% endif %}{% if multiple %} multiple{% endif %} class="utrecht-textbox utrecht-textbox--html-input rvo-file-input{% if error %} utrecht-textbox--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %} />
+<input id="{{ id }}" name="{{ name }}" type="file"{% if accept %} accept="{{ accept }}"{% endif %}{% if multiple %} multiple{% endif %} class="utrecht-textbox utrecht-textbox--html-input rvo-file-input{% if error %} utrecht-textbox--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{{ f.render_attrs(c) }} />
 {% if 'nldd' in lotc_design_systems %}<span class="lotc-file-fallback" role="note">RVO-veld (NLDD heeft geen eigen bestandsveld)</span>{% endif %}
 {% endcall %}
 {% endmacro %}

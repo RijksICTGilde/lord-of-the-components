@@ -55,6 +55,27 @@ For `<c-text-input-field id="voornaam" … help="…" error="…">`:
 
 `aria-describedby` only ever references parts that are actually rendered.
 
+## Conditional & dynamic attributes
+
+You don't need conditional-attribute macros (`optional_attr`/`bool_attr`) — LOTC's
+expression attributes cover it:
+
+- **Optional value** — `:help="combined_helper(field) or none"`: an empty/`None`
+  value is omitted by the field's own guard (absent vs. empty, without a wrapper).
+- **Boolean** — `:required="field.required"`, `:disabled="field.readonly"`.
+- **Error state** — pass `:error="…"`; the field derives `aria-invalid` from it (no
+  separate `invalid` attribute).
+
+For a whole **dynamic bundle** (htmx, arbitrary `data-*`/`aria-*`), use the spread:
+
+```html
+<c-text-input-field id="…" name="…" label="…" :attrs="htmx(field)"/>
+```
+
+`:attrs` takes a flat `{name: value}` dict and merges it onto the control. `None`
+or `''` omits that entry (same rule as `:prop="… or none"`). One attribute replaces
+`htmx_attrs` + `extra_attrs` — `hx-*`, `data-*`, `aria-*`, and generic HTML attrs.
+
 ## How the per-theme rendering works
 
 Each template branches on the active visual theme via the `lotc_design_systems`

@@ -1,9 +1,10 @@
+{% import 'components/_forms.j2' as f %}
 {% macro lotc_render(_component_context) %}
 {% set c = _component_context %}
 {% set align = c.get('align', 'start') %}
 {% set content = c.get('content', '') %}
 {% set extra = c.get('class', '') %}
-<div class="lotc-action-group{% if align != 'start' %} lotc-action-group--{{ align }}{% endif %} {{ extra }}" role="group" data-lotc-component="action-group">
+<div class="lotc-action-group{% if align != 'start' %} lotc-action-group--{{ align }}{% endif %} {{ extra }}" role="group" data-lotc-component="action-group"{{ f.render_attrs(c) }}>
   {{ content | safe }}
 </div>
 {% endmacro %}

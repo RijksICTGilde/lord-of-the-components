@@ -9,11 +9,11 @@
 {% set db = f.describedby(id, help, error) %}
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'text-input-field') %}
-<nldd-text-field input-id="{{ id }}" name="{{ name }}" type="{{ type }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}></nldd-text-field>
+<nldd-text-field input-id="{{ id }}" name="{{ name }}" type="{{ type }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-text-field>
 {% endcall %}
 {% else %}
 {% call f.rvo_field(id, label, help, error, required, 'text-input-field') %}
-<input id="{{ id }}" name="{{ name }}" type="{{ type }}" value="{{ value }}" placeholder="{{ placeholder }}" dir="auto" class="utrecht-textbox utrecht-textbox--html-input{% if error %} utrecht-textbox--invalid{% endif %}"{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %} />
+<input id="{{ id }}" name="{{ name }}" type="{{ type }}" value="{{ value }}" placeholder="{{ placeholder }}" dir="auto" class="utrecht-textbox utrecht-textbox--html-input{% if error %} utrecht-textbox--invalid{% endif %}"{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{{ f.render_attrs(c) }} />
 {% endcall %}
 {% endif %}
 {% endmacro %}

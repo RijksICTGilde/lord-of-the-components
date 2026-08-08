@@ -8,11 +8,11 @@
 {% set db = f.describedby(id, help, error) %}
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'textarea-field') %}
-<nldd-multi-line-text-field input-id="{{ id }}" name="{{ name }}" rows="{{ rows }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}></nldd-multi-line-text-field>
+<nldd-multi-line-text-field input-id="{{ id }}" name="{{ name }}" rows="{{ rows }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-multi-line-text-field>
 {% endcall %}
 {% else %}
 {% call f.rvo_field(id, label, help, error, required, 'textarea-field') %}
-<textarea id="{{ id }}" name="{{ name }}" rows="{{ rows }}" placeholder="{{ placeholder }}" class="utrecht-textarea utrecht-textarea--html-textarea{% if error %} utrecht-textarea--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}>{{ value }}</textarea>
+<textarea id="{{ id }}" name="{{ name }}" rows="{{ rows }}" placeholder="{{ placeholder }}" class="utrecht-textarea utrecht-textarea--html-textarea{% if error %} utrecht-textarea--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{{ f.render_attrs(c) }}>{{ value }}</textarea>
 {% endcall %}
 {% endif %}
 {% endmacro %}

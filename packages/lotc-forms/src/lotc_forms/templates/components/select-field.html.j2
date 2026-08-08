@@ -9,14 +9,14 @@
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'select-field') %}
 <nldd-dropdown{% if error %} invalid{% endif %}{% if disabled %} disabled{% endif %}>
-<select id="{{ id }}" name="{{ name }}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}>
+<select id="{{ id }}" name="{{ name }}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{{ f.render_attrs(c) }}>
 {% if placeholder %}<option value="">{{ placeholder }}</option>{% endif %}{{ content | safe }}</select>
 </nldd-dropdown>
 {% endcall %}
 {% else %}
 {% call f.rvo_field(id, label, help, error, required, 'select-field') %}
 <div class="rvo-select-wrapper">
-<select id="{{ id }}" name="{{ name }}" class="utrecht-select utrecht-select--html-select{% if error %} utrecht-select--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}>
+<select id="{{ id }}" name="{{ name }}" class="utrecht-select utrecht-select--html-select{% if error %} utrecht-select--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{{ f.render_attrs(c) }}>
 {% if placeholder %}<option value="">{{ placeholder }}</option>{% endif %}{{ content | safe }}</select>
 </div>
 {% endcall %}
