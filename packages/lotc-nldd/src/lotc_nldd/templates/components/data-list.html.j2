@@ -1,0 +1,19 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{#
+  NLDD data-list — hand-authored. A key-value definition list (<dl> with <dt>/<dd>
+  pairs), laid out as an aligned two-column grid and styled with NLDD tokens.
+  Self-contained scoped CSS (idempotent — safe to appear once per data-list).
+#}
+{% macro lotc_render(_component_context) %}
+{% set c = _component_context %}
+{% set content = c.get('content', '') %}
+{% set cls = c.get('class', '') %}
+<dl class="lotc-data-list {{ cls }}" data-lotc-component="data-list" {{ attrs.render_extra_attributes(c) }}>
+{{ content | safe }}
+</dl>
+<style>
+.lotc-data-list{display:grid;grid-template-columns:max-content 1fr;gap:.4rem 1.25rem;margin:0}
+.lotc-data-list dt{font-weight:600;color:var(--nldd-color-text-subtle,#5a5a5a)}
+.lotc-data-list dd{margin:0;color:var(--nldd-color-text,#1a1a1a)}
+</style>
+{% endmacro %}
