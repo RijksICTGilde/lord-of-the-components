@@ -175,7 +175,10 @@ L.push(``);
 L.push(
   `Every field takes the same base — \`id\`, \`name\`, \`label\` (+ \`help\`, \`error\`,` +
     ` \`required\`, \`disabled\`). \`file-input-field\`: NLDD has no native file field, so` +
-    ` it renders the RVO field with a visible fallback badge.\n`,
+    ` it renders the RVO field with a visible fallback badge. \`select-field\` renders` +
+    ` NLDD's web-component combo-box by default; for a screen whose JS drives the list` +
+    ` (value / new Option() / change), add \`native\` to keep a real \`<select>\`` +
+    ` (native \`<option>\` children) under a theme skin.\n`,
 );
 L.push("```html");
 L.push(`<form method="post">`);
@@ -255,6 +258,12 @@ L.push(
     ` column. RVO's native table needs none. \`<c-table-head>\` IS the header row (it renders` +
     ` \`<nldd-table-row slot="header">\`) — put \`<c-th>\` cells directly in it, don't nest a` +
     ` \`<c-table-row>\`.`,
+);
+L.push(
+  `- **Named-slot-only components**: some NLDD components (e.g. \`c-icon-button\`,` +
+    ` \`c-toolbar\`, \`c-byline\`) accept only named slots — put content in` +
+    ` \`<template slot="…">\`, not as default children, which have nowhere to go and are` +
+    ` dropped silently. (A tooltip on an icon-button goes in its \`popup\` slot, not as a child.)`,
 );
 L.push(`- One source, many themes: the same markup renders under \`nldd\` or \`rvo\`; the visual system swaps, the structure stays.`);
 L.push(``);

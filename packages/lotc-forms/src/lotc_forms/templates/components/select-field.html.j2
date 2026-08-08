@@ -5,8 +5,22 @@
 {% set help = c.get('help', '') %}{% set error = c.get('error', '') %}
 {% set required = c.get('required', false) %}{% set disabled = c.get('disabled', false) %}
 {% set placeholder = c.get('placeholder', '') %}{% set content = c.get('content', '') %}
+{% set native = c.get('native', false) %}
 {% set db = f.describedby(id, help, error) %}
-{% if 'nldd' in lotc_design_systems %}
+{% if 'nldd' in lotc_design_systems and native %}
+{# A real native <select> with an NLDD skin — for screens whose JS manipulates the
+   list (value / new Option() / change). Use native <option> children (c-option
+   would theme-swap to nldd-menu-item, which a native <select> drops). #}
+{% call f.nldd_field(id, label, help, error, required, 'select-field') %}
+<select id="{{ id }}" name="{{ name }}" class="lotc-native-select{% if error %} lotc-native-select--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{{ f.render_attrs(c) }}>
+{% if placeholder %}<option value="">{{ placeholder }}</option>{% endif %}{{ content | safe }}</select>
+{% endcall %}
+<style>
+.lotc-native-select{appearance:none;-webkit-appearance:none;width:100%;font:inherit;color:var(--nldd-color-text,#1a1a1a);background:var(--nldd-color-surface,#fff) no-repeat right .6rem center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23154273' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");padding:.5rem 2rem .5rem .75rem;border:1px solid var(--nldd-color-border,#767676);border-radius:6px;line-height:1.4}
+.lotc-native-select:focus{outline:2px solid var(--nldd-color-focus,#007bc7);outline-offset:1px}
+.lotc-native-select--invalid{border-color:var(--nldd-color-error,#d52b1e)}
+</style>
+{% elif 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'select-field') %}
 {# NLDD's native select is nldd-combo-box > nldd-menu > nldd-menu-item; a raw
    <select> would DROP the nldd-menu-item options a browser can't nest there. #}

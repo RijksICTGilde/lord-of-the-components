@@ -51,13 +51,14 @@
         { "name": "label", "type": "string", "description": "Field label" },
         { "name": "value", "type": "string", "description": "Selected value" },
         { "name": "placeholder", "type": "string", "description": "Empty-option label" },
+        { "name": "native", "type": "boolean", "description": "Render a real native <select> (JS-manipulable: value, options, change) with a theme skin, instead of NLDD's web-component combo-box. Use native <option> children." },
         { "name": "help", "type": "string", "description": "Help text" },
         { "name": "error", "type": "string", "description": "Error text" },
         { "name": "required", "type": "boolean", "description": "Required" },
         { "name": "disabled", "type": "boolean", "description": "Disabled" },
         { "name": "class", "type": "string", "description": "Extra CSS classes" }
       ],
-      "description": "Labelled select; options are <c-option> children",
+      "description": "Labelled select; options are <c-option> children (or native <option> with native)",
       "category": "forms", "backend": "jinja", "content": { "allowed": true }
     },
     {

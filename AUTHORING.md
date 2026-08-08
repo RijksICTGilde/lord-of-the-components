@@ -107,8 +107,8 @@ setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-forms"])
   <br>attrs: `id`, `name`, `label`, `type` (text\|email\|tel\|url\|number\|search\|date\|datetime-local\|time\|password), `value`, `placeholder`, `autocomplete`, `help`, +4
 - `<c-textarea-field>` — Labelled multi-line text input with help/error and ARIA wiring
   <br>attrs: `id`, `name`, `label`, `value`, `placeholder`, `rows`, `help`, `error`, +3
-- `<c-select-field>` — Labelled select; options are <c-option> children
-  <br>attrs: `id`, `name`, `label`, `value`, `placeholder`, `help`, `error`, `required` (bool), +1
+- `<c-select-field>` — Labelled select; options are <c-option> children (or native <option> with native)
+  <br>attrs: `id`, `name`, `label`, `value`, `placeholder`, `native` (bool), `help`, `error`, +2
 - `<c-radio-button-field>` — Labelled radio group; radios are <c-radio> children
   <br>attrs: `id`, `name`, `label`, `help`, `error`, `required` (bool)
 - `<c-checkbox-field>` — Labelled checkbox: a single box (no children) or a group of <c-checkbox> children
@@ -122,7 +122,7 @@ setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-forms"])
 - `<c-action-group>` — A row of form actions (buttons); buttons are children
   <br>attrs: `align` (start\|end\|between)
 
-Every field takes the same base — `id`, `name`, `label` (+ `help`, `error`, `required`, `disabled`). `file-input-field`: NLDD has no native file field, so it renders the RVO field with a visible fallback badge.
+Every field takes the same base — `id`, `name`, `label` (+ `help`, `error`, `required`, `disabled`). `file-input-field`: NLDD has no native file field, so it renders the RVO field with a visible fallback badge. `select-field` renders NLDD's web-component combo-box by default; for a screen whose JS drives the list (value / new Option() / change), add `native` to keep a real `<select>` (native `<option>` children) under a theme skin.
 
 ```html
 <form method="post">
@@ -574,5 +574,6 @@ A complete page, 100% `c-*`: app-shell → header (status-bar + menu) + sidenav 
 - **Unknown component / attribute** → a hard error with a suggestion.
 - **Conditional attributes**: don't wrap a tag in `{% if %}` or put `{% %}`/`{{ }}` at an attribute position — the parser reads the braces as an attribute name. Use an expression attribute instead: `:help="expr or none"` (empty/None is omitted), `:label="(a) if cond else (b)"`, `:required="expr"`. For a whole dynamic bundle (htmx, arbitrary `data-*`/`aria-*`) use the spread `:attrs="dict"` — a flat `{name: value}` dict merged onto the element; `None`/`''` omits an entry.
 - **NLDD tables need `columns`**: `<c-table>` renders as a CSS-grid table under NLDD, so declare the columns (e.g. `<c-table columns="1fr 1fr">`) or every cell stacks in one column. RVO's native table needs none. `<c-table-head>` IS the header row (it renders `<nldd-table-row slot="header">`) — put `<c-th>` cells directly in it, don't nest a `<c-table-row>`.
+- **Named-slot-only components**: some NLDD components (e.g. `c-icon-button`, `c-toolbar`, `c-byline`) accept only named slots — put content in `<template slot="…">`, not as default children, which have nowhere to go and are dropped silently. (A tooltip on an icon-button goes in its `popup` slot, not as a child.)
 - One source, many themes: the same markup renders under `nldd` or `rvo`; the visual system swaps, the structure stays.
 
