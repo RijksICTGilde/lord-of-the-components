@@ -12,6 +12,7 @@ through as unmodified slices of the original source.
 
 import json
 import logging
+import re
 from dataclasses import dataclass
 from difflib import get_close_matches
 from functools import lru_cache
@@ -95,6 +96,8 @@ class _CompileState:
 
 #: Jinja delimiters that make a folded string unsafe to embed as literal source.
 _JINJA_DELIMS = ("{{", "{%", "{#")
+# Statically-named parent in `{% extends "name" %}` (single or double quoted).
+_EXTENDS_RE = re.compile(r"""\{%-?\s*extends\s+["']([^"']+)["']""")
 
 
 def _has_jinja(text: Optional[str]) -> bool:
@@ -263,6 +266,22 @@ class ComponentExtension(Extension):
         """Preprocess template source, converting component syntax to Jinja2 includes."""
         template_id = filename or name or "<unknown>"
         logger.debug("Preprocessing template: %s", template_id)
+
+        # {% extends "parent" %}: eagerly load the parent NOW, during this child's
+        # preprocess, so the parent's component macros (_lotc_jinja_*) are registered
+        # on the environment before rendering starts. Jinja runs an extended parent's
+        # body with the CHILD's context, whose globals are snapshotted (copied) when
+        # the child render begins; a parent macro that only registers later — when the
+        # parent is loaded mid-render — would resolve to Undefined. Pre-warming here
+        # closes that gap. Statically-named parents only; a dynamic name can't be
+        # pre-resolved (falls back to the original, render-time behaviour).
+        loader = getattr(self.environment, "loader", None)
+        if loader is not None and "extends" in source:
+            for parent_name in _EXTENDS_RE.findall(source):
+                try:
+                    self.environment.get_template(parent_name)
+                except Exception:  # noqa: BLE001 — missing/dynamic parent: nothing to pre-warm
+                    pass
 
         # If no component tags exist, skip parsing entirely.
         if "<c-" not in source:
