@@ -63,6 +63,24 @@ def test_nested_extends_three_levels(tmp_path):
     assert "app-shell" in out and "undefined" not in out.lower()
 
 
+def test_extends_child_includes_partial_with_components(tmp_path):
+    # A child extends a base AND includes partials whose components must register
+    # before the (extends) render snapshot — a `{% include %}` target is pre-warmed
+    # just like the `{% extends %}` parent.
+    env = _env(
+        tmp_path,
+        {
+            "base.html.j2": BASE,
+            "_partial.html.j2": '<c-card outline padding="md"><c-heading type="h3" size="4" label="K"/></c-card>',
+            "dash.html.j2": (
+                '{% extends "base.html.j2" %}{% block main %}{% include "_partial.html.j2" %}{% endblock %}'
+            ),
+        },
+    )
+    out = env.get_template("dash.html.j2").render()
+    assert "undefined" not in out.lower() and "card" in out.lower()
+
+
 def test_plain_include_in_slot_still_works(tmp_path):
     # The include path already worked (fresh context); guard against regressions.
     env = _env(
