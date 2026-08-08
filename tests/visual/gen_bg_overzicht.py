@@ -1,10 +1,10 @@
-"""Generate the bg.rijks.app Overzicht recreation — mix-and-match NLDD + BGNLDD.
+"""Generate the bg.rijks.app Overzicht recreation — built entirely from LOTC `<c-*>`.
 
-This is the "gewenste situatie": the page is built entirely from LOTC `<c-*>`
-components. NLDD renders the primitives (card, button, header, heading); the
-BGNLDD theme renders Begane Grond's own app components (metric, sidenav, layer,
-section-head, activity) that aren't in NLDD proper. Declared with
-`design_systems=["nldd"]`.
+This is the "gewenste situatie": the whole page is `<c-*>` components. The layout
+shell comes from lotc-layout (app-shell); NLDD renders the visual components
+(card, button, header, heading); Begane Grond's own app components (metric,
+sidenav, layer, section-head, activity) are core, theme-agnostic defs with NLDD
+implementations. Declared with `design_systems=["lotc-layout", "nldd"]`.
 
 Data (icons, labels, grouping) is extracted verbatim from the live site DOM.
 Run:  python tests/visual/gen_bg_overzicht.py  ->  fixtures/bg-overzicht.html
