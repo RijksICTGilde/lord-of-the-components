@@ -1,0 +1,283 @@
+<c-page title="Artefactregister · Begane Grond" lang="nl" design-systems="lotc-layout nldd">
+<style>
+  .art-head{display:flex;align-items:flex-start;gap:.6rem}
+  .art-titles{flex:1 1 auto;min-width:0}
+  .art-ver{font-weight:400;color:#5a5a5a;font-size:.82em}
+  .art-digest{font-family:ui-monospace,'Courier New',monospace;font-size:.8rem;color:#5a5a5a;margin:.2rem 0 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .art-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.7rem 0 0}
+  .art-repo{font-family:ui-monospace,'Courier New',monospace;font-size:.8rem;color:#5a5a5a;display:flex;align-items:center;gap:.35rem;margin:.7rem 0 0}
+  .art-icon{color:#154273;flex:0 0 auto}
+  .page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem}
+  .page-head .intro{max-width:52rem}
+</style>
+<c-app-shell width="16rem">
+  <template slot="header">
+    <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
+    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
+      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
+        <c-menu-item label="Zoeken" icon="search"/>
+        <c-menu-item label="Notificaties (1)" icon="envelope"/>
+        <c-menu-item label="Nieuw" icon="plus" expandable/>
+        <c-menu-item label="Thema" icon="sun" expandable/>
+        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
+      </c-menu>
+    </c-header>
+  </template>
+
+  <template slot="sidebar">
+    <c-sidenav>
+      <c-sidenav-item icon="house" label="Overzicht" href="/"/>
+      <c-sidenav-item icon="person" label="Mijn overzicht" href="/zelf"/>
+      <c-sidenav-group label="Bouwen & draaien"/>
+      <c-sidenav-item icon="apartment-building" label="Fundament" href="/fysiek"/>
+      <c-sidenav-item icon="cylinder-split" label="Infra-diensten" href="/infra"/>
+      <c-sidenav-item icon="rectangle-stack" label="Applicaties" href="/apps"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Code" href="/code"/>
+      <c-sidenav-item icon="puzzle-piece" label="Componenten" href="/componenten"/>
+      <c-sidenav-item icon="square-on-square" label="Design system" href="/design-system"/>
+      <c-sidenav-group label="Uitrollen & draaien"/>
+      <c-sidenav-item icon="arrow-up-arrow-down" label="Omgevingen" href="/environments"/>
+      <c-sidenav-item icon="gear" label="CI-pijplijn" href="/environments/pijplijn"/>
+      <c-sidenav-item icon="timer" label="CI-runners" href="/environments/runners"/>
+      <c-sidenav-item icon="folder-stack" label="Artefacten" href="/artefacten" active/>
+      <c-sidenav-item icon="flag" label="Feature flags" href="/flags"/>
+      <c-sidenav-item icon="eye" label="Observability" href="/observability"/>
+      <c-sidenav-item icon="exclamation-triangle" label="Incidenten" href="/incidenten"/>
+      <c-sidenav-group label="Mensen & werkplek"/>
+      <c-sidenav-item icon="person-2" label="Teams & mensen" href="/teams"/>
+      <c-sidenav-item icon="business-suitcase" label="Werkplekken" href="/werkplekken"/>
+      <c-sidenav-item icon="face-smiling-badge-plus" label="Leren" href="/leren"/>
+      <c-sidenav-group label="Toegang & beveiliging"/>
+      <c-sidenav-item icon="person-circle" label="Inloggen" href="/inloggen"/>
+      <c-sidenav-item icon="globe" label="Domeinen & DNS" href="/dns"/>
+      <c-sidenav-item icon="certificate" label="Certificaten" href="/secrets/certificaten"/>
+      <c-sidenav-item icon="lock-closed" label="Secrets" href="/secrets"/>
+      <c-sidenav-item icon="shield-check-mark" label="Security" href="/security"/>
+      <c-sidenav-group label="Data & koppelvlakken"/>
+      <c-sidenav-item icon="books-vertical" label="Basisregistraties" href="/registers"/>
+      <c-sidenav-item icon="chart-x-y-axis-line" label="Datasets" href="/data"/>
+      <c-sidenav-item icon="pencil-on-square" label="Datacontracten" href="/datacontracten"/>
+      <c-sidenav-item icon="link" label="Koppelvlakken" href="/koppelvlakken"/>
+      <c-sidenav-item icon="envelope" label="Notificaties" href="/notificaties"/>
+      <c-sidenav-group label="Governance & standaarden"/>
+      <c-sidenav-item icon="check-list" label="Governance" href="/governance"/>
+      <c-sidenav-item icon="clipboard" label="Wet uitvoeren" href="/wetten"/>
+      <c-sidenav-item icon="check-mark-circle" label="Standaarden" href="/standaarden"/>
+      <c-sidenav-item icon="check-list" label="NeRDS-richtlijnen" href="/nerds"/>
+      <c-sidenav-item icon="brackets-ellipsis" label="Algoritmeregister" href="/algoritmes"/>
+      <c-sidenav-item icon="clipboard" label="Privacy & DPIA" href="/verwerkingen"/>
+      <c-sidenav-item icon="file-text" label="Woo & archief" href="/openbaarheid"/>
+      <c-sidenav-item icon="eyeglasses" label="Toegankelijkheid" href="/toegankelijkheid"/>
+      <c-sidenav-item icon="heart" label="Duurzaamheid" href="/duurzaamheid"/>
+      <c-sidenav-group label="Platform, kosten & AI"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Infra als code" href="/platform/iac"/>
+      <c-sidenav-item icon="euro-sign" label="Kosten" href="/kosten"/>
+      <c-sidenav-item icon="tag" label="Software-inkoop" href="/software-inkoop"/>
+      <c-sidenav-item icon="starburst-filled" label="Scorecards" href="/scorecards"/>
+      <c-sidenav-item icon="ship-wheel" label="Tech radar" href="/tech-radar"/>
+      <c-sidenav-item icon="sparkles" label="AI & LLM" href="/ai"/>
+      <c-sidenav-item icon="terminal" label="CLI & API" href="/cli"/>
+      <c-sidenav-item icon="square-on-square" label="Fleet-shift" href="/fleet"/>
+    </c-sidenav>
+  </template>
+
+  <c-stack gap="1.25rem">
+    <c-breadcrumbs>
+      <c-breadcrumbs-item href="/environments" label="Omgevingen"/>
+      <c-breadcrumbs-item label="Artefacten"/>
+    </c-breadcrumbs>
+
+    <div class="page-head">
+      <div class="intro">
+        <c-heading type="h1" size="2">Artefactregister</c-heading>
+        <c-p>Elke build die het gebaande pad oplevert: container-images en packages, met hun digest, SBOM en handtekening. Ondertekend en herleidbaar tot de repository en de pijplijn die ze maakte.</c-p>
+      </div>
+      <c-button type="secondary" label="De pijplijn" icon="gear" show-icon="before"/>
+    </div>
+
+    <c-auto-grid min="220px" gap="1rem">
+      <c-metric icon="folder-stack" value="20" label="Artefacten" sub="images en packages"/>
+      <c-metric icon="certificate" value="80%" label="Ondertekend" sub="met provenance"/>
+      <c-metric icon="lock-closed" value="2.3" label="Gem. SLSA-niveau" sub="supply-chain-borging"/>
+      <c-metric icon="exclamation-triangle" value="3" label="Met open CVE" sub="in de SBOM"/>
+    </c-auto-grid>
+
+    <c-stack direction="horizontal" gap="0.5rem">
+      <c-button type="primary" label="Alle"/>
+      <c-button type="secondary" label="Container-images"/>
+      <c-button type="secondary" label="Packages"/>
+    </c-stack>
+
+    <c-columns columns="1" lg="2" gap="1rem">
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">toeslagenmotor <span class="art-ver">3.4.1</span></c-heading>
+            <p class="art-digest">sha256:9f2c4e…a1b7</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>412 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>minbzk/toeslagenmotor</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">datadeling <span class="art-ver">2.1.0</span></c-heading>
+            <p class="art-digest">sha256:3a91bd…77c2</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>308 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>logius/datadeling-api</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">kentekencheck <span class="art-ver">1.9.2</span></c-heading>
+            <p class="art-digest">sha256:cc01fe…2d40</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 2</c-tag><c-tag>256 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>nldd/kentekencheck</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">nldd-ui <span class="art-ver">0.9.0</span></c-heading>
+            <p class="art-digest">sha256:71aa90…ee15</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>package</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>184 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>logius/datadeling-api</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">toeslagenmotor <span class="art-ver">3.3.0</span></c-heading>
+            <p class="art-digest">sha256:5e8c12…b9a0</p>
+          </div>
+          <c-tag type="error">ongetekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 1</c-tag><c-tag>401 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>minbzk/toeslagenmotor</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">vergunningchecker <span class="art-ver">0.6.1</span></c-heading>
+            <p class="art-digest">sha256:b204aa…1f33</p>
+          </div>
+          <c-tag type="error">ongetekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 1</c-tag><c-tag>222 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>logius/datadeling-api</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">paspoort <span class="art-ver">4.6.5</span></c-heading>
+            <p class="art-digest">sha256:a0d912…f65b</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>331 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>minbzk/paspoort</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">bijstandsuitkering <span class="art-ver">2.8.4</span></c-heading>
+            <p class="art-digest">sha256:44d96d…0a12</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>469 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>nldd/bijstandsuitkering</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">inkomenstoets <span class="art-ver">4.2.6</span></c-heading>
+            <p class="art-digest">sha256:854b38…bd4b</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 2</c-tag><c-tag>468 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>nldd/inkomenstoets</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">brp-bevraging <span class="art-ver">3.0.5</span></c-heading>
+            <p class="art-digest">sha256:82a820…327f</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>package</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>463 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>nldd/brp-bevraging</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">bsn-validatie <span class="art-ver">4.3.0</span></c-heading>
+            <p class="art-digest">sha256:ed770e…b076</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>package</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>147 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>nldd/bsn-validatie</p>
+      </c-card>
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">iban-validatie <span class="art-ver">3.2.1</span></c-heading>
+            <p class="art-digest">sha256:9d7db4…7e21</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>package</c-tag><c-tag type="info">SLSA 2</c-tag><c-tag>357 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>nldd/iban-validatie</p>
+      </c-card>
+    </c-columns>
+  </c-stack>
+</c-app-shell>
+</c-page>
