@@ -192,3 +192,18 @@ def test_select_field_native_keeps_a_real_select_under_nldd():
     # default (no native) still uses the combo-box
     combo = render(NLDD, '<c-select-field id="s" name="s" label="S"><c-option value="a" label="A"/></c-select-field>')
     assert "nldd-combo-box" in combo
+
+
+def test_select_field_value_reaches_the_control():
+    # Regression: value was declared but never emitted, so the selection was lost.
+    opt = '<c-option value="rig-prd-foo" label="rig-prd-foo"/>'
+    combo = render(NLDD, f'<c-select-field id="ns" name="ns" label="NS" value="rig-prd-foo">{opt}</c-select-field>')
+    assert 'value="rig-prd-foo"' in combo.split("<nldd-menu")[0]  # on the combo-box
+    native = render(
+        NLDD,
+        '<c-select-field id="ns" name="ns" label="NS" native value="rig-prd-foo">'
+        '<option value="rig-prd-foo">rig-prd-foo</option></c-select-field>',
+    )
+    assert "s.value=" in native and "rig-prd-foo" in native  # applied to the native select
+    plain = render(NLDD, f'<c-select-field id="ns" name="ns" label="NS">{opt}</c-select-field>')
+    assert "<script>" not in plain  # no value -> no script
