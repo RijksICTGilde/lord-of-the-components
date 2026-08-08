@@ -102,6 +102,9 @@ _JINJA_DELIMS = ("{{", "{%", "{#")
 _PREWARM_RE = re.compile(
     r"""\{%-?\s*(?:extends|include|import|from)\s+["']([^"']+)["']"""
 )
+# Jinja comments — stripped before the pre-warm scan so a {% extends %} shown inside
+# a {# … #} example doesn't get pre-warmed (and can't make a template recurse on itself).
+_JINJA_COMMENT_RE = re.compile(r"\{#.*?#\}", re.DOTALL)
 
 
 def _has_jinja(text: Optional[str]) -> bool:
@@ -242,6 +245,8 @@ class ComponentExtension(Extension):
         # Components whose lotc_render macro was looked up and NOT found, so we
         # don't re-attempt get_template on every use (lazy macro registration).
         self._jinja_macro_missing: set[str] = set()
+        # Guard against re-entrant/circular {% extends/include %} pre-warming.
+        self._prewarming: set[str] = set()
         # What to do when a component is defined globally but no active design
         # system implements it: "error" (default, fail loudly) or "placeholder"
         # (render a visible marker so you can switch themes and see the gaps).
@@ -285,11 +290,20 @@ class ComponentExtension(Extension):
         if loader is not None and (
             "extends" in source or "include" in source or "import" in source
         ):
-            for target in _PREWARM_RE.findall(source):
+            # Scan the source WITHOUT its Jinja comments — a {% extends "…" %} shown
+            # inside a {# … #} doc-comment is documentation, not a real dependency,
+            # and pre-warming it (a template can mention itself) would recurse.
+            scan = _JINJA_COMMENT_RE.sub("", source)
+            for target in _PREWARM_RE.findall(scan):
+                if target in self._prewarming:  # already loading it (self/circular)
+                    continue
+                self._prewarming.add(target)
                 try:
                     self.environment.get_template(target)
                 except Exception:  # noqa: BLE001 — missing/dynamic target: nothing to pre-warm
                     pass
+                finally:
+                    self._prewarming.discard(target)
 
         # If no component tags exist, skip parsing entirely.
         if "<c-" not in source:

@@ -99,3 +99,25 @@ def test_plain_include_in_slot_still_works(tmp_path):
     )
     out = env.get_template("outer.html.j2").render()
     assert "app-shell" in out and "undefined" not in out.lower()
+
+
+def test_extends_in_a_comment_does_not_recurse(tmp_path):
+    # A {% extends %} shown inside a {# … #} doc-comment (a base template that
+    # documents its own usage) must not be pre-warmed — it would recurse forever.
+    env = _env(
+        tmp_path,
+        {
+            "self-base.html.j2": (
+                "{# usage: {% extends \"self-base.html.j2\" %} then fill blocks #}\n"
+                '<c-app-shell width="16rem">'
+                '<template slot="header">{% block header %}{% endblock %}</template>'
+                "{% block main %}{% endblock %}</c-app-shell>"
+            ),
+            "child.html.j2": (
+                '{% extends "self-base.html.j2" %}'
+                '{% block main %}<c-heading type="h1" size="2" label="x"/>{% endblock %}'
+            ),
+        },
+    )
+    out = env.get_template("child.html.j2").render()
+    assert "app-shell" in out and "undefined" not in out.lower()
