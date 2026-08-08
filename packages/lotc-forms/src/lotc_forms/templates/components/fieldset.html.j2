@@ -1,15 +1,16 @@
+{% import 'components/_forms.j2' as f %}
 {% macro lotc_render(_component_context) %}
 {% set c = _component_context %}
 {% set legend = c.get('legend', '') or c.get('label', '') %}
 {% set content = c.get('content', '') %}
 {% set extra = c.get('class', '') %}
 {% if 'nldd' in lotc_design_systems %}
-<fieldset class="lotc-fieldset {{ extra }}" data-lotc-component="fieldset">
+<fieldset class="lotc-fieldset {{ extra }}" data-lotc-component="fieldset"{{ f.render_attrs(c) }}>
   {% if legend %}<legend class="lotc-fieldset__legend">{{ legend }}</legend>{% endif %}
   {{ content | safe }}
 </fieldset>
 {% else %}
-<div class="utrecht-form-fieldset rvo-form-fieldset {{ extra }}" data-lotc-component="fieldset">
+<div class="utrecht-form-fieldset rvo-form-fieldset {{ extra }}" data-lotc-component="fieldset"{{ f.render_attrs(c) }}>
   <fieldset class="utrecht-form-fieldset__fieldset utrecht-form-fieldset--html-fieldset">
     {% if legend %}<legend class="utrecht-form-fieldset__legend utrecht-form-fieldset__legend--html-legend">{{ legend }}</legend>{% endif %}
     {{ content | safe }}

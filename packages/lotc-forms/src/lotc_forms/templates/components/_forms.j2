@@ -8,6 +8,15 @@
    (RVO: explicit on our markup; NLDD: input-id + error-message-ids on the
    native field, help/error text as its own child elements). #}
 
+{# Spread: emit a flat {name: value} dict (`:attrs="expr"`) as HTML attributes on
+   the control. None or '' means omit (same rule as :prop="expr or none"). One
+   attribute covers the whole hx-* / data-* / aria-* / generic bundle. #}
+{% macro render_attrs(c) -%}
+{%- for k, v in (c.get('attrs') or {}).items() -%}
+{%- if v is not none and v != '' %} {{ k }}="{{ v | e }}"{% endif -%}
+{%- endfor -%}
+{%- endmacro %}
+
 {# space-joined describedby target ids, only for the parts actually rendered #}
 {% macro describedby(id, help, error) -%}
 {%- if help and error -%}{{ id }}-help {{ id }}-error

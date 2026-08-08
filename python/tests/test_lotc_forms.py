@@ -116,6 +116,28 @@ def test_file_input_has_nldd_fallback_badge():
     assert "lotc-file-fallback" not in render(RVO, ALL_FIELDS["file-input-field"])
 
 
+def test_attrs_spread_lands_on_control():
+    # :attrs="dict" merges a flat {name: value} dict onto the control (hx-*/data-*/
+    # aria-*/generic); None or '' omits — one attribute for the whole htmx bundle.
+    d = {"hx-get": "/v", "hx-trigger": "change", "data-k": "1", "hx-vals": None, "aria-x": ""}
+    src = '<c-text-input-field id="a" name="a" label="A" :attrs="d"/>'
+    for ds in (RVO, NLDD):
+        out = " ".join(_env(ds).from_string(src).render(d=d).split())
+        assert 'hx-get="/v"' in out and 'hx-trigger="change"' in out and 'data-k="1"' in out
+        assert "hx-vals" not in out  # None omitted
+        assert "aria-x" not in out  # '' omitted
+
+
+@pytest.mark.parametrize("name,src", ALL_FIELDS.items())
+def test_attrs_spread_works_for_every_field(name, src):
+    spread = (
+        src.replace("/>", ' :attrs="d"/>', 1) if src.rstrip().endswith("/>") else src.replace(">", ' :attrs="d">', 1)
+    )
+    for ds in (RVO, NLDD):
+        out = _env(ds).from_string(spread).render(d={"hx-post": "/save"})
+        assert 'hx-post="/save"' in out
+
+
 def test_required_marks_optional_convention_under_nldd():
     # Dutch-gov convention marks OPTIONAL, so a required field is not marked optional.
     req = render(NLDD, '<c-text-input-field id="a" name="a" label="A" required="true"/>')

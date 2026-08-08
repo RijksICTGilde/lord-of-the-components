@@ -6,11 +6,11 @@
 {% set required = c.get('required', false) %}{% set content = c.get('content', '') %}
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'checkbox-field') %}
-<div>{{ content | safe }}</div>
+<div{{ f.render_attrs(c) }}>{{ content | safe }}</div>
 {% endcall %}
 {% else %}
 {% call f.rvo_group(id, label, help, error, required, 'checkbox-field') %}
-<div class="rvo-checkbox__group{% if error %} rvo-checkbox__group--error{% endif %}">{{ content | safe }}</div>
+<div class="rvo-checkbox__group{% if error %} rvo-checkbox__group--error{% endif %}"{{ f.render_attrs(c) }}>{{ content | safe }}</div>
 {% endcall %}
 {% endif %}
 {% endmacro %}
