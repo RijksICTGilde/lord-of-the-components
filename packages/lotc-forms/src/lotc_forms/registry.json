@@ -77,15 +77,17 @@
     {
       "name": "checkbox-field",
       "attributes": [
-        { "name": "id", "type": "string", "description": "Group id (labels the group)" },
-        { "name": "name", "type": "string", "description": "Shared name for the checkboxes" },
-        { "name": "label", "type": "string", "description": "Group label (legend)" },
+        { "name": "id", "type": "string", "description": "Field/group id" },
+        { "name": "name", "type": "string", "description": "Checkbox name (single) or shared name (group)" },
+        { "name": "label", "type": "string", "description": "Checkbox label (single) or group legend" },
+        { "name": "value", "type": "string", "description": "Value (single checkbox)" },
+        { "name": "checked", "type": "boolean", "description": "Checked state (single checkbox)" },
         { "name": "help", "type": "string", "description": "Help text" },
         { "name": "error", "type": "string", "description": "Error text" },
         { "name": "required", "type": "boolean", "description": "Required" },
         { "name": "class", "type": "string", "description": "Extra CSS classes" }
       ],
-      "description": "Labelled checkbox group; checkboxes are <c-checkbox> children",
+      "description": "Labelled checkbox: a single box (no children) or a group of <c-checkbox> children",
       "category": "forms", "backend": "jinja", "content": { "allowed": true }
     },
     {
