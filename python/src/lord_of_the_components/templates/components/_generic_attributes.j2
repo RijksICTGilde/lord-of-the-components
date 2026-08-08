@@ -113,9 +113,17 @@
     {%- if 'tabindex' in component_context %} tabindex="{{ component_context['tabindex'] }}"{% endif -%}
 {%- endmacro %}
 
+{# Spread a `:attrs="{name: value}"` dict onto the element (hx-*/data-*/aria-*/
+   generic). None or '' omits an entry — same rule as :prop="expr or none". #}
+{% macro render_attrs_spread(component_context) -%}
+    {%- for key, value in (component_context.get('attrs') or {}).items() -%}
+        {%- if value is not none and value != '' %} {{ key }}="{{ value | e }}"{% endif -%}
+    {%- endfor -%}
+{%- endmacro %}
+
 {# Combined macro for all extra attributes #}
 {% macro render_extra_attributes(component_context) -%}
-    {{ render_events(component_context) }} {{ render_data_attributes(component_context) }} {{ render_aria_attributes(component_context) }} {{ render_htmx_attributes(component_context) }} {{ render_html_attributes(component_context) }}
+    {{ render_events(component_context) }} {{ render_data_attributes(component_context) }} {{ render_aria_attributes(component_context) }} {{ render_htmx_attributes(component_context) }} {{ render_html_attributes(component_context) }} {{ render_attrs_spread(component_context) }}
 {%- endmacro %}
 
 {# Resolve a spacing value: a scale token (3xs..3xl) -> the overridable
