@@ -60,6 +60,7 @@ export {
   filterBar,
   filterSelect,
   siteFooter,
+  secretField,
 } from "./app-components.def.js";
 
 // Feedback components
@@ -168,6 +169,7 @@ import {
   filterBar,
   filterSelect,
   siteFooter,
+  secretField,
 } from "./app-components.def.js";
 import { center, cluster, sidebar, switcher, cover, box, bar, layout } from "./layout-primitives.def.js";
 import type { ComponentDefinition } from "../component.js";
@@ -246,6 +248,7 @@ export const COMPONENTS: Record<string, ComponentDefinition> = {
   "filter-bar": filterBar,
   "filter-select": filterSelect,
   "site-footer": siteFooter,
+  "secret-field": secretField,
   center,
   cluster,
   sidebar,

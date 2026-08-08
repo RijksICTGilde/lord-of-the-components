@@ -293,3 +293,24 @@ export const siteFooter = defineComponent({
   },
   content: { allowed: true }, // end links (right side of the legal bar)
 });
+
+// ── secret-field: a masked secret display (reveal + copy) ────────────────────
+// A DISPLAY component (not a form field): shows an existing secret (api-key,
+// env var) masked, with a reveal toggle and an optional copy button.
+export const secretField = defineComponent({
+  name: "secret-field",
+  description: "Masked secret display with reveal toggle + optional copy button (api-key, env var)",
+  category: "data-display",
+  props: {
+    [PROPS.VALUE]: { description: "The secret value to display (masked until revealed)" },
+    "mask-length": { description: "Number of mask dots shown when hidden (default 12)" },
+    "show-copy": null, // boolean — render a copy-to-clipboard button
+    "content-width": { description: "Max width of the value box (any CSS width)" },
+    "value-type": {
+      description: "How to present the value",
+      values: ["text", "json"],
+      default: "text",
+    },
+    [PROPS.CLASS]: { description: "Additional CSS classes" },
+  },
+});
