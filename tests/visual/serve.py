@@ -25,7 +25,7 @@ from jinja2 import Environment, FileSystemLoader
 PYTHON_SRC = Path(__file__).resolve().parent.parent.parent / "python" / "src"
 sys.path.insert(0, str(PYTHON_SRC))
 
-from lord_of_the_components import setup_components  # noqa: E402
+from lord_of_the_components import get_static_roots, setup_components  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -37,19 +37,10 @@ REGISTRY_JSON = PYTHON_SRC / "lord_of_the_components" / "registry.json"
 CORE_STATIC_DIR = PYTHON_SRC / "lord_of_the_components" / "static"
 
 
-def _static_roots() -> list[Path]:
-    """Static roots for the /static/lotc/... URL space: core (layout.css) plus
-    every installed design system's own static dir (its CSS/JS bundle)."""
-    from lord_of_the_components.design_system import discover_design_systems
-
-    roots = [CORE_STATIC_DIR]
-    for ds in discover_design_systems().values():
-        if ds.static_path is not None:
-            roots.append(Path(ds.static_path))
-    return roots
-
-
-STATIC_ROOTS = _static_roots()
+# Static roots for the /static/lotc/... URL space: the public API returns the
+# core static dir + every installed design system's own static dir (CSS/JS
+# bundle). This is exactly what an app wires into its /static/lotc/ route.
+STATIC_ROOTS = [Path(r) for r in get_static_roots()]
 
 # Bundled CSS from webpack build (served from /static/lotc/dist/)
 BUNDLED_CSS = "\n".join(
