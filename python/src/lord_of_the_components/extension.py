@@ -96,8 +96,12 @@ class _CompileState:
 
 #: Jinja delimiters that make a folded string unsafe to embed as literal source.
 _JINJA_DELIMS = ("{{", "{%", "{#")
-# Statically-named parent in `{% extends "name" %}` (single or double quoted).
-_EXTENDS_RE = re.compile(r"""\{%-?\s*extends\s+["']([^"']+)["']""")
+# Statically-named template targets that pull in components whose macros must be
+# registered before the render context is snapshotted: {% extends "x" %},
+# {% include "x" %}, {% import "x" %}, {% from "x" import … %} (single/double quoted).
+_PREWARM_RE = re.compile(
+    r"""\{%-?\s*(?:extends|include|import|from)\s+["']([^"']+)["']"""
+)
 
 
 def _has_jinja(text: Optional[str]) -> bool:
@@ -267,20 +271,24 @@ class ComponentExtension(Extension):
         template_id = filename or name or "<unknown>"
         logger.debug("Preprocessing template: %s", template_id)
 
-        # {% extends "parent" %}: eagerly load the parent NOW, during this child's
-        # preprocess, so the parent's component macros (_lotc_jinja_*) are registered
-        # on the environment before rendering starts. Jinja runs an extended parent's
-        # body with the CHILD's context, whose globals are snapshotted (copied) when
-        # the child render begins; a parent macro that only registers later — when the
-        # parent is loaded mid-render — would resolve to Undefined. Pre-warming here
-        # closes that gap. Statically-named parents only; a dynamic name can't be
-        # pre-resolved (falls back to the original, render-time behaviour).
+        # Eagerly load statically-named {% extends/include/import/from "x" %} targets
+        # NOW, during this template's preprocess, so the components they pull in have
+        # their macros (_lotc_jinja_*) registered on the environment before rendering
+        # starts. Jinja snapshots (copies) a context's globals when a render begins;
+        # with {% extends %} the parent body runs against the child's already-taken
+        # snapshot, and the same lands on partials reached while that snapshot is live,
+        # so a macro registered later (when the target loads mid-render) resolves to
+        # Undefined. Pre-warming here closes that gap. Statically-named targets only; a
+        # dynamic name (e.g. {% include var %}) can't be pre-resolved and keeps the
+        # original render-time behaviour.
         loader = getattr(self.environment, "loader", None)
-        if loader is not None and "extends" in source:
-            for parent_name in _EXTENDS_RE.findall(source):
+        if loader is not None and (
+            "extends" in source or "include" in source or "import" in source
+        ):
+            for target in _PREWARM_RE.findall(source):
                 try:
-                    self.environment.get_template(parent_name)
-                except Exception:  # noqa: BLE001 — missing/dynamic parent: nothing to pre-warm
+                    self.environment.get_template(target)
+                except Exception:  # noqa: BLE001 — missing/dynamic target: nothing to pre-warm
                     pass
 
         # If no component tags exist, skip parsing entirely.
