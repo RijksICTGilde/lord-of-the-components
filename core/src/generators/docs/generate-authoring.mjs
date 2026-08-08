@@ -241,6 +241,21 @@ L.push(`- **Slots**: named slots via \`<template slot="name">…</template>\`; d
 L.push(`- **Enums are validated**: an out-of-set value (e.g. \`type="bogus"\`) errors (debug mode) with the allowed set.`);
 L.push(`- **Theme-owned attrs** (§5) only work while their owner is active, else a clear error.`);
 L.push(`- **Unknown component / attribute** → a hard error with a suggestion.`);
+L.push(
+  `- **Conditional attributes**: don't wrap a tag in \`{% if %}\` or put \`{% %}\`/\`{{ }}\`` +
+    ` at an attribute position — the parser reads the braces as an attribute name. Use an` +
+    ` expression attribute instead: \`:help="expr or none"\` (empty/None is omitted),` +
+    ` \`:label="(a) if cond else (b)"\`, \`:required="expr"\`. For a whole dynamic bundle` +
+    ` (htmx, arbitrary \`data-*\`/\`aria-*\`) use the spread \`:attrs="dict"\` — a flat` +
+    ` \`{name: value}\` dict merged onto the element; \`None\`/\`''\` omits an entry.`,
+);
+L.push(
+  `- **NLDD tables need \`columns\`**: \`<c-table>\` renders as a CSS-grid table under NLDD,` +
+    ` so declare the columns (e.g. \`<c-table columns="1fr 1fr">\`) or every cell stacks in one` +
+    ` column. RVO's native table needs none. \`<c-table-head>\` IS the header row (it renders` +
+    ` \`<nldd-table-row slot="header">\`) — put \`<c-th>\` cells directly in it, don't nest a` +
+    ` \`<c-table-row>\`.`,
+);
 L.push(`- One source, many themes: the same markup renders under \`nldd\` or \`rvo\`; the visual system swaps, the structure stays.`);
 L.push(``);
 
