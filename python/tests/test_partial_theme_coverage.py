@@ -81,3 +81,18 @@ def test_missing_python_component_also_detected():
     # errors too (no renderer registered).
     with pytest.raises(ComponentError):
         _env([]).from_string('<c-button label="X"/>').render()
+
+
+def test_catalog_card_href_without_open_label_is_clickable():
+    # Regression: href used to be dropped unless open-label was set (silently
+    # non-clickable). Now the title becomes a link when href is set without open-label.
+    from jinja2 import Environment, FileSystemLoader
+
+    from lord_of_the_components import setup_components
+
+    env = Environment(autoescape=True, loader=FileSystemLoader([]))
+    setup_components(env, design_systems=["nldd"])
+    out = env.from_string(
+        '<c-catalog-card icon="rectangle-stack" title="Paspoort" subtitle="BZ" href="/apps/x"/>'
+    ).render()
+    assert 'href="/apps/x"' in out  # the href is not dropped

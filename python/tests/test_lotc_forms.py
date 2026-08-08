@@ -180,3 +180,15 @@ def test_required_marks_optional_convention_under_nldd():
     opt = render(NLDD, '<c-text-input-field id="a" name="a" label="A"/>')
     assert " optional" not in req.split("data-lotc-component")[0]
     assert " optional" in opt.split("data-lotc-component")[0]
+
+
+def test_select_field_native_keeps_a_real_select_under_nldd():
+    # For JS-driven screens (value / new Option() / change), `native` renders a real
+    # <select> with a theme skin instead of NLDD's web-component combo-box.
+    src = '<c-select-field id="s" name="s" label="S" native><option value="a">A</option></c-select-field>'
+    nldd = render(NLDD, src)
+    assert "<select" in nldd and "nldd-combo-box" not in nldd
+    assert "lotc-native-select" in nldd and "<option value=\"a\">A</option>" in nldd
+    # default (no native) still uses the combo-box
+    combo = render(NLDD, '<c-select-field id="s" name="s" label="S"><c-option value="a" label="A"/></c-select-field>')
+    assert "nldd-combo-box" in combo

@@ -19,7 +19,7 @@
     <div class="lotc-catalog-top">
       {% if icon %}<span class="lotc-catalog-icon"><c-icon :icon="icon" size="md"/></span>{% endif %}
       <div class="lotc-catalog-headtext">
-        {% if title %}<c-heading type="h3" :label="title" class="lotc-catalog-title"/>{% endif %}
+        {% if title %}{% if href and not open_label %}<c-heading type="h3" class="lotc-catalog-title"><c-link :href="href">{{ title }}</c-link></c-heading>{% else %}<c-heading type="h3" :label="title" class="lotc-catalog-title"/>{% endif %}{% endif %}
         {% if subtitle %}<span class="lotc-catalog-team">{{ subtitle }}</span>{% endif %}
       </div>
       {% if status %}<c-tag :type="stype" :label="status"/>{% endif %}
