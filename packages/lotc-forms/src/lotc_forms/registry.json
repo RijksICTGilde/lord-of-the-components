@@ -10,7 +10,7 @@
         { "name": "id", "type": "string", "description": "Field id — drives label for/id and aria-describedby" },
         { "name": "name", "type": "string", "description": "Input name" },
         { "name": "label", "type": "string", "description": "Field label" },
-        { "name": "type", "type": "enum", "enum_values": ["text", "email", "tel", "url", "number", "search"], "description": "Input type" },
+        { "name": "type", "type": "enum", "enum_values": ["text", "email", "tel", "url", "number", "search", "date", "datetime-local", "time", "password"], "description": "Input type" },
         { "name": "value", "type": "string", "description": "Input value" },
         { "name": "placeholder", "type": "string", "description": "Placeholder text" },
         { "name": "autocomplete", "type": "string", "description": "autocomplete token" },

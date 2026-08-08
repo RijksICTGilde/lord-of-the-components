@@ -35,6 +35,13 @@ def render_extra(extra: Optional[Mapping[str, Any]]) -> Markup:
     for key, value in extra.items():
         if value is None:
             continue
+        # :attrs="{name: value}" spread — merge a dict onto the element (hx-*/data-*/
+        # aria-*/generic). None or '' omits an entry (same rule as :prop="expr or none").
+        if key == "attrs" and isinstance(value, dict):
+            for k, v in value.items():
+                if v is not None and v != "":
+                    parts.append(f' {k}="{escape(v)}"')
+            continue
         if key.startswith("@"):
             name = key[1:]
             attr = name if name.startswith("hx-") else "on" + name
