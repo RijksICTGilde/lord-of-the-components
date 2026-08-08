@@ -1,0 +1,87 @@
+{# A Begane Grond screen: the artifact register (a resource-listing page).
+   Extends the shared shell and fills only its own main content. The listing
+   card is composed from LOTC primitives (c-card + c-heading + c-tag + c-icon)
+   plus a thin app-CSS layer (.art-*) — exactly how bg.rijks.app itself works
+   (NLDD web components + a small app-CSS layer on top). #}
+{% extends "bg-base.html.j2" %}
+{% block title %}Artefactregister · Begane Grond{% endblock %}
+{% block main %}
+  <style>
+    .art-head{display:flex;align-items:flex-start;gap:.6rem}
+    .art-titles{flex:1 1 auto;min-width:0}
+    .art-ver{font-weight:400;color:#5a5a5a;font-size:.82em}
+    .art-digest{font-family:ui-monospace,monospace;font-size:.8rem;color:#5a5a5a;margin:.2rem 0 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .art-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.7rem 0 0}
+    .art-repo{font-family:ui-monospace,monospace;font-size:.8rem;color:#5a5a5a;display:flex;align-items:center;gap:.35rem;margin:.7rem 0 0}
+    .art-icon{color:#154273;flex:0 0 auto}
+    .page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem}
+    .page-head .intro{max-width:52rem}
+  </style>
+
+  <c-stack gap="1.25rem">
+    <c-breadcrumbs>
+      <c-breadcrumbs-item href="/environments" label="Omgevingen"/>
+      <c-breadcrumbs-item label="Artefacten"/>
+    </c-breadcrumbs>
+
+    {# page title + a primary action, on one row #}
+    <div class="page-head">
+      <div class="intro">
+        <c-heading type="h1" size="2">Artefactregister</c-heading>
+        <c-p>Elke build die het gebaande pad oplevert: container-images en packages, met hun digest, SBOM en handtekening.</c-p>
+      </div>
+      <c-button type="secondary" label="De pijplijn" icon="gear" show-icon="before"/>
+    </div>
+
+    {# summary stats — one c-metric per stat, auto-fitting the row #}
+    <c-auto-grid min="220px" gap="1rem">
+      <c-metric icon="folder-stack" value="20" label="Artefacten" sub="images en packages"/>
+      <c-metric icon="certificate" value="80%" label="Ondertekend" sub="met provenance"/>
+      <c-metric icon="lock-closed" value="2.3" label="Gem. SLSA-niveau" sub="supply-chain-borging"/>
+      <c-metric icon="exclamation-triangle" value="3" label="Met open CVE" sub="in de SBOM"/>
+    </c-auto-grid>
+
+    {# filter tabs — the active one is primary, the rest secondary #}
+    <c-stack direction="horizontal" gap="0.5rem">
+      <c-button type="primary" label="Alle"/>
+      <c-button type="secondary" label="Container-images"/>
+      <c-button type="secondary" label="Packages"/>
+    </c-stack>
+
+    {# the listing — a two-column grid of artifact cards.
+       ONE artifact card = c-card + the .art-* layout; repeat per artifact. #}
+    <c-columns columns="1" lg="2" gap="1rem">
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">toeslagenmotor <span class="art-ver">3.4.1</span></c-heading>
+            <p class="art-digest">sha256:9f2c4e…a1b7</p>
+          </div>
+          <c-tag type="success">ondertekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 3</c-tag><c-tag>412 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>minbzk/toeslagenmotor</p>
+      </c-card>
+
+      <c-card outline padding="md">
+        <div class="art-head">
+          <c-icon icon="folder-stack" size="md" class="art-icon"/>
+          <div class="art-titles">
+            <c-heading type="h2" size="4">vergunningchecker <span class="art-ver">0.6.1</span></c-heading>
+            <p class="art-digest">sha256:b204aa…1f33</p>
+          </div>
+          <c-tag type="error">ongetekend</c-tag>
+        </div>
+        <div class="art-tags">
+          <c-tag>container-image</c-tag><c-tag type="info">SLSA 1</c-tag><c-tag>222 componenten</c-tag>
+        </div>
+        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>logius/datadeling-api</p>
+      </c-card>
+
+      {# … one <c-card> per further artifact … #}
+    </c-columns>
+  </c-stack>
+{% endblock %}

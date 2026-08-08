@@ -1,0 +1,95 @@
+{# ── Begane Grond page skeleton ────────────────────────────────────────────────
+  Extend this per screen and fill {% block main %}. The shell — the demo status
+  bar, the header with its utility menu, and the FULL sidebar navigation — lives
+  here once, so a screen only writes its own main content:
+
+      {% extends "bg-base.html.j2" %}
+      {% block title %}Mijn scherm · Begane Grond{% endblock %}
+      {% block main %}
+        <c-stack gap="1.25rem"> …your content… </c-stack>
+      {% endblock %}
+
+  Mark the current page in the sidebar by adding `active` to its <c-sidenav-item>
+  (e.g. `<c-sidenav-item icon="folder-stack" label="Artefacten" href="/artefacten" active/>`).
+  In a real app you'd render the sidebar from data and pass the active path.
+─────────────────────────────────────────────────────────────────────────────── #}
+<c-page title="{% block title %}Begane Grond{% endblock %}" lang="nl" design-systems="lotc-layout nldd">
+  <c-app-shell width="16rem">
+
+    {# ── top: demo banner + header with the utility menu ── #}
+    <template slot="header">
+      <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
+      <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
+        <c-menu type="bar" slot="utility" aria-label="Hulplinks">
+          <c-menu-item label="Zoeken" icon="search"/>
+          <c-menu-item label="Notificaties (1)" icon="envelope"/>
+          <c-menu-item label="Nieuw" icon="plus" expandable/>
+          <c-menu-item label="Thema" icon="sun" expandable/>
+          <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
+        </c-menu>
+      </c-header>
+    </template>
+
+    {# ── left: the full platform navigation (mark one item `active`) ── #}
+    <template slot="sidebar">
+      <c-sidenav>
+      <c-sidenav-item icon="house" label="Overzicht" href="/"/>
+      <c-sidenav-item icon="person" label="Mijn overzicht" href="/zelf"/>
+      <c-sidenav-group label="Bouwen & draaien"/>
+      <c-sidenav-item icon="apartment-building" label="Fundament" href="/fysiek"/>
+      <c-sidenav-item icon="cylinder-split" label="Infra-diensten" href="/infra"/>
+      <c-sidenav-item icon="rectangle-stack" label="Applicaties" href="/apps"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Code" href="/code"/>
+      <c-sidenav-item icon="puzzle-piece" label="Componenten" href="/componenten"/>
+      <c-sidenav-item icon="square-on-square" label="Design system" href="/design-system"/>
+      <c-sidenav-group label="Uitrollen & draaien"/>
+      <c-sidenav-item icon="arrow-up-arrow-down" label="Omgevingen" href="/environments"/>
+      <c-sidenav-item icon="gear" label="CI-pijplijn" href="/environments/pijplijn"/>
+      <c-sidenav-item icon="timer" label="CI-runners" href="/environments/runners"/>
+      <c-sidenav-item icon="folder-stack" label="Artefacten" href="/artefacten"/>
+      <c-sidenav-item icon="flag" label="Feature flags" href="/flags"/>
+      <c-sidenav-item icon="eye" label="Observability" href="/observability"/>
+      <c-sidenav-item icon="exclamation-triangle" label="Incidenten" href="/incidenten"/>
+      <c-sidenav-group label="Mensen & werkplek"/>
+      <c-sidenav-item icon="person-2" label="Teams & mensen" href="/teams"/>
+      <c-sidenav-item icon="business-suitcase" label="Werkplekken" href="/werkplekken"/>
+      <c-sidenav-item icon="face-smiling-badge-plus" label="Leren" href="/leren"/>
+      <c-sidenav-group label="Toegang & beveiliging"/>
+      <c-sidenav-item icon="person-circle" label="Inloggen" href="/inloggen"/>
+      <c-sidenav-item icon="globe" label="Domeinen & DNS" href="/dns"/>
+      <c-sidenav-item icon="certificate" label="Certificaten" href="/secrets/certificaten"/>
+      <c-sidenav-item icon="lock-closed" label="Secrets" href="/secrets"/>
+      <c-sidenav-item icon="shield-check-mark" label="Security" href="/security"/>
+      <c-sidenav-group label="Data & koppelvlakken"/>
+      <c-sidenav-item icon="books-vertical" label="Basisregistraties" href="/registers"/>
+      <c-sidenav-item icon="chart-x-y-axis-line" label="Datasets" href="/data"/>
+      <c-sidenav-item icon="pencil-on-square" label="Datacontracten" href="/datacontracten"/>
+      <c-sidenav-item icon="link" label="Koppelvlakken" href="/koppelvlakken"/>
+      <c-sidenav-item icon="envelope" label="Notificaties" href="/notificaties"/>
+      <c-sidenav-group label="Governance & standaarden"/>
+      <c-sidenav-item icon="check-list" label="Governance" href="/governance"/>
+      <c-sidenav-item icon="clipboard" label="Wet uitvoeren" href="/wetten"/>
+      <c-sidenav-item icon="check-mark-circle" label="Standaarden" href="/standaarden"/>
+      <c-sidenav-item icon="check-list" label="NeRDS-richtlijnen" href="/nerds"/>
+      <c-sidenav-item icon="brackets-ellipsis" label="Algoritmeregister" href="/algoritmes"/>
+      <c-sidenav-item icon="clipboard" label="Privacy & DPIA" href="/verwerkingen"/>
+      <c-sidenav-item icon="file-text" label="Woo & archief" href="/openbaarheid"/>
+      <c-sidenav-item icon="eyeglasses" label="Toegankelijkheid" href="/toegankelijkheid"/>
+      <c-sidenav-item icon="heart" label="Duurzaamheid" href="/duurzaamheid"/>
+      <c-sidenav-group label="Platform, kosten & AI"/>
+      <c-sidenav-item icon="chevron-left-forward-slash-chevron-right" label="Infra als code" href="/platform/iac"/>
+      <c-sidenav-item icon="euro-sign" label="Kosten" href="/kosten"/>
+      <c-sidenav-item icon="tag" label="Software-inkoop" href="/software-inkoop"/>
+      <c-sidenav-item icon="starburst-filled" label="Scorecards" href="/scorecards"/>
+      <c-sidenav-item icon="ship-wheel" label="Tech radar" href="/tech-radar"/>
+      <c-sidenav-item icon="sparkles" label="AI & LLM" href="/ai"/>
+      <c-sidenav-item icon="terminal" label="CLI & API" href="/cli"/>
+      <c-sidenav-item icon="square-on-square" label="Fleet-shift" href="/fleet"/>
+      </c-sidenav>
+    </template>
+
+    {# ── the page's own content ── #}
+    {% block main %}{% endblock %}
+
+  </c-app-shell>
+</c-page>

@@ -1,0 +1,32 @@
+{# A second Begane Grond screen on the same shell — a dashboard overview.
+   Note how little a screen is: just its own main content in <c-*> markup.
+   The status bar, header, utility menu and full navigation come from the base. #}
+{% extends "bg-base.html.j2" %}
+{% block title %}Overzicht · Begane Grond{% endblock %}
+{% block main %}
+  <c-stack gap="1.25rem">
+    <div>
+      <c-heading type="h1" size="2">Begane Grond</c-heading>
+      <c-p>Welkom Anne, één plek voor fysieke infra, diensten, applicaties en teams van de Rijksoverheid.</c-p>
+    </div>
+
+    <c-stack direction="horizontal" gap="0.75rem">
+      <c-button type="secondary" label="Mijn overzicht" icon="person" show-icon="before"/>
+      <c-button type="primary" label="Nieuwe applicatie" icon="plus" show-icon="before"/>
+    </c-stack>
+
+    {# a row of stat cards #}
+    <c-auto-grid min="220px" gap="1rem">
+      <c-metric icon="apartment-building" value="5" label="Datacenters" sub="4 operationeel" href="/fysiek"/>
+      <c-metric icon="rectangle-stack" value="123" label="Applicaties" sub="125 repo's" href="/apps"/>
+      <c-metric icon="person-2" value="99" label="Teams" sub="393 mensen" href="/teams"/>
+      <c-metric icon="exclamation-triangle" value="21" label="Actieve incidenten" sub="aandacht nodig" href="/incidenten"/>
+    </c-auto-grid>
+
+    {# a section card with a heading and body #}
+    <c-card outline padding="lg">
+      <c-section-head title="De lagen van het platform"><c-tag type="default">persoon → datacenter</c-tag></c-section-head>
+      <c-p>Alles hangt samen. Klik een laag aan om door te dalen, of volg de keten van persoon naar team, app, instance, rack en datacenter.</c-p>
+    </c-card>
+  </c-stack>
+{% endblock %}
