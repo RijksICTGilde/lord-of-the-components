@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import gen_bg_overzicht as bg  # sidenav data + header
+from bg_shell import shell  # shared page shell + sidenav
 
 OUT = Path(__file__).resolve().parent / "fixtures" / "apps.html"
 
@@ -38,17 +38,6 @@ APPS = [
 ]
 
 
-def sidenav() -> str:
-    rows: list[str] = []
-    for group, items in bg.SIDENAV:
-        if group:
-            rows.append(f'      <c-sidenav-group label="{group}"/>')
-        for icon, label, href in items:
-            active = " active" if href == "/apps" else ""
-            rows.append(f'      <c-sidenav-item icon="{icon}" label="{label}" href="{href}"{active}/>')
-    return "\n".join(rows)
-
-
 def metrics() -> str:
     return "\n".join(
         f'      <c-metric icon="{i}" value="{v}" label="{lbl}" sub="{s}"/>'
@@ -71,28 +60,7 @@ def cards() -> str:
 
 
 def build() -> str:
-    return f"""<c-page title="Software-catalogus · Begane Grond" lang="nl" design-systems="lotc-layout nldd">
-<c-app-shell width="16rem">
-  <template slot="header">
-    <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
-    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
-      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
-        <c-menu-item label="Zoeken" icon="search"/>
-        <c-menu-item label="Notificaties (1)" icon="envelope"/>
-        <c-menu-item label="Nieuw" icon="plus" expandable/>
-        <c-menu-item label="Thema" icon="sun" expandable/>
-        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
-      </c-menu>
-    </c-header>
-  </template>
-
-  <template slot="sidebar">
-    <c-sidenav>
-{sidenav()}
-    </c-sidenav>
-  </template>
-
-  <c-stack gap="1.25rem">
+    main = f"""  <c-stack gap="1.25rem">
     <c-breadcrumbs>
       <c-breadcrumbs-item label="Home" href="/"/>
       <c-breadcrumbs-item label="Applicaties"/>
@@ -122,16 +90,16 @@ def build() -> str:
     <c-auto-grid min="320px" gap="1rem">
 {cards()}
     </c-auto-grid>
-  </c-stack>
-
-  <template slot="footer">
-    <c-site-footer text="Begane Grond — demo / mock-up" note-label="Presentatie" note="Shift + P · kies een rol" note-icon="eye">
+  </c-stack>"""
+    footer = """    <c-site-footer text="Begane Grond — demo / mock-up" note-label="Presentatie" note="Shift + P · kies een rol" note-icon="eye">
       <c-link href="/standaarden">Toegankelijkheid</c-link>
-    </c-site-footer>
-  </template>
-</c-app-shell>
-</c-page>
-"""
+    </c-site-footer>"""
+    return shell(
+        main,
+        title="Software-catalogus · Begane Grond",
+        active_href="/apps",
+        footer=footer,
+    )
 
 
 if __name__ == "__main__":

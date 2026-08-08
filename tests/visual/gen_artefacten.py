@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from gen_bg_overzicht import SIDENAV  # same navigation, Artefacten active here
+from bg_shell import artifact_card, shell  # shared shell + card helper
 
 OUT = Path(__file__).resolve().parent / "fixtures" / "artefacten.html"
 
@@ -49,17 +49,6 @@ INTRO = (
 )
 
 
-def sidenav() -> str:
-    rows: list[str] = []
-    for group, items in SIDENAV:
-        if group:
-            rows.append(f'      <c-sidenav-group label="{group}"/>')
-        for icon, label, href in items:
-            active = " active" if href == "/artefacten" else ""
-            rows.append(f'      <c-sidenav-item icon="{icon}" label="{label}" href="{href}"{active}/>')
-    return "\n".join(rows)
-
-
 def metrics() -> str:
     return "\n".join(
         f'      <c-metric icon="{i}" value="{v}" label="{lbl}" sub="{s}"/>'
@@ -68,26 +57,7 @@ def metrics() -> str:
 
 
 def artifacts() -> str:
-    cards: list[str] = []
-    for name, ver, digest, status, kind, slsa, comps, repo in ARTIFACTS:
-        stype = "success" if status == "ondertekend" else "error"
-        cards.append(
-            f"""      <c-card outline padding="md">
-        <div class="art-head">
-          <c-icon icon="folder-stack" size="md" class="art-icon"/>
-          <div class="art-titles">
-            <c-heading type="h2" size="4">{name} <span class="art-ver">{ver}</span></c-heading>
-            <p class="art-digest">{digest}</p>
-          </div>
-          <c-tag type="{stype}">{status}</c-tag>
-        </div>
-        <div class="art-tags">
-          <c-tag>{kind}</c-tag><c-tag type="info">SLSA {slsa}</c-tag><c-tag>{comps} componenten</c-tag>
-        </div>
-        <p class="art-repo"><c-icon icon="chevron-left-forward-slash-chevron-right" size="2xs"/>{repo}</p>
-      </c-card>"""
-        )
-    return "\n".join(cards)
+    return "\n".join(artifact_card(*row) for row in ARTIFACTS)
 
 
 STYLE = """
@@ -104,29 +74,7 @@ STYLE = """
 
 
 def build() -> str:
-    return f"""<c-page title="Artefactregister · Begane Grond" lang="nl" design-systems="lotc-layout nldd">
-<style>{STYLE}</style>
-<c-app-shell width="16rem">
-  <template slot="header">
-    <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
-    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
-      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
-        <c-menu-item label="Zoeken" icon="search"/>
-        <c-menu-item label="Notificaties (1)" icon="envelope"/>
-        <c-menu-item label="Nieuw" icon="plus" expandable/>
-        <c-menu-item label="Thema" icon="sun" expandable/>
-        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
-      </c-menu>
-    </c-header>
-  </template>
-
-  <template slot="sidebar">
-    <c-sidenav>
-{sidenav()}
-    </c-sidenav>
-  </template>
-
-  <c-stack gap="1.25rem">
+    main = f"""  <c-stack gap="1.25rem">
     <c-breadcrumbs>
       <c-breadcrumbs-item href="/environments" label="Omgevingen"/>
       <c-breadcrumbs-item label="Artefacten"/>
@@ -153,10 +101,13 @@ def build() -> str:
     <c-columns columns="1" lg="2" gap="1rem">
 {artifacts()}
     </c-columns>
-  </c-stack>
-</c-app-shell>
-</c-page>
-"""
+  </c-stack>"""
+    return shell(
+        main,
+        title="Artefactregister · Begane Grond",
+        active_href="/artefacten",
+        head=f"<style>{STYLE}</style>",
+    )
 
 
 if __name__ == "__main__":

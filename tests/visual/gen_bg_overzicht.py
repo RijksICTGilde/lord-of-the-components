@@ -14,72 +14,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parent / "fixtures" / "bg-overzicht.html"
+from bg_shell import shell  # shared page shell
 
-# ── extracted from https://bg.rijks.app/ (nldd-icon name | label | href) ────────
-SIDENAV: list[tuple[str | None, list[tuple[str, str, str]]]] = [
-    (None, [
-        ("house", "Overzicht", "/"),
-        ("person", "Mijn overzicht", "/zelf"),
-    ]),
-    ("Bouwen & draaien", [
-        ("apartment-building", "Fundament", "/fysiek"),
-        ("cylinder-split", "Infra-diensten", "/infra"),
-        ("rectangle-stack", "Applicaties", "/apps"),
-        ("chevron-left-forward-slash-chevron-right", "Code", "/code"),
-        ("puzzle-piece", "Componenten", "/componenten"),
-        ("square-on-square", "Design system", "/design-system"),
-    ]),
-    ("Uitrollen & draaien", [
-        ("arrow-up-arrow-down", "Omgevingen", "/environments"),
-        ("gear", "CI-pijplijn", "/environments/pijplijn"),
-        ("timer", "CI-runners", "/environments/runners"),
-        ("folder-stack", "Artefacten", "/artefacten"),
-        ("flag", "Feature flags", "/flags"),
-        ("eye", "Observability", "/observability"),
-        ("exclamation-triangle", "Incidenten", "/incidenten"),
-    ]),
-    ("Mensen & werkplek", [
-        ("person-2", "Teams & mensen", "/teams"),
-        ("business-suitcase", "Werkplekken", "/werkplekken"),
-        ("face-smiling-badge-plus", "Leren", "/leren"),
-    ]),
-    ("Toegang & beveiliging", [
-        ("person-circle", "Inloggen", "/inloggen"),
-        ("globe", "Domeinen & DNS", "/dns"),
-        ("certificate", "Certificaten", "/secrets/certificaten"),
-        ("lock-closed", "Secrets", "/secrets"),
-        ("shield-check-mark", "Security", "/security"),
-    ]),
-    ("Data & koppelvlakken", [
-        ("books-vertical", "Basisregistraties", "/registers"),
-        ("chart-x-y-axis-line", "Datasets", "/data"),
-        ("pencil-on-square", "Datacontracten", "/datacontracten"),
-        ("link", "Koppelvlakken", "/koppelvlakken"),
-        ("envelope", "Notificaties", "/notificaties"),
-    ]),
-    ("Governance & standaarden", [
-        ("check-list", "Governance", "/governance"),
-        ("clipboard", "Wet uitvoeren", "/wetten"),
-        ("check-mark-circle", "Standaarden", "/standaarden"),
-        ("check-list", "NeRDS-richtlijnen", "/nerds"),
-        ("brackets-ellipsis", "Algoritmeregister", "/algoritmes"),
-        ("clipboard", "Privacy & DPIA", "/verwerkingen"),
-        ("file-text", "Woo & archief", "/openbaarheid"),
-        ("eyeglasses", "Toegankelijkheid", "/toegankelijkheid"),
-        ("heart", "Duurzaamheid", "/duurzaamheid"),
-    ]),
-    ("Platform, kosten & AI", [
-        ("chevron-left-forward-slash-chevron-right", "Infra als code", "/platform/iac"),
-        ("euro-sign", "Kosten", "/kosten"),
-        ("tag", "Software-inkoop", "/software-inkoop"),
-        ("starburst-filled", "Scorecards", "/scorecards"),
-        ("ship-wheel", "Tech radar", "/tech-radar"),
-        ("sparkles", "AI & LLM", "/ai"),
-        ("terminal", "CLI & API", "/cli"),
-        ("square-on-square", "Fleet-shift", "/fleet"),
-    ]),
-]
+OUT = Path(__file__).resolve().parent / "fixtures" / "bg-overzicht.html"
 
 # nldd-icon name | value | label | sub | href
 METRICS: list[tuple[str, str, str, str, str]] = [
@@ -111,17 +48,6 @@ ACTIVITY: list[tuple[str, str, str, str, str]] = [
 ]
 
 
-def sidenav() -> str:
-    rows: list[str] = []
-    for group, items in SIDENAV:
-        if group:
-            rows.append(f'      <c-sidenav-group label="{group}"/>')
-        for icon, label, href in items:
-            active = ' active' if href == "/" else ''
-            rows.append(f'      <c-sidenav-item icon="{icon}" label="{label}" href="{href}"{active}/>')
-    return "\n".join(rows)
-
-
 def metrics() -> str:
     return "\n".join(
         f'      <c-metric icon="{i}" value="{v}" label="{lbl}" sub="{s}" href="{h}"/>'
@@ -149,32 +75,7 @@ def activity() -> str:
 
 
 def build() -> str:
-    return f"""<c-page title="Overzicht · Begane Grond" lang="nl" design-systems="lotc-layout nldd">
-<!-- Mix-and-match: NLDD primitives + BGNLDD app components. c-page loads the
-     CSS/JS for both declared design systems itself. -->
-<!-- GAP still: no c-status-bar; c-header has no utility-menu slot. -->
-
-<c-app-shell width="16rem">
-  <template slot="header">
-    <c-status-bar text="Begane Grond is een demo / mock-up. Geen productiedata."/>
-    <c-header text="Begane Grond" subtitle="developer platform voor de Rijksoverheid" link="/">
-      <c-menu type="bar" slot="utility" aria-label="Hulplinks">
-        <c-menu-item label="Zoeken" icon="search"/>
-        <c-menu-item label="Notificaties (1)" icon="envelope"/>
-        <c-menu-item label="Nieuw" icon="plus" expandable/>
-        <c-menu-item label="Thema" icon="sun" expandable/>
-        <c-menu-item label="Anne Schuth · Platform engineer" icon="person-circle"/>
-      </c-menu>
-    </c-header>
-  </template>
-
-  <template slot="sidebar">
-    <c-sidenav>
-{sidenav()}
-    </c-sidenav>
-  </template>
-
-  <c-stack gap="1.25rem">
+    main = f"""  <c-stack gap="1.25rem">
     <div>
       <c-heading type="h1" size="2">Begane Grond</c-heading>
       <c-p>Welkom Anne, één plek voor fysieke infra, diensten, applicaties en teams van de Rijksoverheid.</c-p>
@@ -205,10 +106,8 @@ def build() -> str:
         </c-activity>
       </c-card>
     </c-columns>
-  </c-stack>
-</c-app-shell>
-</c-page>
-"""
+  </c-stack>"""
+    return shell(main, title="Overzicht · Begane Grond", active_href="/")
 
 
 if __name__ == "__main__":
