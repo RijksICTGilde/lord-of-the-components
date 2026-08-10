@@ -1,7 +1,7 @@
 {
  "meta": {
-  "nldd_version": "0.8.72",
-  "components": 95
+  "nldd_version": "0.8.80",
+  "components": 98
  },
  "components": [
   {
@@ -430,6 +430,16 @@
    "name": "toolbar-title",
    "attributes": [
     {
+     "name": "href",
+     "type": "string",
+     "description": "Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` s"
+    },
+    {
+     "name": "target",
+     "type": "string",
+     "description": "Where the link opens; only meaningful with `href`. `_blank` adds rel=\"noopener noreferrer\" and a visually hidden \"opens "
+    },
+    {
      "name": "text",
      "type": "string",
      "description": "Title text."
@@ -463,6 +473,11 @@
      "name": "max-width",
      "type": "string",
      "description": "Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys (the new-tab announcement); unset keys fall back to Dutch."
     }
    ],
    "description": "NLDD toolbar-title",
@@ -531,33 +546,39 @@
    }
   },
   {
-   "name": "avatar",
+   "name": "avatar-group",
    "attributes": [
     {
-     "name": "src",
+     "name": "size",
      "type": "string",
-     "description": "Afbeeldingsbron; valt bij een laadfout terug op initialen/icoon"
+     "description": "Diameter of each avatar in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96); default 40"
     },
     {
-     "name": "srcset",
+     "name": "max",
      "type": "string",
-     "description": "Responsive source set voor de afbeelding (het component zet zelf `sizes`)"
+     "description": "Shows at most this many avatars; the rest go behind a \"+N\" button that opens them as a list of names"
     },
     {
-     "name": "name",
+     "name": "accessible-label",
      "type": "string",
-     "description": "Naam van de persoon/organisatie; levert de afgeleide initialen en het toegankelijke label"
+     "description": "Describes the group as a whole (e.g. \"Editors\"); without a label the group is not a landmark of its own and the avatars "
     },
     {
-     "name": "initials",
+     "name": "translations",
      "type": "string",
-     "description": "Expliciete initialen, max 3 tekens (overschrijft de afleiding uit `name`; ook voor organisatie-acroniemen)"
-    },
-    {
-     "name": "icon",
-     "type": "string",
-     "description": "Overschrijft het type-afhankelijke terugval-icoon"
-    },
+     "description": ""
+    }
+   ],
+   "description": "Shows several avatars as one group: they overlap, and each one gets a ring in the surface color so they stay apart where they meet. The ring",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "avatar",
+   "attributes": [
     {
      "name": "type",
      "type": "enum",
@@ -566,17 +587,7 @@
       "organization"
      ],
      "default": "person",
-     "description": "`person` (cirkel, person-icoon) of `organization` (afgerond, building-icoon); standaard `person`"
-    },
-    {
-     "name": "color",
-     "type": "enum",
-     "enum_values": [
-      "default",
-      "inherit"
-     ],
-     "default": "default",
-     "description": "`default` (neutrale vulling) of `inherit` (vulling in de content-kleur: de `--context-content-color`-channel, of `curren"
+     "description": "`person` (circle, person icon) or `organization` (rounded, building icon); default `person`"
     },
     {
      "name": "size",
@@ -596,86 +607,90 @@
       "80",
       "96"
      ],
-     "description": "`full` (standaard) schaalt mee met de container, net als nldd-icon; of een vaste maat in px (spacer-uitgelijnd: 16, 20, "
+     "description": "`full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 4"
+    },
+    {
+     "name": "color",
+     "type": "enum",
+     "enum_values": [
+      "default",
+      "inherit"
+     ],
+     "default": "default",
+     "description": "`default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColo"
     },
     {
      "name": "icon-aligned",
      "type": "boolean",
-     "description": "Krimpt de zichtbare schijf naar 5/6 van de host, gecentreerd, zodat de avatar optisch uitlijnt met een icoon op hetzelfd"
+     "description": "Shrinks the visible shape to 5/6 of the host, centered, so the avatar aligns optically with an icon on the same grid (an"
     },
     {
-     "name": "decorative",
-     "type": "boolean",
-     "description": "Verbergt de avatar voor hulpsoftware (gebruik wanneer de naam er al als tekst naast staat)"
-    },
-    {
-     "name": "href",
+     "name": "name",
      "type": "string",
-     "description": "Maakt de avatar een link naar deze URL; de schijf zelf wordt de link, dus klikgebied en focusring volgen de vorm"
+     "description": "Name of the person or organization; supplies the derived initials and the accessible label"
     },
     {
-     "name": "button",
-     "type": "boolean",
-     "description": "Maakt de avatar een knop; genegeerd wanneer `href` is gezet"
-    },
-    {
-     "name": "target",
+     "name": "initials",
      "type": "string",
-     "description": "Link target voor href (bijv. '_blank'); vult rel aan en meldt \"Opent in nieuw tabblad\""
+     "description": "Explicit initials, at most 3 characters (overrides what is derived from `name`; also for organization acronyms)"
     },
     {
-     "name": "rel",
+     "name": "src",
      "type": "string",
-     "description": "Link rel voor href; standaard 'noopener noreferrer' bij target='_blank'"
+     "description": "Image source; falls back to initials or icon when it fails to load"
+    },
+    {
+     "name": "srcset",
+     "type": "string",
+     "description": "Responsive source set for the image (the component sets `sizes` itself)"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Overrides the type-dependent fallback icon"
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Naam van de link of knop; zonder deze wordt `name` gebruikt"
+     "description": "Name of the link or button; without it `name` is used"
+    },
+    {
+     "name": "decorative",
+     "type": "boolean",
+     "description": "Hides the avatar from assistive software (use when the name already stands beside it as text)"
+    },
+    {
+     "name": "tooltip-timing",
+     "type": "string",
+     "description": "When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An av"
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it"
+    },
+    {
+     "name": "button",
+     "type": "boolean",
+     "description": "Makes the avatar a button; ignored when `href` is set"
+    },
+    {
+     "name": "target",
+     "type": "string",
+     "description": "Link target for href (e.g. '_blank'); completes rel and announces \"Opens in a new tab\""
+    },
+    {
+     "name": "rel",
+     "type": "string",
+     "description": "Link rel for href; defaults to 'noopener noreferrer' when target='_blank'"
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Overschrijf translation keys; niet gezette keys vallen terug op het Nederlands"
+     "description": "Override translation keys; unset keys fall back to Dutch"
     }
    ],
-   "description": "Toont één persoon of organisatie als een compacte, ronde (persoon) of afgeronde (organisatie) representatie. De inhoud volgt een vaste terug",
-   "category": "content",
-   "backend": "jinja",
-   "content": {
-    "allowed": true
-   }
-  },
-  {
-   "name": "byline",
-   "attributes": [
-    {
-     "name": "text",
-     "type": "string",
-     "description": "Naamregel (bijv. \"Jan Jansen en Piet Pietersen\"); fallback wanneer de text-slot leeg is"
-    },
-    {
-     "name": "supporting-text",
-     "type": "string",
-     "description": "Ondersteunende tekst onder de naamregel (bijv. rol of datum); fallback wanneer de supporting-text-slot leeg is"
-    },
-    {
-     "name": "avatar-src",
-     "type": "string",
-     "description": "Bron van één avatar (alternatief voor de avatars-slot); genegeerd zodra de avatars-slot gevuld is"
-    },
-    {
-     "name": "avatar-srcset",
-     "type": "string",
-     "description": "Responsive source set voor de avatar-src-afbeelding"
-    },
-    {
-     "name": "avatar-alt",
-     "type": "string",
-     "description": "Alt-tekst voor de avatar-src-afbeelding; leeg = decoratief"
-    }
-   ],
-   "description": "Een redactionele regel die auteurs of redacteuren toont: optionele avatar(s), een naamregel en ondersteunende tekst (bijvoorbeeld functie of",
+   "description": "Shows one person or organization as a compact, round (person) or rounded (organization) representation. The content follows a fixed fallback",
    "category": "content",
    "backend": "jinja",
    "content": {
@@ -687,13 +702,14 @@
    "attributes": [
     {
      "name": "variant",
-     "type": "string",
-     "description": "Visual style. `box` (default) is a framed card with rounded corners, padding, fill, and a 1px border ring. `simple` drop"
-    },
-    {
-     "name": "background",
-     "type": "string",
-     "description": "Surface fill when `variant=\"box\"`."
+     "type": "enum",
+     "enum_values": [
+      "box-tinted",
+      "box-base",
+      "simple"
+     ],
+     "default": "box-tinted",
+     "description": "Visual style. The two `box` values are a framed card with rounded corners, padding, fill, and a 1px border ring, and dif"
     },
     {
      "name": "language",
@@ -1075,10 +1091,10 @@
      "enum_values": [
       "inherit"
      ],
-     "description": "'inherit' laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories); over"
+     "description": "'inherit' lets the title take the text color of the ondergrond volgen (voor gekleurde vlakken zoals de filled-categories"
     }
    ],
-   "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot for actions on the right.",
+   "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.",
    "category": "content",
    "backend": "jinja",
    "content": {
@@ -1130,7 +1146,7 @@
      "description": "Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not"
     }
    ],
-   "description": "A token component representing a piece of data — such as a person in an address field or an active filter value. Optionally dismissable or i",
+   "description": "A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be o",
    "category": "content",
    "backend": "jinja",
    "content": {
@@ -1143,12 +1159,12 @@
     {
      "name": "text",
      "type": "string",
-     "description": "Tooltip tekst"
+     "description": "Tooltip text"
     },
     {
      "name": "open",
      "type": "boolean",
-     "description": "Forceer de tooltip zichtbaar, ongeacht hover/focus. Gebruik voor programmatische feedback (bv. \"Gekopieerd\"). Reset naar"
+     "description": "Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback (\"Copied\", for instance). Res"
     },
     {
      "name": "placement",
@@ -1161,7 +1177,7 @@
       "auto"
      ],
      "default": "bottom",
-     "description": "Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')"
+     "description": "Position: 'top' | 'bottom' | 'left' | 'right' (default: 'bottom'; automatically 'top' on touch devices)"
     },
     {
      "name": "timing",
@@ -1172,10 +1188,10 @@
       "never"
      ],
      "default": "default",
-     "description": "Wanneer de tooltip verschijnt op hover: 'instant' — direct, zonder show-delay. 'default' — na de standaard show-delay (7"
+     "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show del"
     }
    ],
-   "description": "Wrapper component dat een tooltip toont bij hover of focus op het child element. Gebruikt `display: contents` zodat het de layout van het ch",
+   "description": "A wrapper that shows a tooltip on hover or focus of its child element. It uses `display: contents`, so it does not affect the child's layout",
    "category": "content",
    "backend": "jinja",
    "content": {
@@ -1700,6 +1716,77 @@
    }
   },
   {
+   "name": "file-field",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "Field size: 'md' (default) | 'sm'. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "accept",
+     "type": "string",
+     "description": "Comma-separated list of accepted file types, forwarded to the input (e.g. \".pdf,image/*\")"
+    },
+    {
+     "name": "multiple",
+     "type": "boolean",
+     "description": "Allows choosing more than one file"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible label forwarded to the inner input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Sets the id on the native input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "error-message-ids",
+     "type": "string",
+     "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Marks the field as valid; shows a check icon on the right, like nldd-dropdown"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the field as invalid; shows an alert icon on the right, like nldd-dropdown"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Name for form submission"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Marks the field required (invalid while no file is chosen)"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    }
+   ],
+   "description": "A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss b",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
    "name": "multi-line-text-field",
    "attributes": [
     {
@@ -2016,6 +2103,11 @@
      "name": "checked",
      "type": "boolean",
      "description": "Checked state"
+    },
+    {
+     "name": "decorative",
+     "type": "boolean",
+     "description": "Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsew"
     },
     {
      "name": "disabled",
@@ -2471,16 +2563,6 @@
      "description": "'simple' (default, bare) | 'input-field' (framed surface)"
     },
     {
-     "name": "font",
-     "type": "enum",
-     "enum_values": [
-      "sans",
-      "mono"
-     ],
-     "default": "sans",
-     "description": "'sans' (default) | 'mono'"
-    },
-    {
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible label forwarded to the editor. Set automatically by nldd-form-field."
@@ -2595,6 +2677,163 @@
     }
    ],
    "description": "NLDD text-field",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "time-field",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "string",
+     "description": "'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "De tijd als `HH:mm` (24-uurs). Leeg wanneer er geen geldige tijd staat."
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Laatst toegestane tijd als `HH:mm`."
+    },
+    {
+     "name": "step",
+     "type": "string",
+     "description": "Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspri"
+    },
+    {
+     "name": "no-picker",
+     "type": "boolean",
+     "description": "Verbergt de picker-knop. Standaard staat die knop er wel."
+    },
+    {
+     "name": "input-id",
+     "type": "string",
+     "description": "Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": "Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Markeert het veld als ongeldig."
+    },
+    {
+     "name": "valid",
+     "type": "boolean",
+     "description": "Markeert het veld als geldig."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Uitgeschakelde staat."
+    },
+    {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Alleen-lezen staat."
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Verplichte staat."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Naam voor formulierverzending."
+    },
+    {
+     "name": "autocomplete",
+     "type": "string",
+     "description": "Autocomplete-hint."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "error-message-ids",
+     "type": "string",
+     "description": "Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field."
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een ei"
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+    }
+   ],
+   "description": "Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het Nederlands ook de weergave, dus anders dan bij nldd-date-fie",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "time-picker",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "De gekozen tijd als `HH:mm` (24-uurs)."
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": "Laatst toegestane tijd als `HH:mm`."
+    },
+    {
+     "name": "step",
+     "type": "string",
+     "description": "Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan."
+    },
+    {
+     "name": "rows",
+     "type": "string",
+     "description": "Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven "
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "Breedte: `full` vult de container, of geef een eigen CSS-lengte."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Toegankelijke naam van de picker."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+    }
+   ],
+   "description": "Twee kolommen, uren en minuten, die als een wiel langs de selectie in het midden schuiven. Het component is zelfstandig bruikbaar (inline op",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -2919,6 +3158,21 @@
      "name": "lg-column-count",
      "type": "string",
      "description": "Column count when this container is lg-wide"
+    },
+    {
+     "name": "width",
+     "type": "string",
+     "description": "'full' (default, fills the parent) | 'fit-content' | a CSS length (e.g. '480px'). A container narrower than its parent s"
+    },
+    {
+     "name": "min-width",
+     "type": "string",
+     "description": "Minimum width as a CSS length (e.g. '280px')"
+    },
+    {
+     "name": "max-width",
+     "type": "string",
+     "description": "Maximum width as a CSS length (e.g. '480px')"
     },
     {
      "name": "horizontal-alignment",
@@ -3605,6 +3859,28 @@
      "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
     },
     {
+     "name": "horizontal-alignment",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center",
+      "right"
+     ],
+     "default": "left",
+     "description": "Where the body's children sit across the body ('left' default). Use it to place something narrower than the body, such a"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "top",
+     "description": "Where the body's children sit down the section ('top' default). Only visible when the section is taller than its content"
+    },
+    {
      "name": "background",
      "type": "enum",
      "enum_values": [
@@ -3810,7 +4086,7 @@
     {
      "name": "anchor",
      "type": "string",
-     "description": "ID van het trigger-element voor positionering"
+     "description": "ID of the trigger element, used for positioning"
     },
     {
      "name": "placement",
@@ -3828,50 +4104,50 @@
     {
      "name": "width",
      "type": "string",
-     "description": "Expliciete width (default: 320px via --components-popover-default-width)"
+     "description": "Width as a CSS length (default: 320px through --components-popover-default-width). A content-based size (`fit-content`, "
     },
     {
      "name": "top",
      "type": "string",
-     "description": "CSS top-positie. Wanneer gezet (alleen of samen met andere edge-attrs of `centered`) wordt Floating UI's anchor-position"
+     "description": "CSS top position. When set (on its own, or together with other edge attributes or `centered`) Floating UI's anchor posit"
     },
     {
      "name": "left",
      "type": "string",
-     "description": "CSS left-positie. Zie `top` voor semantiek."
+     "description": "CSS left position. See `top` for the semantics."
     },
     {
      "name": "right",
      "type": "string",
-     "description": "CSS right-positie. Zie `top` voor semantiek."
+     "description": "CSS right position. See `top` for the semantics."
     },
     {
      "name": "bottom",
      "type": "string",
-     "description": "CSS bottom-positie. Zie `top` voor semantiek."
+     "description": "CSS bottom position. See `top` for the semantics."
     },
     {
      "name": "centered",
      "type": "boolean",
-     "description": "Centreert beide assen op de viewport. Per as overrideable: `centered top=\"0\"` = horizontaal gecentreerd, top-aligned. Mi"
+     "description": "Centers both axes on the viewport. Overridable per axis: `centered top=\"0\"` is centered horizontally, aligned to the top"
     },
     {
      "name": "sm-full-height",
      "type": "boolean",
-     "description": "Op sm-viewport (waar de popover als bottom-sheet rendert) de volledige beschikbare hoogte vullen i.p.v. te krimpen naar "
+     "description": "On an sm viewport (where the popover renders as a bottom sheet) fills the whole available height instead of shrinking to"
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "(verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Popover') als niet gezet — geef altijd een "
+     "description": "(required) Accessible name (aria-label). Falls back to the i18n default ('Popover') when unset — always give a unique, d"
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Override translation keys; unset keys vallen terug op de Nederlandse default."
+     "description": "Override translation keys; unset keys fall back to the Dutch default."
     }
    ],
-   "description": "Een non-modal floating panel dat is verankerd aan een trigger-element. Gebouwd op de native Popover API (popover=\"auto\") met Floating UI voo",
+   "description": "A non-modal floating panel anchored to a trigger element. Built on the native Popover API (popover=\"auto\") with Floating UI for positioning.",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -4712,7 +4988,7 @@
       "none"
      ],
      "default": "past",
-     "description": "Status van deze stap (standaard 'past'); dezelfde waarden als `nldd-step-indicator-item`. `none` tekent alleen de lijn, "
+     "description": "Status of this step (default 'past'); the same values as `nldd-step-indicator-item`. `none` draws the line only, without"
     },
     {
      "name": "variant",
@@ -4739,12 +5015,12 @@
       "step"
      ],
      "default": "dot",
-     "description": "Wat deze rij is: een `dot` (standaard) op een tijdlijn van gebeurtenissen, stip van 16px, of een `step` in een stappenli"
+     "description": "What this row is: a `dot` (default) on a timeline of events, a 16px dot, or a `step` in a list of steps, a 24px dot with"
     },
     {
      "name": "minor",
      "type": "boolean",
-     "description": "Deze rij hoort onder de vorige: een kleinere stip in dezelfde baan, dus het spoor loopt recht door en er springt niets i"
+     "description": "This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing inden"
     },
     {
      "name": "direction",
@@ -4757,7 +5033,7 @@
       "up"
      ],
      "default": "down",
-     "description": "Richting waarin de tijdlijn vooruit loopt: `down` (standaard) zet het verleden boven, `up` eronder. Alleen de huidige st"
+     "description": "The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has"
     },
     {
      "name": "position",
@@ -4765,20 +5041,31 @@
      "enum_values": [
       "first",
       "between",
-      "last"
+      "last",
+      "only"
      ],
      "default": "between",
-     "description": "Plek in de reeks (standaard 'between'): bepaalt of de lijn boven, onder of aan beide kanten van de stip doorloopt"
+     "description": "Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `"
     },
     {
      "name": "text",
      "type": "string",
-     "description": "Cijfer of korte tekst in de stip"
+     "description": "Number or short text in the dot"
     },
     {
      "name": "icon",
      "type": "string",
-     "description": "Icoonnaam in de stip; wint van `text`"
+     "description": "Icon name in the dot; wins over `text`"
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
     }
    ],
    "description": "A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state.",
@@ -5080,15 +5367,11 @@
      "type": "enum",
      "enum_values": [
       "simple",
-      "box"
+      "box-tinted",
+      "box-base"
      ],
      "default": "simple",
-     "description": "Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, `box` a framed card with rounded cor"
-    },
-    {
-     "name": "background",
-     "type": "string",
-     "description": "Surface fill for `variant=\"box\"` (default 'tinted'). Use `base` on an already-tinted parent. No effect with `variant=\"si"
+     "description": "Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card w"
     },
     {
      "name": "type",
@@ -5108,9 +5391,15 @@
      "description": "Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type=\"list\"`; wins over `arrow-navigat"
     },
     {
-     "name": "no-dividers",
-     "type": "boolean",
-     "description": "Hides the dividers between list items"
+     "name": "dividers",
+     "type": "enum",
+     "enum_values": [
+      "always",
+      "on-touch",
+      "never"
+     ],
+     "default": "always",
+     "description": "When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch"
     },
     {
      "name": "arrow-navigation",
@@ -5406,6 +5695,16 @@
      ],
      "default": "neutral",
      "description": "Color and default icon (default: 'neutral')"
+    },
+    {
+     "name": "size",
+     "type": "enum",
+     "enum_values": [
+      "sm",
+      "md"
+     ],
+     "default": "md",
+     "description": "Banner size (default: 'md'). 'sm' tightens the padding to 8px, drops the icon to 24px and uses a smaller dismiss button "
     },
     {
      "name": "icon",
@@ -5955,22 +6254,22 @@
     {
      "name": "status",
      "type": "string",
-     "description": "`past` | `current` | `future`; overschrijft wat de ouder afleidt"
+     "description": "`past` | `current` | `future`; overrides what the parent derives"
     },
     {
      "name": "text",
      "type": "string",
-     "description": "Label onder de bol"
+     "description": "Label under the disc"
     },
     {
      "name": "icon",
      "type": "string",
-     "description": "Icoon in de bol in plaats van het cijfer of het vinkje"
+     "description": "Icon in the disc instead of the number or the check mark"
     },
     {
      "name": "href",
      "type": "string",
-     "description": "Maakt de stap een link (bijvoorbeeld terug naar een afgeronde stap)"
+     "description": "Makes the step a link (back to a completed step, for instance)"
     },
     {
      "name": "button",
@@ -5978,7 +6277,7 @@
      "description": "For flows without a URL per step (a wizard inside one window). Ignored"
     }
    ],
-   "description": "Eén stap in een `nldd-step-indicator`. De ouder bepaalt de status en het",
+   "description": "One step in an `nldd-step-indicator`. The parent decides the status and the",
    "category": "feedback",
    "backend": "jinja",
    "content": {
@@ -5991,20 +6290,20 @@
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Naam van de nav; standaard de i18n-waarde (\"Voortgang\")"
+     "description": "Name of the nav; defaults to the i18n value (\"Voortgang\")"
     },
     {
      "name": "current",
      "type": "string",
-     "description": "1-based nummer van de huidige stap (standaard 1)"
+     "description": "1-based number of the current step (default 1)"
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Overschrijf vertaalsleutels; niet gezette vallen terug op Nederlands"
+     "description": "Override translation keys; unset keys fall back to Dutch"
     }
    ],
-   "description": "Toont waar je staat in een proces van meerdere stappen: een rij bollen met een cijfer (of een vinkje op wat af is), een label eronder en een",
+   "description": "Shows where you are in a process of several steps: a row of discs with a number (or a check mark on what is done), a label under each and a ",
    "category": "feedback",
    "backend": "jinja",
    "content": {

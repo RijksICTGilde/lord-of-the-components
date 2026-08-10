@@ -51,7 +51,6 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 const OVERRIDES = {
   toolbar: `<c-toolbar><template slot="start"><c-button type="secondary" label="Terug"/></template><template slot="center"><c-toolbar-title text="Documenttitel"/></template><template slot="end"><c-button type="primary" label="Opslaan"/></template></c-toolbar>`,
   title: `<c-title><template slot="overline">Sectie</template>Hoofdtitel<template slot="subtitle">Een ondertitel die context geeft</template></c-title>`,
-  byline: `<c-byline><template slot="avatars"><c-avatar initials="AS"/></template><template slot="text">Anne Schuth</template><template slot="supporting-text">2 uur geleden</template></c-byline>`,
   banner: `<c-banner text="Let op: dit is een demo-omgeving." variant="warning"><template slot="actions"><c-button type="secondary" label="Sluiten"/></template></c-banner>`,
   collection: `<c-collection><c-card outline padding="md">Item A</c-card><c-card outline padding="md">Item B</c-card><template slot="footer"><c-button type="secondary" label="Meer laden"/></template></c-collection>`,
   "activity-indicator": `<c-activity-indicator text="Bezig met laden…" show-text/>`,
