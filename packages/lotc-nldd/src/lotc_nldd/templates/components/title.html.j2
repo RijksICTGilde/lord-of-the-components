@@ -4,7 +4,7 @@
 <nldd-title{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('color') %} color="{{ _component_context.get('color') }}"{% endif %} data-lotc-component="title" {{ attrs.render_extra_attributes(_component_context) }}>
 {% if _component_context.get('slots', {}).get('overline') %}<div slot="overline">{{ _component_context['slots']['overline'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('subtitle') %}<div slot="subtitle">{{ _component_context['slots']['subtitle'] | safe }}</div>{% endif %}
-{% if _component_context.get('slots', {}).get('actions') %}<div slot="actions">{{ _component_context['slots']['actions'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('end') %}<div slot="end">{{ _component_context['slots']['end'] | safe }}</div>{% endif %}
 {{ _component_context.get('content', '') | safe }}
 </nldd-title>
 {% endmacro %}

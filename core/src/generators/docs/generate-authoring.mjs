@@ -261,7 +261,7 @@ L.push(
 );
 L.push(
   `- **Named-slot-only components**: some NLDD components (e.g. \`c-icon-button\`,` +
-    ` \`c-toolbar\`, \`c-byline\`) accept only named slots — put content in` +
+    ` \`c-toolbar\`, \`c-toolbar-title\`) accept only named slots — put content in` +
     ` \`<template slot="…">\`, not as default children, which have nowhere to go and are` +
     ` dropped silently. (A tooltip on an icon-button goes in its \`popup\` slot, not as a child.)`,
 );
