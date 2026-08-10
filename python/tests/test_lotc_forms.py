@@ -108,12 +108,12 @@ def test_radio_and_checkbox_are_lotc_forms_not_shadowed_by_nldd():
     assert 'role="radiogroup"' in out
 
 
-def test_file_input_has_nldd_fallback_badge():
-    out = render(NLDD, ALL_FIELDS["file-input-field"])
-    assert 'type="file"' in out
-    assert "lotc-file-fallback" in out
-    # under RVO there is no fallback note (it is the native field)
-    assert "lotc-file-fallback" not in render(RVO, ALL_FIELDS["file-input-field"])
+def test_file_input_uses_the_native_field_per_theme():
+    # NLDD gained nldd-file-field (0.8.80); no more RVO fallback badge under NLDD.
+    nldd = render(NLDD, ALL_FIELDS["file-input-field"])
+    assert "nldd-file-field" in nldd and "lotc-file-fallback" not in nldd
+    rvo = render(RVO, ALL_FIELDS["file-input-field"])
+    assert 'type="file"' in rvo
 
 
 def test_attrs_spread_lands_on_control():

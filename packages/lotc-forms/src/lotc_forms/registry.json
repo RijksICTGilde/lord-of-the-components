@@ -123,7 +123,7 @@
         { "name": "disabled", "type": "boolean", "description": "Disabled" },
         { "name": "class", "type": "string", "description": "Extra CSS classes" }
       ],
-      "description": "Labelled file input. NLDD has no native file field, so under NLDD it renders the RVO field with a visible fallback badge.",
+      "description": "Labelled file input (native nldd-file-field under NLDD, native file input under RVO).",
       "category": "forms", "backend": "jinja", "content": { "allowed": false }
     },
     {
