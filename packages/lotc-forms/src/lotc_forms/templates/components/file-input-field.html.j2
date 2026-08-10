@@ -1,7 +1,7 @@
 {% import 'components/_forms.j2' as f %}
-{# NLDD has no native file field (confirmed absent from the NLDD manifest), so
-   this always renders the RVO/native file input; under NLDD it adds a visible
-   fallback badge rather than dropping the field. #}
+{# NLDD gained a native file field in 0.8.80 (nldd-file-field), so under NLDD this
+   now renders the real theme field (no RVO fallback badge); RVO keeps its native
+   file input. #}
 {% macro lotc_render(_component_context) %}
 {% set c = _component_context %}
 {% set id = c.get('id', '') %}{% set name = c.get('name', '') %}{% set label = c.get('label', '') %}
@@ -9,8 +9,13 @@
 {% set required = c.get('required', false) %}{% set disabled = c.get('disabled', false) %}
 {% set accept = c.get('accept', '') %}{% set multiple = c.get('multiple', false) %}
 {% set db = f.describedby(id, help, error) %}
+{% if 'nldd' in lotc_design_systems %}
+{% call f.nldd_field(id, label, help, error, required, 'file-input-field') %}
+<nldd-file-field input-id="{{ id }}" name="{{ name }}"{% if accept %} accept="{{ accept }}"{% endif %}{% if multiple %} multiple{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-file-field>
+{% endcall %}
+{% else %}
 {% call f.rvo_field(id, label, help, error, required, 'file-input-field') %}
 <input id="{{ id }}" name="{{ name }}" type="file"{% if accept %} accept="{{ accept }}"{% endif %}{% if multiple %} multiple{% endif %} class="utrecht-textbox utrecht-textbox--html-input rvo-file-input{% if error %} utrecht-textbox--invalid{% endif %}"{% if db %} aria-describedby="{{ db }}"{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{{ f.render_attrs(c) }} />
-{% if 'nldd' in lotc_design_systems %}<span class="lotc-file-fallback" role="note">RVO-veld (NLDD heeft geen eigen bestandsveld)</span>{% endif %}
 {% endcall %}
+{% endif %}
 {% endmacro %}

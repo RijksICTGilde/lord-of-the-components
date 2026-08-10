@@ -115,14 +115,14 @@ setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-forms"])
   <br>attrs: `id`, `name`, `label`, `value`, `checked` (bool), `help`, `error`, `required` (bool)
 - `<c-date-input-field>` — Labelled date input with help/error and ARIA wiring
   <br>attrs: `id`, `name`, `label`, `value`, `min`, `max`, `help`, `error`, +2
-- `<c-file-input-field>` — Labelled file input. NLDD has no native file field, so under NLDD it renders the RVO field with a visible fallback badge.
+- `<c-file-input-field>` — Labelled file input (native nldd-file-field under NLDD, native file input under RVO).
   <br>attrs: `id`, `name`, `label`, `accept`, `multiple` (bool), `help`, `error`, `required` (bool), +1
 - `<c-fieldset>` — Groups related fields under a legend; fields are children
   <br>attrs: `id`, `legend`, `label`
 - `<c-action-group>` — A row of form actions (buttons); buttons are children
   <br>attrs: `align` (start\|end\|between)
 
-Every field takes the same base — `id`, `name`, `label` (+ `help`, `error`, `required`, `disabled`). `file-input-field`: NLDD has no native file field, so it renders the RVO field with a visible fallback badge. `select-field` renders NLDD's web-component combo-box by default; for a screen whose JS drives the list (value / new Option() / change), add `native` to keep a real `<select>` (native `<option>` children) under a theme skin.
+Every field takes the same base — `id`, `name`, `label` (+ `help`, `error`, `required`, `disabled`). `select-field` renders NLDD's web-component combo-box by default; for a screen whose JS drives the list (value / new Option() / change), add `native` to keep a real `<select>` (native `<option>` children) under a theme skin.
 
 ```html
 <form method="post">

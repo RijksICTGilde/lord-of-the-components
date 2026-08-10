@@ -174,8 +174,7 @@ for (const c of FORMS.components) L.push(compLine(c));
 L.push(``);
 L.push(
   `Every field takes the same base — \`id\`, \`name\`, \`label\` (+ \`help\`, \`error\`,` +
-    ` \`required\`, \`disabled\`). \`file-input-field\`: NLDD has no native file field, so` +
-    ` it renders the RVO field with a visible fallback badge. \`select-field\` renders` +
+    ` \`required\`, \`disabled\`). \`select-field\` renders` +
     ` NLDD's web-component combo-box by default; for a screen whose JS drives the list` +
     ` (value / new Option() / change), add \`native\` to keep a real \`<select>\`` +
     ` (native \`<option>\` children) under a theme skin.\n`,
