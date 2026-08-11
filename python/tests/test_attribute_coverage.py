@@ -82,17 +82,26 @@ LEGIT_TRANSFORMS = {
 }
 
 # (component, attr): the attribute IS silently dropped and arguably should not be.
-# Fix upstream, then delete the entry.
+# Each entry below needs generator/DSL work or a design decision, not a mechanical
+# template edit — the RVO components here are generated from the TypeScript impls in
+# implementations/components/, so the fix lives in the impl + the generator, and some
+# of these are not expressible in the current impl DSL. Fix upstream, then delete the
+# entry (the staleness guard will flag it once the value starts landing).
 KNOWN_GAPS = {
-    ("button", "href"): "rvo button ignores href — always <button>, never <a>; nldd renders the link",
-    ("select", "placeholder"): "core <c-select> reads placeholder but never emits the empty option; use select-field",
-    ("select", "value"): "core <c-select> reads value but never selects it; use <c-select-field>",
-    ("card", "image"): "nldd-card has no image support; rvo renders <img>",
-    ("card", "image-alt"): "nldd-card has no image support; rvo renders the alt",
-    ("card", "background-image"): "nldd-card has no background-image support; rvo renders it",
-    ("link", "icon-aria-label"): "nldd-link has no icon, so its icon aria-label has nowhere to land",
-    ("fieldset", "id"): "fieldset id is not echoed onto the <fieldset> element under rvo/nldd",
-    ("checkbox-field", "id"): "checkbox-field group id is not echoed under nldd",
+    # rvo button is always <button>; rendering <a> for href needs conditional-root-element
+    # support in the impl DSL. Use <c-link> styled as a button for navigation.
+    ("button", "href"): "rvo button has no <a> path for href (needs impl-DSL support)",
+    # core <c-select> is a thin primitive; use <c-select-field>, which renders both.
+    ("select", "placeholder"): "core <c-select> never emits the empty option; use select-field",
+    ("select", "value"): "core <c-select> can't select server-side (needs a script); use select-field",
+    # nldd-card template dead-reads these; nldd-card has header/footer slots + a `background`
+    # attr but no dedicated media region, so wiring the image is a design decision.
+    ("card", "image"): "nldd-card has no media region for image",
+    ("card", "image-alt"): "nldd-card has no media region to carry the alt (see .image)",
+    ("card", "background-image"): "nldd-card dead-reads it; only a token `background` attr exists",
+    # nldd-link supports start-icon/end-icon but the template doesn't wire icon into them;
+    # also gated on the rvo-vs-nldd icon-name mismatch.
+    ("link", "icon-aria-label"): "nldd-link template doesn't wire icon -> start-icon/end-icon",
 }
 
 _ALLOWED = set(LEGIT_TRANSFORMS) | set(KNOWN_GAPS)
