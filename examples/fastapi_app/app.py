@@ -41,7 +41,9 @@ env = Environment(
 )
 
 # 2. Teach Jinja the <c-*> syntax + which design system(s) to render.
-setup_components(env, design_systems=DESIGN_SYSTEMS)
+# Dev default: fail loudly on an unrecognised icon name or enum value (a silent blank
+# box otherwise). In production drop on_unknown_value, or set LOTC_STRICT=0.
+setup_components(env, design_systems=DESIGN_SYSTEMS, on_unknown_value="error")
 
 # Roots that back the /static/lotc/ URL space (core styles + each design system's bundle).
 STATIC_ROOTS = [Path(r) for r in get_static_roots()]

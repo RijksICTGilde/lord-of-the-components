@@ -94,7 +94,8 @@ L.push(
     ` from an active theme's set (\`verwijderen\` is RVO-only; NLDD has \`trash\`) or a` +
     ` literal outside an enum's set — with a suggestion. \`on_unknown_attribute="ignore"\`` +
     ` relaxes the (default) error on an undeclared attribute. \`debug=True\` implies` +
-    ` \`on_unknown_value="error"\`.\n`,
+    ` \`on_unknown_value="error"\`. Set \`LOTC_STRICT=1\` in dev/CI to default it on` +
+    ` without threading the argument (an explicit argument always wins).\n`,
 );
 
 L.push(`## 2. Page skeleton\n`);

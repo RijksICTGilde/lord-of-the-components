@@ -992,6 +992,36 @@ class ComponentExtension(Extension):
         return html
 
 
+def _env_truthy(name: str) -> bool:
+    import os
+
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _resolve_strictness(
+    explicit: Optional[str], env_name: str, *, strict_default: str, lenient_default: str
+) -> str:
+    """Resolve a strictness flag: explicit argument wins, then a per-flag env var
+    (LOTC_ON_UNKNOWN_*), then LOTC_STRICT flips to the strict default, else lenient.
+    Validates the result is "error" or "ignore"."""
+    import os
+
+    choices = {"error", "ignore"}
+    if explicit is not None:
+        value = explicit
+    else:
+        env_value = os.environ.get(env_name, "").strip().lower()
+        if env_value:
+            value = env_value
+        else:
+            value = strict_default if _env_truthy("LOTC_STRICT") else lenient_default
+    if value not in choices:
+        raise ValueError(
+            f"{env_name.lower()} / argument must be one of {sorted(choices)}, got {value!r}"
+        )
+    return value
+
+
 def setup_components(
     jinja_env: Environment,
     design_systems: Optional[List[str]] = None,
@@ -1005,8 +1035,8 @@ def setup_components(
     fold: bool = True,
     debug: bool = False,
     on_missing_component: str = "error",
-    on_unknown_attribute: str = "error",
-    on_unknown_value: str = "ignore",
+    on_unknown_attribute: Optional[str] = None,
+    on_unknown_value: Optional[str] = None,
 ) -> Environment:
     """
     Setup Lord of the Components in a Jinja2 environment.
@@ -1033,21 +1063,29 @@ def setup_components(
         on_unknown_attribute: What to do when a page uses an attribute a
             component does not declare. "error" (default) raises with a
             suggestion; "ignore" tolerates it (the attribute is dropped, no
-            error) for lenient rendering.
+            error) for lenient rendering. Defaults from the environment when not
+            given (see below).
         on_unknown_value: What to do when an attribute *value* is not
             recognised — an icon name that resolves to no icon in an active
             theme's set (a blank box), or a literal outside an enum's allowed
             set. "ignore" (default) renders as-is; "error" raises with a
-            suggestion. `debug=True` forces "error".
+            suggestion. `debug=True` forces "error". Defaults from the
+            environment when not given (see below).
+
+    Environment defaults (an explicit argument always wins): set
+    ``LOTC_STRICT=1`` (dev/CI) to default ``on_unknown_value`` to "error", or
+    pin either flag directly with ``LOTC_ON_UNKNOWN_VALUE`` /
+    ``LOTC_ON_UNKNOWN_ATTRIBUTE`` (each "error" or "ignore").
 
     Returns:
         Configured Jinja2 environment
     """
-    _choices = {"error", "ignore"}
-    if on_unknown_attribute not in _choices:
-        raise ValueError(f"on_unknown_attribute must be one of {sorted(_choices)}")
-    if on_unknown_value not in _choices:
-        raise ValueError(f"on_unknown_value must be one of {sorted(_choices)}")
+    on_unknown_attribute = _resolve_strictness(
+        on_unknown_attribute, "LOTC_ON_UNKNOWN_ATTRIBUTE", strict_default="error", lenient_default="error"
+    )
+    on_unknown_value = _resolve_strictness(
+        on_unknown_value, "LOTC_ON_UNKNOWN_VALUE", strict_default="error", lenient_default="ignore"
+    )
     import os
     from pathlib import Path
 

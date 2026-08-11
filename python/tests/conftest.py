@@ -1,11 +1,20 @@
 """Shared test fixtures for end-to-end component tests."""
 
+import os
 from pathlib import Path
 
 import pytest
 from jinja2 import Environment, FileSystemLoader
 
 from lord_of_the_components import setup_components
+
+# The strictness flags default from the environment (LOTC_STRICT /
+# LOTC_ON_UNKNOWN_*, see setup_components). Clear them at collection start — before
+# any module-scoped env fixture is built — so the suite is deterministic whatever
+# the ambient environment (a dev or CI runner may have LOTC_STRICT=1 for their own
+# app). Tests that exercise the resolution set the variables via monkeypatch.
+for _var in ("LOTC_STRICT", "LOTC_ON_UNKNOWN_VALUE", "LOTC_ON_UNKNOWN_ATTRIBUTE"):
+    os.environ.pop(_var, None)
 
 # Path to the package's templates directory
 PACKAGE_DIR = Path(__file__).parent.parent / "src" / "lord_of_the_components"

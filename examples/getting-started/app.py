@@ -45,7 +45,11 @@ def create_env() -> Environment:
         # cost that env.from_string() incurred on every request.
         auto_reload=False,
     )
-    setup_components(env, design_systems=["rvo"], registry_path=str(LOTC_REGISTRY))
+    # Dev default: fail loudly on an unrecognised icon name or enum value instead of
+    # rendering a silent blank box. In production, drop this (or set LOTC_STRICT=0).
+    setup_components(
+        env, design_systems=["rvo"], registry_path=str(LOTC_REGISTRY), on_unknown_value="error"
+    )
     return env
 
 
