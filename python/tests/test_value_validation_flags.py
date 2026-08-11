@@ -100,3 +100,30 @@ def test_invalid_flag_value_is_rejected(kwargs):
     env = Environment(autoescape=True, loader=FileSystemLoader([]))
     with pytest.raises(ValueError):
         setup_components(env, design_systems=RVO, **kwargs)
+
+
+# ── environment-driven defaults (the dev/CI switch) ───────────────────────────
+
+def test_lotc_strict_env_flips_the_value_default(monkeypatch):
+    monkeypatch.setenv("LOTC_STRICT", "1")
+    with pytest.raises(ComponentError):
+        _render(NLDD, '<c-icon icon="verwijderen"/>')
+
+
+def test_explicit_argument_beats_the_env(monkeypatch):
+    monkeypatch.setenv("LOTC_STRICT", "1")
+    # explicit ignore wins over LOTC_STRICT=1
+    assert _render(NLDD, '<c-icon icon="verwijderen"/>', on_unknown_value="ignore")
+
+
+def test_per_flag_env_pins_the_value(monkeypatch):
+    monkeypatch.setenv("LOTC_ON_UNKNOWN_VALUE", "error")
+    with pytest.raises(ComponentError):
+        _render(NLDD, '<c-icon icon="verwijderen"/>')
+
+
+def test_invalid_env_value_is_rejected(monkeypatch):
+    monkeypatch.setenv("LOTC_ON_UNKNOWN_VALUE", "soms")
+    env = Environment(autoescape=True, loader=FileSystemLoader([]))
+    with pytest.raises(ValueError):
+        setup_components(env, design_systems=RVO)
