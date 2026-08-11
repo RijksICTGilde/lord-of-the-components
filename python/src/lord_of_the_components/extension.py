@@ -258,6 +258,14 @@ class ComponentExtension(Extension):
         # Debug mode: extra author-facing diagnostics (invalid enum values with
         # suggestions), in addition to the always-on unknown-attribute checks.
         self.debug = False
+        # How to treat an attribute *name* the component does not declare:
+        # "error" (default, raise) or "ignore" (tolerate — drop it, no error).
+        self.on_unknown_attribute: str = "error"
+        # How to treat an attribute *value* that is not recognised — an icon name
+        # absent from an active theme's set, or a literal outside an enum's set:
+        # "ignore" (default, render as-is — a wrong icon is a blank box) or
+        # "error" (raise, with a suggestion). `debug=True` implies "error".
+        self.on_unknown_value: str = "ignore"
 
     def _wrap_binding(self, clean_key: str, value: str, component_def: Any) -> str:
         """Wrap a :binding expression in a render-time validation call, if enabled."""
@@ -519,7 +527,7 @@ class ComponentExtension(Extension):
                             suggestion=f"activate '{owner}' (design_systems=[…, '{owner}'])",
                         )
                     attrs[real_name] = attr_value
-                    if self.debug:
+                    if self.debug or self.on_unknown_value == "error":
                         self._validate_enum_value(
                             source, component_def, real_name, attr_value, parsed, tag_name
                         )
@@ -532,6 +540,10 @@ class ComponentExtension(Extension):
                                 source, attr_value, parsed, tag_name, real_name
                             )
                 else:
+                    if self.on_unknown_attribute == "ignore":
+                        # Lenient mode: tolerate an unknown attribute (drop it, no
+                        # error) instead of failing the render.
+                        continue
                     available = sorted(set(valid_attrs.values()))
                     suggestion = None
                     # `name` was renamed to `label` for visible text (plan v7 T1.2);
@@ -993,6 +1005,8 @@ def setup_components(
     fold: bool = True,
     debug: bool = False,
     on_missing_component: str = "error",
+    on_unknown_attribute: str = "error",
+    on_unknown_value: str = "ignore",
 ) -> Environment:
     """
     Setup Lord of the Components in a Jinja2 environment.
@@ -1014,13 +1028,26 @@ def setup_components(
         validate_data: Whether to validate dynamic data structures
         fold: Render fully-literal python components at compile time (default True;
             set False to debug the runtime renderer calls)
-        debug: Extra author-facing diagnostics. On top of the always-on
-            unknown-attribute check, rejects literal values outside an enum
-            attribute's allowed set, with a suggestion (jinja-roos parity).
+        debug: Extra author-facing diagnostics. Shorthand that turns on the
+            value checks below (equivalent to on_unknown_value="error").
+        on_unknown_attribute: What to do when a page uses an attribute a
+            component does not declare. "error" (default) raises with a
+            suggestion; "ignore" tolerates it (the attribute is dropped, no
+            error) for lenient rendering.
+        on_unknown_value: What to do when an attribute *value* is not
+            recognised — an icon name that resolves to no icon in an active
+            theme's set (a blank box), or a literal outside an enum's allowed
+            set. "ignore" (default) renders as-is; "error" raises with a
+            suggestion. `debug=True` forces "error".
 
     Returns:
         Configured Jinja2 environment
     """
+    _choices = {"error", "ignore"}
+    if on_unknown_attribute not in _choices:
+        raise ValueError(f"on_unknown_attribute must be one of {sorted(_choices)}")
+    if on_unknown_value not in _choices:
+        raise ValueError(f"on_unknown_value must be one of {sorted(_choices)}")
     import os
     from pathlib import Path
 
@@ -1073,6 +1100,8 @@ def setup_components(
         ext.validate_data = validate_data
         ext.on_missing_component = on_missing_component
         ext.debug = debug
+        ext.on_unknown_attribute = on_unknown_attribute
+        ext.on_unknown_value = on_unknown_value
         ext.design_systems = tuple(ds.name for ds in resolved)
         ext.render_theme = primary
     for ds in resolved:
