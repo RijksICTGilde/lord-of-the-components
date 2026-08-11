@@ -88,6 +88,14 @@ L.push(
     ` \`lotc-layout\` owns the structural primitives, \`nldd\` the visual components.` +
     ` Swap \`nldd\`→\`rvo\` to retarget the same markup.\n`,
 );
+L.push(
+  `**Strictness (opt-in).** Silent authoring mistakes can be turned into loud errors:` +
+    ` \`on_unknown_value="error"\` rejects an unrecognised value — an icon name absent` +
+    ` from an active theme's set (\`verwijderen\` is RVO-only; NLDD has \`trash\`) or a` +
+    ` literal outside an enum's set — with a suggestion. \`on_unknown_attribute="ignore"\`` +
+    ` relaxes the (default) error on an undeclared attribute. \`debug=True\` implies` +
+    ` \`on_unknown_value="error"\`.\n`,
+);
 
 L.push(`## 2. Page skeleton\n`);
 L.push("```html");
