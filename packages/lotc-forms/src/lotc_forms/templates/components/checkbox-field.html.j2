@@ -16,8 +16,8 @@
 {% else %}
 {# a single checkbox: the control carries the label, help/error below #}
 {% if 'nldd' in lotc_design_systems %}
-<div class="lotc-checkbox-field"{% if id %} id="{{ id }}"{% endif %} data-lotc-component="checkbox-field">
-<nldd-checkbox-field name="{{ name }}"{% if value %} value="{{ value }}"{% endif %} label="{{ label }}"{% if checked %} checked{% endif %}{% if error %} invalid{% endif %}{{ f.render_attrs(c) }}></nldd-checkbox-field>
+<div class="lotc-checkbox-field" data-lotc-component="checkbox-field">
+<nldd-checkbox-field{% if id %} id="{{ id }}"{% endif %} name="{{ name }}"{% if value %} value="{{ value }}"{% endif %} label="{{ label }}"{% if checked %} checked{% endif %}{% if error %} invalid{% endif %}{{ f.render_attrs(c) }}></nldd-checkbox-field>
 {% if help %}<nldd-form-field-help-text id="{{ id }}-help">{{ help }}</nldd-form-field-help-text>{% endif %}
 {% if error %}<nldd-form-field-error-text id="{{ id }}-error" invalid>{{ error }}</nldd-form-field-error-text>{% endif %}
 </div>
