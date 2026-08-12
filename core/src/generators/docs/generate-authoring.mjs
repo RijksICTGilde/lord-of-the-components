@@ -111,20 +111,26 @@ L.push(`</c-page>`);
 L.push("```");
 L.push(`Named slots are filled with \`<template slot="name">…</template>\`; anything else is the default (main) content.\n`);
 L.push(
-  `**\`c-app-shell\` is the page structure** — use it, not a raw theme page element` +
-    ` (\`nldd-page\`): it owns the header/sidebar/footer regions and the main area. Do` +
-    ` not wrap it in a theme page wrapper; that nests one layout inside another and` +
-    ` there is nothing left to arrange. \`c-page\` also establishes NLDD's` +
-    ` \`layout-container\` (the query container its components adapt to) automatically —` +
-    ` you do not set it by hand.\n`,
+  `**Page structure — mind the scroll model.** \`c-app-shell\` (layout layer) is a` +
+    ` header/sidebar/main/footer grid that scrolls on the **window** — use it for a` +
+    ` sidebar app frame. NLDD's own \`nldd-page\` is a **fixed-height (\`100dvh\`) shell`+
+    ` with an internal scroll region** (\`overflow-y:auto; overscroll-behavior:contain\`):` +
+    ` long content scrolls inside it, not the window, and a mouse wheel over it never` +
+    ` reaches the window (window-based scroll-restoration breaks). For a normal` +
+    ` window-scrolling page do **not** wrap in \`nldd-page\` — put the NLDD page regions` +
+    ` (\`nldd-top-navigation-bar\`, \`nldd-sidebar-section\`, \`nldd-page-footer\`) directly` +
+    ` in \`c-page\`'s body. \`c-page\` establishes NLDD's \`layout-container\` on \`<body>\`` +
+    ` automatically — you do not set it by hand.\n`,
 );
 L.push(
-  `**Max content width.** NLDD (and \`nldd-page\`) deliberately does **not** cap the` +
-    ` content width — a full-viewport \`<main>\` is expected. To keep lines and cards` +
-    ` readable, wrap content in \`<c-center max="90rem">\` (a layout primitive: a` +
-    ` centred column with a max inline-size, theme-agnostic). \`c-container\` is an` +
-    ` NLDD-only wrapper whose \`max-width\` rides on the web component; \`c-center\` is the` +
-    ` reliable, cross-theme choice.\n`,
+  `**Max content width.** Cap it with \`width="…"\` on the NLDD page-region components` +
+    ` (\`nldd-top-navigation-bar\`, \`nldd-sidebar-section\`, \`nldd-page-footer\`): it sets` +
+    ` each region's \`--_max-width\`, so the content caps while the region background runs` +
+    ` edge-to-edge (the number is the app's choice; NLDD ships no canonical value). For a` +
+    ` plain content block outside those regions, \`<c-center max="76rem">\` is the` +
+    ` theme-agnostic centred-column primitive. Note \`nldd-top-navigation-bar\` also needs` +
+    ` \`logo-title\` (the organisation) beside \`website-title\` (the app), or its header` +
+    ` grid collapses.\n`,
 );
 
 L.push(`## 3. Layout primitives\n`);
