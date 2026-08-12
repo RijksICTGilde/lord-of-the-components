@@ -14,7 +14,7 @@ from markupsafe import Markup, escape
 __all__ = ["Markup", "esc", "render_extra", "render_utility", "merge_class"]
 
 # Generic HTML attributes passed through verbatim (besides data-/aria-/hx-*).
-_PASSTHROUGH = ("id", "title", "style", "role", "tabindex")
+_PASSTHROUGH = ("id", "title", "style", "role", "tabindex", "slot")
 _PREFIXES = ("data-", "aria-", "hx-")
 
 
@@ -24,7 +24,7 @@ def esc(value: Any) -> Markup:
 
 
 def render_extra(extra: Optional[Mapping[str, Any]]) -> Markup:
-    """Render passthrough attributes (data-/aria-/hx-*, id/title/style/role/tabindex)
+    """Render passthrough attributes (data-/aria-/hx-*, id/title/style/role/tabindex/slot)
     and events (@name -> on{name}, @hx-* -> hx-*) as a single attribute string.
 
     Values are attribute-escaped. Returns leading-space-separated ` k="v"` pairs.
