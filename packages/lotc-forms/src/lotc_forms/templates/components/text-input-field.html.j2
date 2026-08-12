@@ -6,8 +6,16 @@
 {% set required = c.get('required', false) %}{% set disabled = c.get('disabled', false) %}{% set readonly = c.get('readonly', false) %}
 {% set type = c.get('type', 'text') %}{% set value = c.get('value', '') %}
 {% set placeholder = c.get('placeholder', '') %}{% set autocomplete = c.get('autocomplete', '') %}
+{% set show_copy = c.get('show-copy', false) %}
 {% set db = f.describedby(id, help, error) %}
+{% if show_copy %}
+{# A value you copy but do not edit: the secret-field-style box inside the label frame. #}
 {% if 'nldd' in lotc_design_systems %}
+{% call f.nldd_field(id, label, help, error, required, 'text-input-field') %}{{ f.copy_value_box(value) }}{% endcall %}
+{% else %}
+{% call f.rvo_field(id, label, help, error, required, 'text-input-field') %}{{ f.copy_value_box(value) }}{% endcall %}
+{% endif %}
+{% elif 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'text-input-field') %}
 <nldd-text-field input-id="{{ id }}" name="{{ name }}" type="{{ type }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-text-field>
 {% endcall %}
