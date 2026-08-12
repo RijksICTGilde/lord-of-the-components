@@ -41,7 +41,15 @@
     <link rel="stylesheet" href="/static/lotc/app-components.css">
     {% if head %}{{ head | safe }}{% endif %}
 </head>
-<body{% if css_classes %} class="{{ css_classes | join(' ') }}"{% endif %}>
+{#
+  NLDD's components adapt to width via `@container layout-container (...)` queries
+  (86 of them), but no NLDD element establishes that container — it is deliberately
+  the application's job. Without it the container-queries silently never match and
+  the responsive layer is simply absent. Establish it here (harmless to other
+  themes, which do not name this container).
+#}
+{% set container_style = 'container: layout-container / inline-size;' if 'nldd' in lotc_design_systems else '' %}
+<body{% if css_classes %} class="{{ css_classes | join(' ') }}"{% endif %}{% if container_style %} style="{{ container_style }}"{% endif %}>
 {{ children | safe }}
 </body>
 </html>
