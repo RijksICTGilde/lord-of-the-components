@@ -2994,6 +2994,11 @@
           "default": false
         },
         {
+          "name": "revealed",
+          "type": "boolean",
+          "default": false
+        },
+        {
           "name": "content-width",
           "type": "string",
           "description": "Max width of the value box (any CSS width)"
