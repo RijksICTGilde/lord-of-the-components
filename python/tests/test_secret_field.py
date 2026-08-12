@@ -33,3 +33,17 @@ def test_secret_field_has_no_rvo_impl_yet():
     # RVO not implemented (NLDD-fidelity requested); should defer to on_missing.
     out = _render(["rvo"], SRC, missing="placeholder")
     assert "lotc-unimplemented" in out
+
+
+def test_secret_field_revealed_shows_value_and_drops_the_eye():
+    # `revealed` = a copyable NON-secret (public key, project name): the value is
+    # shown in plain text and the reveal-eye is gone; the copy button stays.
+    out = _render(["nldd"], '<c-secret-field value="age1-public-xyz" revealed show-copy/>')
+    import re
+
+    code = re.search(r"<code[^>]*>(.*?)</code>", out).group(1).strip()
+    assert code == "age1-public-xyz"  # plain value, not mask dots
+    assert "•" not in code
+    assert 'data-act="reveal"' not in out  # no reveal-eye
+    assert 'name="eye"' not in out
+    assert 'data-act="copy"' in out  # clipboard still present

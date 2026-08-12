@@ -305,6 +305,7 @@ export const secretField = defineComponent({
     [PROPS.VALUE]: { description: "The secret value to display (masked until revealed)" },
     "mask-length": { description: "Number of mask dots shown when hidden (default 12)" },
     "show-copy": null, // boolean — render a copy-to-clipboard button
+    "revealed": null, // boolean — show the value in plain text and drop the reveal-eye (a copyable non-secret, e.g. a public key)
     "content-width": { description: "Max width of the value box (any CSS width)" },
     "value-type": {
       description: "How to present the value",
