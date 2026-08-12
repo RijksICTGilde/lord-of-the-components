@@ -39,6 +39,10 @@
     {% if description %}<meta name="description" content="{{ description }}">{% endif %}
     {{ get_design_system_assets() }}
     <link rel="stylesheet" href="/static/lotc/app-components.css">
+    {# c-page renders <body>, so it resets the browser's default body margin (8px)
+       here — the one place that owns the element. After the theme CSS so it wins,
+       before the user head so a page can still override. #}
+    <style>body{margin:0}</style>
     {% if head %}{{ head | safe }}{% endif %}
 </head>
 {#

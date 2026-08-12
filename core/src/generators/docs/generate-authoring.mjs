@@ -130,7 +130,8 @@ L.push(
     ` plain content block outside those regions, \`<c-center max="76rem">\` is the` +
     ` theme-agnostic centred-column primitive. Note \`nldd-top-navigation-bar\` also needs` +
     ` \`logo-title\` (the organisation) beside \`website-title\` (the app), or its header` +
-    ` grid collapses.\n`,
+    ` grid collapses. And \`nldd-page-footer\` renders the **complete** footer (coat of` +
+    ` arms included) — do not nest another footer component inside it.\n`,
 );
 
 L.push(`## 3. Layout primitives\n`);
