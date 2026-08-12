@@ -207,3 +207,20 @@ def test_select_field_value_reaches_the_control():
     assert "s.value=" in native and "rig-prd-foo" in native  # applied to the native select
     plain = render(NLDD, f'<c-select-field id="ns" name="ns" label="NS">{opt}</c-select-field>')
     assert "<script>" not in plain  # no value -> no script
+
+
+def test_text_input_field_show_copy_renders_a_copy_box_matching_secret_field():
+    # `show-copy` on text-input-field = a read-only copyable value box (secret-field
+    # chrome) inside the label frame, so secret and non-secret values line up.
+    import re
+
+    out = render(NLDD, '<c-text-input-field id="pn" name="pn" label="Projectnaam" value="my-project" show-copy/>')
+    assert "nldd-form-field" in out and 'label="Projectnaam"' in out  # labelled frame
+    assert "lotc-copyfield" in out  # same box class family as secret-field chrome
+    assert 'nldd-icon name="clipboard"' in out  # same clipboard glyph as secret-field
+    assert 'data-value="my-project"' in out and "data-lotc-copy" in out
+    code = re.search(r"<code[^>]*>(.*?)</code>", out).group(1).strip()
+    assert code == "my-project"  # value shown (not an input)
+    # without show-copy it is still the native editable field
+    plain = render(NLDD, '<c-text-input-field id="x" name="x" label="Naam" value="v"/>')
+    assert "nldd-text-field" in plain and "lotc-copyfield" not in plain

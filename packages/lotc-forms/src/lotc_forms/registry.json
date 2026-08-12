@@ -12,6 +12,7 @@
         { "name": "label", "type": "string", "description": "Field label" },
         { "name": "type", "type": "enum", "enum_values": ["text", "email", "tel", "url", "number", "search", "date", "datetime-local", "time", "password"], "description": "Input type" },
         { "name": "value", "type": "string", "description": "Input value" },
+        { "name": "show-copy", "type": "boolean", "description": "Render the value as a read-only copyable box with an in-field clipboard (matches secret-field); for a value you copy but do not edit" },
         { "name": "placeholder", "type": "string", "description": "Placeholder text" },
         { "name": "autocomplete", "type": "string", "description": "autocomplete token" },
         { "name": "help", "type": "string", "description": "Help text (linked via aria-describedby)" },
