@@ -111,6 +111,7 @@
     {%- if 'style' in component_context %} style="{{ component_context['style'] }}"{% endif -%}
     {%- if 'role' in component_context %} role="{{ component_context['role'] }}"{% endif -%}
     {%- if 'tabindex' in component_context %} tabindex="{{ component_context['tabindex'] }}"{% endif -%}
+    {%- if 'slot' in component_context %} slot="{{ component_context['slot'] }}"{% endif -%}
 {%- endmacro %}
 
 {# Spread a `:attrs="{name: value}"` dict onto the element (hx-*/data-*/aria-*/
