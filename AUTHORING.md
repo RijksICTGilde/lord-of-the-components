@@ -28,6 +28,10 @@ Rules: components resolve to the **first** active system that implements them; `
 ```
 Named slots are filled with `<template slot="name">…</template>`; anything else is the default (main) content.
 
+**`c-app-shell` is the page structure** — use it, not a raw theme page element (`nldd-page`): it owns the header/sidebar/footer regions and the main area. Do not wrap it in a theme page wrapper; that nests one layout inside another and there is nothing left to arrange. `c-page` also establishes NLDD's `layout-container` (the query container its components adapt to) automatically — you do not set it by hand.
+
+**Max content width.** NLDD (and `nldd-page`) deliberately does **not** cap the content width — a full-viewport `<main>` is expected. To keep lines and cards readable, wrap content in `<c-center max="90rem">` (a layout primitive: a centred column with a max inline-size, theme-agnostic). `c-container` is an NLDD-only wrapper whose `max-width` rides on the web component; `c-center` is the reliable, cross-theme choice.
+
 ## 3. Layout primitives
 
 Structural, theme-agnostic, intrinsically responsive (no media queries). Compose freely.
