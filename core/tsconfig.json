@@ -18,5 +18,9 @@
     "composite": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "src/generators/jinja2/generate-all.ts", "src/generators/jinja2/generate-showcase.ts", "src/matrix/generate-matrix.ts", "src/generators/python/generate-python.ts"]
+  // `generate-*.ts` are tsx-run entry scripts: they import from the project root
+  // (definitions/, implementations/, themes/), which lies outside core's rootDir.
+  // tsc compiles the library; tsx runs these. Excluded by convention so a new
+  // generator script does not break `npm run build -w core` (TS6059/TS6307).
+  "exclude": ["node_modules", "dist", "src/**/generate-*.ts"]
 }

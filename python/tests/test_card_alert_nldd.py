@@ -43,7 +43,9 @@ def test_card_nldd():
 
 
 def test_card_nldd_padding_prop_maps_to_container_token():
-    render = lambda p: _env("nldd").from_string(f'<c-card padding="{p}">x</c-card>').render()
+    def render(p: str) -> str:
+        return _env("nldd").from_string(f'<c-card padding="{p}">x</c-card>').render()
+
     assert 'padding="0"' in render("none")
     assert 'padding="16"' in render("sm")
     assert 'padding="20"' in render("md")
