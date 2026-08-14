@@ -147,11 +147,11 @@ export const cardImpl = defineImplementation({
                     attributes: [
                       { prop: "href", attr: "href", type: "value" },
                     ],
-                    text: "{{ title | safe }}",
+                    text: { prop: "title" },
                     elseChildren: [
                       {
                         element: "span",
-                        text: "{{ title | safe }}",
+                        text: { prop: "title" },
                       },
                     ],
                   },
@@ -220,11 +220,11 @@ export const cardImpl = defineImplementation({
                     attributes: [
                       { prop: "href", attr: "href", type: "value" },
                     ],
-                    text: "{{ title | safe }}",
+                    text: { prop: "title" },
                     elseChildren: [
                       {
                         element: "span",
-                        text: "{{ title | safe }}",
+                        text: { prop: "title" },
                       },
                     ],
                   },

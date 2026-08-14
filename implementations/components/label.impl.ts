@@ -35,7 +35,7 @@ export const labelImpl = defineImplementation({
       { prop: "for", attr: "for", type: "value", conditional: true },
     ],
 
-    text: "{{ children if children else label | safe }}",
+    text: { coalesce: [{ content: true }, { prop: "label" }] },
   },
 
   mixins: {

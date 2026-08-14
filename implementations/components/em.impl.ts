@@ -20,7 +20,7 @@ export const emImpl = defineImplementation({
     element: "span",
     isRoot: true,
     classes: ["rvo-text--italic"],
-    text: "{{ children if children else label | safe }}",
+    text: { coalesce: [{ content: true }, { prop: "label" }] },
   },
 
   mixins: {

@@ -119,39 +119,53 @@ export interface ElementNode {
 }
 
 /**
+ * Truthiness test for a TextExpr part (used by `coalesce`), unescaped.
+ */
+function textJinjaTruthy(t: TextExpr): string {
+  if ("content" in t) return "children";
+  if ("slot" in t) return `slots.get('${t.slot}')`;
+  if ("prop" in t) return propToVar(t.prop);
+  if ("literal" in t) return t.literal ? "true" : "false";
+  if ("raw" in t) return t.raw ? "true" : "false";
+  return "true";
+}
+
+/**
+ * Value expression for a TextExpr part, with escaping decided per part.
+ *
+ * `content` and named slots are already `Markup` (produced by child renderers)
+ * so they carry `| safe`; `raw` is author-controlled template text. A `prop`
+ * value is *user data* and must be escaped — it is emitted bare so autoescape
+ * (which `setup_components()` requires) escapes it, matching `esc(...)` on the
+ * Python backend. Marking a prop `| safe` here was a live XSS sink.
+ */
+function textJinjaValue(t: TextExpr): string {
+  if ("content" in t) return "children | safe";
+  if ("slot" in t) return `slots.get('${t.slot}', '') | safe`;
+  if ("prop" in t) return propToVar(t.prop);
+  if ("literal" in t) return JSON.stringify(t.literal);
+  if ("raw" in t) return JSON.stringify(t.raw);
+  return "''";
+}
+
+/**
  * Convert leaf text (string or TextExpr) to the Jinja2 expression the Jinja
- * backend emits. Reproduces the pre-TextExpr strings exactly so regenerated
- * templates stay byte-identical.
+ * backend emits.
  */
 export function textToJinjaString(text: string | TextExpr): string {
   if (typeof text === "string") return text;
   if ("literal" in text) return text.literal;
   if ("raw" in text) return text.raw;
-  if ("content" in text) return "{{ children | safe }}";
-  if ("slot" in text) return `{{ slots.get('${text.slot}', '') | safe }}`;
-  if ("prop" in text) return `{{ ${propToVar(text.prop)} | safe }}`;
-  // coalesce: content-then-prop is the only shape used today.
+  if ("content" in text || "slot" in text || "prop" in text) {
+    return `{{ ${textJinjaValue(text)} }}`;
+  }
+  // coalesce: nested ternary over the parts, each escaped on its own terms.
   const parts = text.coalesce;
-  if (
-    parts.length === 2 &&
-    "content" in parts[0] &&
-    "prop" in parts[1]
-  ) {
-    return `{{ children if children else ${propToVar((parts[1] as { prop: string }).prop)} | safe }}`;
+  let expr = textJinjaValue(parts[parts.length - 1]);
+  for (let i = parts.length - 2; i >= 0; i--) {
+    expr = `${textJinjaValue(parts[i])} if ${textJinjaTruthy(parts[i])} else ${expr}`;
   }
-  // Generic fallback: nested ternary of the parts.
-  const exprs = parts.map((p) => {
-    if ("content" in p) return "children";
-    if ("prop" in p) return propToVar((p as { prop: string }).prop);
-    if ("literal" in p) return JSON.stringify((p as { literal: string }).literal);
-    if ("raw" in p) return JSON.stringify((p as { raw: string }).raw);
-    return "''";
-  });
-  let expr = exprs[exprs.length - 1];
-  for (let i = exprs.length - 2; i >= 0; i--) {
-    expr = `${exprs[i]} if ${exprs[i]} else ${expr}`;
-  }
-  return `{{ ${expr} | safe }}`;
+  return `{{ ${expr} }}`;
 }
 
 export interface ComponentImplementation {

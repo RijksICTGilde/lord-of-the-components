@@ -18,7 +18,7 @@
     <a
         {% if href %}href="{{ href }}"{% endif %}
         class="{{ css_classes | join(' ') }}">
-        {{ children if children else label | safe }}
+        {{ children | safe if children else label }}
     </a>
 </li>
 {% endmacro %}

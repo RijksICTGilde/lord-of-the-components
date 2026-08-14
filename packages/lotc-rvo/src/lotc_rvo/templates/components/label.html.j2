@@ -25,6 +25,6 @@
     {% if id %}id="{{ id }}"{% endif %}
     {% if for %}for="{{ for }}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {{ children if children else label | safe }}
+    {{ children | safe if children else label }}
 </label>
 {% endmacro %}

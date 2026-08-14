@@ -142,6 +142,95 @@ def test_class_mustache_on_the_jinja_backend():
     assert "from-var" in html and "{{" not in html
 
 
+# ── 4. prop values are escaped on BOTH backends ────────────────────────────────
+#
+# The IR node `{ text: { prop: "x" } }` is emitted by two generators. The Python
+# emitter wrote `esc(x)`; the Jinja emitter wrote `{{ x | safe }}` — so the 60
+# jinja-backend components rendered a prop as live HTML (review r1, blocker).
+# These tests pin the two emitters to the same guarantee.
+
+#: Executes if a prop value reaches the page as HTML instead of text.
+XSS = "<img src=x onerror=alert(document.domain)>"
+
+
+def _assert_escaped(html):
+    """The payload came out as inert text, not as a live element."""
+    assert "<img" not in html, html
+    assert "&lt;img src=x onerror=alert(document.domain)&gt;" in html, html
+
+
+@pytest.mark.parametrize(
+    "theme,source",
+    [
+        # jinja backend, rvo
+        ("rvo", '<c-card :title="p">body</c-card>'),
+        ("rvo", '<c-card :title="p" href="/x">body</c-card>'),  # the linked-title branch
+        ("rvo", '<c-strong :label="p"/>'),
+        ("rvo", '<c-em :label="p"/>'),
+        ("rvo", '<c-label :label="p"/>'),
+        ("rvo", '<c-accordion-item :title="p">body</c-accordion-item>'),
+        # jinja backend, nldd (the sinks added by this PR)
+        ("nldd", '<c-card :title="p">body</c-card>'),
+        ("nldd", '<c-hero :title="p"/>'),
+        ("nldd", '<c-hero :subtitle="p"/>'),
+        ("nldd", '<c-footer :pay-off="p"/>'),
+        # python backend, for contrast — same guarantee, other emitter
+        ("rvo", '<c-button :label="p"/>'),
+        ("rvo", '<c-heading :label="p"/>'),
+        ("rvo", '<c-paragraph :label="p"/>'),
+    ],
+)
+def test_prop_values_are_escaped_on_both_backends(theme, source):
+    _assert_escaped(_env(theme).from_string(source).render(p=XSS))
+
+
+def test_children_still_render_as_html_next_to_an_escaped_prop():
+    """Dropping `| safe` from props must not escape rendered children."""
+    html = _env().from_string('<c-card :title="p"><c-button label="ok"/></c-card>').render(p=XSS)
+    _assert_escaped(html)
+    assert "<button" in html and "&lt;button" not in html
+
+
+def test_coalesce_prefers_children_and_escapes_the_prop_fallback():
+    """`{ coalesce: [content, prop] }` — children raw, the label fallback escaped."""
+    with_children = _env().from_string("<c-badge><b>raw</b></c-badge>").render()
+    assert "<b>raw</b>" in with_children
+
+    fallback = _env().from_string('<c-badge :label="p"/>').render(p=XSS)
+    _assert_escaped(fallback)
+
+
+# ── 5. `:attrs` must not smuggle in an event handler ───────────────────────────
+
+
+@pytest.mark.parametrize("key", ["onclick", "ONERROR", "onMouseOver"])
+def test_attrs_spread_rejects_event_handler_keys(key):
+    tmpl = _env().from_string('<c-button label="hi" :attrs="d"/>')
+    with pytest.raises(ValueError, match="Event-handler attribute"):
+        tmpl.render(d={key: "alert(1)"})
+
+
+def test_attrs_spread_event_guard_covers_the_jinja_backend():
+    tmpl = _env().from_string('<c-card :attrs="d">x</c-card>')
+    with pytest.raises(ValueError, match="Event-handler attribute"):
+        tmpl.render(d={"onclick": "alert(1)"})
+
+
+def test_at_event_syntax_still_renders_a_handler():
+    """The explicit, template-authored `@click` path is unaffected."""
+    html = _env().from_string('<c-button label="hi" @click="doIt()"/>').render()
+    assert 'onclick="doIt()"' in html
+
+
+def test_click_handler_is_attribute_escaped():
+    """`@click` was the only handler piped through `| safe` (review advisory)."""
+    html = _env().from_string(
+        '<c-button label="hi" @click=\'x" onload="alert(1)\'/>'
+    ).render()
+    assert ' onload="' not in html, html
+    assert "&#34;" in html, html
+
+
 # ── the shared validator / helper units ────────────────────────────────────────
 
 

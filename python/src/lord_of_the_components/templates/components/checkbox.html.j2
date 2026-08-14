@@ -25,6 +25,6 @@
         {% if disabled %}disabled{% endif %}
         {% if required %}required{% endif %}
         class="{{ css_classes | join(' ') }}">
-    <span>{{ label | safe }}</span>
+    <span>{{ label }}</span>
 </label>
 {% endmacro %}

@@ -32,12 +32,19 @@ _PREFIXES = ("data-", "aria-", "hx-")
 #: so an illegal name is rejected outright.
 _ATTR_NAME_RE = re.compile(r"^[A-Za-z_:][-A-Za-z0-9_:.]*$")
 
+#: An inline event-handler attribute (`onclick`, `ONERROR`, …). Legal HTML, but
+#: never acceptable from a data-driven `:attrs` spread.
+_EVENT_ATTR_RE = re.compile(r"^on[a-z]+$", re.IGNORECASE)
 
-def attr_name(key: Any) -> str:
+
+def attr_name(key: Any, allow_event: bool = False) -> str:
     """Return `key` if it is a legal HTML attribute name, else raise ValueError.
 
     Guards the `:attrs="{name: value}"` spread, whose keys come from application
-    data and are written unquoted into the tag.
+    data and are written unquoted into the tag. Event-handler names (`on*`) are
+    rejected there: a spread built from request data would otherwise turn a data
+    value into executable script. Use the explicit `@event` syntax instead —
+    `allow_event=True` is for that path, which has a literal handler name.
     """
     name = str(key)
     if not _ATTR_NAME_RE.match(name):
@@ -45,6 +52,12 @@ def attr_name(key: Any) -> str:
             f"Invalid HTML attribute name in :attrs spread: {name!r}. "
             "Attribute names may contain letters, digits, '-', '_', ':' and '.' "
             "and must start with a letter, '_' or ':'."
+        )
+    if not allow_event and _EVENT_ATTR_RE.match(name):
+        raise ValueError(
+            f"Event-handler attribute {name!r} is not allowed in an :attrs spread. "
+            "Use the '@event' syntax (e.g. @click=\"...\") for handlers, so a "
+            "data-driven spread can never introduce executable script."
         )
     return name
 
@@ -76,7 +89,7 @@ def render_extra(extra: Optional[Mapping[str, Any]]) -> Markup:
         if key.startswith("@"):
             name = key[1:]
             attr = name if name.startswith("hx-") else "on" + name
-            parts.append(f' {attr_name(attr)}="{escape(value)}"')
+            parts.append(f' {attr_name(attr, allow_event=True)}="{escape(value)}"')
         elif key.startswith(_PREFIXES) or key in _PASSTHROUGH:
             parts.append(f' {key}="{escape(value)}"')
     return Markup("".join(parts))

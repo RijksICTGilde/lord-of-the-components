@@ -57,7 +57,7 @@
         class="{{ css_classes | join(' ') }}">
     </span>
     {% endif %}
-    <span>{{ children if children else label | safe }}</span>
+    <span>{{ children | safe if children else label }}</span>
     {% if show_icon == 'after' %}
     {% set css_classes = ['utrecht-icon', 'rvo-icon', 'rvo-link__icon--after'] %}
     {% if icon %}{% set css_classes = css_classes + ['rvo-icon-' ~ icon] %}{% endif %}

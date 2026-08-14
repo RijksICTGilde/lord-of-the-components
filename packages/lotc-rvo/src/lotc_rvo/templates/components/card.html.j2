@@ -93,10 +93,10 @@
                 <a
                     href="{{ href }}"
                     class="{{ css_classes | join(' ') }}">
-                    {{ title | safe }}
+                    {{ title }}
                 </a>
                 {% else %}
-                <span>{{ title | safe }}</span>
+                <span>{{ title }}</span>
                 {% endif %}
             </h3>
             {% endif %}
@@ -136,10 +136,10 @@
             <a
                 href="{{ href }}"
                 class="{{ css_classes | join(' ') }}">
-                {{ title | safe }}
+                {{ title }}
             </a>
             {% else %}
-            <span>{{ title | safe }}</span>
+            <span>{{ title }}</span>
             {% endif %}
         </h3>
         {% endif %}

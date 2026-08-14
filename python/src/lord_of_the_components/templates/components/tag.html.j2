@@ -13,6 +13,6 @@
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="tag"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {{ children if children else label | safe }}
+    {{ children | safe if children else label }}
 </div>
 {% endmacro %}

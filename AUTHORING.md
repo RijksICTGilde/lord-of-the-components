@@ -589,3 +589,13 @@ A complete page, 100% `c-*`: app-shell → header (status-bar + menu) + sidenav 
 - **Named-slot-only components**: some NLDD components (e.g. `c-icon-button`, `c-toolbar`, `c-toolbar-title`) accept only named slots — put content in `<template slot="…">`, not as default children, which have nowhere to go and are dropped silently. (A tooltip on an icon-button goes in its `popup` slot, not as a child.)
 - One source, many themes: the same markup renders under `nldd` or `rvo`; the visual system swaps, the structure stays.
 
+## 12. Escaping and what is trusted
+
+`setup_components()` requires `autoescape` and both backends (the generated Jinja templates and the generated Python renderers) escape **prop values** — `<c-card :title="user_input"/>` cannot inject HTML. Rendered children and named slots are already `Markup` (produced by the child renderers) and pass through as-is. Beyond that, a few inputs are *trusted by design* — do not bind them to request data:
+
+- **`:attrs="dict"` values are trusted.** Keys are validated (an illegal HTML attribute name, or an `on*` event-handler name, raises `ValueError`) and values are attribute-escaped, but a `src`/`href`/`style` value from a spread still lands in the tag verbatim. Use `@click="…"` for handlers; the spread refuses them.
+- **`href`/`src` accept any scheme**, `javascript:` included: `<c-link :href="u"/>` with `u="javascript:alert(1)"` renders that link. If the URL comes from user data, validate the scheme (`http`/`https`/`mailto`/relative) before passing it in.
+- **`@event` handlers are JavaScript**, attribute-escaped but executed. They are template-authored code; never build them from request data.
+- **`<c-page head="…">`** is raw by design (`raw: true`) — it is template-authored `<head>` markup, not a place for user input.
+- **`<c-secret-field>` masks, it does not redact.** The plaintext value stays in `data-value` (that is what the reveal/copy button reads), so it is in view-source, in any HTML cache and in anything that logs the response body. Only send a secret to a client that may see it; for "never show", send a placeholder instead of the value.
+

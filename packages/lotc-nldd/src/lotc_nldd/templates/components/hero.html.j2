@@ -19,11 +19,11 @@
     {% if image_alt %}media-alt="{{ image_alt }}"{% endif %}
     {{ attrs.render_extra_attributes(_component_context) }}>
     <nldd-title>
-        <span>{{ title | safe }}</span>
+        <span>{{ title }}</span>
         {% if subtitle %}
         <span
             slot="subtitle">
-            {{ subtitle | safe }}
+            {{ subtitle }}
         </span>
         {% endif %}
     </nldd-title>

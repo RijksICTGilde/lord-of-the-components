@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, master]
 
+# The jobs only read the checkout; nothing publishes, comments or releases.
+permissions:
+  contents: read
+
 jobs:
   python:
     runs-on: ubuntu-latest
