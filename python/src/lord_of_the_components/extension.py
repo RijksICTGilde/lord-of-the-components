@@ -33,6 +33,7 @@ from .parser import (
     parse,
 )
 from .registry import ComponentRegistry
+from .runtime import attr_name as runtime_attr_name
 from .validation import validate_expression
 
 logger = logging.getLogger(__name__)
@@ -117,8 +118,12 @@ def _load_icons() -> Optional[dict]:
     sets: {theme: [names]}}, generated from definitions/icons.ts + the theme icon
     assets. Returns None if the file is absent. Membership sets are pre-built."""
     try:
-        data = json.loads((Path(__file__).resolve().parent / "icons.json").read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+        raw = (Path(__file__).resolve().parent / "icons.json").read_text(encoding="utf-8")
+    except OSError:
+        return None
+    try:
+        data: dict = json.loads(raw)
+    except ValueError:
         return None
     data["_sets"] = {t: set(names) for t, names in data.get("sets", {}).items()}
     return data
@@ -233,6 +238,10 @@ class ComponentExtension(Extension):
     def __init__(self, environment: Environment) -> None:
         super().__init__(environment)
         self.registry = ComponentRegistry()
+        # Attribute-name guard for the jinja backend's `:attrs` spread, which
+        # writes its keys unquoted into the tag. Same rule as the python
+        # backend's runtime.render_extra (one validator, both backends).
+        environment.filters.setdefault("lotc_attr_name", runtime_attr_name)
         # Design systems available on this page (declared at setup). The
         # theme-agnostic "system" layer is always available regardless.
         self.design_systems: tuple[str, ...] = ()
@@ -778,7 +787,10 @@ class ComponentExtension(Extension):
             elif key.startswith("@"):
                 extra_items.append(f"{_py_string(key)}: {_py_string(value)}")
             elif key == "class":
-                class_expr = _py_string(value)
+                # value_expr(), not _py_string(): `class="{{ expr }}"` must render
+                # the expression like every other attribute does, instead of
+                # emitting the literal mustache into the class list.
+                class_expr = value_expr(value)
             else:
                 attr_def = component_def.get_attribute(key)
                 is_generic = key.startswith(self._GENERIC_PREFIXES) or key in self._GENERIC_NAMES

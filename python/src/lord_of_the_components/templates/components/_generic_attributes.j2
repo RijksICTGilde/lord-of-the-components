@@ -118,7 +118,7 @@
    generic). None or '' omits an entry — same rule as :prop="expr or none". #}
 {% macro render_attrs_spread(component_context) -%}
     {%- for key, value in (component_context.get('attrs') or {}).items() -%}
-        {%- if value is not none and value != '' %} {{ key }}="{{ value | e }}"{% endif -%}
+        {%- if value is not none and value != '' %} {{ key | lotc_attr_name }}="{{ value | e }}"{% endif -%}
     {%- endfor -%}
 {%- endmacro %}
 

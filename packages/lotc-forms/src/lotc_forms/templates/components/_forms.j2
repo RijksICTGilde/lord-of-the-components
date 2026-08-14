@@ -13,7 +13,7 @@
    attribute covers the whole hx-* / data-* / aria-* / generic bundle. #}
 {% macro render_attrs(c) -%}
 {%- for k, v in (c.get('attrs') or {}).items() -%}
-{%- if v is not none and v != '' %} {{ k }}="{{ v | e }}"{% endif -%}
+{%- if v is not none and v != '' %} {{ k | lotc_attr_name }}="{{ v | e }}"{% endif -%}
 {%- endfor -%}
 {%- endmacro %}
 

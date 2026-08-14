@@ -331,7 +331,14 @@ export class PythonGenerator {
       // Only emit class when non-empty (themes without CSS classes, e.g. NLDD,
       // produce no class attribute unless the user passed one).
       lines.push(`${"    ".repeat(ind)}if ${clsVar}:`);
-      this.append(lines, ind + 1, `' class="' + ${clsVar} + '"'`);
+      // esc(): the class string is composed from static literals AND user input
+      // (`class=`/`:class=`, prop-interpolated pattern classes like
+      // `rvo-icon-<icon>`, utility classes from `_extra`). Without escaping, a
+      // value containing `"` breaks out of the class attribute. Appended in
+      // pieces — `plain + esc(v)` would escape the surrounding quotes.
+      this.append(lines, ind + 1, pyStr(' class="'));
+      this.append(lines, ind + 1, `esc(${clsVar})`);
+      this.append(lines, ind + 1, pyStr('"'));
     }
     if (node.isRoot) {
       this.append(lines, ind, pyStr(` data-lotc-component="${impl.component.name}"`));

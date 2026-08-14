@@ -19,7 +19,9 @@ def accordion(*, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<div')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="accordion"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -33,7 +35,9 @@ def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''
     cls0 = merge_class(cls0, _class)
     parts.append('<details')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="accordion-item"')
     if open:
         parts.append(' open')
@@ -42,17 +46,23 @@ def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''
     cls1 = 'rvo-accordion__item-summary'
     parts.append('<summary')
     if cls1:
-        parts.append(' class="' + cls1 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls1))
+        parts.append('"')
     parts.append('>')
     cls2 = 'rvo-accordion__item-icon'
     parts.append('<div')
     if cls2:
-        parts.append(' class="' + cls2 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls2))
+        parts.append('"')
     parts.append('>')
     cls3 = 'utrecht-icon rvo-icon rvo-icon-delta-omlaag rvo-icon--md rvo-icon--hemelblauw rvo-accordion__item-icon--closed'
     parts.append('<span')
     if cls3:
-        parts.append(' class="' + cls3 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls3))
+        parts.append('"')
     parts.append(' role="img"')
     parts.append(' aria-hidden="true"')
     parts.append('>')
@@ -60,7 +70,9 @@ def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''
     cls4 = 'utrecht-icon rvo-icon rvo-icon-delta-omhoog rvo-icon--md rvo-icon--hemelblauw rvo-accordion__item-icon--open'
     parts.append('<span')
     if cls4:
-        parts.append(' class="' + cls4 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls4))
+        parts.append('"')
     parts.append(' role="img"')
     parts.append(' aria-hidden="true"')
     parts.append('>')
@@ -69,12 +81,16 @@ def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''
     cls5 = 'rvo-accordion__item-title-container'
     parts.append('<div')
     if cls5:
-        parts.append(' class="' + cls5 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls5))
+        parts.append('"')
     parts.append('>')
     cls6 = 'utrecht-heading-3 rvo-accordion__item-title'
     parts.append('<h3')
     if cls6:
-        parts.append(' class="' + cls6 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls6))
+        parts.append('"')
     parts.append('>')
     parts.append(esc(title))
     parts.append('</h3>')
@@ -83,7 +99,9 @@ def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''
     cls7 = 'rvo-accordion__content'
     parts.append('<div')
     if cls7:
-        parts.append(' class="' + cls7 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls7))
+        parts.append('"')
     parts.append('>')
     parts.append((content or ''))
     parts.append('</div>')
@@ -96,7 +114,9 @@ def badge(*, type='default', label='', content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<span')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="badge"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -152,7 +172,9 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
     cls0 = merge_class(cls0, _class)
     parts.append('<button')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="button"')
     if disabled:
         parts.append(' disabled')
@@ -171,7 +193,9 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
             cls1 += ' rvo-icon--' + _BUTTON_COLORS_MAP.get(color, color)
         parts.append('<span')
         if cls1:
-            parts.append(' class="' + cls1 + '"')
+            parts.append(' class="')
+            parts.append(esc(cls1))
+            parts.append('"')
         parts.append(' role="img"')
         parts.append(' aria-label="')
         parts.append(esc(aria_label))
@@ -192,7 +216,9 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
             cls2 += ' rvo-icon--' + _BUTTON_COLORS_MAP.get(color, color)
         parts.append('<span')
         if cls2:
-            parts.append(' class="' + cls2 + '"')
+            parts.append(' class="')
+            parts.append(esc(cls2))
+            parts.append('"')
         parts.append(' role="img"')
         parts.append(' aria-label="')
         parts.append(esc(aria_label))
@@ -210,14 +236,18 @@ def checkbox(*, name='', value='', label='', checked=False, disabled=False, requ
     cls0 = merge_class(cls0, _class)
     parts.append('<label')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="checkbox"')
     parts.append(render_extra(_extra))
     parts.append('>')
     cls1 = 'rvo-checkbox__input'
     parts.append('<input')
     if cls1:
-        parts.append(' class="' + cls1 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls1))
+        parts.append('"')
     parts.append(' type="checkbox"')
     if name:
         parts.append(' name="')
@@ -261,7 +291,9 @@ def heading(*, type='h1', size='', label='', content=None, _extra=None, _class='
     cls0 = merge_class(cls0, _class)
     parts.append('<' + _el0)
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="heading"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -361,7 +393,9 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
     cls0 = merge_class(cls0, _class)
     parts.append('<span')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="icon"')
     parts.append(' role="img"')
     parts.append(' aria-label="')
@@ -439,7 +473,9 @@ def layout_flow(*, gap='md', size='lg', row=False, wrap=False, align_items='', a
     cls0 = merge_class(cls0, _class)
     parts.append('<div')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="layout-flow"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -490,7 +526,9 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
     cls0 = merge_class(cls0, _class)
     parts.append('<a')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="link"')
     if href:
         parts.append(' href="')
@@ -516,7 +554,9 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
             cls1 += ' rvo-icon--' + _LINK_COLORS_MAP.get(icon_color, icon_color)
         parts.append('<span')
         if cls1:
-            parts.append(' class="' + cls1 + '"')
+            parts.append(' class="')
+            parts.append(esc(cls1))
+            parts.append('"')
         parts.append('>')
         parts.append('</span>')
     parts.append('<span')
@@ -533,7 +573,9 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
             cls2 += ' rvo-icon--' + _LINK_COLORS_MAP.get(icon_color, icon_color)
         parts.append('<span')
         if cls2:
-            parts.append(' class="' + cls2 + '"')
+            parts.append(' class="')
+            parts.append(esc(cls2))
+            parts.append('"')
         parts.append('>')
         parts.append('</span>')
     parts.append('</a>')
@@ -545,7 +587,9 @@ def option(*, value='', label='', selected=False, disabled=False, content=None, 
     cls0 = merge_class(cls0, _class)
     parts.append('<option')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="option"')
     if value:
         parts.append(' value="')
@@ -586,7 +630,9 @@ def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, conte
     cls0 = merge_class(cls0, _class)
     parts.append('<p')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="paragraph"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -600,14 +646,18 @@ def radio(*, name='', value='', label='', checked=False, disabled=False, require
     cls0 = merge_class(cls0, _class)
     parts.append('<label')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="radio"')
     parts.append(render_extra(_extra))
     parts.append('>')
     cls1 = 'rvo-radio-button'
     parts.append('<input')
     if cls1:
-        parts.append(' class="' + cls1 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls1))
+        parts.append('"')
     parts.append(' type="radio"')
     if name:
         parts.append(' name="')
@@ -637,7 +687,9 @@ def select(*, name='', value='', placeholder='', disabled=False, required=False,
     cls0 = merge_class(cls0, _class)
     parts.append('<div')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="select"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -646,7 +698,9 @@ def select(*, name='', value='', placeholder='', disabled=False, required=False,
         cls1 += ' utrecht-select--disabled'
     parts.append('<select')
     if cls1:
-        parts.append(' class="' + cls1 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls1))
+        parts.append('"')
     if name:
         parts.append(' name="')
         parts.append(esc(name))
@@ -667,7 +721,9 @@ def tab(*, label='', href='', active=False, content=None, _extra=None, _class=''
     cls0 = merge_class(cls0, _class)
     parts.append('<li')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="tab"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -676,7 +732,9 @@ def tab(*, label='', href='', active=False, content=None, _extra=None, _class=''
         cls1 += ' rvo-tabs__item-link--active'
     parts.append('<a')
     if cls1:
-        parts.append(' class="' + cls1 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls1))
+        parts.append('"')
     if href:
         parts.append(' href="')
         parts.append(esc(href))
@@ -693,14 +751,18 @@ def table(*, columns='', content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<div')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="table"')
     parts.append(render_extra(_extra))
     parts.append('>')
     cls1 = 'rvo-table'
     parts.append('<table')
     if cls1:
-        parts.append(' class="' + cls1 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls1))
+        parts.append('"')
     parts.append('>')
     parts.append((content or ''))
     parts.append('</table>')
@@ -713,7 +775,9 @@ def table_head(*, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<tr')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="table-head"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -729,7 +793,9 @@ def table_row(*, selected=False, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<tr')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="table-row"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -745,7 +811,9 @@ def tag(*, type='default', label='', content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<div')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="tag"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -761,7 +829,9 @@ def td(*, numeric=False, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<td')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="td"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -777,7 +847,9 @@ def text_input(*, type='text', name='', value='', placeholder='', autocomplete='
     cls0 = merge_class(cls0, _class)
     parts.append('<input')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="text-input"')
     parts.append(' type="')
     parts.append(esc(type))
@@ -816,7 +888,9 @@ def textarea(*, name='', value='', placeholder='', disabled=False, required=Fals
     cls0 = merge_class(cls0, _class)
     parts.append('<textarea')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="textarea"')
     if name:
         parts.append(' name="')
@@ -846,7 +920,9 @@ def th(*, numeric=False, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<th')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="th"')
     parts.append(render_extra(_extra))
     parts.append('>')

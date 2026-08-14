@@ -19,7 +19,9 @@ def accordion(*, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<div')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="accordion"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -33,7 +35,9 @@ def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''
     cls0 = merge_class(cls0, _class)
     parts.append('<details')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="accordion-item"')
     if open:
         parts.append(' open')
@@ -42,14 +46,18 @@ def accordion_item(*, title='', open=False, content=None, _extra=None, _class=''
     cls1 = 'nldd-accordion__summary'
     parts.append('<summary')
     if cls1:
-        parts.append(' class="' + cls1 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls1))
+        parts.append('"')
     parts.append('>')
     parts.append(esc(title))
     parts.append('</summary>')
     cls2 = 'nldd-accordion__content'
     parts.append('<div')
     if cls2:
-        parts.append(' class="' + cls2 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls2))
+        parts.append('"')
     parts.append('>')
     parts.append((content or ''))
     parts.append('</div>')
@@ -70,7 +78,9 @@ def badge(*, type='default', label='', content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-badge')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="badge"')
     if type:
         parts.append(' color="')
@@ -160,7 +170,9 @@ def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', f
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-button')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="button"')
     if type:
         parts.append(' variant="')
@@ -208,7 +220,9 @@ def checkbox(*, name='', value='', label='', checked=False, disabled=False, requ
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-checkbox-field')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="checkbox"')
     if name:
         parts.append(' name="')
@@ -246,7 +260,9 @@ def heading(*, type='h1', size='', label='', content=None, _extra=None, _class='
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-title')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="heading"')
     if size:
         parts.append(' size="')
@@ -352,7 +368,9 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-icon')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="icon"')
     if icon:
         parts.append(' name="')
@@ -377,7 +395,9 @@ def layout_flow(*, gap='md', size='lg', row=False, wrap=False, align_items='', a
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-container')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="layout-flow"')
     if gap:
         parts.append(' gap="')
@@ -395,7 +415,9 @@ def link(*, label='', href='', color='hemelblauw', weight='bold', show_icon='no'
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-link')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="link"')
     if href:
         parts.append(' href="')
@@ -421,7 +443,9 @@ def option(*, value='', label='', selected=False, disabled=False, content=None, 
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-menu-item')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="option"')
     if value:
         parts.append(' value="')
@@ -447,7 +471,9 @@ def paragraph(*, label='', color='grijs-900', size='md', no_spacing=False, conte
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-rich-text')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="paragraph"')
     parts.append(' spacing="snug"')
     parts.append(render_extra(_extra))
@@ -465,7 +491,9 @@ def radio(*, name='', value='', label='', checked=False, disabled=False, require
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-radio-button-field')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="radio"')
     if name:
         parts.append(' name="')
@@ -496,7 +524,9 @@ def select(*, name='', value='', placeholder='', disabled=False, required=False,
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-combo-box')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="select"')
     if name:
         parts.append(' name="')
@@ -527,7 +557,9 @@ def tab(*, label='', href='', active=False, content=None, _extra=None, _class=''
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-tab-bar-item')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="tab"')
     if label:
         parts.append(' text="')
@@ -551,7 +583,9 @@ def table(*, columns='', content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-table')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="table"')
     if columns:
         parts.append(' columns="')
@@ -569,7 +603,9 @@ def table_head(*, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-table-row')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="table-head"')
     parts.append(' slot="header"')
     parts.append(render_extra(_extra))
@@ -584,7 +620,9 @@ def table_row(*, selected=False, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-table-row')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="table-row"')
     if selected:
         parts.append(' selected')
@@ -608,7 +646,9 @@ def tag(*, type='default', label='', content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-tag')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="tag"')
     if type:
         parts.append(' color="')
@@ -630,7 +670,9 @@ def td(*, numeric=False, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-cell')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="td"')
     parts.append(render_extra(_extra))
     parts.append('>')
@@ -644,7 +686,9 @@ def text_input(*, type='text', name='', value='', placeholder='', autocomplete='
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-text-field')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="text-input"')
     parts.append(' type="')
     parts.append(esc(type))
@@ -682,7 +726,9 @@ def textarea(*, name='', value='', placeholder='', disabled=False, required=Fals
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-multi-line-text-field')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="textarea"')
     if name:
         parts.append(' name="')
@@ -713,7 +759,9 @@ def th(*, numeric=False, content=None, _extra=None, _class=''):
     cls0 = merge_class(cls0, _class)
     parts.append('<nldd-cell')
     if cls0:
-        parts.append(' class="' + cls0 + '"')
+        parts.append(' class="')
+        parts.append(esc(cls0))
+        parts.append('"')
     parts.append(' data-lotc-component="th"')
     parts.append(render_extra(_extra))
     parts.append('>')

@@ -7,15 +7,46 @@ every render, so they must be cheap. ``render_extra`` replaces the ~40 µs
 
 from __future__ import annotations
 
+import re
 from typing import Any, Mapping, Optional
 
 from markupsafe import Markup, escape
 
-__all__ = ["Markup", "esc", "render_extra", "render_utility", "merge_class"]
+__all__ = [
+    "Markup",
+    "esc",
+    "render_extra",
+    "render_utility",
+    "merge_class",
+    "attr_name",
+]
 
 # Generic HTML attributes passed through verbatim (besides data-/aria-/hx-*).
 _PASSTHROUGH = ("id", "title", "style", "role", "tabindex", "slot")
 _PREFIXES = ("data-", "aria-", "hx-")
+
+#: A legal HTML attribute name. Escaping a value protects the value; the KEY of a
+#: `:attrs="{...}"` spread is written outside quotes, so a key carrying a quote,
+#: space or `=` would inject a whole new attribute (`x" onmouseover="alert(1)`).
+#: Entity-escaping cannot help there — attribute names are not entity-decoded —
+#: so an illegal name is rejected outright.
+_ATTR_NAME_RE = re.compile(r"^[A-Za-z_:][-A-Za-z0-9_:.]*$")
+
+
+def attr_name(key: Any) -> str:
+    """Return `key` if it is a legal HTML attribute name, else raise ValueError.
+
+    Guards the `:attrs="{name: value}"` spread, whose keys come from application
+    data and are written unquoted into the tag.
+    """
+    name = str(key)
+    if not _ATTR_NAME_RE.match(name):
+        raise ValueError(
+            f"Invalid HTML attribute name in :attrs spread: {name!r}. "
+            "Attribute names may contain letters, digits, '-', '_', ':' and '.' "
+            "and must start with a letter, '_' or ':'."
+        )
+    return name
 
 
 def esc(value: Any) -> Markup:
@@ -40,12 +71,12 @@ def render_extra(extra: Optional[Mapping[str, Any]]) -> Markup:
         if key == "attrs" and isinstance(value, dict):
             for k, v in value.items():
                 if v is not None and v != "":
-                    parts.append(f' {k}="{escape(v)}"')
+                    parts.append(f' {attr_name(k)}="{escape(v)}"')
             continue
         if key.startswith("@"):
             name = key[1:]
             attr = name if name.startswith("hx-") else "on" + name
-            parts.append(f' {attr}="{escape(value)}"')
+            parts.append(f' {attr_name(attr)}="{escape(value)}"')
         elif key.startswith(_PREFIXES) or key in _PASSTHROUGH:
             parts.append(f' {key}="{escape(value)}"')
     return Markup("".join(parts))
@@ -80,7 +111,14 @@ def render_utility(extra: Optional[Mapping[str, Any]]) -> str:
 
 
 def merge_class(base: str, extra_class: Optional[str]) -> str:
-    """Append user-supplied classes to a base class string."""
+    """Append user-supplied classes to a base class string.
+
+    Class strings are handled as RAW text here and escaped once where the
+    `class="…"` attribute is emitted. An `extra_class` that already arrives as
+    escaped Markup — `class="a {{ x }}"` is captured by a `{% set %}` block under
+    autoescape — is unescaped first, so it is escaped exactly once and not twice.
+    """
     if not extra_class:
         return base
-    return f"{base} {extra_class}" if base else extra_class
+    raw = str(extra_class.unescape()) if isinstance(extra_class, Markup) else extra_class
+    return f"{base} {raw}" if base else raw
