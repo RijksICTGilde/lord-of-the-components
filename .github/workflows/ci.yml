@@ -86,3 +86,18 @@ jobs:
 
       - name: Build frontend assets
         run: npm run build:fe
+
+      - name: Codegen is idempotent (generated artifacts match their sources)
+        # The templates, renderers, registry and showcase are GENERATED. If a
+        # generated file is hand-edited, the next regeneration silently wipes the
+        # edit — so re-run the codegen here and fail on any diff. A red step means
+        # either a stale committed artifact (regenerate and commit) or a hand-edit
+        # that belongs in definitions/, themes/ or the generator.
+        run: |
+          npx tsx core/src/generators/jinja2/generate-all.ts
+          git diff --exit-code -- \
+            python/src/lord_of_the_components/templates \
+            python/src/lord_of_the_components/registry.json \
+            packages/lotc-rvo/src/lotc_rvo \
+            packages/lotc-nldd/src/lotc_nldd \
+            examples/getting-started/templates/showcase.html

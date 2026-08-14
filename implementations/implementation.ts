@@ -191,9 +191,16 @@ export interface StyleMapping {
  */
 export type Condition =
   | PropCondition
+  | SlotCondition
   | NotCondition
   | AndCondition
   | OrCondition;
+
+/** Check whether a named slot (`<template slot="x">`) was supplied */
+export interface SlotCondition {
+  /** Slot name to check for */
+  slot: string;
+}
 
 /** Check a single prop for truthiness or equality */
 export interface PropCondition {
@@ -221,6 +228,11 @@ export interface OrCondition {
 /** Type guard: is this a PropCondition? */
 export function isPropCondition(c: Condition): c is PropCondition {
   return "prop" in c;
+}
+
+/** Type guard: is this a SlotCondition? */
+export function isSlotCondition(c: Condition): c is SlotCondition {
+  return "slot" in c;
 }
 
 /** Type guard: is this a NotCondition? */
@@ -584,10 +596,21 @@ function validateElementNode(
   componentName: string,
   path: string,
 ): void {
-  if (!node.element && !node.repeat) {
+  // A node needs an element tag unless it is pure control flow (`repeat`) or a
+  // text-only fragment (`{ text: … }` emitted into the parent without a wrapper).
+  if (!node.element && !node.repeat && node.text === undefined) {
     throw new Error(
-      `ElementNode at "${path}" in "${componentName}" must specify an element`,
+      `ElementNode at "${path}" in "${componentName}" must specify an element, ` +
+        `a repeat, or text (a wrapper-less fragment)`,
     );
+  }
+  if (!node.element && node.text !== undefined) {
+    if (node.classes?.length || node.attributes?.length || node.styles?.length || node.children?.length) {
+      throw new Error(
+        `Fragment ElementNode at "${path}" in "${componentName}" carries text but ` +
+          `no element: it cannot also have classes, attributes, styles or children`,
+      );
+    }
   }
 
   // Validate class rules

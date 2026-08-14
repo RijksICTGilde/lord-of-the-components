@@ -1,5 +1,6 @@
 """NLDD implementations for footer, hero, header (jinja-backend, per-theme templates)."""
 
+import re
 from pathlib import Path
 
 import pytest
@@ -87,7 +88,10 @@ def test_footer_legal_bar(nldd):
         '<c-page-footer-legal-bar-item href="/toegankelijkheid" text="Toegankelijkheid"/>'
         "</template></c-page-footer-legal-bar></template></c-footer>"
     )
-    assert '<div slot="legal-bar">' in html
+    # The slot wrapper comes from the generator now (it used to be hand-edited
+    # into the generated template, which regeneration wiped), so match the tag
+    # whitespace-insensitively: the generator puts attributes on their own line.
+    assert re.search(r"<div\s+slot=\"legal-bar\">", html), html
     assert "<nldd-page-footer-legal-bar" in html
     assert '<nldd-page-footer-legal-bar-item' in html
     assert 'text="Toegankelijkheid"' in html and 'href="/toegankelijkheid"' in html

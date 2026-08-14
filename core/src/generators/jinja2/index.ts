@@ -79,7 +79,17 @@ export interface OrCondition {
   or: Condition[];
 }
 
-export type Condition = PropCondition | NotCondition | AndCondition | OrCondition;
+/** Was a named slot (`<template slot="x">`) supplied? */
+export interface SlotCondition {
+  slot: string;
+}
+
+export type Condition =
+  | PropCondition
+  | SlotCondition
+  | NotCondition
+  | AndCondition
+  | OrCondition;
 
 export interface ComputedVariable {
   name: string;
@@ -174,6 +184,10 @@ function isPatternClass(rule: ClassRule): rule is PatternClass {
 
 function isPropCondition(c: Condition): c is PropCondition {
   return "prop" in c;
+}
+
+function isSlotCondition(c: Condition): c is SlotCondition {
+  return "slot" in c;
 }
 
 function isNotCondition(c: Condition): c is NotCondition {
@@ -382,6 +396,15 @@ export class Jinja2Generator {
     const lines: string[] = [];
     const ind = indent(indentLevel);
     const componentName = impl.component.name;
+
+    // ── Fragment: text with no element of its own ─────────────────────────
+    // `{ text: { content: true } }` without `element` emits the text straight
+    // into the parent (no wrapper tag) — needed where a design system's own
+    // component expects its children unwrapped in its default slot.
+    if (!node.element && !node.repeat && node.text !== undefined) {
+      lines.push(`${ind}${textToJinjaString(node.text)}`);
+      return lines;
+    }
 
     // ── CSS classes ───────────────────────────────────────────────────────
     const hasClasses = node.classes && node.classes.length > 0;
@@ -693,6 +716,10 @@ export class Jinja2Generator {
           .join(" or ");
       }
       return `${varName} == '${condition.eq}'`;
+    }
+
+    if (isSlotCondition(condition)) {
+      return `slots.get('${condition.slot}')`;
     }
 
     if (isNotCondition(condition)) {

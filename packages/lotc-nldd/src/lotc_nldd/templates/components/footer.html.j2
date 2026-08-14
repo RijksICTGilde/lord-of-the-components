@@ -12,13 +12,21 @@
     class="{{ css_classes | join(' ') }}"
     data-lotc-component="footer"
     {{ attrs.render_extra_attributes(_component_context) }}>
-    {% if slots.get('breadcrumbs') %}<div slot="breadcrumbs">{{ slots['breadcrumbs'] | safe }}</div>{% endif %}
+    {% if slots.get('breadcrumbs') %}
+    <div
+        slot="breadcrumbs">
+        {{ slots.get('breadcrumbs', '') | safe }}
+    </div>
+    {% endif %}
     {% if pay_off %}
     <span>{{ pay_off | safe }}</span>
     {% endif %}
     {{ children | safe }}
-    {# The legal sub-bar goes in nldd-page-footer's named `legal-bar` slot: fill
-       it with <c-footer><template slot="legal-bar"><c-page-footer-legal-bar>…. #}
-    {% if slots.get('legal-bar') %}<div slot="legal-bar">{{ slots['legal-bar'] | safe }}</div>{% endif %}
+    {% if slots.get('legal-bar') %}
+    <div
+        slot="legal-bar">
+        {{ slots.get('legal-bar', '') | safe }}
+    </div>
+    {% endif %}
 </nldd-page-footer>
 {% endmacro %}
