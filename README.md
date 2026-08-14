@@ -31,6 +31,30 @@ package that provides the implementations. You can add your own.
   CSS/JS `<link>`/`<script>` tags for whatever systems you activated. You never
   link a stylesheet by hand.
 
+## Status: a bet, honestly labelled
+
+We don't know yet whether this component system will turn out to be valuable or
+even usable in practice. Agentic coding is changing what "writing a template"
+means, and it's changing fast — anything built today has to earn its keep
+tomorrow.
+
+What we *do* know is the usage side. A uniform, abstract component vocabulary is
+worth something on its own: it reduces building a layout to expressing
+**semantics** — "a page with a header, a hero, and a grid of cards" — instead of
+reasoning about one design system's class names, wrapper divs and markup order.
+You describe intent; the compiler deals with the implementation.
+
+That only pays off if design systems are interchangeable enough to sit behind a
+shared contract. Often they aren't — and where the abstraction leaks, we'd
+rather say so than pretend. But the idea has proven its worth before, and we
+think it's worth backing again.
+
+There's a second payoff that doesn't depend on the first: **structure**. Menus,
+breadcrumbs, navigation trees, data lists, tables — the things every project
+rebuilds with a slightly different nested loop and a slightly different helper.
+Here they're components that take data and render it, consistently, once. Fewer
+loops in your templates, fewer bespoke solutions to maintain.
+
 ## Install
 
 The packages aren't on PyPI yet, so install them from this checkout:
