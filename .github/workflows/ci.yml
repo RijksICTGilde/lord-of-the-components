@@ -33,7 +33,18 @@ jobs:
           python-version: '3.12'
 
       - name: Install Python package
-        run: pip install -e "python/[dev]"
+        # The design systems are separate in-repo packages. [tool.uv.sources] only
+        # resolves them for uv, so pip needs them handed to it explicitly in the
+        # same invocation as the [dev] extra that requires them — otherwise pip
+        # looks for lotc-rvo on PyPI and the whole job dies here.
+        run: >
+          pip install
+          -e "python/[dev]"
+          -e packages/lotc-rvo
+          -e packages/lotc-nldd
+          -e packages/lotc-layout
+          -e packages/lotc-charts
+          -e packages/lotc-forms
 
       - name: Ruff
         working-directory: python
@@ -95,9 +106,13 @@ jobs:
         # that belongs in definitions/, themes/ or the generator.
         run: |
           npx tsx core/src/generators/jinja2/generate-all.ts
+          npm run gen:docs
           git diff --exit-code -- \
             python/src/lord_of_the_components/templates \
             python/src/lord_of_the_components/registry.json \
+            python/src/lord_of_the_components/icons.json \
             packages/lotc-rvo/src/lotc_rvo \
             packages/lotc-nldd/src/lotc_nldd \
-            examples/getting-started/templates/showcase.html
+            examples/getting-started/templates/showcase.html \
+            AUTHORING.md \
+            tests/visual/fixtures/nldd-storybook.html

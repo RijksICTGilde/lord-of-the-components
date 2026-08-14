@@ -110,7 +110,7 @@ An opt-in capability set of labelled form fields. Activate it **last**, after th
 setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-forms"])
 ```
 - `<c-text-input-field>` — Labelled single-line text input with help/error and ARIA wiring
-  <br>attrs: `id`, `name`, `label`, `type` (text\|email\|tel\|url\|number\|search\|date\|datetime-local\|time\|password), `value`, `placeholder`, `autocomplete`, `help`, +4
+  <br>attrs: `id`, `name`, `label`, `type` (text\|email\|tel\|url\|number\|search\|date\|datetime-local\|time\|password), `value`, `show-copy` (bool), `placeholder`, `autocomplete`, +5
 - `<c-textarea-field>` — Labelled multi-line text input with help/error and ARIA wiring
   <br>attrs: `id`, `name`, `label`, `value`, `placeholder`, `rows`, `help`, `error`, +3
 - `<c-select-field>` — Labelled select; options are <c-option> children (or native <option> with native)
@@ -308,7 +308,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-notification-item>` — One notification: icon + title, with meta content (tag, source, time)
   <br>attrs: `icon`, `title`, `href`
 - `<c-secret-field>` — Masked secret display with reveal toggle + optional copy button (api-key, env var)
-  <br>attrs: `value`, `mask-length`, `show-copy` (bool), `content-width`, `value-type` (text\|json)
+  <br>attrs: `value`, `mask-length`, `show-copy` (bool), `revealed` (bool), `content-width`, `value-type` (text\|json)
 - `<c-spacer-cell>` — A cell component that provides fixed horizontal spacing within list items.
   <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `hide-below`, `hide-above`
 - `<c-text-cell>` — A cell component for displaying text content in lists with configurable alignment, size and color. This is the most fundamental list cell co
