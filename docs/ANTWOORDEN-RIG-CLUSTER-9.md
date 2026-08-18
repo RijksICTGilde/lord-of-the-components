@@ -108,6 +108,41 @@ noemen ze alle dertien plekken bij naam.
 Dit was de stille kant van de fout: `var(--naam, #fff)` waarschuwt nergens over.
 De statische poort vangt de naam, de meting hierboven vangt het pixel.
 
+## 4b. Naronde: de poort had zelf een gat, en daar kwamen twee dingen uit
+
+Bij navraag bleek mijn eerste poort te smal: hij keek alleen naar namen *binnen*
+`var()`. Een regel als `.lotc-statusbar--info { background: #e5f0fb }` noemt
+helemaal geen token, dus daar had hij niets om naar te kijken — die had ik met
+het oog gevonden, niet met de poort. En de meting dekte maar een deel van de
+pagina. Twee metingen die dat blootlegden:
+
+- **Dekking.** Wij hebben **39** eigen klassen die een kleur zetten. De eerste
+  fixture rende er **17**. Met andere woorden: "0 onder AA" ging over minder dan
+  de helft. De fixture dekt nu alle 39 (plus alle negen velden van lotc-forms),
+  en `test_dark_fixture_covers_every_class_that_paints` faalt zodra er een klasse
+  bij komt die er niet op staat — met de naam erbij.
+- **Grafieken.** `lotc-charts` tekent op een `<canvas>`, en daar zitten geen
+  tekstknopen: een contrastmeting op tekst ziet er **principieel niets** van. Ik
+  heb er pixelbemonstering bij gebouwd, en die vond het meteen: **35% resp. 40%**
+  van de getekende inkt was onzichtbaar (`rgb(17,17,17)` op `rgb(18,18,18)`,
+  1,01:1) — het raster (`rgba(0,0,0,.06)`), de gauge-track (`rgba(0,0,0,.08)`) en
+  Chart.js' eigen standaard-labelkleur `#666`. Nu allemaal uit het thema; na de
+  fix 0%.
+
+Als jullie ook grafieken hebben: Chart.js kan geen custom property aannemen, en
+**`getComputedStyle(root).getPropertyValue('--token')` werkt hier niet** — die
+geeft de onopgeloste string `light-dark(…, …)` terug. Je moet de token door een
+proefelement laten *gebruiken* en de gebruikte waarde teruglezen; die komt
+vervolgens als `oklch()` terug, wat Chart.js' kleurparser niet kent, dus daarna
+nog door een canvas-pixel naar sRGB. Dat staat als herbruikbare macro in
+`packages/lotc-charts/.../_charts.j2`.
+
+Beide standen worden nu gemeten (`--light` herschrijft `data-scheme` in het
+ANTWOORD, niet achteraf in de DOM — een grafiek leest zijn kleuren tijdens het
+bouwen, dus achteraf omzetten meet donkere inkt tegen een lichte pagina en noemt
+dat goed). Uitkomst: 97 stukken tekst, 0 onder AA en 0 onzichtbare inkt in
+donker **en** in licht.
+
 ## 5. Je twee vragen
 
 **`c-select` met `native="true"` — dat *is* de bedoelde weg.** Je gebruikt hem

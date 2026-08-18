@@ -7,11 +7,17 @@ kept their light colours in dark mode while the generated ones followed the
 theme (the NLDD theme switches via `light-dark()`, driven by `data-scheme` on
 `<html>`; a literal fallback cannot switch).
 
-Two gates, both measured against the vendored NLDD bundle:
+Four gates:
 
 1. every `--semantics-*` name we consume is declared by the theme;
 2. every `--nldd-color-*` name (our per-app override hooks, which the theme does
-   NOT declare) falls back to a `--semantics-*` token rather than to a literal.
+   NOT declare) falls back to a `--semantics-*` token rather than to a literal;
+3. no colour is written as a bare literal — the first two gates only look INSIDE
+   `var()`, so a rule like `background: #eef0f4` (which is what `.lotc-statusbar`
+   was) slips past both;
+4. the dark-scheme fixture actually renders every class of ours that sets a
+   colour, so the browser measurement in `tests/visual/dark_contrast_shoot.mjs`
+   cannot be quietly incomplete.
 """
 
 import re
@@ -89,3 +95,157 @@ def test_the_gate_would_catch_a_typo(declared_by_theme):
     assert "--semantics-action-primary-background-color" not in declared_by_theme
     assert "--semantics-feedback-warning-color" not in declared_by_theme
     assert "--semantics-feedback-error-color" not in declared_by_theme
+
+
+# ── gate 3: colours written without a token at all ──────────────────────────
+
+#: Colour syntaxes. A literal is fine as the FALLBACK of a var() — it is the
+#: value only when no theme is loaded at all — so fallbacks are cut out first.
+COLOUR = re.compile(
+    # a hex colour, but not the tail of an HTML entity like &#10005;
+    r"(?<![&\w])#[0-9a-fA-F]{3,8}\b"
+    # rgb()/hsl()/oklch() with NUMERIC arguments — so a JS string that happens
+    # to build "rgba(" + n + … is not mistaken for a literal
+    r"|\b(?:rgba?|hsla?|oklch)\(\s*[\d.,%\s/deg]+\)"
+    r"|\b(?:white|black|red|green|blue|silver|gray|grey|orange|yellow|purple)\b(?!-)"
+)
+#: Both ways we write "token, with this if the theme is absent". The JS helper
+#: in lotc-charts is the same contract as var(): Chart.js needs a value, so the
+#: token is resolved in script, and the literal is only the no-theme fallback.
+FALLBACK_START = re.compile(r"var\(\s*--[a-z0-9-]+\s*,\s*|lotcThemeColor\(\s*'--[a-z0-9-]+'\s*,\s*")
+#: Comments are prose: they may mention colours without setting any.
+BLOCK_COMMENT = re.compile(r"/\*.*?\*/|\{#.*?#\}", re.DOTALL)
+HTML_ENTITY = re.compile(r"&#\w+;")
+
+#: Deliberate literals, each with the reason it is not a theme token.
+ALLOWED_LITERALS = {
+    # Medal colours: gold/silver/bronze ARE the meaning, no token expresses them.
+    ("static/lotc/app-components.css", "#c8a200"),
+    ("static/lotc/app-components.css", "#8a8f99"),
+    ("static/lotc/app-components.css", "#a06a3c"),
+    # Neutral hatch over a themed tint — grey at 12% reads on light and dark.
+    ("static/lotc/app-components.css", "rgba(128, 128, 128, 0.12)"),
+}
+
+
+def _bare_colours(text):
+    """Yield colour literals that are neither a fallback nor inside a comment."""
+    text = HTML_ENTITY.sub(" ", BLOCK_COMMENT.sub(" ", text))
+    for raw in text.splitlines():
+        line = raw.strip()
+        if line.startswith(("*", "//")):
+            continue
+        out, i = [], 0
+        while i < len(line):  # blank out every token fallback
+            m = FALLBACK_START.search(line, i)
+            if not m:
+                out.append(line[i:])
+                break
+            out.append(line[i : m.start()])
+            depth, j = 1, m.end()
+            while j < len(line) and depth:
+                depth += (line[j] == "(") - (line[j] == ")")
+                j += 1
+            out.append(" " * (j - m.start()))
+            i = j
+        for match in COLOUR.finditer("".join(out)):
+            yield match.group(0), line
+
+
+def test_no_colour_is_written_without_a_token():
+    """A literal outside a var() cannot follow the theme — nothing can override it.
+
+    This is the gate the first two miss: `.lotc-statusbar--info { background:
+    #e5f0fb }` mentions no token at all, so a token-name check has nothing to
+    look at, and it stayed light on a dark page.
+    """
+    offenders = []
+    for path, text in _iter_sources():
+        rel = str(path.relative_to(ROOT))
+        for colour, line in _bare_colours(text):
+            if any(rel.endswith(f) and colour == c for f, c in ALLOWED_LITERALS):
+                continue
+            offenders.append(f"{rel}: {colour}  in  {line[:90]}")
+    assert not offenders, "colours written without a token (a theme cannot reach these):\n  " + "\n  ".join(offenders)
+
+
+def test_the_bare_colour_gate_sees_a_planted_literal():
+    """Negative control: the shape `.lotc-statusbar--info` had must be caught."""
+    planted = ".lotc-x { background: #e5f0fb; color: var(--semantics-content-color, #333); }"
+    found = [c for c, _ in _bare_colours(planted)]
+    assert found == ["#e5f0fb"], f"expected only the bare literal, got {found}"
+
+
+# ── gate 4: is the browser measurement actually looking at everything? ───────
+
+#: Properties whose value is a colour. A rule that sets one of these paints.
+COLOUR_PROP = re.compile(
+    r"(?<![-\w])(color|background|background-color|border[a-z-]*color|outline|fill|stroke|box-shadow)\s*:"
+)
+DARK_FIXTURE = ROOT / "tests/visual/fixtures/dark-scheme.html"
+
+
+def _classes_that_paint():
+    """Every `.lotc-*` class of ours whose rule sets a colour → the files it is in."""
+    found = {}
+    for path, text in _iter_sources():
+        for rule in re.finditer(r"([^{}]+)\{([^{}]*)\}", text):
+            if not COLOUR_PROP.search(rule.group(2)):
+                continue
+            for cls in re.findall(r"\.(lotc-[a-z0-9_-]+)", rule.group(1)):
+                found.setdefault(cls, set()).add(str(path.relative_to(ROOT)))
+    return found
+
+
+def test_dark_fixture_covers_every_class_that_paints():
+    """The measurement is only worth its result if the page shows everything.
+
+    `dark_contrast_shoot.mjs` can only judge what the fixture renders, and that
+    is invisible in its output: it reported "0 below AA" while 22 of our 39
+    painting classes were simply not on the page. So pin the coverage here — the
+    fixture must render every class that sets a colour.
+    """
+    painting = _classes_that_paint()
+    assert len(painting) > 25, f"expected the full set of painting classes, found {len(painting)}"
+    fixture = DARK_FIXTURE.read_text(encoding="utf-8")
+    # The fixture is authored in <c-*> tags, so a class it renders is usually
+    # not literally in the file — render it and look at the HTML.
+    html = _render_dark_fixture(fixture)
+    missing = {c: sorted(f) for c, f in painting.items() if not re.search(rf"\b{re.escape(c)}\b", html)}
+    assert not missing, (
+        f"{len(missing)} of {len(painting)} classes that set a colour are never rendered by "
+        f"{DARK_FIXTURE.relative_to(ROOT)}, so nothing measures them: {missing}"
+    )
+
+
+def test_dark_fixture_renders_every_canvas_component():
+    """Charts paint on a <canvas>, so no class of theirs appears in the CSS scan.
+
+    Removing one from the fixture therefore slips past the coverage gate above
+    while silently dropping the only check that can see chart colours at all
+    (the ink sampling in dark_contrast_shoot.mjs). Pin them by name.
+    """
+    html = _render_dark_fixture(DARK_FIXTURE.read_text(encoding="utf-8"))
+    for component in ("gauge", "line-chart"):
+        assert f'data-lotc-component="{component}"' in html, (
+            f"the dark fixture no longer renders c-{component}; its canvas colours would go unmeasured"
+        )
+    assert html.count("<canvas") >= 2
+
+
+def _render_dark_fixture(source):
+    from jinja2 import Environment, FileSystemLoader
+
+    from lord_of_the_components import setup_components
+
+    pkg = ROOT / "python/src/lord_of_the_components"
+    env = Environment(loader=FileSystemLoader([str(pkg / "templates")]), autoescape=True)
+    setup_components(
+        env,
+        design_systems=["lotc-layout", "nldd", "lotc-forms", "lotc-charts"],
+        registry_path=str(pkg / "registry.json"),
+        # The fixture deliberately includes a component NLDD does not implement,
+        # to render the .lotc-unimplemented placeholder.
+        on_missing_component="placeholder",
+    )
+    return env.from_string(source).render()

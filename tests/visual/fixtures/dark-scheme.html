@@ -1,24 +1,60 @@
 {#
-  Dark-scheme fixture: every hand-written component whose colours are its own
-  (scoped <style> or app-components.css) rather than the theme's, on one page.
+  Dark-scheme fixture: every component of ours that paints its own colour —
+  a scoped <style>, app-components.css, forms.css or layout.css — plus every
+  field lotc-forms owns, on one page.
 
   `data-scheme="dark"` is set on <c-page>, which puts it on <html> — the tag NLDD
   reads its light/dark stand from. Measure with:
 
+    python tests/visual/serve.py --port 5555 --theme nldd,lotc-forms &
     node tests/visual/dark_contrast_shoot.mjs \
-      'http://localhost:5555/dark-scheme.html?ds=nldd,lotc-forms'
+      'http://localhost:5555/dark-scheme.html' --all
+
+  What must stay true: `test_dark_fixture_covers_every_coloured_class` renders
+  this file and fails if any class in our CSS that sets a colour is missing
+  here. So when you add a component that paints, add it below — the gate tells
+  you which class it is.
 
   Deliberately NOT in the screenshot list in specs/components.spec.ts: this
   fixture is measured (contrast ratios, light islands), not diffed as pixels.
 #}
-<c-page title="Dark scheme" design-systems="lotc-layout nldd lotc-forms" data-scheme="dark">
+<c-page title="Dark scheme" design-systems="lotc-layout nldd lotc-forms lotc-charts" data-scheme="dark">
   <div class="fixture-container" style="padding:1rem;display:flex;flex-direction:column;gap:1rem">
+
+    {# ── status-bar: five hard-coded light pairs before the token sweep ── #}
     <c-status-bar type="neutral" text="Neutrale melding"/>
     <c-status-bar type="info" text="Informatieve melding"/>
     <c-status-bar type="success" text="Gelukt"/>
     <c-status-bar type="warning" text="Let op"/>
     <c-status-bar type="error" text="Mislukt"/>
 
+    {# ── de negen velden van lotc-forms ── #}
+    <c-fieldset legend="Onze eigen velden">
+      <c-text-input-field id="t1" name="t1" label="Tekst" value="abc" help="Hulptekst"/>
+      <c-text-input-field id="t2" name="t2" label="Tekst met fout" value="fout" error="Dit klopt niet"/>
+      <c-text-input-field id="t3" name="t3" label="Kopieerbaar veld" value="abc-123" show-copy/>
+      <c-textarea-field id="ta1" name="ta1" label="Meerregelig" value="regel een"/>
+      <c-select-field id="s1" name="s1" label="Native select" native="true" placeholder="Kies...">
+        <option value="a">Optie A</option>
+        <option value="b">Optie B</option>
+      </c-select-field>
+      <c-select-field id="s2" name="s2" label="Native select met fout" native="true" error="Verplicht">
+        <option value="a">Optie A</option>
+      </c-select-field>
+      <c-select-field id="s3" name="s3" label="Themaselect" placeholder="Kies...">
+        <c-option value="a" label="Optie A"/>
+      </c-select-field>
+      <c-checkbox-field id="c1" name="c1" label="Aanvinkveld" help="Met hulptekst"/>
+      <c-radio-button-field id="r1" name="r1" label="Keuzerondje"/>
+      <c-date-input-field id="d1" name="d1" label="Datum" value="2026-08-18"/>
+      <c-file-input-field id="f1" name="f1" label="Bestand"/>
+      <c-action-group align="end">
+        <c-button type="primary" label="Opslaan"/>
+        <c-button label="Annuleren"/>
+      </c-action-group>
+    </c-fieldset>
+
+    {# ── secret-field: #FFFFFF op #FFFFFF vóór de sweep ── #}
     <c-secret-field value="hunter2-geheime-waarde" show-copy revealed/>
     <c-secret-field value="hunter2-geheime-waarde" show-copy/>
 
@@ -27,18 +63,67 @@
       <dt>Achternaam</dt><dd>El Amrani</dd>
     </c-data-list>
 
-    <c-select-field id="s1" name="s1" label="Native select" native="true" placeholder="Kies...">
-      <option value="a">Optie A</option>
-      <option value="b">Optie B</option>
-    </c-select-field>
+    <c-detail-list id="ZAAK-42" icon="apartment-building" href="/x">
+      <c-detail-item label="Locatie" value="Den Haag"/>
+      <c-detail-item label="Verdieping" value="3"/>
+    </c-detail-list>
 
-    <c-text-input-field id="t1" name="t1" label="Kopieerbaar veld" value="abc-123" show-copy/>
+    {# ── app/dashboard-composities uit app-components.css ── #}
+    <c-metric icon="apartment-building" value="5" label="Datacenters" sub="4 operationeel" href="/m"/>
 
-    <c-identity name="Fatima El Amrani" initials="FE" handle="@fatima"/>
+    <c-sidenav>
+      <c-sidenav-item icon="home" label="Overzicht" href="/" active/>
+      <c-sidenav-item icon="lock-closed" label="Secrets" href="/secrets"/>
+    </c-sidenav>
+
+    <c-layer icon="apartment-building" title="Laag" count="3" sub="drie stuks" href="/l"/>
+
+    <c-catalog-card icon="lock-closed" title="Catalogusitem" subtitle="Een onderschrift"
+                    status="Actief" status-type="success" maturity="goud" open-label="Openen" href="/c"/>
+    <c-catalog-card icon="lock-closed" title="Zilver" maturity="zilver" open-label="Openen" href="/c"/>
+    <c-catalog-card icon="lock-closed" title="Brons" maturity="brons" open-label="Openen" href="/c"/>
+
+    <c-activity>
+      <c-activity-item icon="lock-closed" actor="Fatima El Amrani" action="secret geroteerd"
+                       res="platform/llm-gateway-key" at="di 09:40" href="/a"/>
+    </c-activity>
+
+    <c-notification>
+      <c-notification-item icon="lock-closed" title="Een melding" href="/n"/>
+    </c-notification>
+
+    <c-filter-bar placeholder="Zoeken..." search-label="Zoek" count="3 resultaten" clear-label="Wissen">
+      <c-filter-select label="Status" value="Alle"/>
+    </c-filter-bar>
+
+    <c-identity name="Fatima El Amrani" initials="FE" handle="@fatima"
+                aside-tag="Beheerder" aside-tag-type="info" aside-sub="sinds 2024"
+                aside-label="Profiel" aside-href="/p"/>
 
     <c-shortcut icon="apartment-building" title="Snelkoppeling" desc="Beschrijving" cta="Openen" href="/x"/>
 
+    <c-section-link icon="apartment-building" label="Naar de sectie" href="/s"/>
+
     <c-action icon="lock-closed" title="Waarschuwing" sub="tone=warning" tone="warning"/>
     <c-action icon="lock-closed" title="Kritiek" sub="tone=critical" tone="critical"/>
+
+    <c-chip>Een chip</c-chip>
+
+    <c-box pad="md" border background="tinted">Een box met een tint.</c-box>
+
+    {# De placeholder voor een component dat het actieve thema niet kent. c-label
+       heeft geen NLDD-sjabloon, dus dit rendert .lotc-unimplemented — mits de
+       server met --on-missing placeholder draait. #}
+    <c-label>Niet geïmplementeerd in dit thema</c-label>
+
+    {# Chart.js tekent op een <canvas>: daar zitten geen tekstknopen, dus de
+       contrastmeting op tekst ziet hier NIETS. De inktmeting in
+       dark_contrast_shoot.mjs bemonstert de pixels van elk canvas. #}
+    <c-gauge id="g1" value="63" label="Bezetting" sublabel="van 100"/>
+    <c-line-chart id="lc1" title="Verbruik" current="1,2 GB" legend="true" limit="90" request="40"
+                  :data="{'labels': ['ma','di','wo','do','vr'],
+                          'datasets': [{'label': 'geheugen', 'data': [30, 45, 60, 55, 70]}]}"/>
+
+    <c-site-footer text="Een voettekst" note-label="Let op" note="Een notitie" note-icon="info"/>
   </div>
 </c-page>

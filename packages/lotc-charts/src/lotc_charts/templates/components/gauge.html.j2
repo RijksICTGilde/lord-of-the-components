@@ -1,10 +1,12 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
+{% import 'components/_charts.j2' as charts %}
 {% macro lotc_render(_component_context) %}
 {% set value = _component_context.get('value', '0') %}
 {% set label = _component_context.get('label', '') %}
 {% set sublabel = _component_context.get('sublabel', '') %}
 {% set cid = _component_context.get('id', 'lotc-gauge') %}
-{% set color = _component_context.get('color', '#154273') %}
+{# No literal default: an unset colour resolves to the theme's accent below. #}
+{% set color = _component_context.get('color', '') %}
 <figure class="lotc-gauge" data-lotc-component="gauge" {{ attrs.render_extra_attributes(_component_context) }}>
   <div class="lotc-gauge__ring">
     <canvas id="{{ cid }}-canvas"></canvas>
@@ -17,9 +19,15 @@
   var el = document.getElementById({{ (cid ~ '-canvas') | tojson }});
   if (!el || !window.Chart) return;
   var v = parseFloat({{ value | tojson }}) || 0;
+{{ charts.theme_color_helper() }}
+  var fill = {{ color | tojson }} || lotcThemeColor('--semantics-content-accent-color', '#154273');
+  // The track is the empty part of the ring: it carries the scale, so it has to
+  // stay distinguishable from the page. A surface tint does not (it measures
+  // 1.2:1 on a dark page) — a divider is a line colour, meant to be seen on one.
+  var track = lotcThemeColor('--semantics-dividers-color', '#eef0f4');
   new Chart(el, {
     type: 'doughnut',
-    data: { labels: [], datasets: [{ data: [v, 100 - v], backgroundColor: [{{ color | tojson }}, 'rgba(0,0,0,.08)'], borderWidth: 0 }] },
+    data: { labels: [], datasets: [{ data: [v, 100 - v], backgroundColor: [fill, track], borderWidth: 0 }] },
     options: { responsive: true, maintainAspectRatio: false, cutout: '72%', circumference: 270, rotation: 225,
                plugins: { legend: { display: false }, tooltip: { enabled: false } } }
   });

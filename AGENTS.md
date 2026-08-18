@@ -136,8 +136,24 @@ mistake: if `--name` is not a name the theme declares, CSS silently uses the
 literal — which cannot follow the theme's `light-dark()` pairs, so the component
 keeps its light colours on a dark page and nothing warns.
 
-`python/tests/test_theme_token_names.py` checks every token name we consume
-against the ones the NLDD bundle actually declares, and requires that our own
-`--nldd-color-*` override hooks fall back to a token rather than a literal.
-`tests/visual/dark_contrast_shoot.mjs` measures the rendered result (contrast
-ratios and light-on-dark islands) on `tests/visual/fixtures/dark-scheme.html`.
+`python/tests/test_theme_token_names.py` holds four gates: token names must be
+ones the NLDD bundle declares; `--nldd-color-*` override hooks must fall back to
+a token, not a literal; **no colour may be written without a token at all** (a
+bare `background: #eef0f4` mentions no token, so the first two gates cannot see
+it); and `tests/visual/fixtures/dark-scheme.html` must render every class of
+ours that sets a colour — otherwise the measurement below is silently partial.
+
+`tests/visual/dark_contrast_shoot.mjs` measures the rendered page: contrast per
+text run, light-on-dark islands, and — because a `<canvas>` has no text nodes —
+the ink of every chart, sampled per pixel. Run it in both stands:
+
+```
+python tests/visual/serve.py --port 5555 --theme nldd,lotc-forms,lotc-charts \
+  --on-missing placeholder &
+node tests/visual/dark_contrast_shoot.mjs 'http://localhost:5555/dark-scheme.html'
+node tests/visual/dark_contrast_shoot.mjs 'http://localhost:5555/dark-scheme.html' --light
+```
+
+A chart needs colour VALUES (Chart.js cannot take a custom property), so
+lotc-charts resolves tokens in script via `_charts.j2` — reading one is not a
+`getPropertyValue` call, see the note there.

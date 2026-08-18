@@ -1,0 +1,36 @@
+{# Shared chart helpers.
+
+   Chart.js draws on a <canvas>, so it needs colour VALUES — it cannot take a
+   CSS custom property. Two things make reading one non-obvious:
+
+   1. `getComputedStyle(root).getPropertyValue('--x')` returns the custom
+      property's own token sequence, and `light-dark()` is not resolved there —
+      you get the literal string `light-dark(rgb(…), rgb(…))` back, which
+      Chart.js cannot parse. So resolve it by letting the browser USE the token
+      on a probe element and reading the used value.
+   2. That used value comes back in the token's own colour space (the NLDD
+      primitives are oklch) and Chart.js' colour parser does not speak oklch.
+      So push it through a 1×1 canvas and hand Chart.js the sRGB it painted.
+
+   Colours are read once, when the chart is built. A page that flips
+   `data-scheme` at runtime re-reads them only on the next render.
+#}
+{% macro theme_color_helper() -%}
+  var lotcThemeColor = window.__lotcThemeColor || (window.__lotcThemeColor = (function(){
+    var cv = document.createElement('canvas'); cv.width = cv.height = 1;
+    var ctx = cv.getContext('2d', { willReadFrequently: true });
+    return function(token, fallback){
+      var probe = document.createElement('span');
+      probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;color:var(' + token + ',' + fallback + ')';
+      document.body.appendChild(probe);
+      var used = getComputedStyle(probe).color;
+      probe.remove();
+      ctx.clearRect(0, 0, 1, 1);
+      ctx.fillStyle = fallback;
+      ctx.fillStyle = used;
+      ctx.fillRect(0, 0, 1, 1);
+      var d = ctx.getImageData(0, 0, 1, 1).data;
+      return 'rgba(' + d[0] + ',' + d[1] + ',' + d[2] + ',' + (d[3] / 255) + ')';
+    };
+  })());
+{%- endmacro %}
