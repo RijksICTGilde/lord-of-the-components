@@ -143,6 +143,52 @@ bouwen, dus achteraf omzetten meet donkere inkt tegen een lichte pagina en noemt
 dat goed). Uitkomst: 97 stukken tekst, 0 onder AA en 0 onzichtbare inkt in
 donker **en** in licht.
 
+## 4c. `secret-field` is een echt element geworden — dit raakt jullie markup
+
+Bij het bekijken van jullie gerenderde HTML viel het inline `<style>` + `<script>`
+op dat elk exemplaar meedraagt. Gemeten: **drie** secret-fields op een pagina
+gaven **drie** kopieën van dezelfde regels (8540 bytes voor drie; nu 1424), en het
+dwingt `'unsafe-inline'` af zodra je een Content-Security-Policy aanzet.
+
+Dat is verplaatst naar de plek die er al was — `DesignSystem(css_urls=…, js_urls=…)`,
+precies zoals `.lotc-copyfield` (de tweelingbroer) het al deed. En meteen in het
+idioom van NLDD zelf, zodat ze het ongewijzigd kunnen overnemen:
+
+- **elementselectors in plaats van BEM** — hun CSS leest `nldd-form > form`, de
+  onze nu `lotc-secret-field > code`;
+- **light-DOM custom element** (gewone `HTMLElement`, geen Lit-afhankelijkheid);
+  de server rendert nog steeds de gemaskeerde waarde, dus het veld klopt zónder JS;
+- **stand op een attribuut**: `revealed` staat op het host-element, zodat de CSS
+  en het gedrag dezelfde vlag lezen;
+- **een `--components-secret-field-*` tokenlaag** die naar `--semantics-*` wijst —
+  dezelfde vorm als hun eigen 243 `--components-*`-tokens. Dát is jullie
+  overschrijfpunt geworden, en omdat de waarde een token is volgen licht én
+  donker eruit.
+
+**Wat er voor jullie verandert.** De markup is nu:
+
+```html
+<lotc-secret-field value="…" mask-length="12" revealed>
+  <code aria-label="Waarde">…</code>
+  <button type="button" data-action="copy" …>…</button>
+</lotc-secret-field>
+```
+
+Dus: `div.lotc-secret` → `lotc-secret-field`, `data-act` → `data-action`, en de
+waarde staat op het host-element in plaats van op de `<code>`. Als jullie ergens
+op `.lotc-secret` of `data-act` selecteren (CSS, e2e-tests, JS), moet dat mee.
+
+**Let op bij het overnemen:** gebruiken jullie `<c-page>`, dan laden de nieuwe
+`lotc-nldd.css` / `lotc-nldd.js` vanzelf mee (die komen uit `css_urls`/`js_urls`).
+Wiren jullie de assets zelf, met een handgeschreven lijst `<link>`s, dan moeten
+die twee er handmatig bij — anders is het veld ongestyled. Hetzelfde geldt voor
+`forms.js` (kopieerknop + de geselecteerde optie van een native select) en
+`charts.js`.
+
+Ook meegenomen: `_generic_attributes.j2` spuugde per attribuuttest een newline en
+acht spaties uit. Dat zag je in je eigen plakwerk terug als die reeks lege regels
+boven de component. Nu strak.
+
 ## 5. Je twee vragen
 
 **`c-select` met `native="true"` — dat *is* de bedoelde weg.** Je gebruikt hem
