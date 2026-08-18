@@ -1,0 +1,115 @@
+/* Lord of the Components — components NLDD does not (yet) ship.
+ *
+ * Written in the NLDD idiom so it can be handed over as-is: element selectors
+ * rather than BEM classes (as `nldd-form > form` does), state on attributes,
+ * and a `--components-<name>-<role>` layer that resolves to `--semantics-*`.
+ * Donating a component upstream is then a rename of the tag prefix.
+ *
+ * Loaded via lotc_nldd's css_urls, AFTER the NLDD bundle so the tokens exist,
+ * and from outside dist/ — webpack cleans that directory on every build.
+ *
+ * Why a stylesheet at all: these rules used to be a <style> block inside each
+ * component template, so a page with three secret fields carried three copies
+ * (72% of the rendered bytes) and could not run under a CSP without
+ * 'unsafe-inline'.
+ */
+
+/* # Component tokens
+ *
+ * Same shape as NLDD's own 243 --components-* tokens: one name per role,
+ * pointing at a semantic token. This is the layer an application overrides —
+ * and because the value is a token, both light and dark follow from it. */
+
+:root {
+	--components-secret-field-background-color: var(--semantics-surfaces-base-background-color);
+	--components-secret-field-border-color: var(--semantics-dividers-color);
+	--components-secret-field-border-width: var(--semantics-surfaces-border-width, 1px);
+	--components-secret-field-content-color: var(--semantics-content-color);
+	--components-secret-field-corner-radius: var(--semantics-surfaces-corner-radius, 6px);
+	--components-secret-field-action-color: var(--semantics-content-accent-color);
+	--components-secret-field-action-is-hovered-background-color: var(--semantics-surfaces-tinted-background-color);
+
+	--components-data-list-content-color: var(--semantics-content-color);
+	--components-data-list-term-color: var(--semantics-content-secondary-color);
+	--components-data-list-column-gap: var(--primitives-space-20, 1.25rem);
+	--components-data-list-row-gap: var(--primitives-space-4, 0.4rem);
+}
+
+/* # Secret field
+ *
+ * A value shown masked, with a reveal toggle and an optional copy button. The
+ * host element carries the state: `revealed` is an attribute, so the styling
+ * and the behaviour agree without either having to ask the other. */
+
+lotc-secret-field {
+	align-items: center;
+	background: var(--components-secret-field-background-color);
+	border: var(--components-secret-field-border-width) solid var(--components-secret-field-border-color);
+	border-radius: var(--components-secret-field-corner-radius);
+	color: var(--components-secret-field-content-color);
+	display: inline-flex;
+	gap: 0.25rem;
+	max-width: 100%;
+	padding: 0.2rem 0.5rem;
+}
+
+lotc-secret-field > code {
+	flex: 1 1 auto;
+	font-family: var(--primitives-font-family-monospace, ui-monospace, 'Courier New', monospace);
+	font-size: 0.875rem;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* A revealed JSON value is the one case that may wrap: it is structured, and
+   a single ellipsised line of it says nothing. */
+lotc-secret-field[value-type='json'][revealed] > code {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+lotc-secret-field > button {
+	align-items: center;
+	background: none;
+	border: 0;
+	border-radius: 4px;
+	color: var(--components-secret-field-action-color);
+	cursor: pointer;
+	display: inline-flex;
+	flex: 0 0 auto;
+	justify-content: center;
+	padding: 0.15rem;
+}
+
+lotc-secret-field > button:hover {
+	background: var(--components-secret-field-action-is-hovered-background-color);
+}
+
+lotc-secret-field > button:focus-visible {
+	outline: var(--semantics-focus-ring-outline, 2px solid);
+	outline-offset: var(--semantics-focus-ring-outline-offset, 1px);
+}
+
+/* # Data list
+ *
+ * Term/description pairs on one grid, so the descriptions line up across rows
+ * regardless of how long the terms are. */
+
+.lotc-data-list {
+	color: var(--components-data-list-content-color);
+	display: grid;
+	gap: var(--components-data-list-row-gap) var(--components-data-list-column-gap);
+	grid-template-columns: max-content 1fr;
+	margin: 0;
+}
+
+.lotc-data-list dt {
+	color: var(--components-data-list-term-color);
+	font-weight: 600;
+}
+
+.lotc-data-list dd {
+	margin: 0;
+}

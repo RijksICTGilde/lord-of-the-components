@@ -23,6 +23,10 @@ DESIGN_SYSTEM = DesignSystem(
     static_path=_HERE / "static",
     registry_path=_HERE / "registry.json",
     css_urls=("/static/lotc/charts/charts.css",),
+    # Builds every chart from the JSON on its canvas, and resolves the colours
+    # from the theme. Replaces an inline <script> per chart (one copy of the
+    # config each, and no CSP without 'unsafe-inline').
+    js_urls=("/static/lotc/charts/charts.js",),
     # Chart.js is a UMD global (not an ES module), so load it via extra_head
     # rather than js_urls (which emits <script type="module">). The annotation
     # plugin draws the request/limit threshold lines on metric charts.

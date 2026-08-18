@@ -185,27 +185,39 @@ COLOUR_PROP = re.compile(
 DARK_FIXTURE = ROOT / "tests/visual/fixtures/dark-scheme.html"
 
 
-def _classes_that_paint():
-    """Every `.lotc-*` class of ours whose rule sets a colour → the files it is in."""
+#: A selector of ours, as a class (`.lotc-secret`) OR as an element name
+#: (`lotc-secret-field > code`). NLDD styles its own components by element name,
+#: so ours do too where they are custom elements — and a gate that only knew
+#: about classes silently lost two components the moment they became elements.
+OUR_SELECTOR = re.compile(r"(?:\.|(?<![.#\w-]))(lotc-[a-z0-9_-]+)")
+
+
+def _selectors_that_paint():
+    """Every selector of ours whose rule sets a colour → the files it is in."""
     found = {}
     for path, text in _iter_sources():
         for rule in re.finditer(r"([^{}]+)\{([^{}]*)\}", text):
             if not COLOUR_PROP.search(rule.group(2)):
                 continue
-            for cls in re.findall(r"\.(lotc-[a-z0-9_-]+)", rule.group(1)):
-                found.setdefault(cls, set()).add(str(path.relative_to(ROOT)))
+            selector = rule.group(1)
+            # Skip an at-rule preamble (@media …); its body is matched separately.
+            if selector.lstrip().startswith("@"):
+                continue
+            for name in OUR_SELECTOR.findall(selector):
+                found.setdefault(name, set()).add(str(path.relative_to(ROOT)))
     return found
 
 
-def test_dark_fixture_covers_every_class_that_paints():
+def test_dark_fixture_covers_every_selector_that_paints():
     """The measurement is only worth its result if the page shows everything.
 
     `dark_contrast_shoot.mjs` can only judge what the fixture renders, and that
     is invisible in its output: it reported "0 below AA" while 22 of our 39
-    painting classes were simply not on the page. So pin the coverage here — the
-    fixture must render every class that sets a colour.
+    painting selectors were simply not on the page. So pin the coverage here —
+    the fixture must render everything of ours that sets a colour, whether it is
+    styled by class or, like a custom element, by tag name.
     """
-    painting = _classes_that_paint()
+    painting = _selectors_that_paint()
     assert len(painting) > 25, f"expected the full set of painting classes, found {len(painting)}"
     fixture = DARK_FIXTURE.read_text(encoding="utf-8")
     # The fixture is authored in <c-*> tags, so a class it renders is usually
@@ -213,7 +225,7 @@ def test_dark_fixture_covers_every_class_that_paints():
     html = _render_dark_fixture(fixture)
     missing = {c: sorted(f) for c, f in painting.items() if not re.search(rf"\b{re.escape(c)}\b", html)}
     assert not missing, (
-        f"{len(missing)} of {len(painting)} classes that set a colour are never rendered by "
+        f"{len(missing)} of {len(painting)} selectors that set a colour are never rendered by "
         f"{DARK_FIXTURE.relative_to(ROOT)}, so nothing measures them: {missing}"
     )
 

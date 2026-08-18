@@ -36,4 +36,9 @@ DESIGN_SYSTEM = DesignSystem(
     # (the NLDD file-input fallback badge, group spacing). The heavy lifting is the
     # active theme's own CSS (roos / NLDD web components).
     css_urls=("/static/lotc/forms/forms.css",),
+    # The copy button and the select value-setter, once per page instead of an
+    # inline <script> per field (which also ruled out a CSP without
+    # 'unsafe-inline'). Both delegate from the document, so a field that arrives
+    # by htmx swap needs no re-initialisation.
+    js_urls=("/static/lotc/forms/forms.js",),
 )

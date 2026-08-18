@@ -23,16 +23,20 @@ def test_line_chart_renders_canvas_and_chartjs():
         "<c-line-chart id=\"cpu\" title=\"CPU\" "
         ":data=\"{'labels':['1','2'],'datasets':[{'label':'x','data':[1,2]}]}\"/>"
     ).render()
-    assert '<canvas id="cpu-canvas">' in html  # derived canvas id (no clash with figure id)
-    assert "new Chart" in html and "type: 'line'" in html
-    assert '"labels": ["1", "2"]' in html  # data serialised for Chart.js
+    assert '<canvas id="cpu-canvas"' in html  # derived canvas id (no clash with figure id)
+    # The config travels as JSON on the canvas; charts.js (loaded once a page)
+    # builds the chart from it. It used to be an inline <script> per chart.
+    assert "data-lotc-line-chart=" in html
+    assert "<script" not in html
+    assert "&#34;labels&#34;: [&#34;1&#34;, &#34;2&#34;]" in html  # data serialised for Chart.js
 
 
 def test_gauge_renders_doughnut_with_value():
     html = _env(["nldd", "lotc-charts"]).from_string(
         '<c-gauge value="72" label="CPU" sublabel="2/4 cores" id="g"/>'
     ).render()
-    assert '<canvas id="g-canvas">' in html and "type: 'doughnut'" in html
+    assert '<canvas id="g-canvas"' in html and "data-lotc-gauge=" in html
+    assert "<script" not in html
     assert "72%" in html and "2/4 cores" in html
 
 
@@ -49,3 +53,4 @@ def test_set_loads_chartjs_and_css():
 
     ds = discover_design_systems()["lotc-charts"]
     assert "chart.js" in ds.extra_head and ds.css_urls  # Chart.js + its own CSS
+    assert ds.js_urls  # our own builder, so no chart carries an inline <script>

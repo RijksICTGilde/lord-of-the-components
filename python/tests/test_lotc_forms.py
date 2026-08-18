@@ -204,7 +204,10 @@ def test_select_field_value_reaches_the_control():
         '<c-select-field id="ns" name="ns" label="NS" native value="rig-prd-foo">'
         '<option value="rig-prd-foo">rig-prd-foo</option></c-select-field>',
     )
-    assert "s.value=" in native and "rig-prd-foo" in native  # applied to the native select
+    # `<select value="…">` is not a thing in HTML: the value travels as a data
+    # attribute and forms.js applies it. It used to be an inline <script> per select.
+    assert 'data-lotc-value="rig-prd-foo"' in native
+    assert "<script" not in native
     plain = render(NLDD, f'<c-select-field id="ns" name="ns" label="NS">{opt}</c-select-field>')
     assert "<script>" not in plain  # no value -> no script
 

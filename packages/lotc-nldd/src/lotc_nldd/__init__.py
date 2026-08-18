@@ -28,6 +28,15 @@ def _bundle() -> tuple[tuple[str, ...], tuple[str, ...]]:
 
 _CSS, _JS = _bundle()
 
+# Our own components — the ones NLDD does not ship (secret-field, data-list).
+# Deliberately NOT inside dist/: webpack cleans that directory on every build,
+# and it holds the vendored NLDD distribution. Appended AFTER the bundle so the
+# --semantics-* tokens they resolve against are already declared. Both files
+# replace what used to be a <style>/<script> block inside each component
+# template, i.e. one copy per instance and no CSP without 'unsafe-inline'.
+_CSS += ("/static/lotc/nldd/lotc-nldd.css",)
+_JS += ("/static/lotc/nldd/lotc-nldd.js",)
+
 # NLDD only applies its body font via `html:has(nldd-app-view) body`, so plain
 # HTML content (headings, paragraphs) falls back to the browser serif. Apply the
 # RijksSans stack at the root so ordinary content matches the NLDD components.

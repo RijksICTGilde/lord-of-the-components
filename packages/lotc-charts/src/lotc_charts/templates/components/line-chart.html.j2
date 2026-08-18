@@ -1,5 +1,13 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
-{% import 'components/_charts.j2' as charts %}
+{#
+  Line chart with optional request/limit threshold lines, drawn by Chart.js.
+
+  Markup only: the configuration travels as JSON on the canvas and charts.js
+  builds the chart from it (once per page, instead of an inline <script> per
+  chart). Colours are NOT in that JSON — charts.js resolves grid, ticks, legend
+  and the two threshold lines from the theme; Chart.js' own defaults are a fixed
+  grey and a fixed black tint, both unreadable on a dark page.
+#}
 {% macro lotc_render(_component_context) %}
 {% set data = _component_context.get('data', {}) %}
 {% set cid = _component_context.get('id', 'lotc-chart') %}
@@ -9,42 +17,10 @@
 {% set current = _component_context.get('current', '') %}
 {% set limit = _component_context.get('limit', '') %}
 {% set request = _component_context.get('request', '') %}
+{% set config = {'data': data, 'legend': true if legend else false, 'limit': limit, 'request': request} %}
 <figure class="lotc-chart" data-lotc-component="line-chart" {{ attrs.render_extra_attributes(_component_context) }}>
   {% if title %}<figcaption class="lotc-chart__title">{{ title }}</figcaption>{% endif %}
-  <div class="lotc-chart__canvas" style="height: {{ height }}"><canvas id="{{ cid }}-canvas"></canvas></div>
+  <div class="lotc-chart__canvas" style="height: {{ height }}"><canvas id="{{ cid }}-canvas" data-lotc-line-chart="{{ config | tojson | forceescape }}"></canvas></div>
   {% if current %}<figcaption class="lotc-chart__current">{{ current }}</figcaption>{% endif %}
 </figure>
-<script>
-(function(){
-  var el = document.getElementById({{ (cid ~ '-canvas') | tojson }});
-  if (!el || !window.Chart) return;
-{{ charts.theme_color_helper() }}
-  // Chart.js paints its ticks/legend in its own default grey (#666), which is
-  // unreadable on a dark page, and its grid was a fixed black-at-6% — invisible
-  // there. All of it comes from the theme now.
-  var inkMuted = lotcThemeColor('--semantics-content-secondary-color', '#5a5a5a');
-  var gridLine = lotcThemeColor('--semantics-dividers-color', 'rgba(0,0,0,.06)');
-  var critical = lotcThemeColor('--semantics-categories-critical-filled-background-color', '#d52b1e');
-  var onCritical = lotcThemeColor('--semantics-categories-critical-filled-content-color', '#fff');
-  var accent = lotcThemeColor('--semantics-categories-accent-filled-background-color', '#007bc7');
-  var onAccent = lotcThemeColor('--semantics-categories-accent-filled-content-color', '#fff');
-  var ann = {};
-  {% if limit != '' %}ann.limit = { type: 'line', yMin: {{ limit }}, yMax: {{ limit }}, borderColor: critical, borderWidth: 2, borderDash: [6, 4], label: { display: true, content: 'Limit', position: 'end', backgroundColor: critical, color: onCritical, font: { size: 10 } } };{% endif %}
-  {% if request != '' %}ann.request = { type: 'line', yMin: {{ request }}, yMax: {{ request }}, borderColor: accent, borderWidth: 2, borderDash: [3, 3], label: { display: true, content: 'Request', position: 'start', backgroundColor: accent, color: onAccent, font: { size: 10 } } };{% endif %}
-  new Chart(el, {
-    type: 'line',
-    data: {{ data | tojson }},
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: {{ 'true' if legend else 'false' }}, labels: { color: inkMuted, font: { family: 'RijksSans, system-ui, sans-serif' } } }, annotation: { annotations: ann } },
-      scales: {
-        x: { grid: { display: false }, ticks: { color: inkMuted }, border: { color: gridLine } },
-        y: { grid: { color: gridLine }, ticks: { color: inkMuted }, border: { color: gridLine } }
-      },
-      elements: { line: { tension: 0.4, borderWidth: 2 }, point: { radius: 0, hoverRadius: 4 } },
-      interaction: { intersect: false, mode: 'index' }
-    }
-  });
-})();
-</script>
 {% endmacro %}

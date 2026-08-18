@@ -128,6 +128,35 @@ one or more design systems (a declarative `.impl.ts` or a hand-authored
 `npm run build && npx tsx core/src/generators/jinja2/generate-all.ts` and
 `cd python && pytest`. See [README.md](README.md#add-a-component).
 
+### Where a component's CSS and JS go
+
+**Not in the template.** A `<style>` or `<script>` inside a component is emitted
+once per instance — three secret fields on a page meant three copies (8540 bytes
+for three, 1424 after moving them out) — and it forces `'unsafe-inline'` on any
+app with a Content-Security-Policy. Put CSS and behaviour in the design system's
+own static files and declare them in its `DesignSystem(css_urls=…, js_urls=…)`;
+`<c-page>` then loads them once. `python/tests/test_component_assets.py` enforces
+this (`page.html.j2` is the one exception: it renders the document itself, and
+the position of those two rules is the point).
+
+For the NLDD package that is `static/lotc/nldd/lotc-nldd.{css,js}` —
+deliberately outside `dist/`, which webpack cleans on every build and which
+holds the vendored NLDD distribution.
+
+Write them in NLDD's own idiom, so a component can be handed upstream as-is:
+
+- **element selectors, not BEM** — NLDD styles its own components as
+  `nldd-form > form`; ours read `lotc-secret-field > code`;
+- **light-DOM custom elements**, plain `HTMLElement` subclasses (we do not
+  depend on Lit). The server renders the full markup and the element only takes
+  over behaviour, so the component still reads correctly with JS off;
+- **state on attributes** (`revealed`, `value-type='json'`), so the CSS and the
+  behaviour read the same flag instead of asking each other;
+- **a `--components-<name>-<role>` token layer** at `:root`, each pointing at a
+  `--semantics-*` token. That is NLDD's own override layer (243 of them), and it
+  is what an application overrides — because the value is a token, light and
+  dark both follow from it.
+
 ### Colours in a hand-authored template
 
 Take every colour from a `--semantics-*` token. A hand-written component is the

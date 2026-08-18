@@ -17,10 +17,31 @@ SRC = '<c-secret-field value="sk-abc123" mask-length="8" show-copy/>'
 def test_secret_field_nldd_renders_masked_with_reveal_and_copy():
     out = _render(["nldd"], SRC)
     assert "•" * 8 in out  # masked dots, length from mask-length
-    assert 'data-value="sk-abc123"' in out  # value client-side only
+    assert 'value="sk-abc123"' in out  # value client-side only
     assert 'name="eye"' in out  # reveal toggle
     assert 'name="clipboard"' in out  # copy button (show-copy)
     assert 'data-lotc-component="secret-field"' in out
+
+
+def test_secret_field_carries_no_inline_style_or_script():
+    """The chrome lives in the design system's own CSS/JS, loaded once a page.
+
+    It used to be a <style> and a <script> in the template, so three fields on a
+    page meant three copies (8540 bytes for three, against 1424 now) and the page
+    could not run under a CSP without 'unsafe-inline'.
+    """
+    out = _render(["nldd"], SRC + SRC + SRC)
+    assert "<style" not in out and "<script" not in out
+    assert out.count("<lotc-secret-field") == 3
+
+
+def test_secret_field_state_lives_on_the_host_element():
+    """`revealed` is an attribute on the host: the CSS and the element read the
+    same flag, so neither has to ask the other what the field is showing."""
+    masked = _render(["nldd"], '<c-secret-field value="x" mask-length="4"/>')
+    revealed = _render(["nldd"], '<c-secret-field value="x" mask-length="4" revealed/>')
+    assert "<lotc-secret-field" in masked and " revealed" not in masked
+    assert " revealed" in revealed
 
 
 def test_secret_field_copy_button_omitted_without_show_copy():
@@ -44,6 +65,6 @@ def test_secret_field_revealed_shows_value_and_drops_the_eye():
     code = re.search(r"<code[^>]*>(.*?)</code>", out).group(1).strip()
     assert code == "age1-public-xyz"  # plain value, not mask dots
     assert "•" not in code
-    assert 'data-act="reveal"' not in out  # no reveal-eye
+    assert 'data-action="reveal"' not in out  # no reveal-eye
     assert 'name="eye"' not in out
-    assert 'data-act="copy"' in out  # clipboard still present
+    assert 'data-action="copy"' in out  # clipboard still present
