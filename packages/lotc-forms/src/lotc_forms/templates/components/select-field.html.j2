@@ -17,9 +17,15 @@
 {% endcall %}
 {% if value %}<script>(function(){var s=document.getElementById({{ id | tojson }});if(s)s.value={{ value | tojson }};})();</script>{% endif %}
 <style>
-.lotc-native-select{appearance:none;-webkit-appearance:none;width:100%;font:inherit;color:var(--nldd-color-text,#1a1a1a);background:var(--nldd-color-surface,#fff) no-repeat right .6rem center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23154273' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");padding:.5rem 2rem .5rem .75rem;border:1px solid var(--nldd-color-border,#767676);border-radius:6px;line-height:1.4}
-.lotc-native-select:focus{outline:2px solid var(--nldd-color-focus,#007bc7);outline-offset:1px}
-.lotc-native-select--invalid{border-color:var(--nldd-color-error,#d52b1e)}
+.lotc-native-select{appearance:none;-webkit-appearance:none;width:100%;font:inherit;color:var(--nldd-color-text,var(--semantics-content-color,#1a1a1a));background:var(--nldd-color-surface,var(--semantics-surfaces-base-background-color,#fff)) no-repeat right .6rem center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23154273' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");padding:.5rem 2rem .5rem .75rem;border:1px solid var(--nldd-color-border,var(--semantics-dividers-color,#767676));border-radius:6px;line-height:1.4}
+.lotc-native-select:focus{outline:var(--nldd-color-focus-outline,var(--semantics-focus-ring-outline,2px solid #007bc7));outline-offset:var(--semantics-focus-ring-outline-offset,1px)}
+.lotc-native-select--invalid{border-color:var(--nldd-color-error,var(--semantics-content-critical-color,#d52b1e))}
+{# The arrow is a background IMAGE, so it cannot take currentColor — a data URI is
+   a separate document. Swap the whole image on the two selectors NLDD itself uses
+   to set color-scheme (settings.css): the explicit attribute, and the OS
+   preference when the page did not pin a scheme. #}
+:root[data-scheme="dark"] .lotc-native-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23e6e6e6' d='M1 1l5 5 5-5'/%3E%3C/svg%3E")}
+@media (prefers-color-scheme:dark){:root:not([data-scheme="light"]) .lotc-native-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23e6e6e6' d='M1 1l5 5 5-5'/%3E%3C/svg%3E")}}
 </style>
 {% elif 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'select-field') %}

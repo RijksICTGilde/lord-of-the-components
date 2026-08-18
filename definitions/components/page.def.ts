@@ -16,6 +16,20 @@
  *   <c-page title="About Us" description="About our company" lang="nl">
  *     Content here
  *   </c-page>
+ *
+ * Where attributes land: this component renders a whole document, so the two
+ * elements an app needs to reach are split.
+ *   - `theme` / `class` / `body-class`  -> <body>
+ *   - `data-*` and the `:attrs` spread  -> <html>
+ *
+ * <html> is where a design system reads document-level state: NLDD takes its
+ * light/dark stand from `data-scheme` there, so
+ *
+ *   <c-page title="…" data-scheme="dark">
+ *
+ * is what makes the theme's light-dark() tokens resolve dark. Without that
+ * split an app has to write an inline <script> into `head` to set the attribute
+ * on <html> itself.
  */
 
 import { defineComponent } from "../component.js";

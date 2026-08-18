@@ -112,11 +112,11 @@
 
 /* ── status-bar (slim full-width notice; theme-agnostic, semantic variants) ── */
 .lotc-statusbar { box-sizing: border-box; width: 100%; padding: 0.4rem 1rem; font-size: 0.85rem; line-height: 1.4; text-align: center; text-decoration: none; color: inherit; display: block; }
-.lotc-statusbar--neutral { background: #eef0f4; color: #333; }
-.lotc-statusbar--info { background: #e5f0fb; color: #154273; }
-.lotc-statusbar--success { background: #e7f4e4; color: #274a1c; }
-.lotc-statusbar--warning { background: #fdf3e2; color: #63450a; }
-.lotc-statusbar--error { background: #fce9e9; color: #7a1a1a; }
+.lotc-statusbar--neutral { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); color: var(--semantics-content-color, #333); }
+.lotc-statusbar--info { background: var(--semantics-categories-accent-tinted-background-color, #e5f0fb); color: var(--semantics-categories-accent-tinted-content-color, #154273); }
+.lotc-statusbar--success { background: var(--semantics-categories-success-tinted-background-color, #e7f4e4); color: var(--semantics-categories-success-tinted-content-color, #274a1c); }
+.lotc-statusbar--warning { background: var(--semantics-categories-warning-tinted-background-color, #fdf3e2); color: var(--semantics-categories-warning-tinted-content-color, #63450a); }
+.lotc-statusbar--error { background: var(--semantics-categories-critical-tinted-background-color, #fce9e9); color: var(--semantics-categories-critical-tinted-content-color, #7a1a1a); }
 
 /* ── activity ────────────────────────────────────────────────────────────── */
 .lotc-activity {
@@ -168,7 +168,7 @@
 .lotc-shortcut-title { font-weight: 700; display: block; }
 .lotc-shortcut-desc { opacity: 0.7; margin-top: 0.15rem; font-size: 0.82rem; display: block; }
 .lotc-shortcut-cta {
-    color: var(--semantics-actions-primary-default-background-color, #154273);
+    color: var(--semantics-content-accent-color, #154273);
     align-items: center;
     gap: 0.3rem;
     margin-top: 0.75rem;
@@ -179,7 +179,7 @@
 .lotc-shortcut-cta-icon { width: 0.95rem; height: 0.95rem; }
 /* ── identity (profile card) ─────────────────────────────────────────────── */
 .lotc-identity { flex-wrap: wrap; align-items: center; gap: 1rem; display: flex; }
-.lotc-avatar { color: #fff; background: var(--semantics-action-primary-background-color, #154273); border-radius: 50%; flex: 0 0 auto; place-items: center; width: 56px; height: 56px; font-size: 1.2rem; font-weight: 700; display: grid; }
+.lotc-avatar { color: var(--semantics-buttons-accent-filled-content-color, #fff); background: var(--semantics-buttons-accent-filled-background-color, #154273); border-radius: 50%; flex: 0 0 auto; place-items: center; width: 56px; height: 56px; font-size: 1.2rem; font-weight: 700; display: grid; }
 .lotc-identity-meta { flex: 1 1 auto; min-width: 200px; }
 .lotc-identity-sub { flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.4rem; display: flex; }
 .lotc-identity-handle { opacity: 0.7; align-items: center; gap: 0.3rem; font-size: 0.9rem; display: inline-flex; }
@@ -190,8 +190,8 @@
 /* ── action rows ─────────────────────────────────────────────────────────── */
 .lotc-actions { flex-direction: column; gap: 0.6rem; display: flex; }
 .lotc-action { border: 1px solid var(--semantics-dividers-color, #e2e2e6); border-left-width: 4px; border-radius: 10px; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; display: flex; }
-.lotc-action--warning { border-left-color: var(--semantics-feedback-warning-color, #e08600); }
-.lotc-action--critical { border-left-color: var(--semantics-feedback-error-color, #b3261e); }
+.lotc-action--warning { border-left-color: var(--semantics-content-warning-color, #e08600); }
+.lotc-action--critical { border-left-color: var(--semantics-content-critical-color, #b3261e); }
 .lotc-action-icon { opacity: 0.7; flex: 0 0 auto; width: 1.3rem; height: 1.3rem; }
 .lotc-action-body { flex: 1 1 auto; min-width: 0; }
 .lotc-action-title { font-weight: 600; }
@@ -222,7 +222,7 @@
 /* ── unimplemented-component placeholder (on_missing_component="placeholder") ─
    A visible gap marker: switch themes, and any component the active theme does
    not yet implement renders as this dashed box instead of erroring. */
-.lotc-unimplemented { color: var(--semantics-feedback-warning-color, #85520b); background: repeating-linear-gradient(45deg, #fff7e6, #fff7e6 10px, #ffefcc 10px, #ffefcc 20px); border: 1px dashed var(--semantics-feedback-warning-color, #e08600); border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.82rem; font-family: ui-monospace, monospace; }
+.lotc-unimplemented { color: var(--semantics-categories-warning-tinted-content-color, #85520b); background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(128, 128, 128, 0.12) 10px, rgba(128, 128, 128, 0.12) 20px), var(--semantics-categories-warning-tinted-background-color, #fff7e6); border: 1px dashed var(--semantics-content-warning-color, #e08600); border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.82rem; font-family: ui-monospace, monospace; }
 
 /* ── catalog-card (resource/app card) ────────────────────────────────────── */
 .lotc-catalog { flex-direction: column; height: 100%; display: flex; }

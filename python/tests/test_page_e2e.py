@@ -203,3 +203,52 @@ class TestPageContent:
         assert "<!DOCTYPE html>" in html
         assert "<body" in html
         assert "</body>" in html
+
+
+class TestPageHtmlAttributes:
+    """Attributes that must reach <html> — not <body>.
+
+    A design system reads its document-level state there: NLDD takes its
+    light/dark stand from `data-scheme` on <html>, and its tokens are
+    `light-dark()` pairs, so an attribute that lands on <body> switches nothing.
+    Both of these were accepted and silently dropped before.
+    """
+
+    @staticmethod
+    def _html_tag(html: str) -> str:
+        match = re.search(r"<html([^>]*)>", normalize_whitespace(html))
+        assert match is not None
+        return match.group(1)
+
+    def test_data_attribute_lands_on_html(self, render):
+        html = render('<c-page title="Test" data-scheme="dark"/>')
+        assert 'data-scheme="dark"' in self._html_tag(html)
+
+    def test_attrs_spread_lands_on_html(self, render):
+        html = render("<c-page title=\"Test\" :attrs=\"{'data-scheme': 'dark'}\"/>")
+        assert 'data-scheme="dark"' in self._html_tag(html)
+
+    def test_body_attributes_stay_on_body(self, render):
+        # The split is the point: styling props keep going to <body>.
+        html = render('<c-page title="Test" theme="rvo" data-scheme="dark"/>')
+        assert "rvo-theme" not in self._html_tag(html)
+        body = re.search(r"<body([^>]*)>", normalize_whitespace(html))
+        assert body is not None and "rvo-theme" in body.group(1)
+        assert "data-scheme" not in body.group(1)
+
+    def test_no_stray_attributes_when_none_given(self, render):
+        html = render('<c-page title="Test"/>')
+        assert self._html_tag(html).strip() == 'lang="en" data-lotc-component="page"'
+
+    def test_page_title_does_not_leak_as_an_html_attribute(self, render):
+        # `title` is the document title, not a tooltip: the generic html-attribute
+        # passthrough (which would emit title="…") is deliberately NOT applied.
+        html = render('<c-page title="Test"/>')
+        assert "title=" not in self._html_tag(html)
+
+    def test_attribute_value_is_escaped(self, render):
+        # Single-quoted attribute so the inner double quotes survive verbatim.
+        html = render("""<c-page title="Test" :attrs='{"data-x": "<script>"}'/>""")
+        tag = self._html_tag(html)
+        assert "<script>" not in tag
+        assert "&lt;script&gt;" in tag

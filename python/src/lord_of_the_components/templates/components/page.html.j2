@@ -1,3 +1,4 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
 {% macro lotc_render(_component_context) %}
 {#
   Lord of the Components — generic Page template (theme-agnostic).
@@ -16,6 +17,15 @@
       bundles come from setup_components' declared systems)
     - body-class / class: extra body classes
     - head: raw HTML appended to <head>
+    - data-* and :attrs="{...}": attributes for the <html> element
+
+  Where attributes land: c-page renders a whole document, so the two elements an
+  app needs to reach are split. `theme` / `class` / `body-class` style the
+  <body>; `data-*` and the `:attrs` spread go on <html>, because that is the tag
+  a design system reads its document-level state from (NLDD takes its light/dark
+  stand from `data-scheme` there). Before this split both were accepted and then
+  silently dropped, which left an app writing an inline <script> in `head` to put
+  the attribute on <html> itself.
 #}
 {% set title = _component_context.get('title', '') %}
 {% set lang = _component_context.get('lang', 'en') %}
@@ -31,7 +41,7 @@
 {% if body_class %}{% set css_classes = css_classes + body_class.split() %}{% endif %}
 {% if custom_class %}{% set css_classes = css_classes + custom_class.split() %}{% endif %}
 <!DOCTYPE html>
-<html lang="{{ lang }}" data-lotc-component="page">
+<html lang="{{ lang }}" data-lotc-component="page"{{ attrs.render_data_attributes(_component_context) }}{{ attrs.render_attrs_spread(_component_context) }}>
 <head>
     <meta charset="{{ charset }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

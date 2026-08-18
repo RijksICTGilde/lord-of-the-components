@@ -111,6 +111,14 @@ gap marker instead (switch systems, see what's missing, fill it in later).
   add a row there.
 - `<c-page>` renders a full document; put it at the top level, not nested. The
   footer slot belongs to `<c-app-shell>`, not `<c-page>`.
+- `<c-page>` reaches two elements, so its attributes are split: `theme` /
+  `class` / `body-class` style the `<body>`; `data-*` and the `:attrs` spread go
+  on `<html>`. That is where a design system reads document-level state — NLDD
+  takes its light/dark stand from `data-scheme` there:
+
+  ```html
+  <c-page title="My app" design-systems="nldd" data-scheme="dark">
+  ```
 
 ## For contributors (add a component)
 
@@ -119,3 +127,17 @@ one or more design systems (a declarative `.impl.ts` or a hand-authored
 `templates/components/<name>.html.j2` in the design-system package), then
 `npm run build && npx tsx core/src/generators/jinja2/generate-all.ts` and
 `cd python && pytest`. See [README.md](README.md#add-a-component).
+
+### Colours in a hand-authored template
+
+Take every colour from a `--semantics-*` token. A hand-written component is the
+only place a literal colour can enter, and `var(--name, #fff)` hides its own
+mistake: if `--name` is not a name the theme declares, CSS silently uses the
+literal — which cannot follow the theme's `light-dark()` pairs, so the component
+keeps its light colours on a dark page and nothing warns.
+
+`python/tests/test_theme_token_names.py` checks every token name we consume
+against the ones the NLDD bundle actually declares, and requires that our own
+`--nldd-color-*` override hooks fall back to a token rather than a literal.
+`tests/visual/dark_contrast_shoot.mjs` measures the rendered result (contrast
+ratios and light-on-dark islands) on `tests/visual/fixtures/dark-scheme.html`.
