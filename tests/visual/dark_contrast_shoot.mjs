@@ -192,6 +192,110 @@ const result = await page.evaluate(() => {
   return { pageBg: `rgb(${pageBg.map(Math.round).join(', ')})`, texts, islands, canvases };
 });
 
+// ── hover and focus ─────────────────────────────────────────────────────────
+// The measurement above is one static frame, so it says nothing about the
+// states — and those are where a colour is easiest to get wrong, because
+// nobody looks at them. Self-discovering: read OUR OWN stylesheets for rules
+// that set a colour behind :hover/:focus, then drive the real states.
+const stateRules = await page.evaluate(() => {
+  const found = [];
+  for (const sheet of document.styleSheets) {
+    if (!sheet.href || !sheet.href.includes('/static/lotc/')) continue;
+    if (sheet.href.includes('/nldd/dist/')) continue;   // the vendored theme is not ours
+    let rules;
+    try {
+      rules = sheet.cssRules;
+    } catch {
+      continue;
+    }
+    for (const rule of rules) {
+      if (!rule.selectorText || !/(background|outline|color)\s*:/.test(rule.cssText)) continue;
+      const match = rule.selectorText.match(/^(.*?):(hover|focus|focus-visible)$/);
+      if (match) found.push({ base: match[1].trim(), pseudo: match[2] });
+    }
+  }
+  return found;
+});
+
+// Resolve through a canvas pixel, NOT by parsing the string: the theme's
+// computed colours are oklch(), and reading `oklch(0.638 0.097 253.4)` with a
+// number regex yields rgb(0.638, 0.097, 253.4) — which measured a perfectly
+// good 5.56:1 focus ring as 2.16:1 and reported it as a defect.
+const readState = (el) => {
+  const cvs = document.createElement('canvas');
+  cvs.width = cvs.height = 1;
+  const ctx = cvs.getContext('2d', { willReadFrequently: true });
+  const px = (value) => {
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = '#000';
+    ctx.fillStyle = value;
+    ctx.fillRect(0, 0, 1, 1);
+    const d = ctx.getImageData(0, 0, 1, 1).data;
+    return [d[0], d[1], d[2], d[3] / 255];
+  };
+  const cs = getComputedStyle(el);
+  return {
+    bg: cs.backgroundColor,
+    bgRgba: px(cs.backgroundColor),
+    outlineRgba: px(cs.outlineColor),
+    outlineStyle: cs.outlineStyle,
+  };
+};
+
+const states = [];
+for (const { base, pseudo } of stateRules) {
+  const el = page.locator(base).first();
+  if (!(await el.count()) || !(await el.isVisible().catch(() => false))) {
+    states.push({ base, pseudo, skipped: 'not on the page' });
+    continue;
+  }
+  const rest = await el.evaluate(readState);
+  try {
+    if (pseudo === 'hover') await el.hover({ timeout: 2000 });
+    else await el.evaluate((e) => e.focus());
+  } catch {
+    states.push({ base, pseudo, skipped: 'could not be driven' });
+    continue;
+  }
+  await page.waitForTimeout(120);
+  const active = await el.evaluate(readState);
+  await page.mouse.move(0, 0);
+  await el.evaluate((e) => e.blur && e.blur());
+  states.push({ base, pseudo, rest, active });
+}
+
+const pageRgb = result.pageBg.match(/\d+/g).map(Number);
+const srgb = (c) => {
+  const s = c / 255;
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+};
+const luminance = ([r, g, b]) => 0.2126 * srgb(r) + 0.7152 * srgb(g) + 0.0722 * srgb(b);
+const contrast = (a, b) => {
+  const [x, y] = [luminance(a), luminance(b)].sort((m, n) => n - m);
+  return (x + 0.05) / (y + 0.05);
+};
+/** Composite an [r,g,b,a] read in the page onto the page background. */
+const onPage = ([r, g, b, a]) => [r, g, b].map((v, i) => v * a + pageRgb[i] * (1 - a));
+
+const stateFails = [];
+for (const s of states) {
+  if (s.skipped) continue;
+  if (s.pseudo === 'hover') {
+    // Hover has no fixed ratio in WCAG, but feedback that changes nothing is
+    // not feedback. That is a real failure mode: `.lotc-sidenav-link.lotc-active`
+    // came after `:hover` at equal specificity, so the current page's item was
+    // the one item that never responded.
+    if (s.rest.bg === s.active.bg) s.problem = 'no visible change';
+  } else if (s.active.outlineStyle === 'none') {
+    s.problem = 'no focus outline';
+  } else {
+    // WCAG 1.4.11: a focus indicator needs 3:1 against what it sits on.
+    s.ratio = +contrast(onPage(s.active.outlineRgba), pageRgb).toFixed(2);
+    if (s.ratio < 3) s.problem = `focus ring only ${s.ratio}:1`;
+  }
+  if (s.problem) stateFails.push(s);
+}
+
 const islands = light ? [] : result.islands;   // a light page is allowed to be light
 const large = (t) => t.size >= 24 || (t.bold && t.size >= 18.66);
 const fails = result.texts.filter((t) => t.ratio < (large(t) ? 3 : 4.5));
@@ -200,6 +304,12 @@ console.log(`page background: ${result.pageBg}`);
 console.log(`text runs measured: ${result.texts.length}`);
 console.log(`below WCAG AA: ${fails.length}`);
 for (const f of fails) console.log(`  FAIL ${f.ratio.toFixed(2)}  ${f.sel}  ${f.color} on ${f.bg}  "${f.text}"`);
+const driven = states.filter((s) => !s.skipped);
+console.log(`hover/focus rules driven: ${driven.length} of ${states.length} (problems: ${stateFails.length})`);
+for (const s of states) {
+  if (s.skipped) console.log(`  SKIP  ${s.base}:${s.pseudo} — ${s.skipped}`);
+  else if (s.problem) console.log(`  FAIL  ${s.base}:${s.pseudo} — ${s.problem}`);
+}
 console.log(`light islands: ${islands.length}${light ? ' (not applicable in light)' : ''}`);
 for (const i of islands) console.log(`  ISLAND ${i.sel} ${i.bg}`);
 // A canvas that drew nothing at all is not a pass — say so, so the check
@@ -217,4 +327,4 @@ if (process.argv.includes('--all')) {
   for (const t of result.texts) console.log(`  ${t.ratio.toFixed(2)}  ${t.sel}  ${t.color} on ${t.bg}  "${t.text}"`);
 }
 await browser.close();
-process.exit(fails.length || islands.length || blank.length || faint.length ? 1 : 0);
+process.exit(fails.length || islands.length || blank.length || faint.length || stateFails.length ? 1 : 0);

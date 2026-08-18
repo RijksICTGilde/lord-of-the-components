@@ -41,10 +41,17 @@
     text-decoration: none;
     display: flex;
 }
-.lotc-sidenav-link:hover { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); }
+.lotc-sidenav-link:hover { background: var(--semantics-buttons-neutral-tinted-is-hovered-background-color, #eef0f4); }
 .lotc-sidenav-link.lotc-active {
     background: var(--semantics-surfaces-tinted-background-color, #eef0f4);
     font-weight: 700;
+}
+/* The active item needs this explicitly: `.lotc-sidenav-link.lotc-active` has
+   the same specificity as `.lotc-sidenav-link:hover` and comes later, so it
+   won — the current page's item was the one item that gave no hover feedback
+   at all (in both schemes). */
+.lotc-sidenav-link.lotc-active:hover {
+    background: var(--semantics-buttons-neutral-tinted-is-hovered-background-color, #eef0f4);
 }
 .lotc-sidenav-link nldd-icon { flex: 0 0 auto; width: 1.1rem; height: 1.1rem; }
 
@@ -77,7 +84,7 @@
     display: flex;
     position: relative;
 }
-.lotc-layer:hover { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); }
+.lotc-layer:hover { background: var(--semantics-buttons-neutral-tinted-is-hovered-background-color, #eef0f4); }
 .lotc-layer-icon { flex: 0 0 auto; place-items: center; width: 2.4rem; height: 2.4rem; display: grid; }
 .lotc-layer-icon nldd-icon { opacity: 0.65; width: 1.4rem; height: 1.4rem; }
 .lotc-layer-body { flex: 1 1 auto; min-width: 0; }
@@ -162,7 +169,7 @@
     transition: background 0.12s;
     display: block;
 }
-.lotc-shortcut:hover { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); }
+.lotc-shortcut:hover { background: var(--semantics-buttons-neutral-tinted-is-hovered-background-color, #eef0f4); }
 .lotc-shortcut-icon { align-items: center; margin-bottom: 0.5rem; display: flex; }
 .lotc-shortcut-icon nldd-icon { opacity: 0.6; width: 1.3rem; height: 1.3rem; }
 .lotc-shortcut-title { font-weight: 700; display: block; }
@@ -208,7 +215,7 @@
 /* ── section-link (bordered nav chip) ────────────────────────────────────── */
 .lotc-section-links { flex-direction: column; gap: 0.4rem; display: flex; }
 .lotc-section-link { border: 1px solid var(--semantics-dividers-color, #e2e2e6); color: inherit; border-radius: 8px; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; text-decoration: none; display: flex; }
-.lotc-section-link:hover { background: var(--semantics-surfaces-tinted-background-color, #eef0f4); }
+.lotc-section-link:hover { background: var(--semantics-buttons-neutral-tinted-is-hovered-background-color, #eef0f4); }
 .lotc-section-link .lotc-section-link-go { opacity: 0.5; margin-left: auto; }
 
 /* ── notification (inbox) list ───────────────────────────────────────────── */
