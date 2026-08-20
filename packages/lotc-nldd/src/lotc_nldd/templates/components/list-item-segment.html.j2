@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-list-item-segment{% if _component_context.get('button') %} button{% endif %}{% if _component_context.get('href') %} href="{{ _component_context.get('href') }}"{% endif %}{% if _component_context.get('target') %} target="{{ _component_context.get('target') }}"{% endif %}{% if _component_context.get('rel') %} rel="{{ _component_context.get('rel') }}"{% endif %}{% if _component_context.get('checkbox') %} checkbox{% endif %}{% if _component_context.get('checked') %} checked{% endif %}{% if _component_context.get('expanded') %} expanded="{{ _component_context.get('expanded') }}"{% endif %}{% if _component_context.get('disclosure') %} disclosure{% endif %}{% if _component_context.get('current') %} current{% endif %}{% if _component_context.get('disabled') %} disabled{% endif %}{% if _component_context.get('width') %} width="{{ _component_context.get('width') }}"{% endif %}{% if _component_context.get('accessible-label') %} accessible-label="{{ _component_context.get('accessible-label') }}"{% endif %} data-lotc-component="list-item-segment" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-list-item-segment>
+{% endmacro %}

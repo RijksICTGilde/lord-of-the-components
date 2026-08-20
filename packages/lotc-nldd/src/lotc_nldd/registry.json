@@ -1,7 +1,7 @@
 {
  "meta": {
-  "nldd_version": "0.8.80",
-  "components": 98
+  "nldd_version": "0.8.83",
+  "components": 99
  },
  "components": [
   {
@@ -26,6 +26,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -79,6 +80,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -159,6 +161,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -226,7 +229,7 @@
     {
      "name": "no-tab",
      "type": "boolean",
-     "description": "Takes the button out of the tab order (tabindex=\"-1\"), for a control owned by a roving container (e.g. an nldd-token in "
+     "description": "Takes the button out of the tab order (tabindex=\"-1\"), for a control owned by a roving container (an nldd-token in nldd-"
     },
     {
      "name": "popup-type",
@@ -329,6 +332,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -499,6 +503,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -910,6 +915,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -1051,6 +1057,118 @@
    }
   },
   {
+   "name": "text",
+   "attributes": [
+    {
+     "name": "size",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "xxs",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "md",
+     "description": "Text size on the body scale: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' (default: 'md')"
+    },
+    {
+     "name": "weight",
+     "type": "enum",
+     "enum_values": [
+      "regular",
+      "medium",
+      "bold"
+     ],
+     "default": "regular",
+     "description": "Font weight: 'regular' | 'medium' | 'bold' (default: 'regular'). With 'bold' a slotted `<strong>` no longer stands out: "
+    },
+    {
+     "name": "line-height",
+     "type": "enum",
+     "enum_values": [
+      "flat",
+      "tight",
+      "snug",
+      "loose"
+     ],
+     "default": "snug",
+     "description": "Line height: 'flat' | 'tight' | 'snug' | 'loose' (default: 'snug')"
+    },
+    {
+     "name": "color",
+     "type": "enum",
+     "enum_values": [
+      "neutral",
+      "inherit",
+      "accent",
+      "success",
+      "warning",
+      "critical",
+      "lintblauw",
+      "donkerblauw",
+      "hemelblauw",
+      "lichtblauw",
+      "paars",
+      "violet",
+      "robijnrood",
+      "roze",
+      "rood",
+      "oranje",
+      "donkergeel",
+      "geel",
+      "donkerbruin",
+      "bruin",
+      "donkergroen",
+      "groen",
+      "mosgroen",
+      "mintgroen",
+      "default",
+      "secondary"
+     ],
+     "default": "default",
+     "description": "Text color: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit' (default: 'default'). 'd"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center",
+      "right"
+     ],
+     "default": "left",
+     "description": "Alignment of the text within the block: 'left' | 'center' | 'right' (default: 'left'). Aligns the words; `horizontal-ali"
+    }
+   ],
+   "description": "One run of body text at a size from the type scale. It is what you reach for where an app would otherwise write a bare `<p>` and inherit wha",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
    "name": "title",
    "attributes": [
     {
@@ -1062,6 +1180,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -1449,6 +1568,11 @@
      "description": "Disabled state"
     },
     {
+     "name": "readonly",
+     "type": "boolean",
+     "description": "Read-only state: the value stays readable, selectable and in the tab order, but the menu does not open and there is noth"
+    },
+    {
      "name": "allow-custom",
      "type": "boolean",
      "description": "Allow committing free-typed values that match no option (Enter/blur). Default false: only menu options are accepted."
@@ -1706,6 +1830,11 @@
      "name": "width",
      "type": "string",
      "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name, forwarded as aria-label to the slotted select"
     }
    ],
    "description": "A visual wrapper around a native `<select>` element. The consumer provides a native `<select>` as a slotted child — this way the browser ret",
@@ -1843,6 +1972,16 @@
      "name": "autocomplete",
      "type": "string",
      "description": "Autocomplete hint"
+    },
+    {
+     "name": "keyboard",
+     "type": "string",
+     "description": "Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'te"
+    },
+    {
+     "name": "enter-key",
+     "type": "string",
+     "description": "What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previo"
     },
     {
      "name": "rows",
@@ -2082,6 +2221,11 @@
      "name": "required",
      "type": "boolean",
      "description": "Marks the group as required"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the group, set as aria-label on the group"
     },
     {
      "name": "accessible-labeled-by",
@@ -2399,6 +2543,11 @@
      "description": "Name for form submission; the value is submitted under this name"
     },
     {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the spinbutton; falls back to a generic label"
+    },
+    {
      "name": "translations",
      "type": "string",
      "description": "Translations; unspecified keys fall back to Dutch"
@@ -2634,6 +2783,16 @@
      ],
      "default": "text",
      "description": "Input type: 'text' | 'email' | 'tel' | 'url'"
+    },
+    {
+     "name": "keyboard",
+     "type": "string",
+     "description": "Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'te"
+    },
+    {
+     "name": "enter-key",
+     "type": "string",
+     "description": "What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previo"
     },
     {
      "name": "name",
@@ -4624,6 +4783,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -4683,6 +4843,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -4775,6 +4936,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -4828,6 +4990,7 @@
       "md",
       "lg",
       "inherit",
+      "xxs",
       "16",
       "20",
       "24",
@@ -5213,17 +5376,17 @@
    }
   },
   {
-   "name": "list-item-action",
+   "name": "list-item-segment",
    "attributes": [
     {
      "name": "button",
      "type": "boolean",
-     "description": "Renders the segmented action as a `<button>`; ignored when `href` is set"
+     "description": "Renders the segment as a `<button>`. Last of the three: `href` and `checkbox` both win over it."
     },
     {
      "name": "href",
      "type": "string",
-     "description": "Renders the segmented action as an `<a>` with this URL; wins over `button` and `checkbox`"
+     "description": "Renders the segment as an `<a>` with this URL. Wins over `checkbox` and `button`."
     },
     {
      "name": "target",
@@ -5238,32 +5401,32 @@
     {
      "name": "checkbox",
      "type": "boolean",
-     "description": "Makes the segmented action a `role=\"checkbox\"` control; ignored when `href` is set"
+     "description": "Makes the segment a `role=\"checkbox\"` control. Wins over `button`, loses to `href`."
     },
     {
      "name": "checked",
      "type": "boolean",
-     "description": "Checked state of a `checkbox` action; it toggles on activation"
+     "description": "Checked state of a `checkbox` segment; it toggles on activation"
     },
     {
      "name": "expanded",
      "type": "string",
-     "description": "Disclosure state, reflected as `aria-expanded` on the control. Set it on the segmented action that opens something (e.g."
+     "description": "Disclosure state, reflected as `aria-expanded` on the control, and painted: the segment stays lit a step above hover for"
     },
     {
      "name": "disclosure",
      "type": "boolean",
-     "description": "Marks the segmented action as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so "
+     "description": "Marks the segment as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so the state"
     },
     {
      "name": "current",
      "type": "boolean",
-     "description": "Marks the segmented action as the current page (`aria-current=\"page\"`)"
+     "description": "Marks the segment as the current page (`aria-current=\"page\"`). The row it sits in paints itself as the current row from "
     },
     {
      "name": "disabled",
      "type": "boolean",
-     "description": "Disabled state; only applies to button and checkbox segmented actions"
+     "description": "Switches the segment off: a `button` or `checkbox` segment stops responding and dims, a `href` segment gets `aria-disabl"
     },
     {
      "name": "width",
@@ -5273,15 +5436,15 @@
       "full"
      ],
      "default": "fit-content",
-     "description": "`full` lets the segmented action grow to fill the row (default: 'fit-content')"
+     "description": "`full` lets the segment grow to fill the row (default: 'fit-content')"
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Accessible name for the control. Set it when the segmented action holds only an icon, or when the cell text does not des"
+     "description": "Accessible name for the control. Set it when the segment holds only an icon, or when the cell text does not describe the"
     }
    ],
-   "description": "A segmented action inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than",
+   "description": "A segment inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one segm",
    "category": "data-display",
    "backend": "jinja",
    "content": {
@@ -5304,22 +5467,32 @@
     {
      "name": "selected",
      "type": "boolean",
-     "description": "Marks the item as selected. Selection is consumer-managed; the list never sets it. In a `navigation` parent it puts `ari"
+     "description": "Marks the item as selected: it is one of the rows you picked. Selection is consumer-managed; the list never sets it. In "
+    },
+    {
+     "name": "current",
+     "type": "boolean",
+     "description": "Marks the item as the one you are on: the page a menu row points at, the record a list has open. Exactly one row in a li"
     },
     {
      "name": "button",
      "type": "boolean",
-     "description": "Renders the item as a `<button>`; ignored when `href` is set (a link wins)"
+     "description": "Renders the item as a `<button>`. Last of the three: `href` and `checkbox` both win over it."
     },
     {
      "name": "checkbox",
      "type": "boolean",
-     "description": "Makes the whole row a `role=\"checkbox\"` control; ignored when `href` is set"
+     "description": "Makes the whole row a `role=\"checkbox\"` control. Wins over `button`, loses to `href`."
     },
     {
      "name": "checked",
      "type": "boolean",
      "description": "Checked state of a `checkbox` row; the item toggles it on activation"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Switches the row's own control off: a `button` or `checkbox` row stops responding and dims, a `href` row gets `aria-disa"
     },
     {
      "name": "expanded",
@@ -5329,7 +5502,7 @@
     {
      "name": "href",
      "type": "string",
-     "description": "Renders the item as an `<a>` with this URL. Takes precedence over `button`; without either the item is a plain container"
+     "description": "Renders the item as an `<a>` with this URL. Wins over `checkbox` and `button`; without any of the three the item is a pl"
     },
     {
      "name": "target",
@@ -5388,7 +5561,7 @@
     {
      "name": "reorderable",
      "type": "boolean",
-     "description": "Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type=\"list\"`; wins over `arrow-navigat"
+     "description": "Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type=\"list\"`; there the arrow keys mov"
     },
     {
      "name": "dividers",
@@ -5400,11 +5573,6 @@
      ],
      "default": "always",
      "description": "When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch"
-    },
-    {
-     "name": "arrow-navigation",
-     "type": "boolean",
-     "description": "Roving-tabindex arrow-key navigation: ArrowUp/ArrowDown move focus between the rows, Home/End jump to first/last, and th"
     },
     {
      "name": "height",

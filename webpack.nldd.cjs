@@ -7,11 +7,22 @@ const CopyPlugin = require('copy-webpack-plugin');
 const OUTPUT_DIR = path.resolve(__dirname, 'packages/lotc-nldd/src/lotc_nldd/static/lotc/nldd/dist');
 const NLDD = 'node_modules/@nldd/design-system/dist';
 
-// Assets consumed by the theme codegen (nldd theme). CSS order matches the
-// storybook bootstrap: reset -> settings(tokens) -> global. fouc hides the body
-// until custom elements are :defined.
+// Assets consumed by the theme codegen (nldd theme).
+//
+// One file: since 0.8.83 `global.css` is NLDD's own umbrella and @imports the
+// rest in the order it wants — fonts, variables (which pulls in the generated
+// colours), document reset, rich text, form(-section), and fouc, which hides
+// the body until the custom elements are :defined. Before that release the set
+// was reset + settings + palettes.generated + global + fouc; those first three
+// no longer exist, so keeping them here links three 404s.
+//
+// Measured, because the guess was worse than the truth: with the old list the
+// page still renders correctly (0 contrast failures, 0 light islands), since
+// global.css pulls in every token by itself. So this is dead weight and console
+// noise, not a broken theme — but the manifest should say what is actually
+// shipped.
 const ASSET_MANIFEST = {
-  css: ['css/reset.css', 'css/settings.css', 'css/palettes.generated.css', 'css/global.css', 'css/fouc.css'],
+  css: ['css/global.css'],
   js: [{ src: 'nldd.js', module: true }],
 };
 

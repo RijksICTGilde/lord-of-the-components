@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-text{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('weight') %} weight="{{ _component_context.get('weight') }}"{% endif %}{% if _component_context.get('line-height') %} line-height="{{ _component_context.get('line-height') }}"{% endif %}{% if _component_context.get('color') %} color="{{ _component_context.get('color') }}"{% endif %}{% if _component_context.get('horizontal-alignment') %} horizontal-alignment="{{ _component_context.get('horizontal-alignment') }}"{% endif %} data-lotc-component="text" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-text>
+{% endmacro %}

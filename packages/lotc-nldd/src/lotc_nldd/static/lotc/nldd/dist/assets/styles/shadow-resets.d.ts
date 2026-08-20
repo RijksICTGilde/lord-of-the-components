@@ -48,4 +48,4 @@ export declare const slottedReset: import("lit").CSSResult;
  * explicitly on its own element, which overrides this inherited default.
  */
 export declare const inheritedTextReset: import("lit").CSSResult;
-//# sourceMappingURL=style-resets.d.ts.map
+//# sourceMappingURL=shadow-resets.d.ts.map

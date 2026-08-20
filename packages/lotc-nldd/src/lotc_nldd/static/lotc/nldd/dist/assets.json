@@ -1,10 +1,6 @@
 {
   "css": [
-    "css/reset.css",
-    "css/settings.css",
-    "css/palettes.generated.css",
-    "css/global.css",
-    "css/fouc.css"
+    "css/global.css"
   ],
   "js": [
     {

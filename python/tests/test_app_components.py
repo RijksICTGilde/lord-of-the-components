@@ -99,7 +99,12 @@ def test_cpage_loads_declared_bundles_and_app_css(render):
     html = render('<c-page title="Overzicht" design-systems="nldd"><p>x</p></c-page>')
     assert "<!DOCTYPE html>" in html
     assert 'src="/static/lotc/nldd/dist/nldd.js"' in html  # NLDD web components (JS module)
-    assert 'href="/static/lotc/nldd/dist/css/reset.css"' in html  # NLDD base CSS
+    # Since NLDD 0.8.83 the bundle is one umbrella stylesheet: global.css
+    # @imports fonts, variables (and through it the generated colours), the
+    # document reset, rich text, form(-section) and fouc. Before that release it
+    # was five separate links, of which reset/settings/palettes no longer exist.
+    assert 'href="/static/lotc/nldd/dist/css/global.css"' in html  # NLDD base CSS
+    assert 'href="/static/lotc/nldd/lotc-nldd.css"' in html  # our own NLDD components
     assert 'href="/static/lotc/app-components.css"' in html  # global app-component CSS
     assert "<p>x</p>" in html
 
