@@ -115,3 +115,23 @@ def test_the_files_those_urls_point_at_exist():
             if not candidate.exists():
                 missing.append(f"{name}: {url}")
     assert not missing, f"declared but not shipped: {missing}"
+
+
+def test_the_registry_carries_the_upstream_pointers():
+    """pip installs neither the design system's package.json nor node_modules.
+
+    So an application on the Python side cannot see where the component
+    documentation lives — which is how a team spent a round concluding a
+    capability did not exist while the Storybook would have shown the slot in a
+    minute (RIG-Cluster, RC-151, who traced it to exactly this). The address
+    travels in the registry instead, which pip does install.
+    """
+    import json
+
+    registry = json.loads((ROOT / "packages/lotc-nldd/src/lotc_nldd/registry.json").read_text(encoding="utf-8"))
+    meta = registry.get("meta", {})
+    assert meta.get("storybook_url", "").startswith("https://")
+    assert meta.get("upstream_repository", "").startswith("https://")
+    # And it is reachable from a package install: the registry ships with it.
+    packaged = ROOT / "packages/lotc-nldd/src/lotc_nldd/registry.json"
+    assert packaged.exists()

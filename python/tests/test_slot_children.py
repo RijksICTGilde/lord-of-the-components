@@ -22,6 +22,7 @@ from lord_of_the_components import setup_components
 ROOT = Path(__file__).resolve().parents[2]
 PKG = ROOT / "python/src/lord_of_the_components"
 NLDD_TEMPLATES = ROOT / "packages/lotc-nldd/src/lotc_nldd/templates"
+FORMS_TEMPLATES = ROOT / "packages/lotc-forms/src/lotc_forms/templates"
 GENERATED = "Auto-generated"
 
 
@@ -144,9 +145,12 @@ def test_the_documented_name_clashes_are_exactly_the_real_ones():
 
     A name in both registries proves nothing: `<c-button>` renders
     `<nldd-button>` and is no surprise at all. What matters is whether
-    `<c-NAME>` actually produces `<nldd-NAME>`. Reading the registries said 20
-    names clashed; rendering says 8, and a substring check said 6 because
-    `<nldd-menu` also matches `<nldd-menu-bar`.
+    `<c-NAME>` actually produces `<nldd-NAME>` as its OUTERMOST element — what
+    you get, not what appears somewhere inside. Reading the registries said 20
+    names clashed; a substring check said 6 (`<nldd-menu` also matches
+    `<nldd-menu-bar`); "appears anywhere in the output" said 8, missing two
+    where a forms wrapper nests the NLDD control inside its own
+    `nldd-form-field`. It is 10. RIG-Cluster measured it that way first.
 
     AUTHORING.md carries the list for authors arriving from NLDD; this keeps it
     honest when a component is added, renamed or newly bound.
@@ -155,10 +159,13 @@ def test_the_documented_name_clashes_are_exactly_the_real_ones():
 
     # The layout layer too, the way an application declares it — `c-box` and
     # friends live there, and placeholder mode so a gap does not stop the sweep.
-    env = Environment(loader=FileSystemLoader([str(PKG / "templates"), str(NLDD_TEMPLATES)]), autoescape=True)
+    env = Environment(
+        loader=FileSystemLoader([str(PKG / "templates"), str(NLDD_TEMPLATES), str(FORMS_TEMPLATES)]),
+        autoescape=True,
+    )
     setup_components(
         env,
-        design_systems=["lotc-layout", "nldd"],
+        design_systems=["lotc-layout", "nldd", "lotc-forms"],
         registry_path=str(PKG / "registry.json"),
         on_missing_component="placeholder",
     )
@@ -171,16 +178,19 @@ def test_the_documented_name_clashes_are_exactly_the_real_ones():
         pytest.skip("@nldd/design-system not installed")
     manifest = _json.loads(cem.read_text(encoding="utf-8"))
     nldd_tags = {d["tagName"] for m in manifest["modules"] for d in m.get("declarations", []) if d.get("tagName")}
-    core = _json.loads((PKG / "registry.json").read_text(encoding="utf-8"))
+    # Every registry an application has, not core alone: two of the ten live in
+    # lotc-forms, and a gate reading only core cannot see them.
+    names = set()
+    for registry_file in (PKG / "registry.json", FORMS_TEMPLATES.parent / "registry.json"):
+        names |= {c["name"] for c in _json.loads(registry_file.read_text(encoding="utf-8"))["components"]}
 
     clashes = set()
-    for component in core["components"]:
-        name = component["name"]
+    for name in sorted(names):
         if f"nldd-{name}" not in nldd_tags:
             continue
-        out = render(f"<c-{name}>x</c-{name}>")
-        # A real tag boundary: `<nldd-menu` also matches `<nldd-menu-bar`.
-        if not re.search(rf"<nldd-{re.escape(name)}(?=[\s/>])", out):
+        out = render(f"<c-{name}>x</c-{name}>").strip()
+        outer = re.search(r"<([a-z!][a-z0-9-]*)(?=[\s/>])", out)
+        if not outer or outer.group(1) != f"nldd-{name}":
             clashes.add(name)
 
     documented = set(

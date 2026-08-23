@@ -1,7 +1,9 @@
 {
  "meta": {
   "nldd_version": "0.8.83",
-  "components": 99
+  "components": 99,
+  "upstream_repository": "https://github.com/MinBZK/storybook",
+  "storybook_url": "https://minbzk.github.io/storybook/"
  },
  "components": [
   {

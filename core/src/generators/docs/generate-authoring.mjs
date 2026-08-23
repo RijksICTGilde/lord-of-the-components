@@ -122,6 +122,16 @@ L.push(
     ` Swap \`nldd\`→\`rvo\` to retarget the same markup.\n`,
 );
 L.push(
+  `**Looking a component up.** The design system publishes a Storybook —` +
+    ` ${NLDD.meta?.storybook_url || "see lotc-nldd's registry meta"} — with a story per` +
+    ` component: what it does, its slots, its variants. It answers "can this component` +
+    ` do X" faster than any list here. The address travels in lotc-nldd's` +
+    ` \`registry.json\` under \`meta.storybook_url\`, because pip installs neither the` +
+    ` design system's package.json nor node_modules, which is where it was hiding.` +
+    ` Note the stories are grouped by category, so a component without its own story` +
+    ` (\`toolbar-title\`) sits under its group (Components/Actions/Toolbar).\n`,
+);
+L.push(
   `**Look at the slots, not only the attributes.** "Can this component do X" is` +
     ` answered by both. \`nldd-toolbar-title\` carries no logo attribute, but its` +
     ` \`media\` slot is documented for exactly that — put the mark in as a DIRECT` +
@@ -191,8 +201,11 @@ if (jsOpened.length) {
 }
 
 // ── names that mean something else here than in NLDD ──
-// core owns these names, so `<c-NAME>` never reaches `<nldd-NAME>`. Measured by
-// rendering, not by reading the registry: the gate that keeps this list honest
+// `<c-NAME>` does not give you `<nldd-NAME>`. Measured by rendering and looking
+// at the OUTERMOST element — RIG-Cluster's metric, and the right one: it is what
+// you actually get. Asking whether the tag appears ANYWHERE in the output missed
+// two of these, because a forms wrapper nests the NLDD control inside its own
+// `nldd-form-field`. The last two only exist while lotc-forms is active. the gate that keeps this list honest
 // is python/tests/test_slot_children.py, which renders every core component
 // under NLDD and compares. Framed for someone arriving FROM NLDD, which is who
 // gets surprised (thanks to RIG-Cluster, RC-151, for the framing — and two of
@@ -200,11 +213,13 @@ if (jsOpened.length) {
 const NAME_CLASH = [
   ["box", "a layout box (own markup)", "`nldd-box` groups related components in a tinted, contained region"],
   ["checkbox", "`nldd-checkbox-field` — the labelled field", "`nldd-checkbox` is the bare control"],
+  ["checkbox-field", "an `nldd-form-field` wrapper (label, help, error) around the control", "`nldd-checkbox-field` is the control with its own inline label"],
   ["identity", "a profile card (own markup)", "`nldd-identity` is an editorial by-line with author avatars"],
   ["menu", "`nldd-menu-bar` — a horizontal bar", "`nldd-menu` is a floating menu (Popover API)"],
   ["menu-item", "`nldd-menu-bar-item`", "`nldd-menu-item` is an item inside that floating menu"],
   ["notification", "an inline notification list (own markup)", "`nldd-notification` is a toast that leaves on its own"],
   ["page", "the whole HTML document", "`nldd-page` is a fixed-height shell with its own scroll container"],
+  ["radio-button-field", "an `nldd-form-field` wrapper around the group", "`nldd-radio-button-field` is the control with its own inline label"],
   ["status-bar", "a slim page-wide notice (own markup)", "`nldd-status-bar` is a 24px bar with a deep background per variant"],
 ];
 L.push(`### Same name, different component\n`);

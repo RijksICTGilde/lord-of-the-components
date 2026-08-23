@@ -73,7 +73,21 @@ const CAT = { actions: "actions", content: "content", forms: "forms", inputs: "f
 
 // Build the fragment (with provenance meta) + templates in memory, so the same
 // logic backs both writing (default) and --check (compare, don't touch disk).
-export function buildOutputs() {
+export /** Upstream pointers, read from the design system's own package.json. */
+const UPSTREAM = (() => {
+  const pkg = JSON.parse(
+    readFileSync(resolve(ROOT, "node_modules/@nldd/design-system/package.json"), "utf8"),
+  );
+  const repo = (pkg.repository?.url || "").replace(/^git\+/, "").replace(/\.git$/, "");
+  const owner = repo.match(/github\.com\/([^/]+)\/([^/]+)$/);
+  return {
+    ...(repo ? { upstream_repository: repo } : {}),
+    // GitHub Pages for that repo — where the published Storybook lives.
+    ...(owner ? { storybook_url: `https://${owner[1].toLowerCase()}.github.io/${owner[2]}/` } : {}),
+  };
+})();
+
+function buildOutputs() {
 const fragment = [];
 const templates = new Map();
 for (const el of els) {
@@ -157,7 +171,20 @@ for (const el of els) {
   });
 }
   return {
-    fragment: { meta: { nldd_version: NLDD_VERSION, components: fragment.length }, components: fragment },
+    fragment: {
+      meta: {
+        nldd_version: NLDD_VERSION,
+        components: fragment.length,
+        // Where to look up what a component can do. The design system's own
+        // package.json carries this, but pip installs neither it nor
+        // node_modules — so from the Python side it was invisible, and a team
+        // spent a round concluding a capability did not exist while its
+        // Storybook would have shown the slot in a minute (RIG-Cluster,
+        // RC-151, who traced it to exactly this).
+        ...UPSTREAM,
+      },
+      components: fragment,
+    },
     templates,
   };
 }

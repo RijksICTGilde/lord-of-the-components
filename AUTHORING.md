@@ -12,6 +12,8 @@ setup_components(env, design_systems=["lotc-layout", "nldd"])
 ```
 Rules: components resolve to the **first** active system that implements them; `lotc-layout` owns the structural primitives, `nldd` the visual components. Swap `nldd`→`rvo` to retarget the same markup.
 
+**Looking a component up.** The design system publishes a Storybook — https://minbzk.github.io/storybook/ — with a story per component: what it does, its slots, its variants. It answers "can this component do X" faster than any list here. The address travels in lotc-nldd's `registry.json` under `meta.storybook_url`, because pip installs neither the design system's package.json nor node_modules, which is where it was hiding. Note the stories are grouped by category, so a component without its own story (`toolbar-title`) sits under its group (Components/Actions/Toolbar).
+
 **Look at the slots, not only the attributes.** "Can this component do X" is answered by both. `nldd-toolbar-title` carries no logo attribute, but its `media` slot is documented for exactly that — put the mark in as a DIRECT child (`<img slot="media" …>`), not via `<template slot="media">`, which wraps it in a `<div>` and caps that instead of the image. The coat of arms ships as a file at `/static/lotc/nldd/rijkswapen.svg`, lifted out of the pinned bundle so it cannot drift from the one NLDD draws (using it is an entitlement question: the Rijkshuisstijl governs who may show the arms).
 
 **Strictness (opt-in).** Silent authoring mistakes can be turned into loud errors: `on_unknown_value="error"` rejects an unrecognised value — an icon name absent from an active theme's set (`verwijderen` is RVO-only; NLDD has `trash`) or a literal outside an enum's set — with a suggestion. `on_unknown_attribute="ignore"` relaxes the (default) error on an undeclared attribute. `debug=True` implies `on_unknown_value="error"`. Set `LOTC_STRICT=1` in dev/CI to default it on without threading the argument (an explicit argument always wins).
@@ -53,15 +55,17 @@ document.getElementById("my-sheet").show();   // not show="true", not el.show = 
 
 ### Same name, different component
 
-8 names are owned by the core layer, so `<c-NAME>` does **not** give you `<nldd-NAME>`. Neither is wrong — they are different components that happen to share a word — but if you know NLDD, these are the ones that will surprise you. Want the NLDD one? Write the `<nldd-*>` tag directly.
+10 names are owned by the core layer, so `<c-NAME>` does **not** give you `<nldd-NAME>`. Neither is wrong — they are different components that happen to share a word — but if you know NLDD, these are the ones that will surprise you. Want the NLDD one? Write the `<nldd-*>` tag directly.
 
 - `<c-box>` gives a layout box (own markup) — `nldd-box` groups related components in a tinted, contained region
 - `<c-checkbox>` gives `nldd-checkbox-field` — the labelled field — `nldd-checkbox` is the bare control
+- `<c-checkbox-field>` gives an `nldd-form-field` wrapper (label, help, error) around the control — `nldd-checkbox-field` is the control with its own inline label
 - `<c-identity>` gives a profile card (own markup) — `nldd-identity` is an editorial by-line with author avatars
 - `<c-menu>` gives `nldd-menu-bar` — a horizontal bar — `nldd-menu` is a floating menu (Popover API)
 - `<c-menu-item>` gives `nldd-menu-bar-item` — `nldd-menu-item` is an item inside that floating menu
 - `<c-notification>` gives an inline notification list (own markup) — `nldd-notification` is a toast that leaves on its own
 - `<c-page>` gives the whole HTML document — `nldd-page` is a fixed-height shell with its own scroll container
+- `<c-radio-button-field>` gives an `nldd-form-field` wrapper around the group — `nldd-radio-button-field` is the control with its own inline label
 - `<c-status-bar>` gives a slim page-wide notice (own markup) — `nldd-status-bar` is a 24px bar with a deep background per variant
 
 **Page structure — mind the scroll model.** `c-app-shell` (layout layer) is a header/sidebar/main/footer grid that scrolls on the **window** — use it for a sidebar app frame. NLDD's own `nldd-page` is a **fixed-height (`100dvh`) shell with an internal scroll region** (`overflow-y:auto; overscroll-behavior:contain`): long content scrolls inside it, not the window, and a mouse wheel over it never reaches the window (window-based scroll-restoration breaks). For a normal window-scrolling page do **not** wrap in `nldd-page` — put the NLDD page regions (`nldd-top-navigation-bar`, `nldd-sidebar-section`, `nldd-page-footer`) directly in `c-page`'s body. `c-page` establishes NLDD's `layout-container` on `<body>` automatically — you do not set it by hand.
