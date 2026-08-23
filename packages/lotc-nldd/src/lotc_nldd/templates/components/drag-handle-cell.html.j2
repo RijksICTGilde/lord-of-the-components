@@ -1,7 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
-<nldd-drag-handle-cell{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('translations') %} translations="{{ _component_context.get('translations') }}"{% endif %} data-lotc-component="drag-handle-cell" {{ attrs.render_extra_attributes(_component_context) }}>
+<nldd-drag-handle-cell{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('translations') %} translations="{{ _component_context.get('translations') }}"{% endif %}{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %} data-lotc-component="drag-handle-cell" {{ attrs.render_extra_attributes(_component_context) }}>
 {{ _component_context.get('content', '') | safe }}
 </nldd-drag-handle-cell>
 {% endmacro %}

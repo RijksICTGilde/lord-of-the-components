@@ -1,7 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
-<nldd-split-view-pane{% if _component_context.get('has-content') %} has-content{% endif %}{% if _component_context.get('hide-back') %} hide-back{% endif %}{% if _component_context.get('background') %} background="{{ _component_context.get('background') }}"{% endif %} data-lotc-component="split-view-pane" {{ attrs.render_extra_attributes(_component_context) }}>
+<nldd-split-view-pane{% if _component_context.get('has-content') %} has-content{% endif %}{% if _component_context.get('hide-back') %} hide-back{% endif %}{% if _component_context.get('background') %} background="{{ _component_context.get('background') }}"{% endif %}{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %} data-lotc-component="split-view-pane" {{ attrs.render_extra_attributes(_component_context) }}>
 {{ _component_context.get('content', '') | safe }}
 </nldd-split-view-pane>
 {% endmacro %}

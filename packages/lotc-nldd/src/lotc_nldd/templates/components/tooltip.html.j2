@@ -1,7 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
-<nldd-tooltip{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('open') %} open{% endif %}{% if _component_context.get('placement') %} placement="{{ _component_context.get('placement') }}"{% endif %}{% if _component_context.get('timing') %} timing="{{ _component_context.get('timing') }}"{% endif %} data-lotc-component="tooltip" {{ attrs.render_extra_attributes(_component_context) }}>
+<nldd-tooltip{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('open') %} open{% endif %}{% if _component_context.get('placement') %} placement="{{ _component_context.get('placement') }}"{% endif %}{% if _component_context.get('timing') %} timing="{{ _component_context.get('timing') }}"{% endif %}{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %} data-lotc-component="tooltip" {{ attrs.render_extra_attributes(_component_context) }}>
 {{ _component_context.get('content', '') | safe }}
 </nldd-tooltip>
 {% endmacro %}

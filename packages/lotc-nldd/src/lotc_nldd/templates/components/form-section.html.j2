@@ -1,7 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
-<nldd-form-section{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('supporting-text') %} supporting-text="{{ _component_context.get('supporting-text') }}"{% endif %} data-lotc-component="form-section" {{ attrs.render_extra_attributes(_component_context) }}>
+<nldd-form-section{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('supporting-text') %} supporting-text="{{ _component_context.get('supporting-text') }}"{% endif %}{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %} data-lotc-component="form-section" {{ attrs.render_extra_attributes(_component_context) }}>
 {{ _component_context.get('content', '') | safe }}
 </nldd-form-section>
 {% endmacro %}

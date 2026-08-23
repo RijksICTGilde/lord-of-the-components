@@ -137,6 +137,13 @@ for (const el of els) {
       ? `{% if ${v} %} ${a.name}{% endif %}`
       : `{% if ${v} %} ${a.name}="{{ ${v} }}"{% endif %}`;
   }
+  // `class` is not a manifest attribute, so the loop above never emits it — and
+  // the shared passthrough macro does not either (it covers id/title/style/role/
+  // tabindex/slot). A generated component therefore SWALLOWED the class, while a
+  // hand-authored one passed it on, and an application moving from one to the
+  // other lost its hooks in silence: 23 classes at once, a script that could no
+  // longer find its grid, and a dead click (RIG-Cluster, RC-151).
+  open += `{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %}`;
   open += ` data-lotc-component="${cname}" {{ attrs.render_extra_attributes(_component_context) }}>`;
   L.push(open);
   for (const s of slots) L.push(`{% if _component_context.get('slots', {}).get('${s}') %}<div slot="${s}">{{ _component_context['slots']['${s}'] | safe }}</div>{% endif %}`);

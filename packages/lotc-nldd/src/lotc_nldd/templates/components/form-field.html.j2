@@ -1,7 +1,7 @@
 {% import 'components/_generic_attributes.j2' as attrs %}
 {# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
 {% macro lotc_render(_component_context) %}
-<nldd-form-field{% if _component_context.get('label-alignment') %} label-alignment="{{ _component_context.get('label-alignment') }}"{% endif %}{% if _component_context.get('label') %} label="{{ _component_context.get('label') }}"{% endif %}{% if _component_context.get('supporting-label') %} supporting-label="{{ _component_context.get('supporting-label') }}"{% endif %}{% if _component_context.get('optional') %} optional{% endif %}{% if _component_context.get('optional-label') %} optional-label="{{ _component_context.get('optional-label') }}"{% endif %} data-lotc-component="form-field" {{ attrs.render_extra_attributes(_component_context) }}>
+<nldd-form-field{% if _component_context.get('label-alignment') %} label-alignment="{{ _component_context.get('label-alignment') }}"{% endif %}{% if _component_context.get('label') %} label="{{ _component_context.get('label') }}"{% endif %}{% if _component_context.get('supporting-label') %} supporting-label="{{ _component_context.get('supporting-label') }}"{% endif %}{% if _component_context.get('optional') %} optional{% endif %}{% if _component_context.get('optional-label') %} optional-label="{{ _component_context.get('optional-label') }}"{% endif %}{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %} data-lotc-component="form-field" {{ attrs.render_extra_attributes(_component_context) }}>
 {{ _component_context.get('content', '') | safe }}
 </nldd-form-field>
 {% endmacro %}
