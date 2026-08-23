@@ -292,7 +292,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "icon",
+     "description": "Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set; falls back to a "
+    },
+    {
+     "name": "popup",
+     "description": "A single `nldd-menu` or `nldd-popover` this button invokes. Slotting it auto-anchors the overlay to "
+    }
+   ]
   },
   {
    "name": "menu-divider",
@@ -428,7 +438,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "overflow",
+     "description": "nldd-menu-item / nldd-menu-divider / nldd-menu-group children, shown in the overflow menu when this "
+    }
+   ]
   },
   {
    "name": "toolbar-title",
@@ -489,7 +505,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "media",
+     "description": "Optional leading image before the title: a logo, a product mark, a file-type icon. Its height is cap"
+    },
+    {
+     "name": "action",
+     "description": "Optional trailing control (e.g. an xs nldd-icon-button), shown inline after the title and tuned to s"
+    }
+   ]
   },
   {
    "name": "toolbar",
@@ -548,7 +574,25 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "start",
+     "description": "nldd-toolbar-item and nldd-toolbar-title elements placed at the start"
+    },
+    {
+     "name": "center",
+     "description": "nldd-toolbar-item and nldd-toolbar-title elements placed at the center"
+    },
+    {
+     "name": "end",
+     "description": "nldd-toolbar-item and nldd-toolbar-title elements placed at the end"
+    },
+    {
+     "name": "overflow",
+     "description": "nldd-menu-item, nldd-menu-divider and nldd-menu-group elements always shown in the overflow menu"
+    }
+   ]
   },
   {
    "name": "avatar-group",
@@ -881,7 +925,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "caption",
+     "description": "Rich caption content (overrides the `caption` attribute)"
+    }
+   ]
   },
   {
    "name": "keyboard-shortcut",
@@ -1218,7 +1268,21 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "overline",
+     "description": "Optional overline above the title"
+    },
+    {
+     "name": "subtitle",
+     "description": "Optional subtitle below the title"
+    },
+    {
+     "name": "end",
+     "description": "Whatever belongs at the end of the title line: a button, a menu, a status badge, a version. Named fo"
+    }
+   ]
   },
   {
    "name": "token",
@@ -1270,7 +1334,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "menu",
+     "description": "An nldd-menu that the token opens from its menu button (control=\"menu\")."
+    }
+   ]
   },
   {
    "name": "tooltip",
@@ -1724,7 +1794,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "picker",
+     "description": "Een eigen nldd-date-picker, in plaats van de standaardkalender. Het veld blijft `value`, `min`, `max"
+    }
+   ]
   },
   {
    "name": "date-picker",
@@ -2426,7 +2502,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "icon",
+     "description": "Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set."
+    }
+   ]
   },
   {
    "name": "segmented-control",
@@ -2977,7 +3059,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "picker",
+     "description": "Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` "
+    }
+   ]
   },
   {
    "name": "time-picker",
@@ -3162,6 +3250,12 @@
    },
    "methods": [
     "toggle"
+   ],
+   "slots": [
+    {
+     "name": "icon",
+     "description": "Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set."
+    }
    ]
   },
   {
@@ -3253,7 +3347,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "template",
+     "description": "`nldd-token` prototypes supplying each token's action menu when token-control=\"menu\": a keyless one "
+    }
+   ]
   },
   {
    "name": "app-view",
@@ -3325,7 +3425,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "footer",
+     "description": "Slot for custom footer content"
+    }
+   ]
   },
   {
    "name": "container",
@@ -3598,7 +3704,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "start",
+     "description": "Items rendered flush-left (e.g. © notice, version)."
+    },
+    {
+     "name": "end",
+     "description": "Items rendered flush-right (e.g. privacy, accessibility)."
+    }
+   ]
   },
   {
    "name": "full-bleed-section",
@@ -3702,7 +3818,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "header",
+     "description": "Content above the main content"
+    },
+    {
+     "name": "footer",
+     "description": "Content below the main content"
+    }
+   ]
   },
   {
    "name": "one-half-one-half-section",
@@ -3806,7 +3932,25 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "header",
+     "description": "Content above the columns"
+    },
+    {
+     "name": "left",
+     "description": "Left column (1/2)"
+    },
+    {
+     "name": "right",
+     "description": "Right column (1/2)"
+    },
+    {
+     "name": "footer",
+     "description": "Content below the columns"
+    }
+   ]
   },
   {
    "name": "one-third-two-thirds-section",
@@ -3910,7 +4054,25 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "header",
+     "description": "Content above the columns"
+    },
+    {
+     "name": "left",
+     "description": "Left column (1/3)"
+    },
+    {
+     "name": "right",
+     "description": "Right column (2/3)"
+    },
+    {
+     "name": "footer",
+     "description": "Content below the columns"
+    }
+   ]
   },
   {
    "name": "sidebar-section",
@@ -4049,6 +4211,24 @@
     "hide",
     "show",
     "toggle"
+   ],
+   "slots": [
+    {
+     "name": "sidebar",
+     "description": "Sidebar content (sticky box when expanded, a left/bottom sheet when collapsed). The box and the shee"
+    },
+    {
+     "name": "sheet-top-title-bar",
+     "description": "Replaces the sheet's default title bar (when collapsed). Empty falls back to an `nldd-top-title-bar`"
+    },
+    {
+     "name": "header",
+     "description": "Content above the columns"
+    },
+    {
+     "name": "footer",
+     "description": "Content below the columns"
+    }
    ]
   },
   {
@@ -4175,7 +4355,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "header",
+     "description": "Content above the main content"
+    },
+    {
+     "name": "footer",
+     "description": "Content below the main content"
+    }
+   ]
   },
   {
    "name": "two-thirds-one-third-section",
@@ -4279,7 +4469,25 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "header",
+     "description": "Content above the columns"
+    },
+    {
+     "name": "left",
+     "description": "Left column (2/3)"
+    },
+    {
+     "name": "right",
+     "description": "Right column (1/3)"
+    },
+    {
+     "name": "footer",
+     "description": "Content below the columns"
+    }
+   ]
   },
   {
    "name": "popover",
@@ -4489,7 +4697,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "main",
+     "description": "Central panel for primary content"
+    }
+   ]
   },
   {
    "name": "navigation-split-view",
@@ -4543,6 +4757,28 @@
     "showInspectorSheet",
     "showPrimarySidebarSheet",
     "showSidebarSheet"
+   ],
+   "slots": [
+    {
+     "name": "primary-sidebar",
+     "description": "Left pane for primary navigation"
+    },
+    {
+     "name": "secondary-sidebar",
+     "description": "Second pane for secondary navigation (shown when slotted)"
+    },
+    {
+     "name": "main",
+     "description": "Center pane for primary content"
+    },
+    {
+     "name": "inspector",
+     "description": "Right pane for details or properties"
+    },
+    {
+     "name": "sidebar",
+     "description": "@deprecated alias for the primary-sidebar slot (kept for backwards compatibility)"
+    }
    ]
   },
   {
@@ -4564,7 +4800,21 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "pane-1",
+     "description": "First pane"
+    },
+    {
+     "name": "pane-2",
+     "description": "Second pane"
+    },
+    {
+     "name": "pane-n",
+     "description": "Each subsequent pane based on the `panes` attribute"
+    }
+   ]
   },
   {
    "name": "split-view-divider",
@@ -4637,7 +4887,21 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "pane-1",
+     "description": "First pane"
+    },
+    {
+     "name": "pane-2",
+     "description": "Second pane"
+    },
+    {
+     "name": "pane-n",
+     "description": "Each subsequent pane based on the `panes` attribute"
+    }
+   ]
   },
   {
    "name": "window",
@@ -4833,7 +5097,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "title",
+     "description": "The label displayed above the description"
+    },
+    {
+     "name": "description",
+     "description": "The description content"
+    }
+   ]
   },
   {
    "name": "drag-handle-cell",
@@ -5200,7 +5474,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "overline",
+     "description": "Rich content for the overline region. Overrides the `overline` attribute when content is assigned."
+    },
+    {
+     "name": "supporting-text",
+     "description": "Rich content for the supporting text region. Overrides the `supporting-text` attribute when content "
+    }
+   ]
   },
   {
    "name": "timeline-track-cell",
@@ -5437,7 +5721,17 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "overline",
+     "description": "Rich content for the overline region. Overrides the `overline` attribute when content is assigned."
+    },
+    {
+     "name": "supporting-text",
+     "description": "Rich content for the supporting text region. Overrides the `supporting-text` attribute when content "
+    }
+   ]
   },
   {
    "name": "list-item-segment",
@@ -5594,7 +5888,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "children",
+     "description": "Child rows of a branch in an `nldd-list type=\"tree\"`. Rendered as a `role=\"group\"` below the row, hi"
+    }
+   ]
   },
   {
    "name": "list",
@@ -5669,7 +5969,21 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "toolbar",
+     "description": "Controls below the search field (filters, sort, counts, view toggles). Available for every type; col"
+    },
+    {
+     "name": "search-bar-end",
+     "description": "Controls inline at the end of the search bar, beside the search field (e.g. a filter or options butt"
+    },
+    {
+     "name": "empty",
+     "description": "Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `emp"
+    }
+   ]
   },
   {
    "name": "document-tab-bar-item",
@@ -5736,7 +6050,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "end",
+     "description": "Action buttons (e.g. new tab)"
+    }
+   ]
   },
   {
    "name": "pagination",
@@ -5844,7 +6164,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "toolbar",
+     "description": "Optional buttons to the left of the dismiss button"
+    }
+   ]
   },
   {
    "name": "activity-indicator",
@@ -5910,7 +6236,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "indicator",
+     "description": "Optional custom indicator; overrides the default circle (and its visually-hidden label). Consumers r"
+    }
+   ]
   },
   {
    "name": "banner",
@@ -5974,7 +6306,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "actions",
+     "description": "nldd-button elements, wrapped in a horizontal nldd-button-group"
+    }
+   ]
   },
   {
    "name": "inline-dialog",
@@ -6025,7 +6363,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "slots": [
+    {
+     "name": "actions",
+     "description": "nldd-button elements, wrapped in nldd-button-group (max 3)"
+    }
+   ]
   },
   {
    "name": "just-in-time-education",
@@ -6127,6 +6471,12 @@
    "methods": [
     "hide",
     "show"
+   ],
+   "slots": [
+    {
+     "name": "actions",
+     "description": "nldd-button elements, forwarded to nldd-inline-dialog"
+    }
    ]
   },
   {

@@ -190,3 +190,40 @@ def test_the_documented_name_clashes_are_exactly_the_real_ones():
         f"AUTHORING.md's clash list is out of date. Only in reality: {clashes - documented}. "
         f"Only in the document: {documented - clashes}."
     )
+
+
+def test_named_slots_are_visible_in_the_docs():
+    """A capability that lives in a slot is invisible if only attributes are listed.
+
+    RIG-Cluster (RC-151) concluded a coat of arms could not go in a
+    fundament-style header after reading nldd-toolbar-title's ATTRIBUTES — while
+    its `media` slot is documented upstream as "optional leading image before the
+    title: a logo, a product mark". The capability was there; the documentation
+    was not.
+    """
+    import json as _json
+
+    registry = _json.loads((NLDD_TEMPLATES.parent / "registry.json").read_text(encoding="utf-8"))
+    with_slots = {c["name"]: [s["name"] for s in c["slots"]] for c in registry["components"] if c.get("slots")}
+    assert "media" in with_slots.get("toolbar-title", []), "the manifest still has it"
+
+    authoring = (ROOT / "AUTHORING.md").read_text(encoding="utf-8").splitlines()
+    undocumented = []
+    for name, slots in with_slots.items():
+        bullet = f"- `<c-{name}>`"
+        # The CATALOGUE entry, not the bullet in the "opens from JavaScript"
+        # section above it — that one carries no `<br>` detail lines.
+        index = next(
+            (
+                i
+                for i, line in enumerate(authoring)
+                if line.startswith(bullet) and authoring[i + 1 : i + 2] and authoring[i + 1].startswith("  <br>")
+            ),
+            None,
+        )
+        if index is None:
+            continue  # layout-category components are not in the catalogue
+        entry = "\n".join(authoring[index : index + 3])
+        if "<br>slots:" not in entry:
+            undocumented.append(f"{name} ({', '.join(slots)})")
+    assert not undocumented, f"components whose named slots are listed nowhere: {undocumented}"

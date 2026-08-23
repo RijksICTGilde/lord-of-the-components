@@ -108,6 +108,7 @@ for (const el of els) {
     .sort();
 
   const slots = (el.slots || []).map((s) => s.name).filter((n) => n && n !== "*");
+  const slotDesc = new Map((el.slots || []).map((s) => [s.name, s.description || ""]));
   const hasDefaultSlot = (el.slots || []).some((s) => !s.name);
 
   // ── template ──
@@ -148,6 +149,11 @@ for (const el of els) {
     backend: "jinja",
     content: { allowed: true },
     ...(methods.length ? { methods } : {}),
+    // Named slots, so they are visible in the docs. RIG-Cluster concluded a
+    // logo could not go in a fundament-style header after reading only the
+    // ATTRIBUTES of nldd-toolbar-title — while its `media` slot is documented
+    // as "optional leading image before the title: a logo, a product mark".
+    ...(slots.length ? { slots: slots.map((n) => ({ name: n, description: (slotDesc.get(n) || "").split("\n")[0].slice(0, 100) })) } : {}),
   });
 }
   return {

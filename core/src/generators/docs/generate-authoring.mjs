@@ -56,12 +56,30 @@ const methodNote = (c) => {
     : `JavaScript only:`;
   return `\n  <br>methods: ${lead} ${methods.map((m) => `\`${m}()\``).join(", ")}`;
 };
+// Named slots. Not decoration: a capability that lives in a slot is invisible if
+// the docs only list attributes, and someone then concludes it cannot be done.
+const slotNote = (c) => {
+  const slots = c.slots || [];
+  if (!slots.length) return "";
+  // Cut on length, not on sentences: splitting at ". " breaks on "e.g." and
+  // gives you "an xs nldd-icon-button (e.g". Case is kept — lowercasing the
+  // whole thing mangles `nldd-menu-item`.
+  const gist = (d) => {
+    const text = (d || "").replace(/\s+/g, " ").trim().replace(/\.$/, "");
+    return text.length > 64 ? text.slice(0, 61).replace(/\s+\S*$/, "") + "…" : text;
+  };
+  const shown = slots
+    .slice(0, 6)
+    .map((s) => `\`${s.name}\`${s.description ? ` — ${gist(s.description)}` : ""}`)
+    .join("; ");
+  return `\n  <br>slots: ${shown}${slots.length > 6 ? `, +${slots.length - 6}` : ""}`;
+};
 const compLine = (c) => {
   const attrs = (c.attributes || []).filter((a) => a.name !== "class");
   const shown = attrs.slice(0, 8).map(attrShort).join(", ");
   const more = attrs.length > 8 ? `, +${attrs.length - 8}` : "";
   const desc = (c.description || "").split("\n")[0];
-  return `- \`<c-${c.name}>\`${desc ? ` — ${desc}` : ""}${shown ? `\n  <br>attrs: ${shown}${more}` : ""}${methodNote(c)}`;
+  return `- \`<c-${c.name}>\`${desc ? ` — ${desc}` : ""}${shown ? `\n  <br>attrs: ${shown}${more}` : ""}${slotNote(c)}${methodNote(c)}`;
 };
 
 const CAT_LABEL = {
