@@ -122,6 +122,16 @@ L.push(
     ` Swap \`nldd\`→\`rvo\` to retarget the same markup.\n`,
 );
 L.push(
+  `**Look at the slots, not only the attributes.** "Can this component do X" is` +
+    ` answered by both. \`nldd-toolbar-title\` carries no logo attribute, but its` +
+    ` \`media\` slot is documented for exactly that — put the mark in as a DIRECT` +
+    ` child (\`<img slot="media" …>\`), not via \`<template slot="media">\`, which wraps` +
+    ` it in a \`<div>\` and caps that instead of the image. The coat of arms ships as` +
+    ` a file at \`/static/lotc/nldd/rijkswapen.svg\`, lifted out of the pinned bundle` +
+    ` so it cannot drift from the one NLDD draws (using it is an entitlement question:` +
+    ` the Rijkshuisstijl governs who may show the arms).\n`,
+);
+L.push(
   `**Strictness (opt-in).** Silent authoring mistakes can be turned into loud errors:` +
     ` \`on_unknown_value="error"\` rejects an unrecognised value — an icon name absent` +
     ` from an active theme's set (\`verwijderen\` is RVO-only; NLDD has \`trash\`) or a` +
@@ -130,6 +140,17 @@ L.push(
     ` \`on_unknown_value="error"\`. Set \`LOTC_STRICT=1\` in dev/CI to default it on` +
     ` without threading the argument (an explicit argument always wins).\n`,
 );
+L.push(
+  `**Where that checking stops.** Only LITERAL values are checked — the compiler` +
+    ` sees an expression, not a value, so \`:size="row.size"\`, \`size="{{ row.size }}"\`` +
+    ` and anything inside an \`:attrs\` spread pass through whatever they produce.` +
+    ` That boundary is deliberate (the alternative is validating on every render),` +
+    ` so make it a list rather than a blind spot:\n`,
+);
+L.push("```");
+L.push(`python -m lord_of_the_components.sweep --design-systems nldd templates/`);
+L.push("```");
+L.push(`It prints every computed value on an enum or icon attribute, with the allowed set beside it.\n`);
 
 L.push(`## 2. Page skeleton\n`);
 L.push("```html");

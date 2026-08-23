@@ -23,9 +23,10 @@
     "gen:docs": "npm run gen:icons && npm run gen:authoring && npm run gen:storybook",
     "gen:icons": "npx tsx core/src/generators/icons/generate-icons.ts",
     "gen:nldd": "node core/src/generators/nldd/generate-nldd.mjs",
-    "nldd:check": "node core/src/generators/nldd/generate-nldd.mjs --check",
+    "nldd:check": "node core/src/generators/nldd/generate-nldd.mjs --check && node core/src/generators/nldd/extract-assets.mjs --check",
     "nldd:diff": "node core/src/generators/nldd/nldd-diff.mjs",
-    "nldd:update": "npm run gen:nldd && npm run gen:icons && npm run gen:docs"
+    "nldd:update": "npm run gen:nldd && npm run gen:nldd-assets && npm run gen:icons && npm run gen:docs",
+    "gen:nldd-assets": "node core/src/generators/nldd/extract-assets.mjs"
   },
   "keywords": [
     "components",
