@@ -82,6 +82,17 @@ def test_event_routes_to_extra(ext_env):
     assert "'@click': 'f()'" in out
 
 
+def test_event_takes_an_interpolated_value(ext_env):
+    """`@click="{{ expr }}"` is the same whole-value mustache every other
+    attribute takes. It used to be kept as a literal, so the mustache itself
+    ended up in the onclick attribute and the handler silently did nothing."""
+    out = _pre(ext_env, '<c-button @click="{{ js }}"/>')
+    assert "'@click': '{{ js }}'" not in out  # NOT kept as a literal string
+    # Captured into a var and rendered, exactly like any other interpolated value.
+    assert "{% set _lotc_a1 %}{{ js }}{% endset %}" in out
+    assert "'@click': _lotc_a1" in out
+
+
 def test_expression_prop(ext_env):
     out = _pre(ext_env, '<c-button :type="chosen"/>')
     assert "type=chosen" in out

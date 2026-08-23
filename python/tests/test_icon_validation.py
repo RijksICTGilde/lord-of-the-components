@@ -47,3 +47,58 @@ def test_show_icon_position_is_not_validated_as_a_name():
 
 def test_not_validated_outside_debug():
     _env(["nldd"], debug=False).from_string('<c-icon icon="huos"/>').render()  # no raise
+
+
+# ── the alias table itself ──────────────────────────────────────────────────
+
+def _icons():
+    import json
+
+    return json.loads((PKG / "icons.json").read_text(encoding="utf-8"))
+
+
+def test_every_alias_points_at_an_icon_the_theme_ships():
+    """An alias to a name that does not exist renders an empty box, silently.
+
+    That is how `folder-stack` behaved for a while: icons.json mapped it to
+    `folder-on-folder`, which the bundle did not ship, so the icon came out
+    blank while every gate stayed green (reported by RIG-Cluster). The usage
+    check above only fires in debug mode and only for names a template actually
+    writes; this checks the table itself.
+    """
+    icons = _icons()
+    missing = []
+    for semantic, per_theme in icons["aliases"].items():
+        for theme, name in per_theme.items():
+            if name not in set(icons["sets"][theme]):
+                missing.append(f"{semantic} -> {theme}:{name}")
+    assert not missing, f"aliases pointing at icons that are not shipped: {missing}"
+
+
+def test_the_alias_gate_would_see_a_dangling_target():
+    """Negative control: the shape `folder-stack` had must be caught."""
+    icons = _icons()
+    assert "folder-on-folder" in set(icons["sets"]["nldd"])  # healed in 0.8.83
+    assert "not-a-real-icon" not in set(icons["sets"]["nldd"])
+
+
+def test_the_generated_icon_set_matches_the_bundle_we_ship():
+    """icons.json is generated from node_modules; the bundle is built from it too.
+
+    Regenerate one without rebuilding the other and they drift — the same trap
+    the CSS asset manifest had. Spot-check against the vendored bundle so the
+    two cannot silently disagree about which icons exist.
+    """
+    bundle = (
+        PKG.parents[2]
+        / "packages/lotc-nldd/src/lotc_nldd/static/lotc/nldd/dist/nldd.js"
+    )
+    if not bundle.exists():  # pragma: no cover - only when the bundle is absent
+        pytest.skip("vendored NLDD bundle not built")
+    text = bundle.read_text(encoding="utf-8", errors="ignore")
+    names = _icons()["sets"]["nldd"]
+    absent = [n for n in names if f'"{n}"' not in text and f"'{n}'" not in text]
+    assert not absent[:5] and len(absent) == 0, (
+        f"{len(absent)} icons in icons.json are not in the shipped bundle "
+        f"(first few: {absent[:5]}) — regenerate both"
+    )

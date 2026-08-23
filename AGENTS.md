@@ -51,6 +51,14 @@ Also: `@click="fn()"` → native `onclick` (all DOM events supported);
 `hx-get`/`hx-*` pass through (call `setup_components(htmx=True)` to load htmx);
 `data-*`, `aria-*`, `class`, `id`, `style` pass through to the root element.
 
+"Every attribute" includes the events and includes the fields: `@click="{{ js }}"`
+and `@click="go({{ id }})"` interpolate like any other value, and a
+`<c-*-field>` carries `@event` / `data-*` / `aria-*` / `hx-*` onto its control.
+Both were gaps until RIG-Cluster hit them: the event kept the literal `{{ … }}`
+and the handler silently did nothing, and the field dropped the handler
+entirely — which, with `on*` keys refused in an `:attrs` spread, left a field
+with no supported way to bind one at all.
+
 ### Slots and content
 
 Content goes between tags; named regions use `<template slot="…">`:

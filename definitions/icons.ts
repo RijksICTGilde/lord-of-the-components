@@ -79,6 +79,15 @@ export const ICON_ALIASES: Record<string, IconAlias> = {
   tag: { rvo: "label", nldd: "tag" },
   terminal: { rvo: "computercode", nldd: "terminal" },
   timer: { rvo: "klok", nldd: "timer" },
+  // The drawing behind this one has moved twice on the NLDD side
+  // (square-and-arrow-down -> square-arrow-down), which is exactly what a
+  // semantic name is for: `download` stays put while the glyph is renamed.
+  download: { rvo: "downloaden", nldd: "square-arrow-down" },
+  // NLDD ships no wrench, screwdriver or hammer — `gear` is the nearest thing
+  // it has, so under NLDD `tools` and `settings` draw the same glyph. RVO does
+  // have a toolbox. Named anyway, because the alternative is an app writing a
+  // raw name that resolves to nothing and renders an empty box in silence.
+  tools: { rvo: "kist-met-hamer-en-moersleutel", nldd: "gear" },
 };
 
 /** The `{ semantic: themeName }` map for one theme, used as an icon valueMap. */

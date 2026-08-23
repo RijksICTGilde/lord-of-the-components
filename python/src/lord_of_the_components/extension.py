@@ -671,8 +671,19 @@ class ComponentExtension(Extension):
                         f'"{clean_key}": {self._wrap_binding(clean_key, value, component_def)}'
                     )
             elif key.startswith("@"):
-                escaped_value = value.replace('"', '\\"')
-                context_items.append(f"'{key}': \"{escaped_value}\"")
+                # An event value takes the same forms as every other attribute.
+                # Without this the literal `{{ … }}` was written into the onclick
+                # attribute and the handler silently did nothing — the only way
+                # to pass a Jinja value was the `:@click="expr"` spelling.
+                if (mexpr := _mustache_expr(value)) is not None:
+                    context_items.append(f"'{key}': {mexpr}")
+                elif _has_jinja(value):
+                    cap = f"_attr_{self._generate_id(state)}"
+                    set_statements.append(f"{{% set {cap} %}}{value}{{% endset %}}")
+                    context_items.append(f"'{key}': {cap}")
+                else:
+                    escaped_value = value.replace('"', '\\"')
+                    context_items.append(f"'{key}': \"{escaped_value}\"")
             elif (mexpr := _mustache_expr(value)) is not None:
                 # attr="{{ expr }}" — the Jinja-style equivalent of :attr="expr":
                 # evaluate the expression (object-preserving), validated if a binding.
@@ -785,7 +796,10 @@ class ComponentExtension(Extension):
                 else:
                     extra_items.append(f"{_py_string(clean)}: ({wrapped})")
             elif key.startswith("@"):
-                extra_items.append(f"{_py_string(key)}: {_py_string(value)}")
+                # value_expr(), not _py_string(): an event takes the same
+                # interpolation forms as every other attribute (see the jinja
+                # emitter above — both backends must agree).
+                extra_items.append(f"{_py_string(key)}: {value_expr(value)}")
             elif key == "class":
                 # value_expr(), not _py_string(): `class="{{ expr }}"` must render
                 # the expression like every other attribute does, instead of

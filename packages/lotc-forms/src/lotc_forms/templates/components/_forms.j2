@@ -1,3 +1,4 @@
+{% import 'components/_generic_attributes.j2' as generic %}
 {# Shared helpers for the lotc-forms field wrappers.
 
    Each field template branches on the active VISUAL theme (membership in
@@ -8,12 +9,24 @@
    (RVO: explicit on our markup; NLDD: input-id + error-message-ids on the
    native field, help/error text as its own child elements). #}
 
-{# Spread: emit a flat {name: value} dict (`:attrs="expr"`) as HTML attributes on
-   the control. None or '' means omit (same rule as :prop="expr or none"). One
-   attribute covers the whole hx-* / data-* / aria-* / generic bundle. #}
+{# Everything an author hangs on a field, onto the CONTROL: the `:attrs="expr"`
+   spread, plus `@event`, `data-*`, `aria-*` and `hx-*` written directly on the
+   tag. In the spread, None or '' means omit (same rule as :prop="expr or none").
+
+   The spread used to be all of it, which left a field with no supported way to
+   carry a handler at all: `on*` keys are refused in a spread (they would turn a
+   data value into executable script), and `@event` was dropped here — so both
+   doors were shut. `data-*`/`aria-*`/`hx-*` written directly were dropped too.
+
+   The events go through the same macro every other component uses, so a field
+   and a plain component agree on what `@click` does. #}
 {% macro render_attrs(c) -%}
 {%- for k, v in (c.get('attrs') or {}).items() -%}
 {%- if v is not none and v != '' %} {{ k | lotc_attr_name }}="{{ v | e }}"{% endif -%}
+{%- endfor -%}
+{{- generic.render_events(c) -}}
+{%- for k, v in c.items() -%}
+{%- if k.startswith('data-') or k.startswith('aria-') or k.startswith('hx-') %} {{ k | lotc_attr_name }}="{{ v | e }}"{% endif -%}
 {%- endfor -%}
 {%- endmacro %}
 

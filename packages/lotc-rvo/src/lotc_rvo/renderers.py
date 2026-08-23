@@ -357,6 +357,8 @@ _ICON_ICONS_MAP = {
     'tag': 'label',
     'terminal': 'computercode',
     'timer': 'klok',
+    'download': 'downloaden',
+    'tools': 'kist-met-hamer-en-moersleutel',
 }
 
 _ICON_SIZE = {

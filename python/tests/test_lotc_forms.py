@@ -227,3 +227,34 @@ def test_text_input_field_show_copy_renders_a_copy_box_matching_secret_field():
     # without show-copy it is still the native editable field
     plain = render(NLDD, '<c-text-input-field id="x" name="x" label="Naam" value="v"/>')
     assert "nldd-text-field" in plain and "lotc-copyfield" not in plain
+
+
+def test_field_carries_an_event_handler():
+    """A field must have a supported way to bind a handler.
+
+    `on*` keys are refused in an `:attrs` spread (a spread built from request
+    data would otherwise turn a data value into executable script), and the
+    `@event` syntax is the alternative the error points at — but the field
+    wrappers dropped it, so for a field both doors were shut. Reported by
+    RIG-Cluster (RC-151), who had to fall back to a data attribute plus a script.
+    """
+    for src, expected in [
+        ('<c-select-field id="s" name="s" label="L" native="true" @change="go()">'
+         '<option value="a">A</option></c-select-field>', 'onchange="go()"'),
+        ('<c-select-field id="s" name="s" label="L" @change="go()">'
+         '<c-option value="a" label="A"/></c-select-field>', 'onchange="go()"'),
+        ('<c-checkbox-field id="c" name="c" label="L" @change="go()"/>', 'onchange="go()"'),
+        ('<c-text-input-field id="t" name="t" label="L" @input="go()"/>', 'oninput="go()"'),
+    ]:
+        assert expected in render(NLDD, src), f"no handler on: {src}"
+
+
+def test_field_carries_data_aria_and_htmx_attributes():
+    """Written directly on the tag, not only through an :attrs spread."""
+    out = render(NLDD, '<c-text-input-field id="t" name="t" label="L" data-x="1" aria-label="A" hx-get="/u"/>')
+    assert 'data-x="1"' in out and 'aria-label="A"' in out and 'hx-get="/u"' in out
+
+
+def test_field_attrs_spread_still_works():
+    out = render(NLDD, "<c-text-input-field id=\"t\" name=\"t\" label=\"L\" :attrs=\"{'data-y': '2'}\"/>")
+    assert 'data-y="2"' in out

@@ -162,6 +162,8 @@ _BUTTON_ICONS_MAP = {
     'tag': 'tag',
     'terminal': 'terminal',
     'timer': 'timer',
+    'download': 'square-arrow-down',
+    'tools': 'gear',
 }
 
 def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', full_width=False, label='', aria_label='', disabled=False, loading=False, active=False, html_type='button', href='', target='', content=None, _extra=None, _class=''):
@@ -338,6 +340,8 @@ _ICON_ICONS_MAP = {
     'tag': 'tag',
     'terminal': 'terminal',
     'timer': 'timer',
+    'download': 'square-arrow-down',
+    'tools': 'gear',
 }
 
 _ICON_SIZES_MAP = {
