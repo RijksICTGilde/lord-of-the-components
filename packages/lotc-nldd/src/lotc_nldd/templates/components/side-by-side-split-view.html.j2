@@ -5,5 +5,6 @@
 {% if _component_context.get('slots', {}).get('pane-1') %}<div slot="pane-1">{{ _component_context['slots']['pane-1'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('pane-2') %}<div slot="pane-2">{{ _component_context['slots']['pane-2'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('pane-n') %}<div slot="pane-n">{{ _component_context['slots']['pane-n'] | safe }}</div>{% endif %}
+{{ _component_context.get('content', '') | safe }}
 </nldd-side-by-side-split-view>
 {% endmacro %}

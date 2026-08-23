@@ -3,5 +3,6 @@
 {% macro lotc_render(_component_context) %}
 <nldd-segmented-control-item{% if _component_context.get('value') %} value="{{ _component_context.get('value') }}"{% endif %}{% if _component_context.get('selected') %} selected{% endif %}{% if _component_context.get('disabled') %} disabled{% endif %}{% if _component_context.get('size') %} size="{{ _component_context.get('size') }}"{% endif %}{% if _component_context.get('variant') %} variant="{{ _component_context.get('variant') }}"{% endif %}{% if _component_context.get('input-type') %} input-type="{{ _component_context.get('input-type') }}"{% endif %}{% if _component_context.get('group-name') %} group-name="{{ _component_context.get('group-name') }}"{% endif %}{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('icon') %} icon="{{ _component_context.get('icon') }}"{% endif %} data-lotc-component="segmented-control-item" {{ attrs.render_extra_attributes(_component_context) }}>
 {% if _component_context.get('slots', {}).get('icon') %}<div slot="icon">{{ _component_context['slots']['icon'] | safe }}</div>{% endif %}
+{{ _component_context.get('content', '') | safe }}
 </nldd-segmented-control-item>
 {% endmacro %}

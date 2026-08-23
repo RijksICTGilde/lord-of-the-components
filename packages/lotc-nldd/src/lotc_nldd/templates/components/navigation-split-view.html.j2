@@ -7,5 +7,6 @@
 {% if _component_context.get('slots', {}).get('main') %}<div slot="main">{{ _component_context['slots']['main'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('inspector') %}<div slot="inspector">{{ _component_context['slots']['inspector'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('sidebar') %}<div slot="sidebar">{{ _component_context['slots']['sidebar'] | safe }}</div>{% endif %}
+{{ _component_context.get('content', '') | safe }}
 </nldd-navigation-split-view>
 {% endmacro %}

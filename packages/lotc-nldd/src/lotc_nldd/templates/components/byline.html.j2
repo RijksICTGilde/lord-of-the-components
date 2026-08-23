@@ -1,9 +1,0 @@
-{% import 'components/_generic_attributes.j2' as attrs %}
-{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
-{% macro lotc_render(_component_context) %}
-<nldd-byline{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('supporting-text') %} supporting-text="{{ _component_context.get('supporting-text') }}"{% endif %}{% if _component_context.get('avatar-src') %} avatar-src="{{ _component_context.get('avatar-src') }}"{% endif %}{% if _component_context.get('avatar-srcset') %} avatar-srcset="{{ _component_context.get('avatar-srcset') }}"{% endif %}{% if _component_context.get('avatar-alt') %} avatar-alt="{{ _component_context.get('avatar-alt') }}"{% endif %} data-lotc-component="byline" {{ attrs.render_extra_attributes(_component_context) }}>
-{% if _component_context.get('slots', {}).get('avatars') %}<div slot="avatars">{{ _component_context['slots']['avatars'] | safe }}</div>{% endif %}
-{% if _component_context.get('slots', {}).get('text') %}<div slot="text">{{ _component_context['slots']['text'] | safe }}</div>{% endif %}
-{% if _component_context.get('slots', {}).get('supporting-text') %}<div slot="supporting-text">{{ _component_context['slots']['supporting-text'] | safe }}</div>{% endif %}
-</nldd-byline>
-{% endmacro %}

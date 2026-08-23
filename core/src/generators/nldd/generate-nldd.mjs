@@ -9,7 +9,7 @@
  * cover semantically under a different name (tabs/menu/header/site-footer), and
  * any component that already has a hand-authored lotc-nldd template.
  */
-import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, rmSync, statSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -90,7 +90,10 @@ for (const el of els) {
       description: (a.description || "").split("\n")[0].slice(0, 120),
     };
   });
-  const slots = (el.slots || []).map((s) => s.name).filter(Boolean); // named slots
+  // `*` is not a slot NAME — bar-split-view documents it as "any other unique
+  // slot name creates a bar panel", i.e. a wildcard. Emitting <div slot="*">
+  // for it put children in a slot that does not exist.
+  const slots = (el.slots || []).map((s) => s.name).filter((n) => n && n !== "*");
   const hasDefaultSlot = (el.slots || []).some((s) => !s.name);
 
   // ── template ──
@@ -108,7 +111,14 @@ for (const el of els) {
   open += ` data-lotc-component="${cname}" {{ attrs.render_extra_attributes(_component_context) }}>`;
   L.push(open);
   for (const s of slots) L.push(`{% if _component_context.get('slots', {}).get('${s}') %}<div slot="${s}">{{ _component_context['slots']['${s}'] | safe }}</div>{% endif %}`);
-  if (hasDefaultSlot || slots.length === 0) L.push("{{ _component_context.get('content', '') | safe }}");
+  // ALWAYS render the content, named slots or not. A component that only
+  // emitted its named slots swallowed its children without a word: fifteen of
+  // them did, and six make up the application shell, so a page rendered as an
+  // empty <nldd-bar-split-view> with every gate green (reported by RIG-Cluster,
+  // RC-151). It also keeps a child's own `slot=` intact, which a
+  // <template slot="…"> cannot: that wraps in a <div>, and a split view wants
+  // its panels as DIRECT children.
+  L.push("{{ _component_context.get('content', '') | safe }}");
   L.push(`</${el.tagName}>`);
   L.push("{% endmacro %}");
   templates.set(cname, L.join("\n") + "\n");
@@ -133,6 +143,23 @@ for (const el of els) {
 
 export { NLDD_VERSION, FRAGMENT, NLDD_TPL_DIR };
 
+/** Auto-generated templates on disk that this run no longer produces.
+ *
+ * A component that disappears upstream leaves its template behind: it renders a
+ * tag the bundle no longer defines, while being unreachable through the
+ * registry. It happened twice unnoticed — `list-item-action`, removed in
+ * 0.8.83, and `byline`, gone rounds earlier — so the run cleans up after
+ * itself. Only files carrying the generated marker: a hand-authored template is
+ * never ours to delete.
+ */
+function staleTemplates(templates) {
+  if (!existsSync(NLDD_TPL_DIR)) return [];
+  return readdirSync(NLDD_TPL_DIR)
+    .filter((f) => f.endsWith(".html.j2") && !f.startsWith("_"))
+    .filter((f) => !templates.has(f.slice(0, -8)))
+    .filter((f) => readFileSync(resolve(NLDD_TPL_DIR, f), "utf8").includes("Auto-generated"));
+}
+
 function main() {
   const check = process.argv.includes("--check");
   const { fragment, templates } = buildOutputs();
@@ -144,6 +171,7 @@ function main() {
       const p = resolve(NLDD_TPL_DIR, `${name}.html.j2`);
       if (!existsSync(p) || readFileSync(p, "utf8") !== content) stale.push(`${name}.html.j2`);
     }
+    for (const f of staleTemplates(templates)) stale.push(`${f} (component no longer exists)`);
     if (stale.length) {
       console.error(`✗ lotc-nldd is stale vs NLDD ${NLDD_VERSION} — run \`npm run gen:nldd\`.`);
       console.error(`  outdated (${stale.length}): ${stale.slice(0, 12).join(", ")}${stale.length > 12 ? " …" : ""}`);
@@ -154,8 +182,11 @@ function main() {
   }
   mkdirSync(dirname(FRAGMENT), { recursive: true });
   for (const [name, content] of templates) writeFileSync(resolve(NLDD_TPL_DIR, `${name}.html.j2`), content, "utf8");
+  const removed = staleTemplates(templates);
+  for (const f of removed) rmSync(resolve(NLDD_TPL_DIR, f));
   writeFileSync(FRAGMENT, fragmentJson, "utf8");
   console.log(`Generated ${templates.size} NLDD components (NLDD ${NLDD_VERSION}) -> lotc-nldd fragment + templates`);
+  if (removed.length) console.log(`  removed ${removed.length} template(s) for components that no longer exist: ${removed.join(", ")}`);
 }
 
 // Run only when invoked directly (not when imported by nldd-diff).

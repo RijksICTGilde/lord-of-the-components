@@ -3,5 +3,6 @@
 {% macro lotc_render(_component_context) %}
 <nldd-top-title-bar{% if _component_context.get('text') %} text="{{ _component_context.get('text') }}"{% endif %}{% if _component_context.get('supporting-text') %} supporting-text="{{ _component_context.get('supporting-text') }}"{% endif %}{% if _component_context.get('collapse-anchor') %} collapse-anchor="{{ _component_context.get('collapse-anchor') }}"{% endif %}{% if _component_context.get('back-text') %} back-text="{{ _component_context.get('back-text') }}"{% endif %}{% if _component_context.get('back-href') %} back-href="{{ _component_context.get('back-href') }}"{% endif %}{% if _component_context.get('dismiss-text') %} dismiss-text="{{ _component_context.get('dismiss-text') }}"{% endif %} data-lotc-component="top-title-bar" {{ attrs.render_extra_attributes(_component_context) }}>
 {% if _component_context.get('slots', {}).get('toolbar') %}<div slot="toolbar">{{ _component_context['slots']['toolbar'] | safe }}</div>{% endif %}
+{{ _component_context.get('content', '') | safe }}
 </nldd-top-title-bar>
 {% endmacro %}

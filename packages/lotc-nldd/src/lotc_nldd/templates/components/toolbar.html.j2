@@ -6,5 +6,6 @@
 {% if _component_context.get('slots', {}).get('center') %}<div slot="center">{{ _component_context['slots']['center'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('end') %}<div slot="end">{{ _component_context['slots']['end'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('overflow') %}<div slot="overflow">{{ _component_context['slots']['overflow'] | safe }}</div>{% endif %}
+{{ _component_context.get('content', '') | safe }}
 </nldd-toolbar>
 {% endmacro %}
