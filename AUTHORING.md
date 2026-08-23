@@ -42,6 +42,19 @@ document.getElementById("my-sheet").show();   // not show="true", not el.show = 
 - `<c-sidebar-section>` — `hide()`, `show()`, `toggle()`
 - `<c-window>` — `hide()`, `show()`
 
+### Same name, different component
+
+8 names are owned by the core layer, so `<c-NAME>` does **not** give you `<nldd-NAME>`. Neither is wrong — they are different components that happen to share a word — but if you know NLDD, these are the ones that will surprise you. Want the NLDD one? Write the `<nldd-*>` tag directly.
+
+- `<c-box>` gives a layout box (own markup) — `nldd-box` groups related components in a tinted, contained region
+- `<c-checkbox>` gives `nldd-checkbox-field` — the labelled field — `nldd-checkbox` is the bare control
+- `<c-identity>` gives a profile card (own markup) — `nldd-identity` is an editorial by-line with author avatars
+- `<c-menu>` gives `nldd-menu-bar` — a horizontal bar — `nldd-menu` is a floating menu (Popover API)
+- `<c-menu-item>` gives `nldd-menu-bar-item` — `nldd-menu-item` is an item inside that floating menu
+- `<c-notification>` gives an inline notification list (own markup) — `nldd-notification` is a toast that leaves on its own
+- `<c-page>` gives the whole HTML document — `nldd-page` is a fixed-height shell with its own scroll container
+- `<c-status-bar>` gives a slim page-wide notice (own markup) — `nldd-status-bar` is a 24px bar with a deep background per variant
+
 **Page structure — mind the scroll model.** `c-app-shell` (layout layer) is a header/sidebar/main/footer grid that scrolls on the **window** — use it for a sidebar app frame. NLDD's own `nldd-page` is a **fixed-height (`100dvh`) shell with an internal scroll region** (`overflow-y:auto; overscroll-behavior:contain`): long content scrolls inside it, not the window, and a mouse wheel over it never reaches the window (window-based scroll-restoration breaks). For a normal window-scrolling page do **not** wrap in `nldd-page` — put the NLDD page regions (`nldd-top-navigation-bar`, `nldd-sidebar-section`, `nldd-page-footer`) directly in `c-page`'s body. `c-page` establishes NLDD's `layout-container` on `<body>` automatically — you do not set it by hand.
 
 **Max content width.** Cap it with `width="…"` on the NLDD page-region components (`nldd-top-navigation-bar`, `nldd-sidebar-section`, `nldd-page-footer`): it sets each region's `--_max-width`, so the content caps while the region background runs edge-to-edge (the number is the app's choice; NLDD ships no canonical value). For a plain content block outside those regions, `<c-center max="76rem">` is the theme-agnostic centred-column primitive. Note `nldd-top-navigation-bar` also needs `logo-title` (the organisation) beside `website-title` (the app), or its header grid collapses. And `nldd-page-footer` renders the **complete** footer (coat of arms included) — do not nest another footer component inside it.

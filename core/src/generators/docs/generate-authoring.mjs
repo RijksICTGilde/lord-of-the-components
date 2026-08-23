@@ -151,6 +151,35 @@ if (jsOpened.length) {
   L.push("");
 }
 
+// ── names that mean something else here than in NLDD ──
+// core owns these names, so `<c-NAME>` never reaches `<nldd-NAME>`. Measured by
+// rendering, not by reading the registry: the gate that keeps this list honest
+// is python/tests/test_slot_children.py, which renders every core component
+// under NLDD and compares. Framed for someone arriving FROM NLDD, which is who
+// gets surprised (thanks to RIG-Cluster, RC-151, for the framing — and two of
+// the eight are ones their own list did not have).
+const NAME_CLASH = [
+  ["box", "a layout box (own markup)", "`nldd-box` groups related components in a tinted, contained region"],
+  ["checkbox", "`nldd-checkbox-field` — the labelled field", "`nldd-checkbox` is the bare control"],
+  ["identity", "a profile card (own markup)", "`nldd-identity` is an editorial by-line with author avatars"],
+  ["menu", "`nldd-menu-bar` — a horizontal bar", "`nldd-menu` is a floating menu (Popover API)"],
+  ["menu-item", "`nldd-menu-bar-item`", "`nldd-menu-item` is an item inside that floating menu"],
+  ["notification", "an inline notification list (own markup)", "`nldd-notification` is a toast that leaves on its own"],
+  ["page", "the whole HTML document", "`nldd-page` is a fixed-height shell with its own scroll container"],
+  ["status-bar", "a slim page-wide notice (own markup)", "`nldd-status-bar` is a 24px bar with a deep background per variant"],
+];
+L.push(`### Same name, different component\n`);
+L.push(
+  `${NAME_CLASH.length} names are owned by the core layer, so \`<c-NAME>\` does **not** give you` +
+    ` \`<nldd-NAME>\`. Neither is wrong — they are different components that happen to share a` +
+    ` word — but if you know NLDD, these are the ones that will surprise you. Want the NLDD one?` +
+    ` Write the \`<nldd-*>\` tag directly.\n`,
+);
+for (const [name, gives, theirs] of NAME_CLASH) {
+  L.push(`- \`<c-${name}>\` gives ${gives} — ${theirs}`);
+}
+L.push("");
+
 L.push(
   `**Page structure — mind the scroll model.** \`c-app-shell\` (layout layer) is a` +
     ` header/sidebar/main/footer grid that scrolls on the **window** — use it for a` +

@@ -27,9 +27,7 @@ GENERATED = "Auto-generated"
 
 @pytest.fixture(scope="module")
 def render():
-    env = Environment(
-        loader=FileSystemLoader([str(PKG / "templates"), str(NLDD_TEMPLATES)]), autoescape=True
-    )
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates"), str(NLDD_TEMPLATES)]), autoescape=True)
     setup_components(env, design_systems=["nldd"], registry_path=str(PKG / "registry.json"))
     return lambda s: env.from_string(s).render()
 
@@ -46,8 +44,7 @@ def _generated_templates():
 def test_every_generated_template_renders_its_content():
     without = [name for name, text in _generated_templates() if "get('content'" not in text]
     assert not without, (
-        "these templates never read `content`, so children written between the "
-        f"tags vanish silently: {without}"
+        f"these templates never read `content`, so children written between the tags vanish silently: {without}"
     )
 
 
@@ -100,6 +97,7 @@ def test_no_generated_template_is_left_behind():
 
 # ── behaviour that is a method, not an attribute ─────────────────────────────
 
+
 def test_method_only_components_are_recorded_and_documented():
     """`show` on a sheet reads like an attribute and is not — it is a METHOD.
 
@@ -136,3 +134,59 @@ def test_a_declarative_state_is_not_called_js_only():
     authoring = (ROOT / "AUTHORING.md").read_text(encoding="utf-8")
     section = authoring.split("### Opening a sheet")[1].split("\n\n**")[0]
     assert "`<c-switch>`" not in section
+
+
+# ── names core owns, so <c-NAME> is not <nldd-NAME> ──────────────────────────
+
+
+def test_the_documented_name_clashes_are_exactly_the_real_ones():
+    """Measured by rendering — the only thing that settles it.
+
+    A name in both registries proves nothing: `<c-button>` renders
+    `<nldd-button>` and is no surprise at all. What matters is whether
+    `<c-NAME>` actually produces `<nldd-NAME>`. Reading the registries said 20
+    names clashed; rendering says 8, and a substring check said 6 because
+    `<nldd-menu` also matches `<nldd-menu-bar`.
+
+    AUTHORING.md carries the list for authors arriving from NLDD; this keeps it
+    honest when a component is added, renamed or newly bound.
+    """
+    import json as _json
+
+    # The layout layer too, the way an application declares it — `c-box` and
+    # friends live there, and placeholder mode so a gap does not stop the sweep.
+    env = Environment(loader=FileSystemLoader([str(PKG / "templates"), str(NLDD_TEMPLATES)]), autoescape=True)
+    setup_components(
+        env,
+        design_systems=["lotc-layout", "nldd"],
+        registry_path=str(PKG / "registry.json"),
+        on_missing_component="placeholder",
+    )
+
+    def render(src):
+        return env.from_string(src).render()
+
+    cem = ROOT / "node_modules/@nldd/design-system/custom-elements.json"
+    if not cem.exists():  # pragma: no cover - only without node_modules
+        pytest.skip("@nldd/design-system not installed")
+    manifest = _json.loads(cem.read_text(encoding="utf-8"))
+    nldd_tags = {d["tagName"] for m in manifest["modules"] for d in m.get("declarations", []) if d.get("tagName")}
+    core = _json.loads((PKG / "registry.json").read_text(encoding="utf-8"))
+
+    clashes = set()
+    for component in core["components"]:
+        name = component["name"]
+        if f"nldd-{name}" not in nldd_tags:
+            continue
+        out = render(f"<c-{name}>x</c-{name}>")
+        # A real tag boundary: `<nldd-menu` also matches `<nldd-menu-bar`.
+        if not re.search(rf"<nldd-{re.escape(name)}(?=[\s/>])", out):
+            clashes.add(name)
+
+    documented = set(
+        re.findall(r"^- `<c-([a-z0-9-]+)>` gives ", (ROOT / "AUTHORING.md").read_text(encoding="utf-8"), re.M)
+    )
+    assert clashes == documented, (
+        f"AUTHORING.md's clash list is out of date. Only in reality: {clashes - documented}. "
+        f"Only in the document: {documented - clashes}."
+    )
