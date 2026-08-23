@@ -79,10 +79,12 @@ export const ICON_ALIASES: Record<string, IconAlias> = {
   tag: { rvo: "label", nldd: "tag" },
   terminal: { rvo: "computercode", nldd: "terminal" },
   timer: { rvo: "klok", nldd: "timer" },
-  // The drawing behind this one has moved twice on the NLDD side
-  // (square-and-arrow-down -> square-arrow-down), which is exactly what a
-  // semantic name is for: `download` stays put while the glyph is renamed.
-  download: { rvo: "downloaden", nldd: "square-arrow-down" },
+  // NLDD resolves `download` itself, to arrow-down-in-bucket; match that rather
+  // than pick a different glyph (square-arrow-down was a guess, and RIG-Cluster
+  // measured the difference on screen: an arrow in a closed square instead of
+  // the open bucket). The alias still earns its place for RVO, which spells it
+  // `downloaden`.
+  download: { rvo: "downloaden", nldd: "arrow-down-in-bucket" },
   // NLDD ships no wrench, screwdriver or hammer — `gear` is the nearest thing
   // it has, so under NLDD `tools` and `settings` draw the same glyph. RVO does
   // have a toolbox. Named anyway, because the alternative is an app writing a

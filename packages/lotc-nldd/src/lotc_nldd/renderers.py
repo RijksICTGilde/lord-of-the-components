@@ -162,7 +162,7 @@ _BUTTON_ICONS_MAP = {
     'tag': 'tag',
     'terminal': 'terminal',
     'timer': 'timer',
-    'download': 'square-arrow-down',
+    'download': 'arrow-down-in-bucket',
     'tools': 'gear',
 }
 
@@ -340,7 +340,7 @@ _ICON_ICONS_MAP = {
     'tag': 'tag',
     'terminal': 'terminal',
     'timer': 'timer',
-    'download': 'square-arrow-down',
+    'download': 'arrow-down-in-bucket',
     'tools': 'gear',
 }
 
