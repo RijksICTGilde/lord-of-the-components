@@ -31,9 +31,7 @@ TYPES = ROOT / "node_modules/@nldd/design-system/dist"
 @pytest.fixture(scope="module")
 def render():
     env = Environment(
-        loader=FileSystemLoader(
-            [str(PKG / "templates"), str(PACKAGES / "lotc-nldd/src/lotc_nldd/templates")]
-        ),
+        loader=FileSystemLoader([str(PKG / "templates"), str(PACKAGES / "lotc-nldd/src/lotc_nldd/templates")]),
         autoescape=True,
     )
     setup_components(
@@ -85,3 +83,45 @@ def test_the_translation_is_by_value_not_by_position(render):
     for size, expected in (("3xs", "2"), ("xs", "8"), ("md", "16"), ("lg", "24")):
         out = render(f'<c-layout-flow gap="{size}">x</c-layout-flow>')
         assert f'gap="{expected}"' in out, f"gap={size} should hand NLDD {expected}"
+
+
+def test_a_named_union_becomes_an_enum_not_a_free_string():
+    """An optional attribute's type reads `PaddingSize | undefined`.
+
+    Looking that text up verbatim found nothing, so 129 attributes across 11
+    unions were declared as free strings — and a free string is not validated at
+    all. `<c-container gap="onzin">` passed happily, and NLDD resolves an unknown
+    PaddingSize to `normal`: no spacing, no error (RIG-Cluster, RC-151).
+    """
+    manifest = json.loads(CEM.read_text(encoding="utf-8"))
+    unions = {}
+    for declaration in TYPES.rglob("*.d.ts"):
+        for match in re.finditer(
+            r"type ([A-Z][A-Za-z0-9]+) = ((?:'[^']*' ?\| ?)*'[^']*');",
+            declaration.read_text(encoding="utf-8"),
+        ):
+            unions[match.group(1)] = [v.strip().strip("'") for v in match.group(2).split("|")]
+    assert "PaddingSize" in unions, "the union types were not parsed"
+
+    registry = json.loads((PACKAGES / "lotc-nldd/src/lotc_nldd/registry.json").read_text(encoding="utf-8"))
+    ours = {c["name"]: {a["name"]: a for a in c["attributes"]} for c in registry["components"]}
+
+    free_strings = []
+    for module in manifest["modules"]:
+        for declaration in module.get("declarations", []):
+            tag = declaration.get("tagName")
+            if not tag:
+                continue
+            name = tag[len("nldd-") :]
+            for attribute in declaration.get("attributes") or []:
+                text = (attribute.get("type") or {}).get("text", "")
+                base = re.sub(r"\|\s*(undefined|null)", "", text).strip()
+                if base not in unions:
+                    continue
+                declared = ours.get(name, {}).get(attribute["name"])
+                if declared and declared.get("type") != "enum":
+                    free_strings.append(f"{name}.{attribute['name']} ({base})")
+    assert not free_strings, (
+        "these have a named union upstream but are free strings here, so nothing "
+        f"validates them: {free_strings[:10]} (+{max(0, len(free_strings) - 10)} more)"
+    )

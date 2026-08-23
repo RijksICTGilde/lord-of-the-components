@@ -262,9 +262,9 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-form>` — Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit) — required for light-DOM autofill. Renders a r
   <br>attrs: `label-alignment`
 - `<c-form-actions>` — Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch een submit-button of button-group). Volgt dezelfde responsive layou
-  <br>attrs: `label-alignment`
+  <br>attrs: `label-alignment` (top\|left\|right)
 - `<c-form-field>` — NLDD form-field
-  <br>attrs: `label-alignment`, `label`, `supporting-label`, `optional` (bool), `optional-label`
+  <br>attrs: `label-alignment` (top\|left\|right), `label`, `supporting-label`, `optional` (bool), `optional-label`
 - `<c-form-field-error-text>` — NLDD form-field-error-text
   <br>attrs: `invalid` (bool)
 - `<c-form-field-help-text>` — NLDD form-field-help-text
@@ -451,7 +451,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-step-indicator>` — Shows where you are in a process of several steps: a row of discs with a number (or a check mark on what is done), a label under each and a 
   <br>attrs: `accessible-label`, `current`, `translations`
 - `<c-step-indicator-item>` — One step in an `nldd-step-indicator`. The parent decides the status and the
-  <br>attrs: `status`, `text`, `icon`, `href`, `button` (bool)
+  <br>attrs: `status` (past\|current\|future), `text`, `icon`, `href`, `button` (bool)
 - `<c-tag>` — Small labelled status chip
   <br>attrs: `type` (default\|info\|success\|warning\|error), `label`
 

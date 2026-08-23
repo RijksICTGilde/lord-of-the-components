@@ -96,10 +96,17 @@ for (const el of els) {
 
   const attrs = (el.attributes || []).map((a) => {
     const tt = (a.type?.text || "").trim();
+    // An optional attribute's type reads `PaddingSize | undefined`, and looking
+    // that up verbatim found nothing — so 129 attributes across 11 unions were
+    // declared as free strings and nothing could validate them. `<c-container
+    // gap="md">` then passed anything, including "onzin": nldd-container speaks
+    // PaddingSize, an unknown value resolves to `normal`, and the spacing was
+    // simply absent (RIG-Cluster, RC-151, who proposed exactly this).
+    const named = tt.replace(/\|\s*(undefined|null)/g, "").trim();
     return {
       name: a.name,
       boolean: tt === "boolean",
-      enumValues: ENUMS[tt] || null,
+      enumValues: ENUMS[named] || ENUMS[tt] || null,
       default: a.default != null ? String(a.default).replace(/^['"]|['"]$/g, "") : undefined,
       description: (a.description || "").split("\n")[0].slice(0, 120),
     };
