@@ -82,9 +82,17 @@ def test_link_maps_to_nldd_link(render):
 
 
 def test_layout_flow_maps_to_nldd_container(render):
+    """The gap is TRANSLATED, not passed through.
+
+    This test used to assert `gap="md"` reached the browser, pinning the bug: the
+    t-shirt scale is the layout layer's, while nldd-container speaks PaddingSize
+    ('0' | '2' | ... | '96'). An unknown value there resolves to `normal`, so
+    every one of those gaps was no gap at all — silently.
+    """
     html = render('<c-layout-flow gap="md"><c-paragraph>x</c-paragraph></c-layout-flow>')
     assert "<nldd-container" in html
-    assert 'gap="md"' in html
+    assert 'gap="16"' in html  # 1rem at a 16px root
+    assert 'gap="md"' not in html
 
 
 def test_no_utrecht_classes_in_nldd(render):

@@ -393,6 +393,21 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
     parts.append('</nldd-icon>')
     return Markup(''.join(parts))
 
+_LAYOUT_FLOW_GAP_MAP = {
+    '0': '0',
+    '3xs': '2',
+    '2xs': '4',
+    'xs': '8',
+    'sm': '12',
+    'md': '16',
+    'lg': '24',
+    'xl': '32',
+    '2xl': '48',
+    '3xl': '64',
+    '4xl': '80',
+    '5xl': '96',
+}
+
 def layout_flow(*, gap='md', size='lg', row=False, wrap=False, align_items='', align_content='', justify_items='', justify_content='', content=None, _extra=None, _class=''):
     parts = []
     cls0 = ''
@@ -405,7 +420,7 @@ def layout_flow(*, gap='md', size='lg', row=False, wrap=False, align_items='', a
     parts.append(' data-lotc-component="layout-flow"')
     if gap:
         parts.append(' gap="')
-        parts.append(esc(gap))
+        parts.append(esc(_LAYOUT_FLOW_GAP_MAP.get(gap, gap)))
         parts.append('"')
     parts.append(render_extra(_extra))
     parts.append('>')
