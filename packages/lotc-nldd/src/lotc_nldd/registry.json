@@ -2284,7 +2284,10 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "select"
+   ]
   },
   {
    "name": "search-field",
@@ -2640,7 +2643,10 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "toggle"
+   ]
   },
   {
    "name": "text-editor",
@@ -2732,7 +2738,32 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "clearHistory",
+    "copy",
+    "cut",
+    "getAnnotations",
+    "getSelection",
+    "getState",
+    "indent",
+    "outdent",
+    "paste",
+    "redo",
+    "runCommand",
+    "setHeading",
+    "setList",
+    "toggleBold",
+    "toggleBulletList",
+    "toggleCodeBlock",
+    "toggleHeading",
+    "toggleInlineCode",
+    "toggleItalic",
+    "toggleLink",
+    "toggleQuote",
+    "toggleStrikethrough",
+    "undo"
+   ]
   },
   {
    "name": "text-field",
@@ -2997,7 +3028,10 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "scrollSelectedIntoView"
+   ]
   },
   {
    "name": "toggle-button-group",
@@ -3125,7 +3159,10 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "toggle"
+   ]
   },
   {
    "name": "token-field",
@@ -4007,7 +4044,12 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "hide",
+    "show",
+    "toggle"
+   ]
   },
   {
    "name": "simple-section",
@@ -4311,7 +4353,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "hide",
+    "reposition",
+    "show",
+    "toggle"
+   ]
   },
   {
    "name": "sheet",
@@ -4355,7 +4403,11 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "hide",
+    "show"
+   ]
   },
   {
    "name": "spacer",
@@ -4483,7 +4535,15 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "hideInspectorSheet",
+    "hidePrimarySidebarSheet",
+    "hideSidebarSheet",
+    "showInspectorSheet",
+    "showPrimarySidebarSheet",
+    "showSidebarSheet"
+   ]
   },
   {
    "name": "side-by-side-split-view",
@@ -4654,7 +4714,11 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "hide",
+    "show"
+   ]
   },
   {
    "name": "cell",
@@ -6020,7 +6084,10 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "complete"
+   ]
   },
   {
    "name": "modal-dialog",
@@ -6056,7 +6123,11 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "hide",
+    "show"
+   ]
   },
   {
    "name": "progress-bar-segment-indicator",

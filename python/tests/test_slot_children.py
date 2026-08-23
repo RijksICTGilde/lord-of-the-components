@@ -96,3 +96,43 @@ def test_no_generated_template_is_left_behind():
     known = {c["name"] for c in registry["components"]}
     orphans = [name for name, _ in _generated_templates() if name not in known]
     assert not orphans, f"generated templates with no component in the registry: {orphans}"
+
+
+# ── behaviour that is a method, not an attribute ─────────────────────────────
+
+def test_method_only_components_are_recorded_and_documented():
+    """`show` on a sheet reads like an attribute and is not — it is a METHOD.
+
+    Setting the attribute does nothing, and neither does `el.show = true`; only
+    `el.show()` opens it. RIG-Cluster (RC-151) measured that in a browser and it
+    is not one component but six, five of which sit in the `layout` category
+    that AUTHORING.md's catalogue leaves out — so without its own section they
+    would be documented nowhere.
+    """
+    registry = json.loads((NLDD_TEMPLATES.parent / "registry.json").read_text(encoding="utf-8"))
+    opened_by_method = {
+        c["name"]
+        for c in registry["components"]
+        if any(m == "show" or re.match(r"^show[A-Z]", m) for m in c.get("methods", []))
+    }
+    assert "sheet" in opened_by_method and "modal-dialog" in opened_by_method
+
+    authoring = (ROOT / "AUTHORING.md").read_text(encoding="utf-8")
+    for name in opened_by_method:
+        assert f"`<c-{name}>`" in authoring, f"c-{name} opens only from JS and says so nowhere"
+    assert "not show=" in authoring  # the trap itself, spelled out
+
+
+def test_a_declarative_state_is_not_called_js_only():
+    """`toggle()` on a switch is a convenience — `checked` is the real door.
+
+    Only show()/hide() earn the warning, or the note cries wolf on every control
+    that happens to expose a helper.
+    """
+    registry = json.loads((NLDD_TEMPLATES.parent / "registry.json").read_text(encoding="utf-8"))
+    switch = next(c for c in registry["components"] if c["name"] == "switch")
+    assert "toggle" in switch.get("methods", [])
+    assert {a["name"] for a in switch["attributes"]} & {"checked"}
+    authoring = (ROOT / "AUTHORING.md").read_text(encoding="utf-8")
+    section = authoring.split("### Opening a sheet")[1].split("\n\n**")[0]
+    assert "`<c-switch>`" not in section

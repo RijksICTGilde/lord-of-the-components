@@ -41,12 +41,27 @@ const attrShort = (a) => {
   if (a.owner) s += ` _[${a.owner}-only]_`;
   return s;
 };
+// Behaviour the design system exposes as a METHOD, so no attribute reaches it.
+// `show` on a sheet is the one that catches people out: it reads like an
+// attribute, and setting it — or assigning `el.show = true` — does nothing.
+const methodNote = (c) => {
+  const methods = c.methods || [];
+  if (!methods.length) return "";
+  // Only show()/hide() earn the "no declarative way in" warning. `toggle()` on a
+  // switch does NOT: that has `checked`, so the method is a convenience, not the
+  // only door.
+  const opener = methods.find((m) => m === "show" || /^show[A-Z]/.test(m));
+  const lead = opener
+    ? `no attribute opens this — call \`el.${opener}()\`;`
+    : `JavaScript only:`;
+  return `\n  <br>methods: ${lead} ${methods.map((m) => `\`${m}()\``).join(", ")}`;
+};
 const compLine = (c) => {
   const attrs = (c.attributes || []).filter((a) => a.name !== "class");
   const shown = attrs.slice(0, 8).map(attrShort).join(", ");
   const more = attrs.length > 8 ? `, +${attrs.length - 8}` : "";
   const desc = (c.description || "").split("\n")[0];
-  return `- \`<c-${c.name}>\`${desc ? ` — ${desc}` : ""}${shown ? `\n  <br>attrs: ${shown}${more}` : ""}`;
+  return `- \`<c-${c.name}>\`${desc ? ` — ${desc}` : ""}${shown ? `\n  <br>attrs: ${shown}${more}` : ""}${methodNote(c)}`;
 };
 
 const CAT_LABEL = {
@@ -110,6 +125,32 @@ L.push(`  </c-app-shell>`);
 L.push(`</c-page>`);
 L.push("```");
 L.push(`Named slots are filled with \`<template slot="name">…</template>\`; anything else is the default (main) content.\n`);
+
+// ── components you can only open from JavaScript ──
+// These read like they take an attribute and do not: `show` on a sheet is a
+// METHOD. Setting the attribute does nothing, and so does `el.show = true`.
+// Several of them are in the layout category, which the catalogue below leaves
+// out, so they would be documented nowhere at all.
+const jsOpened = all
+  .filter((c) => (c.methods || []).some((m) => m === "show" || /^show[A-Z]/.test(m)))
+  .sort((a, b) => a.name.localeCompare(b.name));
+if (jsOpened.length) {
+  L.push(`### Opening a sheet, dialog or popover\n`);
+  L.push(
+    `${jsOpened.length} components have no attribute that opens them — the design system` +
+      ` exposes it as a **method**. Rendering the markup is not enough; something has to call` +
+      ` it. The *state* can still come from the server (render the sheet only when it should` +
+      ` be open); the *opening* is one line of JavaScript.\n`,
+  );
+  L.push("```js");
+  L.push(`document.getElementById("my-sheet").show();   // not show="true", not el.show = true`);
+  L.push("```");
+  for (const c of jsOpened) {
+    L.push(`- \`<c-${c.name}>\` — ${(c.methods || []).map((m) => `\`${m}()\``).join(", ")}`);
+  }
+  L.push("");
+}
+
 L.push(
   `**Page structure — mind the scroll model.** \`c-app-shell\` (layout layer) is a` +
     ` header/sidebar/main/footer grid that scrolls on the **window** — use it for a` +

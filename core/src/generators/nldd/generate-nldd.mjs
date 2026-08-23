@@ -93,6 +93,20 @@ for (const el of els) {
   // `*` is not a slot NAME — bar-split-view documents it as "any other unique
   // slot name creates a bar panel", i.e. a wildcard. Emitting <div slot="*">
   // for it put children in a slot that does not exist.
+  // Public methods that are NOT reachable declaratively. Standard plumbing is
+  // dropped: focus/blur are DOM, and the form-associated callbacks are how a
+  // custom element joins a <form>. What is left is behaviour an author can only
+  // trigger from JavaScript — and `show` on nldd-sheet is the one that costs an
+  // hour, because it looks like an attribute and is not (RIG-Cluster, RC-151:
+  // setting it does nothing, `el.show = true` does nothing, `el.show()` opens).
+  const PLUMBING = /^(focus|blur|commitFormValue|formValue|formState|form[A-Z]\w*Callback|handleSlotChange|getUpdateComplete)$/;
+  const attrNames = new Set(attrs.map((a) => a.name));
+  const methods = (el.members || [])
+    .filter((m) => m.kind === "method" && (m.privacy || "public") === "public")
+    .map((m) => m.name)
+    .filter((n) => !n.startsWith("_") && !PLUMBING.test(n) && !attrNames.has(n))
+    .sort();
+
   const slots = (el.slots || []).map((s) => s.name).filter((n) => n && n !== "*");
   const hasDefaultSlot = (el.slots || []).some((s) => !s.name);
 
@@ -133,6 +147,7 @@ for (const el of els) {
     category: CAT[el._group] || "content",
     backend: "jinja",
     content: { allowed: true },
+    ...(methods.length ? { methods } : {}),
   });
 }
   return {

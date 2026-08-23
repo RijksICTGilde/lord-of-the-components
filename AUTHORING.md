@@ -28,6 +28,20 @@ Rules: components resolve to the **first** active system that implements them; `
 ```
 Named slots are filled with `<template slot="name">…</template>`; anything else is the default (main) content.
 
+### Opening a sheet, dialog or popover
+
+6 components have no attribute that opens them — the design system exposes it as a **method**. Rendering the markup is not enough; something has to call it. The *state* can still come from the server (render the sheet only when it should be open); the *opening* is one line of JavaScript.
+
+```js
+document.getElementById("my-sheet").show();   // not show="true", not el.show = true
+```
+- `<c-modal-dialog>` — `hide()`, `show()`
+- `<c-navigation-split-view>` — `hideInspectorSheet()`, `hidePrimarySidebarSheet()`, `hideSidebarSheet()`, `showInspectorSheet()`, `showPrimarySidebarSheet()`, `showSidebarSheet()`
+- `<c-popover>` — `hide()`, `reposition()`, `show()`, `toggle()`
+- `<c-sheet>` — `hide()`, `show()`
+- `<c-sidebar-section>` — `hide()`, `show()`, `toggle()`
+- `<c-window>` — `hide()`, `show()`
+
 **Page structure — mind the scroll model.** `c-app-shell` (layout layer) is a header/sidebar/main/footer grid that scrolls on the **window** — use it for a sidebar app frame. NLDD's own `nldd-page` is a **fixed-height (`100dvh`) shell with an internal scroll region** (`overflow-y:auto; overscroll-behavior:contain`): long content scrolls inside it, not the window, and a mouse wheel over it never reaches the window (window-based scroll-restoration breaks). For a normal window-scrolling page do **not** wrap in `nldd-page` — put the NLDD page regions (`nldd-top-navigation-bar`, `nldd-sidebar-section`, `nldd-page-footer`) directly in `c-page`'s body. `c-page` establishes NLDD's `layout-container` on `<body>` automatically — you do not set it by hand.
 
 **Max content width.** Cap it with `width="…"` on the NLDD page-region components (`nldd-top-navigation-bar`, `nldd-sidebar-section`, `nldd-page-footer`): it sets each region's `--_max-width`, so the content caps while the region background runs edge-to-edge (the number is the app's choice; NLDD ships no canonical value). For a plain content block outside those regions, `<c-center max="76rem">` is the theme-agnostic centred-column primitive. Note `nldd-top-navigation-bar` also needs `logo-title` (the organisation) beside `website-title` (the app), or its header grid collapses. And `nldd-page-footer` renders the **complete** footer (coat of arms included) — do not nest another footer component inside it.
@@ -234,6 +248,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `name`, `value`, `label`, `checked` (bool), `disabled` (bool), `required` (bool)
 - `<c-radio-button>` — WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="radiogroup" and aria-labelledby for proper group semantics. 
   <br>attrs: `checked` (bool), `decorative` (bool), `disabled` (bool), `required` (bool), `name`, `value`, `accessible-label`
+  <br>methods: JavaScript only: `select()`
 - `<c-radio-button-group>` — Groups nldd-radio-button-field elements, handles keyboard navigation, and forwards name and disabled state to all child fields. Use inside n
   <br>attrs: `name`, `disabled` (bool), `required` (bool), `accessible-label`, `accessible-labeled-by`
 - `<c-search-field>` — A search input with a leading search icon, an optional dismiss button, and an optional search button.
@@ -248,10 +263,12 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `value`, `min`, `max`, `step`, `disabled` (bool), `size` (xs\|sm\|md), `name`, `accessible-label`, +1
 - `<c-switch>` — A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label. Direct use o
   <br>attrs: `name`, `checked` (bool), `disabled` (bool), `size` (xs\|sm), `accessible-label`, `value`
+  <br>methods: JavaScript only: `toggle()`
 - `<c-switch-field>` — A switch toggle with an inline label for use in forms.
   <br>attrs: `checked` (bool), `disabled` (bool), `value`, `name`, `label`
 - `<c-text-editor>` — A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown 
   <br>attrs: `value`, `input-id`, `placeholder`, `disabled` (bool), `name`, `readonly` (bool), `required` (bool), `wrap` (bool), +6
+  <br>methods: JavaScript only: `clearHistory()`, `copy()`, `cut()`, `getAnnotations()`, `getSelection()`, `getState()`, `indent()`, `outdent()`, `paste()`, `redo()`, `runCommand()`, `setHeading()`, `setList()`, `toggleBold()`, `toggleBulletList()`, `toggleCodeBlock()`, `toggleHeading()`, `toggleInlineCode()`, `toggleItalic()`, `toggleLink()`, `toggleQuote()`, `toggleStrikethrough()`, `undo()`
 - `<c-text-field>` — NLDD text-field
   <br>attrs: `size`, `value`, `input-id`, `placeholder`, `invalid` (bool), `valid` (bool), `disabled` (bool), `type` (text\|email\|tel\|url), +10
 - `<c-text-input>` — Single-line text input
@@ -262,8 +279,10 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `size`, `value`, `min`, `max`, `step`, `no-picker` (bool), `input-id`, `placeholder`, +11
 - `<c-time-picker>` — Twee kolommen, uren en minuten, die als een wiel langs de selectie in het midden schuiven. Het component is zelfstandig bruikbaar (inline op
   <br>attrs: `value`, `min`, `max`, `step`, `rows`, `width`, `accessible-label`, `translations`
+  <br>methods: JavaScript only: `scrollSelectedIntoView()`
 - `<c-toggle-button>` — A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.
   <br>attrs: `type` (button\|checkbox\|radio), `size` (xs\|sm\|md\|lg), `selected` (bool), `disabled` (bool), `value`, `name`, `text`, `icon`, +2
+  <br>methods: JavaScript only: `toggle()`
 - `<c-toggle-button-group>` — Groups nldd-toggle-button elements and manages selection, keyboard navigation, and forwarding of type, name, size, and disabled state to all
   <br>attrs: `type` (button\|checkbox\|radio), `name`, `size` (xs\|sm\|md\|lg), `disabled` (bool), `accessible-label`, `accessible-labeled-by`
 - `<c-token-field>` — A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline
@@ -366,8 +385,10 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `variant`, `size` (md\|lg), `icon`, `icon-color`, `text`, `supporting-text`, `heading-level`
 - `<c-just-in-time-education>` — Een guided-discovery coach-mark. Plaats een control (bijv. nldd-search-field) in de default slot; zolang `active` is gezet tilt het componen
   <br>attrs: `active` (bool), `text`, `supporting-text`, `placement` (top\|bottom\|left\|right\|auto), `dismissable` (bool), `arrow-length`, `no-arrow` (bool), `translations`
+  <br>methods: JavaScript only: `complete()`
 - `<c-modal-dialog>` — A modal window with overlay backdrop, based on the native <dialog> element. Internally renders an <nldd-inline-dialog> for the visual struct
   <br>attrs: `variant`, `icon`, `text`, `supporting-text`, `accessible-label`
+  <br>methods: no attribute opens this — call `el.show()`; `hide()`, `show()`
 - `<c-progress-bar>` — Exports both NLDDProgressBar and NLDDProgressBarSegmentIndicator. A progress bar that supports a single value (loading-style) or multiple se
   <br>attrs: `mode` (progress\|distribution), `max`, `value`, `color` (neutral\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen), `size` (sm\|md\|lg), `text`, `value-format` (percentage\|absolute\|fraction), `value-text`, +4
 - `<c-progress-bar-segment-indicator>` — NLDD progress-bar-segment-indicator
