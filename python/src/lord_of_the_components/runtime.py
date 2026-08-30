@@ -83,7 +83,13 @@ def render_extra(extra: Optional[Mapping[str, Any]]) -> Markup:
         # aria-*/generic). None or '' omits an entry (same rule as :prop="expr or none").
         if key == "attrs" and isinstance(value, dict):
             for k, v in value.items():
-                if v is not None and v != "":
+                # A boolean is written the way HTML means one: True is the bare
+                # attribute, False is its ABSENCE. Rendering False as
+                # `disabled="False"` disabled the element, because for a boolean
+                # attribute any presence counts — the opposite of what was asked.
+                if v is True:
+                    parts.append(f" {attr_name(k)}")
+                elif v is not None and v is not False and v != "":
                     parts.append(f' {attr_name(k)}="{escape(v)}"')
             continue
         if key.startswith("@"):

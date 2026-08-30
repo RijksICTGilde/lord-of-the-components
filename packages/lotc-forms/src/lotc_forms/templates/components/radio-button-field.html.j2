@@ -4,13 +4,14 @@
 {% set id = c.get('id', '') %}{% set label = c.get('label', '') %}
 {% set help = c.get('help', '') %}{% set error = c.get('error', '') %}
 {% set required = c.get('required', false) %}{% set content = c.get('content', '') %}
+{% set disabled = c.get('disabled', false) %}
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'radio-button-field') %}
-<div role="radiogroup" aria-labelledby="{{ id }}-label"{{ f.render_attrs(c) }}>{{ content | safe }}</div>
+<div role="radiogroup" aria-labelledby="{{ id }}-label"{% if disabled %} aria-disabled="true"{% endif %}{{ f.render_attrs(c) }}>{{ content | safe }}</div>
 {% endcall %}
 {% else %}
 {% call f.rvo_group(id, label, help, error, required, 'radio-button-field') %}
-<div class="rvo-radio-button__group{% if error %} rvo-radio-button__group--error{% endif %}"{{ f.render_attrs(c) }}>{{ content | safe }}</div>
+<div class="rvo-radio-button__group{% if error %} rvo-radio-button__group--error{% endif %}"{% if disabled %} aria-disabled="true"{% endif %}{{ f.render_attrs(c) }}>{{ content | safe }}</div>
 {% endcall %}
 {% endif %}
 {% endmacro %}

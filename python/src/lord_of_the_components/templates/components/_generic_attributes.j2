@@ -110,9 +110,14 @@
 
 {# Spread a `:attrs="{name: value}"` dict onto the element (hx-*/data-*/aria-*/
    generic). None or '' omits an entry — same rule as :prop="expr or none". #}
+{# A boolean is written the way HTML means one: `True` is the bare attribute and
+   `False` is its ABSENCE. `disabled="False"` DISABLES an element — for a boolean
+   attribute any presence counts — so rendering False as a string did the
+   opposite of what was asked. #}
 {% macro render_attrs_spread(component_context) -%}
     {%- for key, value in (component_context.get('attrs') or {}).items() -%}
-        {%- if value is not none and value != '' %} {{ key | lotc_attr_name }}="{{ value | e }}"{% endif -%}
+        {%- if value is sameas true %} {{ key | lotc_attr_name }}
+        {%- elif value is not none and value is not sameas false and value != '' %} {{ key | lotc_attr_name }}="{{ value | e }}"{% endif -%}
     {%- endfor -%}
 {%- endmacro %}
 

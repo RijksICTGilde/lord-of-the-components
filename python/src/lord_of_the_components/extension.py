@@ -515,6 +515,16 @@ class ComponentExtension(Extension):
                         location=_source_location(source, parsed.span.start),
                         suggestion=expr_error.suggestion,
                     )
+                # The NAME needs the same check the literal form gets. Without it
+                # `:disabled="x"` on a component that has no `disabled` vanished
+                # without a word, while `disabled="x"` on the same component was a
+                # hard error — so a typo was loud in one spelling and silent in the
+                # other, and an attribute a component simply does not support read
+                # as if it had been applied (RIG-Cluster, RC-151, who spent hours
+                # on a checkbox that would not unlock).
+                self._check_attribute_name(
+                    source, parsed, attr_name[1:], valid_attrs, component_def, tag_name
+                )
                 attrs[attr_name] = attr_value
             elif attr_name.startswith("@"):
                 attrs[attr_name] = attr_value
@@ -553,28 +563,50 @@ class ComponentExtension(Extension):
                         # Lenient mode: tolerate an unknown attribute (drop it, no
                         # error) instead of failing the render.
                         continue
-                    available = sorted(set(valid_attrs.values()))
-                    suggestion = None
-                    # `name` was renamed to `label` for visible text (plan v7 T1.2);
-                    # they are not close enough for get_close_matches, so hint explicitly.
-                    if clean_name == "name" and "label" in {a.lower() for a in available}:
-                        suggestion = "label"
-                    else:
-                        close_matches = get_close_matches(
-                            clean_name, [a.lower() for a in available], n=1, cutoff=0.6
-                        )
-                        if close_matches:
-                            for avail in available:
-                                if avail.lower() == close_matches[0]:
-                                    suggestion = avail
-                                    break
-                    raise ComponentError(
-                        f"Unknown attribute '{attr_name}' on component '{tag_name}'",
-                        location=_source_location(source, parsed.span.start),
-                        suggestion=suggestion,
-                    )
+                    self._unknown_attribute(source, parsed, clean_name, valid_attrs, tag_name)
 
         return attrs
+
+    def _check_attribute_name(
+        self, source, parsed, clean_name, valid_attrs, component_def, tag_name
+    ):
+        """Reject a name no component knows — the ':' spelling included.
+
+        Generic passthrough (data-*/aria-*/hx-*, class/id/style), the `attrs`
+        spread and a declared binding are all legitimate names that are not
+        component attributes.
+        """
+        name = clean_name.lower()
+        if name == "attrs" or name in valid_attrs or self._is_generic_html_attribute(name):
+            return
+        if name in {b.lower() for b in getattr(component_def, "bindings", {})}:
+            return
+        if self.on_unknown_attribute == "ignore":
+            return
+        self._unknown_attribute(source, parsed, name, valid_attrs, tag_name)
+
+    def _unknown_attribute(self, source, parsed, clean_name, valid_attrs, tag_name):
+        """Raise for an attribute name the component does not declare."""
+        available = sorted(set(valid_attrs.values()))
+        suggestion = None
+        # `name` was renamed to `label` for visible text (plan v7 T1.2); they are
+        # not close enough for get_close_matches, so hint explicitly.
+        if clean_name == "name" and "label" in {a.lower() for a in available}:
+            suggestion = "label"
+        else:
+            close_matches = get_close_matches(
+                clean_name, [a.lower() for a in available], n=1, cutoff=0.6
+            )
+            if close_matches:
+                for avail in available:
+                    if avail.lower() == close_matches[0]:
+                        suggestion = avail
+                        break
+        raise ComponentError(
+            f"Unknown attribute '{parsed.name}' on component '{tag_name}'",
+            location=_source_location(source, parsed.span.start),
+            suggestion=suggestion,
+        )
 
     def _validate_enum_value(
         self,

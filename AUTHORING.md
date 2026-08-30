@@ -156,9 +156,9 @@ setup_components(env, design_systems=["lotc-layout", "nldd", "lotc-forms"])
 - `<c-select-field>` — Labelled select; options are <c-option> children (or native <option> with native)
   <br>attrs: `id`, `name`, `label`, `value`, `placeholder`, `native` (bool), `help`, `error`, +2
 - `<c-radio-button-field>` — Labelled radio group; radios are <c-radio> children
-  <br>attrs: `id`, `name`, `label`, `help`, `error`, `required` (bool)
+  <br>attrs: `id`, `name`, `label`, `help`, `error`, `required` (bool), `disabled` (bool)
 - `<c-checkbox-field>` — Labelled checkbox: a single box (no children) or a group of <c-checkbox> children
-  <br>attrs: `id`, `name`, `label`, `value`, `checked` (bool), `help`, `error`, `required` (bool)
+  <br>attrs: `id`, `name`, `label`, `value`, `checked` (bool), `help`, `error`, `required` (bool), +1
 - `<c-date-input-field>` — Labelled date input with help/error and ARIA wiring
   <br>attrs: `id`, `name`, `label`, `value`, `min`, `max`, `help`, `error`, +2
 - `<c-file-input-field>` — Labelled file input (native nldd-file-field under NLDD, native file input under RVO).

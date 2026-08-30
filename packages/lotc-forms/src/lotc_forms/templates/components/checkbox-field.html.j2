@@ -4,6 +4,7 @@
 {% set id = c.get('id', '') %}{% set name = c.get('name', '') %}{% set label = c.get('label', '') %}
 {% set help = c.get('help', '') %}{% set error = c.get('error', '') %}
 {% set required = c.get('required', false) %}{% set checked = c.get('checked', false) %}
+{% set disabled = c.get('disabled', false) %}
 {% set value = c.get('value', '') %}{% set content = c.get('content', '') %}
 {% set db = f.describedby(id, help, error) %}
 {% if content %}
@@ -17,14 +18,15 @@
 {# a single checkbox: the control carries the label, help/error below #}
 {% if 'nldd' in lotc_design_systems %}
 <div class="lotc-checkbox-field" data-lotc-component="checkbox-field">
-<nldd-checkbox-field{% if id %} id="{{ id }}"{% endif %} name="{{ name }}"{% if value %} value="{{ value }}"{% endif %} label="{{ label }}"{% if checked %} checked{% endif %}{% if error %} invalid{% endif %}{{ f.render_attrs(c) }}></nldd-checkbox-field>
+<nldd-checkbox-field{% if id %} id="{{ id }}"{% endif %} name="{{ name }}"{% if value %} value="{{ value }}"{% endif %} label="{{ label }}"{% if checked %} checked{% endif %}{% if disabled %} disabled{% endif %}{% if error %} invalid unmet="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-checkbox-field>
 {% if help %}<nldd-form-field-help-text id="{{ id }}-help">{{ help }}</nldd-form-field-help-text>{% endif %}
-{% if error %}<nldd-form-field-error-text id="{{ id }}-error" invalid>{{ error }}</nldd-form-field-error-text>{% endif %}
+{# nldd-form-field-error-text is verwijderd in 0.8.84; zie _forms.j2 voor het mechanisme #}
+{% if error %}<nldd-validation-list><nldd-validation-item id="{{ id }}-error">{{ error }}</nldd-validation-item></nldd-validation-list>{% endif %}
 </div>
 {% else %}
 <div class="utrecht-form-field rvo-form-field{% if error %} rvo-form-field--error{% endif %}" data-lotc-component="checkbox-field">
 <label class="rvo-checkbox{% if checked %} rvo-checkbox--checked{% endif %}">
-<input class="rvo-checkbox__input" type="checkbox" id="{{ id }}" name="{{ name }}"{% if value %} value="{{ value }}"{% endif %}{% if checked %} checked{% endif %}{% if required %} required{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if db %} aria-describedby="{{ db }}"{% endif %}{{ f.render_attrs(c) }}>
+<input class="rvo-checkbox__input" type="checkbox" id="{{ id }}" name="{{ name }}"{% if value %} value="{{ value }}"{% endif %}{% if checked %} checked{% endif %}{% if disabled %} disabled{% endif %}{% if required %} required{% endif %}{% if error %} aria-invalid="true"{% endif %}{% if db %} aria-describedby="{{ db }}"{% endif %}{{ f.render_attrs(c) }}>
 <span class="rvo-checkbox__label">{{ label }}</span>
 </label>
 {% if help %}<div class="utrecht-form-field-description" id="{{ id }}-help">{{ help }}</div>{% endif %}

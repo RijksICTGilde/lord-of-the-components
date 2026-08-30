@@ -22,7 +22,8 @@
    and a plain component agree on what `@click` does. #}
 {% macro render_attrs(c) -%}
 {%- for k, v in (c.get('attrs') or {}).items() -%}
-{%- if v is not none and v != '' %} {{ k | lotc_attr_name }}="{{ v | e }}"{% endif -%}
+{%- if v is sameas true %} {{ k | lotc_attr_name }}
+{%- elif v is not none and v is not sameas false and v != '' %} {{ k | lotc_attr_name }}="{{ v | e }}"{% endif -%}
 {%- endfor -%}
 {{- generic.render_events(c) -}}
 {%- for k, v in c.items() -%}
