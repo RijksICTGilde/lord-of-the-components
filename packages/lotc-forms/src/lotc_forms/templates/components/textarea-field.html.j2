@@ -8,7 +8,7 @@
 {% set db = f.describedby(id, help, error) %}
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'textarea-field') %}
-<nldd-multi-line-text-field input-id="{{ id }}" name="{{ name }}" rows="{{ rows }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-multi-line-text-field>
+<nldd-multi-line-text-field input-id="{{ id }}" name="{{ name }}" rows="{{ rows }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid unmet="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-multi-line-text-field>
 {% endcall %}
 {% else %}
 {% call f.rvo_field(id, label, help, error, required, 'textarea-field') %}

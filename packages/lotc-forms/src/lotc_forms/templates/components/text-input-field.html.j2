@@ -17,7 +17,7 @@
 {% endif %}
 {% elif 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'text-input-field') %}
-<nldd-text-field input-id="{{ id }}" name="{{ name }}" type="{{ type }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-text-field>
+<nldd-text-field input-id="{{ id }}" name="{{ name }}" type="{{ type }}"{% if value %} value="{{ value }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if readonly %} readonly{% endif %}{% if error %} invalid unmet="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-text-field>
 {% endcall %}
 {% else %}
 {% call f.rvo_field(id, label, help, error, required, 'text-input-field') %}

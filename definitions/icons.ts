@@ -85,11 +85,10 @@ export const ICON_ALIASES: Record<string, IconAlias> = {
   // the open bucket). The alias still earns its place for RVO, which spells it
   // `downloaden`.
   download: { rvo: "downloaden", nldd: "arrow-down-in-bucket" },
-  // NLDD ships no wrench, screwdriver or hammer — `gear` is the nearest thing
-  // it has, so under NLDD `tools` and `settings` draw the same glyph. RVO does
-  // have a toolbox. Named anyway, because the alternative is an app writing a
-  // raw name that resolves to nothing and renders an empty box in silence.
-  tools: { rvo: "kist-met-hamer-en-moersleutel", nldd: "gear" },
+  // 0.8.84 gave NLDD a real tool glyph, so this no longer has to borrow `gear`
+  // and draw the same picture as `settings`. It matches NLDD's own `tools`
+  // alias now; the gate that compares the two is what flagged the change.
+  tools: { rvo: "kist-met-hamer-en-moersleutel", nldd: "screwdriver-wrench" },
 };
 
 /** The `{ semantic: themeName }` map for one theme, used as an icon valueMap. */

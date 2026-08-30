@@ -1,7 +1,7 @@
 {
  "meta": {
-  "nldd_version": "0.8.83",
-  "components": 99,
+  "nldd_version": "0.8.84",
+  "components": 100,
   "upstream_repository": "https://github.com/MinBZK/storybook",
   "storybook_url": "https://minbzk.github.io/storybook/"
  },
@@ -148,8 +148,9 @@
       "text",
       "icon",
       "icon-and-text",
-      "dot",
-      "step"
+      "major",
+      "minor",
+      "none"
      ],
      "default": "neutral-tinted",
      "description": "Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | "
@@ -728,6 +729,11 @@
      "description": "Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it"
     },
     {
+     "name": "no-tab",
+     "type": "boolean",
+     "description": "Takes the control out of the tab order (tabindex=\"-1\"), for an avatar that is a link or a button inside a roving contain"
+    },
+    {
      "name": "button",
      "type": "boolean",
      "description": "Makes the avatar a button; ignored when `href` is set"
@@ -953,22 +959,22 @@
     {
      "name": "keys",
      "type": "string",
-     "description": "Toetsen gescheiden door '+' (bijv. 'Cmd+K' of 'Ctrl+Shift+P'). Gebruik '+++' voor een letterlijke '+' toets: 'Ctrl+++' w"
+     "description": "Keys separated by '+' (e.g. 'Cmd+K' or 'Ctrl+Shift+P'). Use '+++' for a literal '+' key: 'Ctrl+++' becomes 'Ctrl' + '+'."
     },
     {
      "name": "mac-keys",
      "type": "string",
-     "description": "Optionele override voor macOS (incl. iPhone/iPad/iPod)."
+     "description": "Optional override for macOS (iPhone/iPad/iPod included)."
     },
     {
      "name": "windows-keys",
      "type": "string",
-     "description": "Optionele override voor Windows."
+     "description": "Optional override for Windows."
     },
     {
      "name": "linux-keys",
      "type": "string",
-     "description": "Optionele override voor Linux/ChromeOS."
+     "description": "Optional override for Linux/ChromeOS."
     },
     {
      "name": "size",
@@ -1001,7 +1007,7 @@
       "flexible"
      ],
      "default": "md",
-     "description": "Grootte: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' neemt de font-size over van de container; bij de box-variant"
+     "description": "Size: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' takes the font-size from the container; in the box variant the "
     },
     {
      "name": "variant",
@@ -1024,11 +1030,12 @@
       "text",
       "icon",
       "icon-and-text",
-      "dot",
-      "step"
+      "major",
+      "minor",
+      "none"
      ],
      "default": "box",
-     "description": "'box' (default) toont elke toets als keycap met vulling en highlight-rand; 'simple' toont de toetsen als platte tekst me"
+     "description": "'box' (default) shows each key as a keycap with a fill and a highlight edge. 'simple' shows the keys as plain text with "
     },
     {
      "name": "color",
@@ -1062,15 +1069,15 @@
       "secondary"
      ],
      "default": "neutral",
-     "description": "'neutral' (default) gebruikt de eigen component-kleuren. 'inherit' laat de toetsen en scheidingstekens de omringende tek"
+     "description": "'neutral' (default) uses the component colors of its own. 'inherit' lets the keys and separators follow the surrounding "
     },
     {
      "name": "always-visible",
      "type": "boolean",
-     "description": "Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn."
+     "description": "Show on touch-only devices too, where shortcuts cannot be invoked."
     }
    ],
-   "description": "Toont een toetsencombinatie (zoals Cmd+K of Ctrl+Shift+P) in één gecombineerde container met semantische <kbd>-elementen per toets. Op touch",
+   "description": "Shows a key combination (such as Cmd+K or Ctrl+Shift+P) in one combined container with a semantic <kbd> element per key. On touch-only devic",
    "category": "content",
    "backend": "jinja",
    "content": {
@@ -1100,12 +1107,12 @@
     {
      "name": "hyphens",
      "type": "boolean",
-     "description": "Opt-in automatische woordafbreking voor doorlopende tekst (p, li, dd). Vereist een correcte `lang` op de pagina (bijv. `"
+     "description": "Opt-in automatic hyphenation for running text (p, li, dd). Needs a correct `lang` on the page (`lang=\"nl\"` on `<html>`, "
     },
     {
      "name": "color",
      "type": "string",
-     "description": "'inherit' laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken zoals de filled-categories). Links b"
+     "description": "'inherit' lets all text follow the color of the surface (for colored areas such as the filled categories). Links stay un"
     },
     {
      "name": "translations",
@@ -1274,7 +1281,7 @@
      "enum_values": [
       "inherit"
      ],
-     "description": "'inherit' lets the title take the text color of the ondergrond volgen (voor gekleurde vlakken zoals de filled-categories"
+     "description": "'inherit' lets the title follow the text color of the surface (for colored areas such as the filled categories); overlin"
     }
    ],
    "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.",
@@ -1413,10 +1420,10 @@
       "right"
      ],
      "default": "undefined",
-     "description": "'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment."
+     "description": "'top' (default) | 'right' | 'left'. A value of its own always wins over the inherited form-label-alignment."
     }
    ],
-   "description": "Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch een submit-button of button-group). Volgt dezelfde responsive layou",
+   "description": "A layout wrapper for the action buttons at the bottom of a form (typically a submit button or a button group). Follows the same responsive l",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -1435,7 +1442,7 @@
       "right"
      ],
      "default": "undefined",
-     "description": "'top' (default) | 'right' | 'left'. Een eigen waarde wint altijd over de inherited form-label-alignment."
+     "description": "'top' (default) | 'right' | 'left'. A value of its own always wins over the inherited form-label-alignment."
     },
     {
      "name": "label",
@@ -1476,36 +1483,20 @@
    }
   },
   {
-   "name": "form-field-error-text",
-   "attributes": [
-    {
-     "name": "invalid",
-     "type": "boolean",
-     "description": "Visibility managed automatically by nldd-form-field."
-    }
-   ],
-   "description": "NLDD form-field-error-text",
-   "category": "forms",
-   "backend": "jinja",
-   "content": {
-    "allowed": true
-   }
-  },
-  {
    "name": "form-section",
    "attributes": [
     {
      "name": "text",
      "type": "string",
-     "description": "Heading-tekst (gerenderd in `<legend>`)."
+     "description": "Heading text (rendered in the `<legend>`)."
     },
     {
      "name": "supporting-text",
      "type": "string",
-     "description": "Korte beschrijving onder de heading. Houd ≤ ~80 tekens (zie a11y-note)."
+     "description": "Short description under the heading. Keep it to roughly 80 characters or less (see the a11y note)."
     }
    ],
-   "description": "Nederlandse Digitale Dienst Form Section Component Plain custom element (extends HTMLElement, no Lit) — light-DOM render lost een NVDA + Fir",
+   "description": "Nederlandse Digitale Dienst Form Section Component Plain custom element (extends HTMLElement, no Lit). The light-DOM render works around an ",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -1518,10 +1509,85 @@
     {
      "name": "label-alignment",
      "type": "string",
-     "description": "Default `label-alignment` voor descendant nldd-form-field en nldd-form-actions ('top' | 'right' | 'left'). Wordt naar de"
+     "description": "Default `label-alignment` for descendant nldd-form-field and nldd-form-actions ('top' | 'right' | 'left'). Propagated to"
     }
    ],
-   "description": "Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit) — required for light-DOM autofill. Renders a r",
+   "description": "Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit), required for light-DOM autofill. Renders a re",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "validation-item",
+   "attributes": [
+    {
+     "name": "match",
+     "type": "string",
+     "description": "Regular expression the value has to contain. Not anchored, unlike the native `pattern`: `[A-Z]` means \"has a capital in "
+    },
+    {
+     "name": "minlength",
+     "type": "string",
+     "description": "Fewest characters the value may have."
+    },
+    {
+     "name": "maxlength",
+     "type": "string",
+     "description": "Most characters the value may have."
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "The value may not be empty. Use it on a field whose other rules would pass an empty value."
+    },
+    {
+     "name": "hint",
+     "type": "boolean",
+     "description": "Show this item before there is a verdict, whatever the list says."
+    },
+    {
+     "name": "unmet",
+     "type": "boolean",
+     "description": "Whether the value fails this item. Managed by the list; do not set it yourself."
+    },
+    {
+     "name": "visible",
+     "type": "boolean",
+     "description": "Whether the item is on screen. Managed by the list."
+    }
+   ],
+   "description": "NLDD validation-item",
+   "category": "forms",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   },
+   "methods": [
+    "test"
+   ]
+  },
+  {
+   "name": "validation-list",
+   "attributes": [
+    {
+     "name": "for",
+     "type": "string",
+     "description": "Id of the control this list is about. Not needed inside an nldd-form-field, which hands its own control over."
+    },
+    {
+     "name": "hint",
+     "type": "boolean",
+     "description": "Show every item before there is a verdict, as the requirements of the field. Overridable per item."
+    },
+    {
+     "name": "judging",
+     "type": "boolean",
+     "description": "Drop the hints, because this field has been judged. Turned on by the list itself once its control is `invalid`, and sett"
+    }
+   ],
+   "description": "Nederlandse Digitale Dienst Validation List (Lit + TypeScript) Everything a value has to satisfy, in one list. A requirement you can state u",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -1611,6 +1677,11 @@
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible label forwarded to the editor. Set automatically by nldd-form-field."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with ",
@@ -1618,7 +1689,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "combo-box",
@@ -1707,6 +1784,26 @@
      "name": "width",
      "type": "string",
      "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "pattern",
+     "type": "string",
+     "description": "Regular expression the value has to match, as the native `pattern`."
+    },
+    {
+     "name": "minlength",
+     "type": "string",
+     "description": "Fewest characters the value may have."
+    },
+    {
+     "name": "maxlength",
+     "type": "string",
+     "description": "Most characters the value may have."
     }
    ],
    "description": "A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu with nldd-menu-item children to provide options. The slotted ",
@@ -1714,7 +1811,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "date-field",
@@ -1722,109 +1825,110 @@
     {
      "name": "size",
      "type": "string",
-     "description": "'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field."
+     "description": "'md' (default) | 'sm'. Set automatically by nldd-form-field."
     },
     {
      "name": "value",
      "type": "string",
-     "description": "De datum als ISO (jjjj-mm-dd). Met `range` een ISO 8601-interval: `jjjj-mm-dd/jjjj-mm-dd`. Leeg wanneer er geen geldige "
+     "description": "The date as ISO (yyyy-mm-dd). With `range` an ISO 8601 interval: `yyyy-mm-dd/yyyy-mm-dd`. Empty when there is no valid d"
     },
     {
      "name": "range",
      "type": "boolean",
-     "description": "Kies een periode: twee invoervelden en een kalender in bereikmodus."
+     "description": "Pick a period: two inputs and a calendar in range mode."
     },
     {
      "name": "min",
      "type": "string",
-     "description": "Vroegst toegestane datum als ISO (jjjj-mm-dd)."
+     "description": "Earliest allowed date as ISO (yyyy-mm-dd)."
     },
     {
      "name": "max",
      "type": "string",
-     "description": "Laatst toegestane datum als ISO (jjjj-mm-dd)."
+     "description": "Latest allowed date as ISO (yyyy-mm-dd)."
     },
     {
      "name": "no-picker",
      "type": "boolean",
-     "description": "Verbergt de kalenderknop. Standaard staat die knop er wel."
+     "description": "Hides the calendar button. It is shown by default."
     },
     {
      "name": "input-id",
      "type": "string",
-     "description": "Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field."
+     "description": "Sets the id on the internal input. Set automatically by nldd-form-field."
     },
     {
      "name": "placeholder",
      "type": "string",
-     "description": "Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field."
+     "description": "Placeholder text. Do not put a format here; use the supporting label of nldd-form-field for that."
     },
     {
      "name": "invalid",
      "type": "boolean",
-     "description": "Markeert het veld als ongeldig."
+     "description": "Marks the field as invalid."
     },
     {
      "name": "valid",
      "type": "boolean",
-     "description": "Markeert het veld als geldig."
+     "description": "Marks the field as valid."
     },
     {
      "name": "disabled",
      "type": "boolean",
-     "description": "Uitgeschakelde staat."
+     "description": "Disabled state."
     },
     {
      "name": "readonly",
      "type": "boolean",
-     "description": "Alleen-lezen staat."
+     "description": "Read-only state."
     },
     {
      "name": "required",
      "type": "boolean",
-     "description": "Verplichte staat."
+     "description": "Required state."
     },
     {
      "name": "name",
      "type": "string",
-     "description": "Naam voor formulierverzending."
+     "description": "Name for form submission."
     },
     {
      "name": "autocomplete",
      "type": "string",
-     "description": "Autocomplete-hint, bijvoorbeeld 'bday'."
+     "description": "Autocomplete hint, for example 'bday'."
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field."
-    },
-    {
-     "name": "error-message-ids",
-     "type": "string",
-     "description": "Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field."
+     "description": "Accessible label for the internal input. Set automatically by nldd-form-field."
     },
     {
      "name": "width",
      "type": "string",
-     "description": "Breedte. Standaard precies breed genoeg voor een datum plus de iconen; 'full' vult de container, of geef een eigen CSS-l"
+     "description": "Width. By default exactly wide enough for a date plus the icons; 'full' fills the container; 'fit-content' drops the roo"
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+     "description": "Translations; unspecified keys fall back to Dutch."
     }
    ],
-   "description": "Een tekstveld voor een datum, met een optionele kalender in een popover. De waarde is altijd ISO (jjjj-mm-dd); op het scherm staat de Nederl",
+   "description": "A text field for a date, with an optional calendar in a popover. The value is always ISO (yyyy-mm-dd); on screen it shows the Dutch notation",
    "category": "forms",
    "backend": "jinja",
    "content": {
     "allowed": true
    },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ],
    "slots": [
     {
      "name": "picker",
-     "description": "Een eigen nldd-date-picker, in plaats van de standaardkalender. Het veld blijft `value`, `min`, `max"
+     "description": "Your own nldd-date-picker instead of the default calendar. The field keeps setting `value`, `min`, `"
     }
    ]
   },
@@ -1834,65 +1938,73 @@
     {
      "name": "value",
      "type": "string",
-     "description": "De gekozen datum als ISO (jjjj-mm-dd). Alleen zonder `range`."
+     "description": "The chosen date as ISO (yyyy-mm-dd). Only without `range`."
     },
     {
      "name": "start",
      "type": "string",
-     "description": "Begin van de periode als ISO. Alleen met `range`."
+     "description": "Start of the period as ISO. Only with `range`."
     },
     {
      "name": "end",
      "type": "string",
-     "description": "Einde van de periode als ISO. Alleen met `range`."
+     "description": "End of the period as ISO. Only with `range`."
     },
     {
      "name": "width",
      "type": "string",
-     "description": "Breedte: `full` (vult de container) of een CSS-lengte (bv. `560px`). Leeg (standaard) is de intrinsieke breedte van zeve"
+     "description": "Width: `full` (fills the container) or a CSS length (e.g. `560px`). Empty (default) is the intrinsic width of seven day "
     },
     {
      "name": "range",
      "type": "boolean",
-     "description": "Kies een periode in plaats van één datum."
+     "description": "Pick a period instead of a single date."
     },
     {
      "name": "min",
      "type": "string",
-     "description": "Vroegst toegestane datum: ISO, of `today` met een verschuiving (`today-18y`)."
+     "description": "Earliest allowed date: ISO, or `today` with an offset (`today-18y`)."
     },
     {
      "name": "max",
      "type": "string",
-     "description": "Laatst toegestane datum: ISO, of `today` met een verschuiving (`today+1y`)."
+     "description": "Latest allowed date: ISO, or `today` with an offset (`today+1y`)."
     },
     {
      "name": "first-day-of-week",
      "type": "string",
-     "description": "Eerste dag van de week, 0 is zondag. Standaard 1 (maandag)."
+     "description": "First day of the week, 0 is Sunday. Default 1 (Monday)."
     },
     {
      "name": "week-numbers",
      "type": "boolean",
-     "description": "Toont ISO-weeknummers in een kolom links."
+     "description": "Shows ISO week numbers in a column on the left."
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Toegankelijke naam van de kalender."
+     "description": "Accessible name of the calendar."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+     "description": "Translations; unspecified keys fall back to Dutch."
     }
    ],
-   "description": "Een kalender waarin een datum of een periode wordt gekozen. Het component is zelfstandig bruikbaar - inline op een pagina, in een filterpane",
+   "description": "A calendar for picking a date or a period. The component works on its own (inline on a page, in a filter panel) and also sits in the popover",
    "category": "forms",
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "describedTarget"
+   ]
   },
   {
    "name": "dropdown",
@@ -1937,6 +2049,11 @@
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible name, forwarded as aria-label to the slotted select"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state, handed to the slotted <select>. A `required` on the <select> itself is left alone."
     }
    ],
    "description": "A visual wrapper around a native `<select>` element. The consumer provides a native `<select>` as a slotted child — this way the browser ret",
@@ -1944,7 +2061,10 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "describedTarget"
+   ]
   },
   {
    "name": "file-field",
@@ -1973,11 +2093,6 @@
      "name": "input-id",
      "type": "string",
      "description": "Sets the id on the native input. Set automatically by nldd-form-field."
-    },
-    {
-     "name": "error-message-ids",
-     "type": "string",
-     "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
     },
     {
      "name": "valid",
@@ -2015,7 +2130,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "multi-line-text-field",
@@ -2107,11 +2228,6 @@
      "description": "Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field."
     },
     {
-     "name": "error-message-ids",
-     "type": "string",
-     "description": "Ids for aria-describedby on the inner textarea. Set automatically by nldd-form-field."
-    },
-    {
      "name": "no-spellcheck",
      "type": "boolean",
      "description": "Disables browser spellchecking on the inner textarea"
@@ -2120,6 +2236,16 @@
      "name": "width",
      "type": "string",
      "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    },
+    {
+     "name": "minlength",
+     "type": "string",
+     "description": "Fewest characters the value may have."
+    },
+    {
+     "name": "maxlength",
+     "type": "string",
+     "description": "Most characters the value may have."
     }
    ],
    "description": "NLDD multi-line-text-field",
@@ -2127,7 +2253,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "number-field",
@@ -2191,6 +2323,11 @@
      "name": "translations",
      "type": "string",
      "description": "Translations; unspecified keys fall back to Dutch"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A numeric input field with decrement and increment buttons.",
@@ -2198,7 +2335,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "password-field",
@@ -2289,14 +2432,24 @@
      "description": "Accessible label forwarded to the inner input. Set automatically by nldd-form-field."
     },
     {
-     "name": "error-message-ids",
-     "type": "string",
-     "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
-    },
-    {
      "name": "width",
      "type": "string",
      "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    },
+    {
+     "name": "pattern",
+     "type": "string",
+     "description": "Regular expression the value has to match, as the native `pattern`."
+    },
+    {
+     "name": "minlength",
+     "type": "string",
+     "description": "Fewest characters the value may have."
+    },
+    {
+     "name": "maxlength",
+     "type": "string",
+     "description": "Most characters the value may have."
     }
    ],
    "description": "A password input field with visibility toggle and validation states.",
@@ -2304,7 +2457,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "radio-button-group",
@@ -2333,6 +2492,11 @@
      "name": "accessible-labeled-by",
      "type": "string",
      "description": "Id of an external label element, set as aria-labelledby on the group"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "Groups nldd-radio-button-field elements, handles keyboard navigation, and forwards name and disabled state to all child fields. Use inside n",
@@ -2361,6 +2525,11 @@
      "description": "Disabled state"
     },
     {
+     "name": "no-tab",
+     "type": "boolean",
+     "description": "Takes the control out of the tab order (tabindex=\"-1\"), for a control owned by a roving container (a row of an nldd-list"
+    },
+    {
      "name": "required",
      "type": "boolean",
      "description": "Required state"
@@ -2378,7 +2547,12 @@
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Accessible label forwarded as aria-label to the native input. Note: aria-labelledby is not supported as IDREF resolution"
+     "description": "Accessible label forwarded as aria-label to the native input."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. Note: aria-labelledby is not support"
     }
    ],
    "description": "WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role=\"radiogroup\" and aria-labelledby for proper group semantics. ",
@@ -2388,7 +2562,11 @@
     "allowed": true
    },
    "methods": [
-    "select"
+    "commitValidity",
+    "describedTarget",
+    "select",
+    "setCustomValidity",
+    "validationTarget"
    ]
   },
   {
@@ -2448,6 +2626,31 @@
      "name": "width",
      "type": "string",
      "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "pattern",
+     "type": "string",
+     "description": "Regular expression the value has to match, as the native `pattern`."
+    },
+    {
+     "name": "minlength",
+     "type": "string",
+     "description": "Fewest characters the value may have."
+    },
+    {
+     "name": "maxlength",
+     "type": "string",
+     "description": "Most characters the value may have."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A search input with a leading search icon, an optional dismiss button, and an optional search button.",
@@ -2455,11 +2658,22 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "segmented-control-item",
    "attributes": [
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state. Set by nldd-segmented-control."
+    },
     {
      "name": "value",
      "type": "string",
@@ -2540,6 +2754,16 @@
    "name": "segmented-control",
    "attributes": [
     {
+     "name": "required",
+     "type": "boolean",
+     "description": "Marks the group as required. Enforced in radio mode; in checkbox mode only announced."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the group as invalid. Announced with aria-invalid; nothing is drawn for it."
+    },
+    {
      "name": "value",
      "type": "string",
      "description": "Selected value for radio type"
@@ -2607,7 +2831,12 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "stepper",
@@ -2662,6 +2891,11 @@
      "name": "translations",
      "type": "string",
      "description": "Translations; unspecified keys fall back to Dutch"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A numeric control with increment and decrement buttons.",
@@ -2669,7 +2903,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "switch-field",
@@ -2698,6 +2938,16 @@
      "name": "label",
      "type": "string",
      "description": "Label text for the switch"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A switch toggle with an inline label for use in forms.",
@@ -2705,7 +2955,10 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "describedTarget"
+   ]
   },
   {
    "name": "switch",
@@ -2726,6 +2979,11 @@
      "description": "Disabled state"
     },
     {
+     "name": "no-tab",
+     "type": "boolean",
+     "description": "Takes the control out of the tab order (tabindex=\"-1\"), for a control owned by a roving container (a row of an nldd-list"
+    },
+    {
      "name": "size",
      "type": "enum",
      "enum_values": [
@@ -2744,6 +3002,16 @@
      "name": "value",
      "type": "string",
      "description": "Value submitted with the form when the switch is on (default: 'on')"
+    },
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label. Direct use o",
@@ -2753,7 +3021,11 @@
     "allowed": true
    },
    "methods": [
-    "toggle"
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "toggle",
+    "validationTarget"
    ]
   },
   {
@@ -2839,6 +3111,11 @@
      "name": "translations",
      "type": "string",
      "description": "Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown ",
@@ -2849,8 +3126,10 @@
    },
    "methods": [
     "clearHistory",
+    "commitValidity",
     "copy",
     "cut",
+    "describedTarget",
     "getAnnotations",
     "getSelection",
     "getState",
@@ -2859,6 +3138,7 @@
     "paste",
     "redo",
     "runCommand",
+    "setCustomValidity",
     "setHeading",
     "setList",
     "toggleBold",
@@ -2870,7 +3150,8 @@
     "toggleLink",
     "toggleQuote",
     "toggleStrikethrough",
-    "undo"
+    "undo",
+    "validationTarget"
    ]
   },
   {
@@ -2959,11 +3240,6 @@
      "description": "Accessible label forwarded to the inner input. Set automatically by nldd-form-field."
     },
     {
-     "name": "error-message-ids",
-     "type": "string",
-     "description": "Ids for aria-describedby on the inner input. Set automatically by nldd-form-field."
-    },
-    {
      "name": "no-spellcheck",
      "type": "boolean",
      "description": "Disables browser spellchecking on the inner input"
@@ -2972,6 +3248,21 @@
      "name": "width",
      "type": "string",
      "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+    },
+    {
+     "name": "pattern",
+     "type": "string",
+     "description": "Regular expression the value has to match, as the native `pattern`."
+    },
+    {
+     "name": "minlength",
+     "type": "string",
+     "description": "Fewest characters the value may have."
+    },
+    {
+     "name": "maxlength",
+     "type": "string",
+     "description": "Most characters the value may have."
     }
    ],
    "description": "NLDD text-field",
@@ -2979,7 +3270,13 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   }
+   },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ]
   },
   {
    "name": "time-field",
@@ -2987,109 +3284,110 @@
     {
      "name": "size",
      "type": "string",
-     "description": "'md' (standaard) | 'sm'. Wordt automatisch gezet door nldd-form-field."
+     "description": "'md' (default) | 'sm'. Set automatically by nldd-form-field."
     },
     {
      "name": "value",
      "type": "string",
-     "description": "De tijd als `HH:mm` (24-uurs). Leeg wanneer er geen geldige tijd staat."
+     "description": "The time as `HH:mm` (24-hour). Empty when there is no valid time."
     },
     {
      "name": "min",
      "type": "string",
-     "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+     "description": "Earliest allowed time as `HH:mm`. Also the base that `step` counts from."
     },
     {
      "name": "max",
      "type": "string",
-     "description": "Laatst toegestane tijd als `HH:mm`."
+     "description": "Latest allowed time as `HH:mm`."
     },
     {
      "name": "step",
      "type": "string",
-     "description": "Minutenstap (standaard 1). Bepaalt welke tijden geldig zijn, waarop wordt afgerond en hoe ver de pijltjestoetsen verspri"
+     "description": "Step in minutes (default 1). Decides which times are valid, what rounding snaps to, and how far the arrow keys jump."
     },
     {
      "name": "no-picker",
      "type": "boolean",
-     "description": "Verbergt de picker-knop. Standaard staat die knop er wel."
+     "description": "Hides the picker button. It is shown by default."
     },
     {
      "name": "input-id",
      "type": "string",
-     "description": "Zet het id op de interne input. Wordt automatisch gezet door nldd-form-field."
+     "description": "Sets the id on the internal input. Set automatically by nldd-form-field."
     },
     {
      "name": "placeholder",
      "type": "string",
-     "description": "Placeholdertekst. Zet hier geen formaat in; gebruik daarvoor de supporting-label van nldd-form-field."
+     "description": "Placeholder text. Do not put a format here; use the supporting label of nldd-form-field for that."
     },
     {
      "name": "invalid",
      "type": "boolean",
-     "description": "Markeert het veld als ongeldig."
+     "description": "Marks the field as invalid."
     },
     {
      "name": "valid",
      "type": "boolean",
-     "description": "Markeert het veld als geldig."
+     "description": "Marks the field as valid."
     },
     {
      "name": "disabled",
      "type": "boolean",
-     "description": "Uitgeschakelde staat."
+     "description": "Disabled state."
     },
     {
      "name": "readonly",
      "type": "boolean",
-     "description": "Alleen-lezen staat."
+     "description": "Read-only state."
     },
     {
      "name": "required",
      "type": "boolean",
-     "description": "Verplichte staat."
+     "description": "Required state."
     },
     {
      "name": "name",
      "type": "string",
-     "description": "Naam voor formulierverzending."
+     "description": "Name for form submission."
     },
     {
      "name": "autocomplete",
      "type": "string",
-     "description": "Autocomplete-hint."
+     "description": "Autocomplete hint."
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Toegankelijk label voor de interne input. Wordt automatisch gezet door nldd-form-field."
-    },
-    {
-     "name": "error-message-ids",
-     "type": "string",
-     "description": "Ids voor aria-describedby. Wordt automatisch gezet door nldd-form-field."
+     "description": "Accessible label for the internal input. Set automatically by nldd-form-field."
     },
     {
      "name": "width",
      "type": "string",
-     "description": "Breedte. Standaard precies breed genoeg voor een tijd plus het validatie-icoon; 'full' vult de container, of geef een ei"
+     "description": "Width. By default exactly wide enough for a time plus the validation icon; 'full' fills the container; 'fit-content' dro"
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+     "description": "Translations; unspecified keys fall back to Dutch."
     }
    ],
-   "description": "Een tekstveld voor een tijd. De waarde is altijd 24-uurs `HH:mm`; dat is in het Nederlands ook de weergave, dus anders dan bij nldd-date-fie",
+   "description": "A text field for a time. The value is always 24-hour `HH:mm`, which is how Dutch shows it too, so unlike nldd-date-field there is nothing to",
    "category": "forms",
    "backend": "jinja",
    "content": {
     "allowed": true
    },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ],
    "slots": [
     {
      "name": "picker",
-     "description": "Een eigen nldd-time-picker, in plaats van de standaardpicker. Het veld blijft `value`, `min`, `max` "
+     "description": "Your own nldd-time-picker instead of the default one. The field keeps setting `value`, `min`, `max` "
     }
    ]
   },
@@ -3099,57 +3397,68 @@
     {
      "name": "value",
      "type": "string",
-     "description": "De gekozen tijd als `HH:mm` (24-uurs)."
+     "description": "The chosen time as `HH:mm` (24-hour)."
     },
     {
      "name": "min",
      "type": "string",
-     "description": "Vroegst toegestane tijd als `HH:mm`. Is tevens de basis waarvandaan `step` telt."
+     "description": "Earliest allowed time as `HH:mm`. Also the base that `step` counts from."
     },
     {
      "name": "max",
      "type": "string",
-     "description": "Laatst toegestane tijd als `HH:mm`."
+     "description": "Latest allowed time as `HH:mm`."
     },
     {
      "name": "step",
      "type": "string",
-     "description": "Minutenstap (standaard 1). Bepaalt welke minuten in de kolom staan."
+     "description": "Step in minutes (default 1). Decides which minutes are in the column."
     },
     {
      "name": "rows",
      "type": "string",
-     "description": "Hoogte van de kolommen in rijen (standaard 7, minimaal 3). De gekozen waarde staat altijd in het midden, dus een oneven "
+     "description": "Height of the columns in rows (default 7, minimum 3). The chosen value always sits in the middle, so an odd number shows"
     },
     {
      "name": "width",
      "type": "string",
-     "description": "Breedte: `full` vult de container, of geef een eigen CSS-lengte."
+     "description": "Width: `full` fills the container, or pass your own CSS length."
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Toegankelijke naam van de picker."
+     "description": "Accessible name of the picker."
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands."
+     "description": "Translations; unspecified keys fall back to Dutch."
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
-   "description": "Twee kolommen, uren en minuten, die als een wiel langs de selectie in het midden schuiven. Het component is zelfstandig bruikbaar (inline op",
+   "description": "Two columns, hours and minutes, that slide like a wheel past the selection in the middle. The component works on its own (inline on a page, ",
    "category": "forms",
    "backend": "jinja",
    "content": {
     "allowed": true
    },
    "methods": [
+    "describedTarget",
     "scrollSelectedIntoView"
    ]
   },
   {
    "name": "toggle-button-group",
    "attributes": [
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Marks the group as required. Enforced in radio mode; in checkbox mode only announced."
+    },
     {
      "name": "type",
      "type": "enum",
@@ -3192,6 +3501,11 @@
      "name": "accessible-labeled-by",
      "type": "string",
      "description": "ID of an external label element (aria-labelledby)"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "Groups nldd-toggle-button elements and manages selection, keyboard navigation, and forwarding of type, name, size, and disabled state to all",
@@ -3204,6 +3518,11 @@
   {
    "name": "toggle-button",
    "attributes": [
+    {
+     "name": "required",
+     "type": "boolean",
+     "description": "Required state. Set by nldd-toggle-button-group."
+    },
     {
      "name": "type",
      "type": "enum",
@@ -3238,6 +3557,11 @@
      "description": "Disabled state"
     },
     {
+     "name": "no-tab",
+     "type": "boolean",
+     "description": "Takes the control out of the tab order (tabindex=\"-1\"), for a control owned by a roving container (a row of an nldd-list"
+    },
+    {
      "name": "value",
      "type": "string",
      "description": "Value for form submission (checkbox/radio)"
@@ -3266,6 +3590,11 @@
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible label; required for icon-only usage"
+    },
+    {
+     "name": "invalid",
+     "type": "boolean",
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
    "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.",
@@ -3275,7 +3604,11 @@
     "allowed": true
    },
    "methods": [
-    "toggle"
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "toggle",
+    "validationTarget"
    ],
    "slots": [
     {
@@ -3374,6 +3707,12 @@
    "content": {
     "allowed": true
    },
+   "methods": [
+    "commitValidity",
+    "describedTarget",
+    "setCustomValidity",
+    "validationTarget"
+   ],
    "slots": [
     {
      "name": "template",
@@ -4408,7 +4747,7 @@
   {
    "name": "divider",
    "attributes": [],
-   "description": "Een scheidingslijn die secties van inhoud visueel van elkaar scheidt.",
+   "description": "A rule that visually separates sections of content.",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -7235,57 +7574,57 @@
     {
      "name": "modeless",
      "type": "boolean",
-     "description": "Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal"
+     "description": "Modeless (no backdrop or focus trap); the window is modal by default"
     },
     {
      "name": "no-light-dismiss",
      "type": "boolean",
-     "description": "Een klik op de backdrop sluit het venster niet. Voor vensters waar per ongeluk wegklikken werk kost: een wizard, een for"
+     "description": "A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form"
     },
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "(verplicht) Toegankelijke naam (aria-label). Valt terug op de i18n default ('Venster') als niet gezet — geef altijd een "
+     "description": "(required) Accessible name (aria-label). Falls back to the i18n default ('Venster') when unset. Always pass a unique, de"
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Override translation keys; unset keys vallen terug op de Nederlandse default."
+     "description": "Override translation keys; unset keys fall back to the Dutch default."
     },
     {
      "name": "top",
      "type": "string",
-     "description": "CSS top positie van de bovenrand (bijv. '0', '100px')"
+     "description": "CSS top position of the top edge (e.g. '0', '100px')"
     },
     {
      "name": "left",
      "type": "string",
-     "description": "CSS left positie van de linkerrand"
+     "description": "CSS left position of the left edge"
     },
     {
      "name": "right",
      "type": "string",
-     "description": "CSS right waarde"
+     "description": "CSS right value"
     },
     {
      "name": "bottom",
      "type": "string",
-     "description": "CSS bottom waarde"
+     "description": "CSS bottom value"
     },
     {
      "name": "centered",
      "type": "boolean",
-     "description": "Centreert beide assen op de viewport. Per as overrideable: `centered top=\"0\"` = horizontaal gecentreerd, top-aligned. Mi"
+     "description": "Centers both axes on the viewport. Overridable per axis: `centered top=\"0\"` is horizontally centered, top aligned. Mirro"
     },
     {
      "name": "width",
      "type": "string",
-     "description": "CSS width (standaard: var(--components-window-default-width))"
+     "description": "CSS width (default: var(--components-window-default-width))"
     },
     {
      "name": "height",
      "type": "string",
-     "description": "CSS height (standaard: content height)"
+     "description": "CSS height (default: content height)"
     },
     {
      "name": "scheme",
@@ -7299,7 +7638,7 @@
      "description": "Color scheme (default 'inherit')."
     }
    ],
-   "description": "Een zwevend venster gebaseerd op het native <dialog>-element. Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via CSS-waarden.",
+   "description": "A floating window based on the native <dialog> element. Can be shown modal or modeless. Positionable through CSS values. No header of its ow",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -7821,11 +8160,43 @@
      "enum_values": [
       "past",
       "current",
-      "future",
-      "none"
+      "future"
      ],
      "default": "past",
-     "description": "Status of this step (default 'past'); the same values as `nldd-step-indicator-item`. `none` draws the line only, without"
+     "description": "How far along this row is (default 'past'); the same values as `nldd-step-indicator-item`. It colors the dot and the tra"
+    },
+    {
+     "name": "size",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "xxs",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "sm",
+     "description": "How wide the lane is and so how big the dot: `sm` (default, 16px) for a timeline of events, `md` (24px) where a number o"
     },
     {
      "name": "variant",
@@ -7848,16 +8219,12 @@
       "text",
       "icon",
       "icon-and-text",
-      "dot",
-      "step"
+      "major",
+      "minor",
+      "none"
      ],
-     "default": "dot",
-     "description": "What this row is: a `dot` (default) on a timeline of events, a 16px dot, or a `step` in a list of steps, a 24px dot with"
-    },
-    {
-     "name": "minor",
-     "type": "boolean",
-     "description": "This row belongs under the previous one: a smaller dot in the same lane, so the track runs straight on and nothing inden"
+     "default": "major",
+     "description": "What stands in the lane: a whole dot (`major`, the default), a smaller one for a row that belongs under the one above it"
     },
     {
      "name": "direction",
@@ -7883,6 +8250,19 @@
      ],
      "default": "between",
      "description": "Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `"
+    },
+    {
+     "name": "line",
+     "type": "enum",
+     "enum_values": [
+      "auto",
+      "top",
+      "bottom",
+      "both",
+      "none"
+     ],
+     "default": "auto",
+     "description": "Which halves of the track you have covered, when `status` and `direction` get it wrong (default 'auto', which is what th"
     },
     {
      "name": "text",
@@ -8243,7 +8623,8 @@
       "list",
       "navigation",
       "listbox",
-      "tree"
+      "tree",
+      "form"
      ],
      "default": "list",
      "description": "A11y role and behavior (default 'list'). See the docblock above."
@@ -8268,16 +8649,6 @@
      "name": "height",
      "type": "string",
      "description": "Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap."
-    },
-    {
-     "name": "empty-text",
-     "type": "string",
-     "description": "Text for the default empty-state dialog (falls back to the Dutch i18n default). Ignored when `[slot=empty]` is filled."
-    },
-    {
-     "name": "empty-supporting-text",
-     "type": "string",
-     "description": "Supporting text for the default empty-state dialog. Ignored when `[slot=empty]` is filled."
     },
     {
      "name": "accessible-label",
@@ -8307,7 +8678,7 @@
     },
     {
      "name": "empty",
-     "description": "Shown when no items are visible (all `[hidden]` or none). Defaults to `nldd-inline-dialog` with `emp"
+     "description": "Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list shoul"
     }
    ]
   },
@@ -8405,17 +8776,17 @@
     {
      "name": "centered",
      "type": "boolean",
-     "description": "Centreert de pagination in de container (host fills row, items grouped in the middle)"
+     "description": "Centers the pagination in the container (host fills row, items grouped in the middle)"
     },
     {
      "name": "href-pattern",
      "type": "string",
-     "description": "URL patroon met {page} placeholder, rendert links in plaats van buttons"
+     "description": "URL pattern with a {page} placeholder, renders links instead of buttons"
     },
     {
      "name": "translations",
      "type": "string",
-     "description": "Vertalingen; niet opgegeven sleutels vallen terug op het Nederlands"
+     "description": "Translations; unspecified keys fall back to Dutch"
     }
    ],
    "description": "A pagination control for navigating between pages of content.",
@@ -8431,12 +8802,12 @@
     {
      "name": "text",
      "type": "string",
-     "description": "Tekst van de skip-link. Fallback naar i18n default."
+     "description": "Text of the skip link. Falls back to the i18n default."
     },
     {
      "name": "href",
      "type": "string",
-     "description": "Optioneel extern doel-ID. Zonder href springt naar eind van eigen content."
+     "description": "Optional external target id. Without href it jumps to the end of its own content."
     },
     {
      "name": "translations",
@@ -8444,7 +8815,7 @@
      "description": ""
     }
    ],
-   "description": "Accessibility-patroon dat keyboard-gebruikers toestaat om content over te slaan. Wraps content in een default slot — zonder href focust het ",
+   "description": "Accessibility pattern that lets keyboard users skip past content. Wraps content in a default slot. Without href it focuses the first element",
    "category": "navigation",
    "backend": "jinja",
    "content": {
@@ -8703,17 +9074,17 @@
     {
      "name": "active",
      "type": "boolean",
-     "description": "Toon de coach-mark. App-gestuurd; standaard false."
+     "description": "Show the coach mark. Driven by the app; false by default."
     },
     {
      "name": "text",
      "type": "string",
-     "description": "Titel van de callout."
+     "description": "Title of the callout."
     },
     {
      "name": "supporting-text",
      "type": "string",
-     "description": "Ondersteunende tekst onder de titel."
+     "description": "Supporting text under the title."
     },
     {
      "name": "placement",
@@ -8726,22 +9097,22 @@
       "auto"
      ],
      "default": "auto",
-     "description": "'auto' | 'top' | 'bottom' | 'left' | 'right' (standaard 'auto')."
+     "description": "'auto' | 'top' | 'bottom' | 'left' | 'right' (default 'auto')."
     },
     {
      "name": "dismissable",
      "type": "boolean",
-     "description": "Toon de dismiss-knop en sta sluiten toe via 1 klik/toets buiten de coach-mark. Standaard false: dan beheert de consumer "
+     "description": "Show the dismiss button and allow closing with one click or key press outside the coach mark. False by default: the cons"
     },
     {
      "name": "arrow-length",
      "type": "string",
-     "description": "Pijllengte en dus de afstand tussen card en control, als CSS-lengte (bijv. \\`333px\\`, \\`30vh\\`). Leeg = DS-standaard; on"
+     "description": "Arrow length, and therefore the distance between card and control, as a CSS length (e.g. `333px`, `30vh`). Empty = the D"
     },
     {
      "name": "no-arrow",
      "type": "boolean",
-     "description": "Verberg de pijl; de card staat dan dicht tegen het control."
+     "description": "Hide the arrow; the card then sits close against the control."
     },
     {
      "name": "translations",
@@ -8749,7 +9120,7 @@
      "description": ""
     }
    ],
-   "description": "Een guided-discovery coach-mark. Plaats een control (bijv. nldd-search-field) in de default slot; zolang `active` is gezet tilt het componen",
+   "description": "A guided-discovery coach mark. Put a control (nldd-search-field, for instance) in the default slot. While `active` is set, the component lif",
    "category": "feedback",
    "backend": "jinja",
    "content": {

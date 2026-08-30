@@ -6,8 +6,8 @@
    matching frame macro; the control — raw, theme-native markup — is the
    {% call %} body. The frames guarantee the ARIA wiring identically across
    themes: label for/id, help + error linked via id, aria-invalid on error
-   (RVO: explicit on our markup; NLDD: input-id + error-message-ids on the
-   native field, help/error text as its own child elements). #}
+   (RVO: explicit on our markup; NLDD: input-id on the native field, the help
+   text as its own child element and the error as a validation list). #}
 
 {# Everything an author hangs on a field, onto the CONTROL: the `:attrs="expr"`
    spread, plus `@event`, `data-*`, `aria-*` and `hx-*` written directly on the
@@ -82,6 +82,18 @@
 <nldd-form-field label="{{ label }}"{% if not required %} optional{% endif %} data-lotc-component="{{ kind }}">
   {{ caller() }}
   {% if help %}<nldd-form-field-help-text id="{{ id }}-help">{{ help }}</nldd-form-field-help-text>{% endif %}
-  {% if error %}<nldd-form-field-error-text id="{{ id }}-error" invalid>{{ error }}</nldd-form-field-error-text>{% endif %}
+  {# A server-side error is a requirement the value does not satisfy, and NLDD
+     0.8.84 states those as a validation list: `nldd-form-field-error-text` is
+     gone and `error-message-ids` with it.
+
+     Read out of the list's own implementation, because the manifest is
+     ambiguous about it: an item with no rule cannot judge itself, so the list
+     asks the CONTROL — `unmet` there is a space-separated list of item ids, and
+     an item is shown when the control is `invalid` AND its id is in that list.
+     So the item needs an id, the control needs `unmet` (see the field
+     templates), and `judging` is NOT set by hand: the list latches it itself
+     from the control's `invalid`. Setting `unmet` on the item does nothing —
+     the list overwrites it, and the message stays in the DOM at display:none. #}
+  {% if error %}<nldd-validation-list><nldd-validation-item id="{{ id }}-error">{{ error }}</nldd-validation-item></nldd-validation-list>{% endif %}
 </nldd-form-field>
 {%- endmacro %}

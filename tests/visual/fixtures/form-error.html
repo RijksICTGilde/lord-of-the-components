@@ -1,0 +1,9 @@
+{# Meetfixture: toont een servergerenderde veldfout in de NLDD-vorm van 0.8.84
+   (validation-list met een regelloos item). Gebruikt om te meten DAT de melding
+   zichtbaar wordt, niet hoe hij eruitziet. #}
+<c-page title="Veldfout" design-systems="lotc-layout nldd lotc-forms">
+  <div class="fixture-container" style="padding:1rem">
+    <c-text-input-field id="t1" name="t1" label="Naam" value="x" error="Dit veld is verplicht"/>
+    <c-text-input-field id="t2" name="t2" label="Zonder fout" value="ok" help="Een hulptekst"/>
+  </div>
+</c-page>

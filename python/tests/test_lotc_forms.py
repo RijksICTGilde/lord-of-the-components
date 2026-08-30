@@ -79,11 +79,32 @@ def test_rvo_aria_wiring():
 
 
 def test_nldd_aria_wiring():
+    """NLDD 0.8.84 states an error as a validation list, not as error text.
+
+    `nldd-form-field-error-text` and `error-message-ids` are both gone. The list
+    asks the CONTROL which items are unmet — `unmet` there is a space-separated
+    list of item ids — and shows an item when the control is `invalid` and its
+    id is in that list. So these three have to agree, and if they do not the
+    message sits in the DOM at display:none, which is exactly how the old
+    mechanism failed for an application before the release.
+    """
     out = render(NLDD, FULL)
     assert "nldd-form-field" in out
     assert 'input-id="voornaam"' in out
-    assert 'error-message-ids="voornaam-error"' in out
-    assert 'nldd-form-field-error-text id="voornaam-error"' in out
+    assert 'unmet="voornaam-error"' in out  # on the control
+    assert 'nldd-validation-item id="voornaam-error"' in out  # the item it names
+    assert "error-message-ids" not in out and "form-field-error-text" not in out
+
+
+def test_the_error_id_the_control_names_actually_exists():
+    """The pairing IS the mechanism: a name with no item is an invisible error."""
+    import re as _re
+
+    out = render(NLDD, FULL)
+    named = set(" ".join(_re.findall(r'unmet="([^"]*)"', out)).split())
+    items = set(_re.findall(r'<nldd-validation-item[^>]*\bid="([^"]*)"', out))
+    assert named, "no control names an unmet item"
+    assert named <= items, f"named but never rendered: {named - items}"
 
 
 def test_describedby_only_references_rendered_parts():

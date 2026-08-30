@@ -163,7 +163,7 @@ _BUTTON_ICONS_MAP = {
     'terminal': 'terminal',
     'timer': 'timer',
     'download': 'arrow-down-in-bucket',
-    'tools': 'gear',
+    'tools': 'screwdriver-wrench',
 }
 
 def button(*, type='primary', size='md', icon='', show_icon='no', color='wit', full_width=False, label='', aria_label='', disabled=False, loading=False, active=False, html_type='button', href='', target='', content=None, _extra=None, _class=''):
@@ -341,7 +341,7 @@ _ICON_ICONS_MAP = {
     'terminal': 'terminal',
     'timer': 'timer',
     'download': 'arrow-down-in-bucket',
-    'tools': 'gear',
+    'tools': 'screwdriver-wrench',
 }
 
 _ICON_SIZES_MAP = {

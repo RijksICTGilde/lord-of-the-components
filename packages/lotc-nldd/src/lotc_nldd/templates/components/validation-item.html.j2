@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-validation-item{% if _component_context.get('match') %} match="{{ _component_context.get('match') }}"{% endif %}{% if _component_context.get('minlength') %} minlength="{{ _component_context.get('minlength') }}"{% endif %}{% if _component_context.get('maxlength') %} maxlength="{{ _component_context.get('maxlength') }}"{% endif %}{% if _component_context.get('required') %} required{% endif %}{% if _component_context.get('hint') %} hint{% endif %}{% if _component_context.get('unmet') %} unmet{% endif %}{% if _component_context.get('visible') %} visible{% endif %}{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %} data-lotc-component="validation-item" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-validation-item>
+{% endmacro %}

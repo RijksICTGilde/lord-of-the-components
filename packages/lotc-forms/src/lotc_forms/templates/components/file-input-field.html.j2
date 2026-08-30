@@ -11,7 +11,7 @@
 {% set db = f.describedby(id, help, error) %}
 {% if 'nldd' in lotc_design_systems %}
 {% call f.nldd_field(id, label, help, error, required, 'file-input-field') %}
-<nldd-file-field input-id="{{ id }}" name="{{ name }}"{% if accept %} accept="{{ accept }}"{% endif %}{% if multiple %} multiple{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if error %} invalid error-message-ids="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-file-field>
+<nldd-file-field input-id="{{ id }}" name="{{ name }}"{% if accept %} accept="{{ accept }}"{% endif %}{% if multiple %} multiple{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if error %} invalid unmet="{{ id }}-error"{% endif %}{{ f.render_attrs(c) }}></nldd-file-field>
 {% endcall %}
 {% else %}
 {% call f.rvo_field(id, label, help, error, required, 'file-input-field') %}

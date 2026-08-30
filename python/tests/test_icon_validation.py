@@ -134,6 +134,9 @@ def test_nldd_own_friendly_names_are_valid():
 #: Where we knowingly draw something else than NLDD's own layer would. Each
 #: entry is a visible difference, so it needs a reason — not a silent default.
 DELIBERATE_DIVERGENCE = {
+    # `tools` lived here until 0.8.84: NLDD had no wrench, so ours borrowed
+    # `gear` and drew the same picture as `settings`. It ships a real tool glyph
+    # now, and this gate is what said so — the compromise is gone, not grown.
     # RVO draws `favoriet` as a star and we have drawn a star under NLDD too
     # since long before NLDD published its own `favorite` -> heart-filled.
     # Left as-is deliberately: nothing reported it, and flipping it changes a

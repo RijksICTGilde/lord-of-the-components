@@ -1,0 +1,7 @@
+{% import 'components/_generic_attributes.j2' as attrs %}
+{# Auto-generated from the NLDD custom-elements manifest. Do not edit by hand. #}
+{% macro lotc_render(_component_context) %}
+<nldd-validation-list{% if _component_context.get('for') %} for="{{ _component_context.get('for') }}"{% endif %}{% if _component_context.get('hint') %} hint{% endif %}{% if _component_context.get('judging') %} judging{% endif %}{% if _component_context.get('class') %} class="{{ _component_context.get('class') }}"{% endif %} data-lotc-component="validation-list" {{ attrs.render_extra_attributes(_component_context) }}>
+{{ _component_context.get('content', '') | safe }}
+</nldd-validation-list>
+{% endmacro %}

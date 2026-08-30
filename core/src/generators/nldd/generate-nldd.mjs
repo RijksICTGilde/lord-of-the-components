@@ -73,7 +73,7 @@ const CAT = { actions: "actions", content: "content", forms: "forms", inputs: "f
 
 // Build the fragment (with provenance meta) + templates in memory, so the same
 // logic backs both writing (default) and --check (compare, don't touch disk).
-export /** Upstream pointers, read from the design system's own package.json. */
+/** Upstream pointers, read from the design system's own package.json. */
 const UPSTREAM = (() => {
   const pkg = JSON.parse(
     readFileSync(resolve(ROOT, "node_modules/@nldd/design-system/package.json"), "utf8"),
@@ -87,7 +87,7 @@ const UPSTREAM = (() => {
   };
 })();
 
-function buildOutputs() {
+export function buildOutputs() {
 const fragment = [];
 const templates = new Map();
 for (const el of els) {
