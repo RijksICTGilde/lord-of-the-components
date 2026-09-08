@@ -18,15 +18,40 @@ const CEM = JSON.parse(readFileSync(resolve(ROOT, "node_modules/@nldd/design-sys
 // Provenance: the exact NLDD version this fragment is generated from.
 const NLDD_VERSION = JSON.parse(readFileSync(resolve(ROOT, "node_modules/@nldd/design-system/package.json"), "utf8")).version;
 const CORE_REG = JSON.parse(readFileSync(resolve(ROOT, "python/src/lord_of_the_components/registry.json"), "utf8"));
-// Resolve NLDD union-type aliases (AvatarSize = '' | 'md' | …) from the .d.ts so enum
-// attributes get validated values, not free strings.
+// Resolve NLDD's value vocabularies from the .d.ts, so enum attributes get
+// validated values instead of free strings. Three shapes, because 0.8.86 moved
+// from the first to the last two without changing a single value:
+//
+//   type AvatarSize = '' | 'md' | …                      a plain union
+//   const SPACING_SCALE: readonly ["0", "2", …]          a const list
+//   type SpacingSize = (typeof SPACING_SCALE)[number]    derived from that list
+//   type PaddingSize = SpacingSize                       an alias to an alias
+//
+// Reading only the first shape left every padding and gap attribute a free
+// string again — the exact regression this map exists to prevent — and the
+// values were identical, so nothing would have looked wrong until something
+// invalid sailed through.
 function buildEnums() {
   const walk = (dir, acc = []) => { for (const f of readdirSync(dir)) { const p = resolve(dir, f); const st = statSync(p); if (st.isDirectory()) walk(p, acc); else if (f.endsWith(".d.ts")) acc.push(p); } return acc; };
   const map = {};
-  const re = /(?:export )?(?:declare )?type ([A-Z][A-Za-z0-9]+) = ((?:'[^']*' ?\| ?)*'[^']*');/g;
+  const aliases = {};
+  const union = /(?:export )?(?:declare )?type ([A-Z][A-Za-z0-9]+) = ((?:'[^']*' ?\| ?)*'[^']*');/g;
+  const constList = /(?:export )?declare const ([A-Z][A-Z0-9_]+): readonly \[([^\]]*)\];/g;
+  const derived = /(?:export )?type ([A-Z][A-Za-z0-9]+) = \(typeof ([A-Z][A-Z0-9_]+)\)\[number\];/g;
+  const plainAlias = /(?:export )?type ([A-Z][A-Za-z0-9]+) = ([A-Z][A-Za-z0-9]+);/g;
   for (const f of walk(resolve(ROOT, "node_modules/@nldd/design-system/dist"))) {
     const src = readFileSync(f, "utf8"); let m;
-    while ((m = re.exec(src))) { const vals = m[2].split("|").map((v) => v.trim().replace(/^'|'$/g, "")).filter((v) => v !== ""); if (vals.length) map[m[1]] = [...new Set([...(map[m[1]] || []), ...vals])]; }
+    while ((m = union.exec(src))) { const vals = m[2].split("|").map((v) => v.trim().replace(/^'|'$/g, "")).filter((v) => v !== ""); if (vals.length) map[m[1]] = [...new Set([...(map[m[1]] || []), ...vals])]; }
+    while ((m = constList.exec(src))) { const vals = m[2].split(",").map((v) => v.trim().replace(/^["']|["']$/g, "")).filter(Boolean); if (vals.length) map[m[1]] = vals; }
+    while ((m = derived.exec(src))) aliases[m[1]] = m[2];
+    while ((m = plainAlias.exec(src))) aliases[m[1]] = m[2];
+  }
+  // Follow the chains (PaddingSize -> SpacingSize -> SPACING_SCALE). Bounded, so
+  // a circular alias cannot spin here.
+  for (let pass = 0; pass < 5; pass++) {
+    for (const [name, target] of Object.entries(aliases)) {
+      if (!map[name] && map[target]) map[name] = map[target];
+    }
   }
   return map;
 }

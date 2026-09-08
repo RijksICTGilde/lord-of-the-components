@@ -42,13 +42,44 @@ def render():
     return lambda src: env.from_string(src).render()
 
 
-def _padding_sizes():
-    """NLDD's PaddingSize union, read from its own type declarations."""
+def _declared_values():
+    """Every value vocabulary NLDD declares, by name.
+
+    Three shapes, because 0.8.86 moved between them without changing a value:
+    a plain union, a `readonly [...]` const list, and a type derived from that
+    list — plus aliases to aliases (`PaddingSize = SpacingSize`). Reading only
+    unions made this come back empty, which is what the sanity check below is
+    for: an empty set would make every check in this file vacuously true.
+    """
+    values, aliases = {}, {}
     for declaration in TYPES.rglob("*.d.ts"):
-        match = re.search(r"PaddingSize\s*=\s*([^;]+)", declaration.read_text(encoding="utf-8"))
-        if match and "|" in match.group(1):
-            return {v.strip().strip("'\"") for v in match.group(1).split("|")}
-    return set()
+        text = declaration.read_text(encoding="utf-8")
+        for match in re.finditer(
+            r"type ([A-Z][A-Za-z0-9]+) = ((?:'[^']*' ?\| ?)*'[^']*');", text
+        ):
+            values[match.group(1)] = [v.strip().strip("'") for v in match.group(2).split("|")]
+        for match in re.finditer(
+            r"declare const ([A-Z][A-Z0-9_]+): readonly \[([^\]]*)\];", text
+        ):
+            values[match.group(1)] = [
+                v.strip().strip("\"'") for v in match.group(2).split(",") if v.strip()
+            ]
+        for pattern in (
+            r"type ([A-Z][A-Za-z0-9]+) = \(typeof ([A-Z][A-Z0-9_]+)\)\[number\];",
+            r"type ([A-Z][A-Za-z0-9]+) = ([A-Z][A-Za-z0-9]+);",
+        ):
+            for match in re.finditer(pattern, text):
+                aliases[match.group(1)] = match.group(2)
+    for _ in range(5):  # follow the chains, bounded
+        for name, target in aliases.items():
+            if name not in values and target in values:
+                values[name] = values[target]
+    return values
+
+
+def _padding_sizes():
+    """The set `gap` and `padding` are checked against."""
+    return set(_declared_values().get("PaddingSize", []))
 
 
 def test_padding_sizes_were_found():
@@ -94,14 +125,8 @@ def test_a_named_union_becomes_an_enum_not_a_free_string():
     PaddingSize to `normal`: no spacing, no error (RIG-Cluster, RC-151).
     """
     manifest = json.loads(CEM.read_text(encoding="utf-8"))
-    unions = {}
-    for declaration in TYPES.rglob("*.d.ts"):
-        for match in re.finditer(
-            r"type ([A-Z][A-Za-z0-9]+) = ((?:'[^']*' ?\| ?)*'[^']*');",
-            declaration.read_text(encoding="utf-8"),
-        ):
-            unions[match.group(1)] = [v.strip().strip("'") for v in match.group(2).split("|")]
-    assert "PaddingSize" in unions, "the union types were not parsed"
+    unions = _declared_values()
+    assert "PaddingSize" in unions, "the value vocabularies were not parsed"
 
     registry = json.loads((PACKAGES / "lotc-nldd/src/lotc_nldd/registry.json").read_text(encoding="utf-8"))
     ours = {c["name"]: {a["name"]: a for a in c["attributes"]} for c in registry["components"]}

@@ -1,6 +1,6 @@
 {
  "meta": {
-  "nldd_version": "0.8.85",
+  "nldd_version": "0.8.86",
   "components": 100,
   "upstream_repository": "https://github.com/MinBZK/storybook",
   "storybook_url": "https://minbzk.github.io/storybook/"
@@ -2198,12 +2198,31 @@
     },
     {
      "name": "keyboard",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "text",
+      "decimal",
+      "numeric",
+      "tel",
+      "search",
+      "email",
+      "url"
+     ],
      "description": "Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'te"
     },
     {
      "name": "enter-key",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "enter",
+      "done",
+      "go",
+      "next",
+      "previous",
+      "search",
+      "send"
+     ],
      "description": "What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previo"
     },
     {
@@ -3206,12 +3225,31 @@
     },
     {
      "name": "keyboard",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "text",
+      "decimal",
+      "numeric",
+      "tel",
+      "search",
+      "email",
+      "url"
+     ],
      "description": "Which virtual keyboard a phone or tablet raises, forwarded as `inputmode`: 'none' | 'text' | 'decimal' | 'numeric' | 'te"
     },
     {
      "name": "enter-key",
-     "type": "string",
+     "type": "enum",
+     "enum_values": [
+      "enter",
+      "done",
+      "go",
+      "next",
+      "previous",
+      "search",
+      "send"
+     ],
      "description": "What the Enter key of the virtual keyboard says, forwarded as `enterkeyhint`: 'enter' | 'done' | 'go' | 'next' | 'previo"
     },
     {
@@ -3745,14 +3783,14 @@
      "enum_values": [
       "grid",
       "stack",
+      "lanes",
       "horizontal-scroll",
       "row",
       "wrap",
-      "columns",
-      "lanes"
+      "columns"
      ],
      "default": "grid",
-     "description": "Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')"
+     "description": "Layout mode: 'grid' | 'stack' | 'lanes' | 'horizontal-scroll' (default: 'grid')"
     },
     {
      "name": "show-load-more",
@@ -3772,12 +3810,111 @@
     {
      "name": "item-width",
      "type": "string",
-     "description": "Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be "
+     "description": "Preferred width for each item (e.g. '280px', '20rem'). In grid and lanes layouts used as the minimum column width (colum"
     },
     {
      "name": "gap",
-     "type": "string",
-     "description": "Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps"
+     "type": "enum",
+     "enum_values": [
+      "0",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
+     "description": "Gap between items, as a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '4"
+    },
+    {
+     "name": "sm-gap",
+     "type": "enum",
+     "enum_values": [
+      "0",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
+     "description": "Gap at sm, overriding `gap` there"
+    },
+    {
+     "name": "md-gap",
+     "type": "enum",
+     "enum_values": [
+      "0",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
+     "description": "Gap at md, overriding `gap` there"
+    },
+    {
+     "name": "lg-gap",
+     "type": "enum",
+     "enum_values": [
+      "0",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "16",
+      "20",
+      "24",
+      "28",
+      "32",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96"
+     ],
+     "description": "Gap at lg, overriding `gap` there"
     },
     {
      "name": "translations",
@@ -3785,7 +3922,7 @@
      "description": "Translation overrides; unset keys fall back to Dutch. Available keys: 'components.collection.previous-action', 'componen"
     }
    ],
-   "description": "A container for displaying collections of items. Supports grid, stack, and horizontal scroll layouts. In grid and stack modes, items are pag",
+   "description": "A container for displaying collections of items. Supports grid, stack, lanes and horizontal scroll layouts. In grid and stack modes, items a",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -3807,11 +3944,11 @@
      "enum_values": [
       "grid",
       "stack",
+      "lanes",
       "horizontal-scroll",
       "row",
       "wrap",
-      "columns",
-      "lanes"
+      "columns"
      ],
      "description": "'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes' (default: 'stack')"
     },
@@ -8549,9 +8686,14 @@
      "description": "Makes the whole row a `role=\"checkbox\"` control. Wins over `button`, loses to `href`."
     },
     {
+     "name": "radio",
+     "type": "boolean",
+     "description": "Makes the whole row one radio of a group: the action becomes a `role=\"radio\"` button carrying `aria-checked`, and activa"
+    },
+    {
      "name": "checked",
      "type": "boolean",
-     "description": "Checked state of a `checkbox` row; the item toggles it on activation"
+     "description": "Checked state of a `checkbox` or `radio` row. A checkbox row toggles it on activation, a radio row only ever sets it"
     },
     {
      "name": "disabled",
@@ -8624,7 +8766,8 @@
       "navigation",
       "listbox",
       "tree",
-      "form"
+      "form",
+      "radiogroup"
      ],
      "default": "list",
      "description": "A11y role and behavior (default 'list'). See the docblock above."
@@ -8678,7 +8821,11 @@
     },
     {
      "name": "empty",
-     "description": "Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list shoul"
+     "description": "Shown when the list has no items at all. Empty by default: what an empty list should say is the app'"
+    },
+    {
+     "name": "no-results",
+     "description": "Shown when the list has items but every one of them is `[hidden]`, which is what consumer-driven fil"
     }
    ]
   },

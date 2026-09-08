@@ -376,10 +376,10 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-layer>` — Platform-layer row: icon tile, title + count, sub, and chip content
   <br>attrs: `icon`, `title`, `count`, `sub`, `href`
 - `<c-list>` — A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list
-  <br>attrs: `variant` (simple\|box-tinted\|box-base), `type` (list\|navigation\|listbox\|tree\|form), `reorderable` (bool), `dividers` (always\|on-touch\|never), `height`, `accessible-label`, `translations`
-  <br>slots: `toolbar` — Controls below the search field (filters, sort, counts, view…; `search-bar-end` — Controls inline at the end of the search bar, beside the…; `empty` — Shown when no items are visible (all `[hidden]` or none).…
+  <br>attrs: `variant` (simple\|box-tinted\|box-base), `type` (list\|navigation\|listbox\|tree\|form\|radiogroup), `reorderable` (bool), `dividers` (always\|on-touch\|never), `height`, `accessible-label`, `translations`
+  <br>slots: `toolbar` — Controls below the search field (filters, sort, counts, view…; `search-bar-end` — Controls inline at the end of the search bar, beside the…; `empty` — Shown when the list has no items at all. Empty by default:…; `no-results` — Shown when the list has items but every one of them is…
 - `<c-list-item>` — A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, o
-  <br>attrs: `size` (sm\|md), `selected` (bool), `current` (bool), `button` (bool), `checkbox` (bool), `checked` (bool), `disabled` (bool), `expanded`, +5
+  <br>attrs: `size` (sm\|md), `selected` (bool), `current` (bool), `button` (bool), `checkbox` (bool), `radio` (bool), `checked` (bool), `disabled` (bool), +6
   <br>slots: `children` — Child rows of a branch in an `nldd-list type="tree"`.…
 - `<c-list-item-segment>` — A segment inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one segm
   <br>attrs: `button` (bool), `href`, `target`, `rel`, `checkbox` (bool), `checked` (bool), `expanded`, `disclosure` (bool), +4

@@ -5,6 +5,7 @@
 {% if _component_context.get('slots', {}).get('toolbar') %}<div slot="toolbar">{{ _component_context['slots']['toolbar'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('search-bar-end') %}<div slot="search-bar-end">{{ _component_context['slots']['search-bar-end'] | safe }}</div>{% endif %}
 {% if _component_context.get('slots', {}).get('empty') %}<div slot="empty">{{ _component_context['slots']['empty'] | safe }}</div>{% endif %}
+{% if _component_context.get('slots', {}).get('no-results') %}<div slot="no-results">{{ _component_context['slots']['no-results'] | safe }}</div>{% endif %}
 {{ _component_context.get('content', '') | safe }}
 </nldd-list>
 {% endmacro %}
