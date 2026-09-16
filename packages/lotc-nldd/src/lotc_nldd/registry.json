@@ -1,6 +1,6 @@
 {
  "meta": {
-  "nldd_version": "0.8.86",
+  "nldd_version": "0.8.88",
   "components": 100,
   "upstream_repository": "https://github.com/MinBZK/storybook",
   "storybook_url": "https://minbzk.github.io/storybook/"
@@ -274,7 +274,7 @@
     {
      "name": "tooltip-timing",
      "type": "string",
-     "description": "Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visua"
+     "description": "Forwarded to the inner nldd-tooltip's `timing`: 'delay' (the default, a 700 ms show-delay), 'instant', or 'never' (suppr"
     },
     {
      "name": "href",
@@ -666,17 +666,18 @@
       "80",
       "96"
      ],
-     "description": "`full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 4"
+     "default": "full",
+     "description": "`full` (the default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 3"
     },
     {
      "name": "color",
      "type": "enum",
      "enum_values": [
-      "default",
+      "neutral",
       "inherit"
      ],
-     "default": "default",
-     "description": "`default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColo"
+     "default": "neutral",
+     "description": "`neutral` (the default, a neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, "
     },
     {
      "name": "icon-aligned",
@@ -721,7 +722,7 @@
     {
      "name": "tooltip-timing",
      "type": "string",
-     "description": "When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An av"
+     "description": "When the name appears as a tooltip on hover or focus: `delay` (the default, after 700ms), `instant`, or `never`. An avat"
     },
     {
      "name": "href",
@@ -1065,7 +1066,7 @@
       "groen",
       "mosgroen",
       "mintgroen",
-      "default",
+      "content",
       "secondary"
      ],
      "default": "neutral",
@@ -1112,7 +1113,7 @@
     {
      "name": "color",
      "type": "string",
-     "description": "'inherit' lets all text follow the color of the surface (for colored areas such as the filled categories). Links stay un"
+     "description": "'content' (the default) takes the system's own content colors, each element its own. 'inherit' lets all text follow the "
     },
     {
      "name": "translations",
@@ -1214,11 +1215,11 @@
       "groen",
       "mosgroen",
       "mintgroen",
-      "default",
+      "content",
       "secondary"
      ],
-     "default": "default",
-     "description": "Text color: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit' (default: 'default'). 'd"
+     "default": "content",
+     "description": "Text color: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit'. 'content'"
     },
     {
      "name": "horizontal-alignment",
@@ -1279,9 +1280,11 @@
      "name": "color",
      "type": "enum",
      "enum_values": [
+      "content",
       "inherit"
      ],
-     "description": "'inherit' lets the title follow the text color of the surface (for colored areas such as the filled categories); overlin"
+     "default": "content",
+     "description": "'content' (the default) takes the system's own content colors. 'inherit' lets the title follow the text color of the sur"
     }
    ],
    "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.",
@@ -1394,11 +1397,11 @@
      "type": "enum",
      "enum_values": [
       "instant",
-      "default",
+      "delay",
       "never"
      ],
-     "default": "default",
-     "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show del"
+     "default": "delay",
+     "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'delay' (the default) — after the stand"
     }
    ],
    "description": "A wrapper that shows a tooltip on hover or focus of its child element. It uses `display: contents`, so it does not affect the child's layout",
@@ -3153,9 +3156,11 @@
     "getSelection",
     "getState",
     "indent",
+    "insertAtCursor",
     "outdent",
     "paste",
     "redo",
+    "replaceRange",
     "runCommand",
     "setCustomValidity",
     "setHeading",
@@ -3169,6 +3174,7 @@
     "toggleLink",
     "toggleQuote",
     "toggleStrikethrough",
+    "toggleTaskList",
     "undo",
     "validationTarget"
    ]
@@ -7330,11 +7336,6 @@
      "description": "Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `"
     },
     {
-     "name": "modeless",
-     "type": "boolean",
-     "description": "Non-modal (no backdrop or focus lock); the sheet is modal by default"
-    },
-    {
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible name for the dialog, forwarded as aria-label (default: 'Venster')"
@@ -7709,11 +7710,6 @@
    "name": "window",
    "attributes": [
     {
-     "name": "modeless",
-     "type": "boolean",
-     "description": "Modeless (no backdrop or focus trap); the window is modal by default"
-    },
-    {
      "name": "no-light-dismiss",
      "type": "boolean",
      "description": "A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form"
@@ -7775,7 +7771,7 @@
      "description": "Color scheme (default 'inherit')."
     }
    ],
-   "description": "A floating window based on the native <dialog> element. Can be shown modal or modeless. Positionable through CSS values. No header of its ow",
+   "description": "A floating window based on the native <dialog> element, positionable through CSS values. Always modal. No header of its own: consumers use n",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -8035,11 +8031,11 @@
       "groen",
       "mosgroen",
       "mintgroen",
-      "default",
+      "content",
       "secondary"
      ],
-     "default": "default",
-     "description": "Color variant of the icon (default: 'default')"
+     "default": "content",
+     "description": "Color variant of the icon (default: 'content')"
     },
     {
      "name": "icon",
@@ -8182,11 +8178,11 @@
       "groen",
       "mosgroen",
       "mintgroen",
-      "default",
+      "content",
       "secondary"
      ],
-     "default": "default",
-     "description": "Text color variant: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' (default: 'default'). All no"
+     "default": "content",
+     "description": "Text color variant: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'. All variants "
     },
     {
      "name": "width",
@@ -8465,11 +8461,11 @@
       "groen",
       "mosgroen",
       "mintgroen",
-      "default",
+      "content",
       "secondary"
      ],
-     "default": "default",
-     "description": "Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `acc"
+     "default": "content",
+     "description": "Text color variant (default: 'content'). `secondary` demotes the title to match the muted overline/supporting-text. `acc"
     },
     {
      "name": "width",
@@ -8762,6 +8758,10 @@
      "name": "type",
      "type": "enum",
      "enum_values": [
+      "none",
+      "bullet",
+      "ordered",
+      "task",
       "list",
       "navigation",
       "listbox",
@@ -9053,11 +9053,11 @@
      "name": "timing",
      "type": "enum",
      "enum_values": [
-      "default",
+      "delay",
       "instant"
      ],
-     "default": "default",
-     "description": "'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'defa"
+     "default": "delay",
+     "description": "'delay' (the default) waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays)."
     },
     {
      "name": "complete",
@@ -9200,6 +9200,11 @@
      "name": "heading-level",
      "type": "string",
      "description": "Renders text as h1–h6; absent renders a p"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "string",
+     "description": "Overrides the alignment of text, icon and actions. Unset (the default) derives it: content in the default slot means a t"
     }
    ],
    "description": "An inline status component for empty state, confirmations and feedback. Fills the container and has no minimum width.",
@@ -9299,6 +9304,11 @@
      "name": "supporting-text",
      "type": "string",
      "description": "Forwarded to nldd-inline-dialog; supporting text"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "string",
+     "description": "Forwarded to nldd-inline-dialog. Unset derives it there: slotted content aligns left, a bare message stays centered."
     },
     {
      "name": "accessible-label",
