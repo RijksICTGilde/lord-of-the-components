@@ -51,3 +51,14 @@ and names the stale files.
 semantic name (`SEMANTIC_DUPES` in `generate-nldd.mjs`), and any `lotc-nldd`
 template that lacks the `Auto-generated…` marker (hand-authored — never
 overwritten). So hand-tuned bindings survive a regenerate untouched.
+
+## For applications that consume LOTC
+
+Adopting a bump here is not always a drop-in for a consumer: an NLDD release can
+remove an attribute or rewire markup an application reaches into. When a span of
+bumps carries such a change, it gets an upgrade note in `docs/`, written from the
+consumer's pin forward:
+
+| From | Note |
+| --- | --- |
+| `d19c7a5` (NLDD 0.8.83) | [`docs/UPGRADEN-VANAF-d19c7a5.md`](docs/UPGRADEN-VANAF-d19c7a5.md) — secret-field markup, field-error rewiring, `default` removed as a value, new asset files |
