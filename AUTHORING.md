@@ -12,7 +12,7 @@ setup_components(env, design_systems=["lotc-layout", "nldd"])
 ```
 Rules: components resolve to the **first** active system that implements them; `lotc-layout` owns the structural primitives, `nldd` the visual components. Swap `nldd`→`rvo` to retarget the same markup.
 
-**Looking a component up.** The design system publishes a Storybook — https://minbzk.github.io/storybook/ — with a story per component: what it does, its slots, its variants. It answers "can this component do X" faster than any list here. The address travels in lotc-nldd's `registry.json` under `meta.storybook_url`, because pip installs neither the design system's package.json nor node_modules, which is where it was hiding. Note the stories are grouped by category, so a component without its own story (`toolbar-title`) sits under its group (Components/Actions/Toolbar).
+**Looking a component up.** The design system publishes a Storybook — https://nederlandsedigitaledienst.github.io/design-system/ — with a story per component: what it does, its slots, its variants. It answers "can this component do X" faster than any list here. The address travels in lotc-nldd's `registry.json` under `meta.storybook_url`, because pip installs neither the design system's package.json nor node_modules, which is where it was hiding. Note the stories are grouped by category, so a component without its own story (`toolbar-title`) sits under its group (Components/Actions/Toolbar).
 
 **Look at the slots, not only the attributes.** "Can this component do X" is answered by both. `nldd-toolbar-title` carries no logo attribute, but its `media` slot is documented for exactly that — put the mark in as a DIRECT child (`<img slot="media" …>`), not via `<template slot="media">`, which wraps it in a `<div>` and caps that instead of the image. The coat of arms ships as a file at `/static/lotc/nldd/rijkswapen.svg`, lifted out of the pinned bundle so it cannot drift from the one NLDD draws (using it is an entitlement question: the Rijkshuisstijl governs who may show the arms).
 
@@ -248,14 +248,14 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `name`, `value`, `label`, `checked` (bool), `disabled` (bool), `required` (bool)
 - `<c-code-editor>` — A monospace editor for code, YAML, JSON and other technical content, built on CodeMirror 6 (via NLDDCodeMirrorElement). Visually pairs with 
   <br>attrs: `value`, `input-id`, `placeholder`, `disabled` (bool), `name`, `readonly` (bool), `required` (bool), `wrap` (bool), +7
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-combo-box>` — A text input with autocomplete dropdown via nldd-menu. Add a slotted nldd-menu with nldd-menu-item children to provide options. The slotted 
   <br>attrs: `value`, `text`, `placeholder`, `size` (sm\|md), `valid` (bool), `invalid` (bool), `disabled` (bool), `readonly` (bool), +12
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-date-field>` — A text field for a date, with an optional calendar in a popover. The value is always ISO (yyyy-mm-dd); on screen it shows the Dutch notation
   <br>attrs: `size`, `value`, `range` (bool), `min`, `max`, `no-picker` (bool), `input-id`, `placeholder`, +10
   <br>slots: `picker` — Your own nldd-date-picker instead of the default calendar.…
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-date-picker>` — A calendar for picking a date or a period. The component works on its own (inline on a page, in a filter panel) and also sits in the popover
   <br>attrs: `value`, `start`, `end`, `width`, `range` (bool), `min`, `max`, `first-day-of-week`, +4
   <br>methods: JavaScript only: `describedTarget()`
@@ -264,7 +264,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>methods: JavaScript only: `describedTarget()`
 - `<c-file-field>` — A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss b
   <br>attrs: `size`, `accept`, `multiple` (bool), `accessible-label`, `input-id`, `valid` (bool), `invalid` (bool), `disabled` (bool), +3
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-form>` — Nederlandse Digitale Dienst Form Component Plain custom element (extends HTMLElement, no Lit), required for light-DOM autofill. Renders a re
   <br>attrs: `label-alignment`
 - `<c-form-actions>` — A layout wrapper for the action buttons at the bottom of a form (typically a submit button or a button group). Follows the same responsive l
@@ -276,28 +276,28 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `text`, `supporting-text`
 - `<c-multi-line-text-field>` — NLDD multi-line-text-field
   <br>attrs: `size`, `value`, `input-id`, `placeholder`, `invalid` (bool), `valid` (bool), `disabled` (bool), `name`, +12
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-number-field>` — A numeric input field with decrement and increment buttons.
   <br>attrs: `value`, `min`, `max`, `step`, `size` (sm\|md), `disabled` (bool), `name`, `width`, +4
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-option>` — A single option for a select; label via prop or content
   <br>attrs: `value`, `label`, `selected` (bool), `disabled` (bool)
 - `<c-password-field>` — A password input field with visibility toggle and validation states.
   <br>attrs: `size`, `value`, `input-id`, `placeholder`, `valid` (bool), `invalid` (bool), `disabled` (bool), `masked` (bool), +13
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-radio>` — Single radio button with a label
   <br>attrs: `name`, `value`, `label`, `checked` (bool), `disabled` (bool), `required` (bool)
-- `<c-radio-button>` — WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="radiogroup" and aria-labelledby for proper group semantics. 
-  <br>attrs: `checked` (bool), `decorative` (bool), `disabled` (bool), `no-tab` (bool), `required` (bool), `name`, `value`, `accessible-label`, +1
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `select()`, `setCustomValidity()`, `validationTarget()`
+- `<c-radio-button>` — WAI-ARIA: put the buttons of one group in a container with role="radiogroup" and a name of its own. A screen reader counts the options from 
+  <br>attrs: `checked` (bool), `decorative` (bool), `disabled` (bool), `no-tab` (bool), `required` (bool), `focus-ring` (bool), `name`, `value`, +2
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `select()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-radio-button-group>` — Groups nldd-radio-button-field elements, handles keyboard navigation, and forwards name and disabled state to all child fields. Use inside n
   <br>attrs: `name`, `disabled` (bool), `required` (bool), `accessible-label`, `accessible-labeled-by`, `invalid` (bool)
 - `<c-search-field>` — A search input with a leading search icon, an optional dismiss button, and an optional search button.
   <br>attrs: `value`, `placeholder`, `accessible-label`, `size` (sm\|md), `disabled` (bool), `name`, `show-search-button` (bool), `translations`, +7
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-segmented-control>` — A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options. Exports both NLDDSegmentedControl and NLDDSegmentedCont
   <br>attrs: `required` (bool), `invalid` (bool), `value`, `size` (sm\|md\|lg), `type` (radio\|checkbox), `variant` (text\|icon\|icon-and-text), `disabled` (bool), `width`, +3
-  <br>methods: JavaScript only: `commitValidity()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-segmented-control-item>` — NLDD segmented-control-item
   <br>attrs: `required` (bool), `value`, `selected` (bool), `disabled` (bool), `size` (sm\|md\|lg), `variant` (text\|icon\|icon-and-text), `input-type` (radio\|checkbox), `group-name`, +2
   <br>slots: `icon` — Slot for a custom icon (e.g. custom SVG). Only used when…
@@ -305,19 +305,19 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `name`, `value`, `placeholder`, `disabled` (bool), `required` (bool)
 - `<c-stepper>` — A numeric control with increment and decrement buttons.
   <br>attrs: `value`, `min`, `max`, `step`, `disabled` (bool), `size` (xs\|sm\|md), `name`, `accessible-label`, +2
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-switch>` — A toggle control for on/off settings. Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label. Direct use o
   <br>attrs: `name`, `checked` (bool), `disabled` (bool), `no-tab` (bool), `size` (xs\|sm), `accessible-label`, `value`, `required` (bool), +1
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `toggle()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `toggle()`, `validationAnchor()`, `validationTarget()`
 - `<c-switch-field>` — A switch toggle with an inline label for use in forms.
   <br>attrs: `checked` (bool), `disabled` (bool), `value`, `name`, `label`, `required` (bool), `invalid` (bool)
   <br>methods: JavaScript only: `describedTarget()`
 - `<c-text-editor>` — A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown 
   <br>attrs: `value`, `input-id`, `placeholder`, `disabled` (bool), `name`, `readonly` (bool), `required` (bool), `wrap` (bool), +7
-  <br>methods: JavaScript only: `clearHistory()`, `commitValidity()`, `copy()`, `cut()`, `describedTarget()`, `getAnnotations()`, `getSelection()`, `getState()`, `indent()`, `insertAtCursor()`, `outdent()`, `paste()`, `redo()`, `replaceRange()`, `runCommand()`, `setCustomValidity()`, `setHeading()`, `setList()`, `toggleBold()`, `toggleBulletList()`, `toggleCodeBlock()`, `toggleHeading()`, `toggleInlineCode()`, `toggleItalic()`, `toggleLink()`, `toggleQuote()`, `toggleStrikethrough()`, `toggleTaskList()`, `undo()`, `validationTarget()`
+  <br>methods: JavaScript only: `clearHistory()`, `commitValidity()`, `copy()`, `cut()`, `describedTarget()`, `getAnnotations()`, `getSelection()`, `getState()`, `indent()`, `insertAtCursor()`, `outdent()`, `paste()`, `redo()`, `replaceRange()`, `runCommand()`, `setCustomValidity()`, `setHeading()`, `setList()`, `toggleBold()`, `toggleBulletList()`, `toggleCodeBlock()`, `toggleHeading()`, `toggleInlineCode()`, `toggleItalic()`, `toggleLink()`, `toggleQuote()`, `toggleStrikethrough()`, `toggleTaskList()`, `undo()`, `validationAnchor()`, `validationTarget()`
 - `<c-text-field>` — NLDD text-field
   <br>attrs: `size`, `value`, `input-id`, `placeholder`, `invalid` (bool), `valid` (bool), `disabled` (bool), `type` (text\|email\|tel\|url), +12
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-text-input>` — Single-line text input
   <br>attrs: `type` (text\|password\|email\|tel\|url\|search\|number\|date\|time\|datetime-local\|file), `name`, `value`, `placeholder`, `autocomplete`, `disabled` (bool), `required` (bool), `readonly` (bool)
 - `<c-textarea>` — Multi-line text input
@@ -325,20 +325,20 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-time-field>` — A text field for a time. The value is always 24-hour `HH:mm`, which is how Dutch shows it too, so unlike nldd-date-field there is nothing to
   <br>attrs: `size`, `value`, `min`, `max`, `step`, `no-picker` (bool), `input-id`, `placeholder`, +10
   <br>slots: `picker` — Your own nldd-time-picker instead of the default one. The…
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-time-picker>` — Two columns, hours and minutes, that slide like a wheel past the selection in the middle. The component works on its own (inline on a page, 
   <br>attrs: `value`, `min`, `max`, `step`, `rows`, `width`, `accessible-label`, `translations`, +1
   <br>methods: JavaScript only: `describedTarget()`, `scrollSelectedIntoView()`
-- `<c-toggle-button>` — A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.
+- `<c-toggle-button>` — A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), a checkbox, or a radio. In radio mod
   <br>attrs: `required` (bool), `type` (button\|checkbox\|radio), `size` (xs\|sm\|md\|lg), `selected` (bool), `disabled` (bool), `no-tab` (bool), `value`, `name`, +5
   <br>slots: `icon` — Slot for a custom icon (e.g. custom SVG). Only used when…
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `toggle()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `toggle()`, `validationAnchor()`, `validationTarget()`
 - `<c-toggle-button-group>` — Groups nldd-toggle-button elements and manages selection, keyboard navigation, and forwarding of type, name, size, and disabled state to all
   <br>attrs: `required` (bool), `type` (button\|checkbox\|radio), `name`, `size` (xs\|sm\|md\|lg), `disabled` (bool), `accessible-label`, `accessible-labeled-by`, `invalid` (bool)
 - `<c-token-field>` — A multi-select input that looks like a normal input field: chosen values show as dismissible tokens in a wrapping row, followed by an inline
   <br>attrs: `values`, `placeholder`, `type`, `autocomplete`, `accessible-label`, `allow-custom` (bool), `valid` (bool), `invalid` (bool), +7
   <br>slots: `template` — `nldd-token` prototypes supplying each token's action menu…
-  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationTarget()`
+  <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-validation-item>` — NLDD validation-item
   <br>attrs: `match`, `minlength`, `maxlength`, `required` (bool), `hint` (bool), `unmet` (bool), `visible` (bool)
   <br>methods: JavaScript only: `test()`
