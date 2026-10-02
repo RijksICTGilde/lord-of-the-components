@@ -58,11 +58,18 @@ export default defineConfig({
     },
   ],
 
-  /* Start the Python visual test server before running tests */
+  /* Start the Python visual test server before running tests.
+   *
+   * Through `uv run`, not a bare `python`: serve.py imports the design-system
+   * packages, which only exist in the project venv. A bare `python` died with
+   * "Unknown design system 'lotc-layout' … (none installed)", so the suite only
+   * ever ran against a server someone had started by hand — and with
+   * reuseExistingServer that failure is invisible as long as one is up.
+   * `cwd` is the config dir, hence --project on the python package. */
   webServer: {
-    command: 'python serve.py --port 5555',
+    command: 'uv run --project ../../python python serve.py --port 5555',
     url: 'http://localhost:5555',
     reuseExistingServer: !process.env.CI,
-    timeout: 10000,
+    timeout: 60000,
   },
 });

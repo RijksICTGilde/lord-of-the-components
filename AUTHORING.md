@@ -41,17 +41,27 @@ Named slots are filled with `<template slot="name">…</template>`; anything els
 
 ### Opening a sheet, dialog or popover
 
-6 components have no attribute that opens them — the design system exposes it as a **method**. Rendering the markup is not enough; something has to call it. The *state* can still come from the server (render the sheet only when it should be open); the *opening* is one line of JavaScript.
+6 components open as overlays, and they do not all open the same way. Rendering the markup is never enough on its own — something has to put them in the open state.
+
+**4 take an `open` attribute**, so server-rendered state is enough: render it with `open` and it is open on first paint. The method still works and reflects back into the attribute.
+
+```html
+<c-sheet accessible-label="Details" open> … </c-sheet>   <!-- open on load -->
+```
+- `<c-modal-dialog>` — `open`, or `hide()`, `show()`
+- `<c-popover>` — `open`, or `hide()`, `reposition()`, `show()`, `toggle()`
+- `<c-sheet>` — `open`, or `hide()`, `show()`
+- `<c-window>` — `open`, or `hide()`, `show()`
+
+**2 have no attribute that opens them** — the design system exposes it as a **method** only. The *state* can still come from the server (render it only when it should be open); the *opening* is one line of JavaScript.
 
 ```js
-document.getElementById("my-sheet").show();   // not show="true", not el.show = true
+document.getElementById("my-panel").show();   // not show="true", not el.show = true
 ```
-- `<c-modal-dialog>` — `hide()`, `show()`
 - `<c-navigation-split-view>` — `hideInspectorSheet()`, `hidePrimarySidebarSheet()`, `hideSidebarSheet()`, `showInspectorSheet()`, `showPrimarySidebarSheet()`, `showSidebarSheet()`
-- `<c-popover>` — `hide()`, `reposition()`, `show()`, `toggle()`
-- `<c-sheet>` — `hide()`, `show()`
 - `<c-sidebar-section>` — `hide()`, `show()`, `toggle()`
-- `<c-window>` — `hide()`, `show()`
+
+**`<c-popover>` needs an anchor, whichever way you open it.** Give it `anchor="<id-of-the-anchor>"`, or point a button at it with `popovertarget`. Without an anchor, `open` and `show()` both do **nothing at all** — no error, and the element quietly drops the attribute again. Opening a popover closes any other open one (they share the top layer).
 
 ### Same name, different component
 
@@ -194,8 +204,8 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-button-bar>` — A horizontal container for grouping buttons with a neutral background. Automatically propagates its size and variant to all child nldd-butto
   <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `variant`, `disabled` (bool)
 - `<c-button-bar-divider>` — NLDD button-bar-divider
-- `<c-button-group>` — A container for grouping related buttons together, either horizontally or vertically.
-  <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `orientation` (horizontal\|vertical)
+- `<c-button-group>` — A container for grouping related buttons together, in a row or stacked. `auto`, the default, is a row on a container wide enough for one and
+  <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `orientation` (auto\|horizontal\|vertical)
 - `<c-icon-button>` — NLDD icon-button
   <br>attrs: `variant` (primary\|secondary\|destructive\|accent-filled\|accent-transparent\|neutral-tinted\|neutral-base\|neutral-transparent\|critical-tinted\|critical-transparent\|inherit-filled\|inherit-tinted\|box\|simple\|text\|icon\|icon-and-text\|major\|minor\|none), `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `hide-lg-text` (bool), `loading` (bool), `disabled` (bool), `no-highlight-border` (bool), `type` (button\|submit\|reset), `expandable` (bool), +13
   <br>slots: `icon` — Slot for a custom icon (e.g. custom SVG). Only used when…; `popup` — A single `nldd-menu` or `nldd-popover` this button invokes.…
@@ -206,14 +216,14 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `icon`, `title`, `desc`, `cta`, `href`
 - `<c-split-button>` — A split button combines a primary action button with a dropdown trigger. The main button performs the default action, while the icon button 
   <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `variant`, `disabled` (bool), `width`, `text`, `icon`, `translations`
-- `<c-toolbar>` — NLDD toolbar
+- `<c-toolbar>` — A row of controls that belong to a whole screen or pane, with an overflow menu for what does not fit. The toolbar measures itself: as the ro
   <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `show-item-labels` (bool), `label`, `translations`
   <br>slots: `start` — nldd-toolbar-item and nldd-toolbar-title elements placed at…; `center` — nldd-toolbar-item and nldd-toolbar-title elements placed at…; `end` — nldd-toolbar-item and nldd-toolbar-title elements placed at…; `overflow` — nldd-menu-item, nldd-menu-divider and nldd-menu-group…
 - `<c-toolbar-item>` — NLDD toolbar-item
   <br>attrs: `width`, `min-width`, `max-width`, `label`, `priority`
-  <br>slots: `overflow` — nldd-menu-item / nldd-menu-divider / nldd-menu-group…
+  <br>slots: `overflow` — Required: nldd-menu-item / nldd-menu-divider /…
 - `<c-toolbar-title>` — NLDD toolbar-title
-  <br>attrs: `href`, `target`, `text`, `supporting-text`, `align` (left\|center), `width`, `min-width`, `max-width`, +1
+  <br>attrs: `width`, `min-width`, `max-width`, `align` (left\|center), `text`, `supporting-text`, `href`, `target`, +1
   <br>slots: `media` — Optional leading image before the title: a logo, a product…; `action` — Optional trailing control (e.g. an xs nldd-icon-button),…
 
 ### Content (10)
@@ -230,14 +240,14 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-keyboard-shortcut>` — Shows a key combination (such as Cmd+K or Ctrl+Shift+P) in one combined container with a semantic <kbd> element per key. On touch-only devic
   <br>attrs: `keys`, `mac-keys`, `windows-keys`, `linux-keys`, `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `variant` (primary\|secondary\|destructive\|accent-filled\|accent-transparent\|neutral-tinted\|neutral-base\|neutral-transparent\|critical-tinted\|critical-transparent\|inherit-filled\|inherit-tinted\|box\|simple\|text\|icon\|icon-and-text\|major\|minor\|none), `color` (neutral\|inherit\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen\|content\|secondary), `always-visible` (bool)
 - `<c-rich-text>` — A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested element
-  <br>attrs: `spacing` (flat\|tight\|snug\|loose), `centered` (bool), `hyphens` (bool), `color`, `translations`
+  <br>attrs: `color`, `spacing` (flat\|tight\|snug\|loose), `centered` (bool), `translations`, `hyphens` (bool)
 - `<c-text>` — One run of body text at a size from the type scale. It is what you reach for where an app would otherwise write a bare `<p>` and inherit wha
   <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `weight` (regular\|medium\|bold), `line-height` (flat\|tight\|snug\|loose), `color` (neutral\|inherit\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen\|content\|secondary), `horizontal-alignment` (left\|center\|right)
-- `<c-title>` — A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.
-  <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `color` (content\|inherit)
-  <br>slots: `overline` — Optional overline above the title; `subtitle` — Optional subtitle below the title; `end` — Whatever belongs at the end of the title line: a button, a…
+- `<c-title>` — A title bar with an optional overline, title, and supporting text on the left, and a slot at the end of the title line on the right. The tit
+  <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `color` (content\|inherit), `text`, `supporting-text`, `overline`, `heading-level`
+  <br>slots: `overline` — Overline that is more than text. Takes the place of the…; `supporting-text` — Supporting text that is more than text. Takes the place of…; `end` — Whatever belongs at the end of the title line: a button, a…
 - `<c-token>` — A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be o
-  <br>attrs: `text`, `control` (none\|dismiss\|menu), `expanded` (bool), `disabled` (bool), `dismiss-text`, `menu-text`, `roving` (bool)
+  <br>attrs: `text`, `control` (none\|dismiss\|menu), `dismiss-text`, `menu-text`, `translations`, `roving` (bool), `expanded` (bool), `disabled` (bool)
   <br>slots: `menu` — An nldd-menu that the token opens from its menu button…
 - `<c-tooltip>` — A wrapper that shows a tooltip on hover or focus of its child element. It uses `display: contents`, so it does not affect the child's layout
   <br>attrs: `text`, `open` (bool), `placement` (top\|bottom\|left\|right\|auto), `timing` (instant\|delay\|never)
@@ -269,7 +279,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `label-alignment`
 - `<c-form-actions>` — A layout wrapper for the action buttons at the bottom of a form (typically a submit button or a button group). Follows the same responsive l
   <br>attrs: `label-alignment` (top\|left\|right)
-- `<c-form-field>` — NLDD form-field
+- `<c-form-field>` — A field around one input: its label, supporting label, optional badge, validation and help text. It finds the input among its children, hand
   <br>attrs: `label-alignment` (top\|left\|right), `label`, `supporting-label`, `optional` (bool), `optional-label`
 - `<c-form-field-help-text>` — NLDD form-field-help-text
 - `<c-form-section>` — Nederlandse Digitale Dienst Form Section Component Plain custom element (extends HTMLElement, no Lit). The light-DOM render works around an 
@@ -293,7 +303,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-radio-button-group>` — Groups nldd-radio-button-field elements, handles keyboard navigation, and forwards name and disabled state to all child fields. Use inside n
   <br>attrs: `name`, `disabled` (bool), `required` (bool), `accessible-label`, `accessible-labeled-by`, `invalid` (bool)
 - `<c-search-field>` — A search input with a leading search icon, an optional dismiss button, and an optional search button.
-  <br>attrs: `value`, `placeholder`, `accessible-label`, `size` (sm\|md), `disabled` (bool), `name`, `show-search-button` (bool), `translations`, +7
+  <br>attrs: `size` (sm\|md), `width`, `placeholder`, `accessible-label`, `show-search-button` (bool), `translations`, `invalid` (bool), `disabled` (bool), +7
   <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
 - `<c-segmented-control>` — A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options. Exports both NLDDSegmentedControl and NLDDSegmentedCont
   <br>attrs: `required` (bool), `invalid` (bool), `value`, `size` (sm\|md\|lg), `type` (radio\|checkbox), `variant` (text\|icon\|icon-and-text), `disabled` (bool), `width`, +3
@@ -339,7 +349,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `values`, `placeholder`, `type`, `autocomplete`, `accessible-label`, `allow-custom` (bool), `valid` (bool), `invalid` (bool), +7
   <br>slots: `template` — `nldd-token` prototypes supplying each token's action menu…
   <br>methods: JavaScript only: `commitValidity()`, `describedTarget()`, `setCustomValidity()`, `validationAnchor()`, `validationTarget()`
-- `<c-validation-item>` — NLDD validation-item
+- `<c-validation-item>` — One requirement of a value, with the rule that checks it. Give every item an id that names its field as well as its rule: an id has to be un
   <br>attrs: `match`, `minlength`, `maxlength`, `required` (bool), `hint` (bool), `unmet` (bool), `visible` (bool)
   <br>methods: JavaScript only: `test()`
 - `<c-validation-list>` — Nederlandse Digitale Dienst Validation List (Lit + TypeScript) Everything a value has to satisfy, in one list. A requirement you can state u
@@ -356,8 +366,8 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `title`, `image`, `image-alt`, `image-size` (sm\|md), `inline-image` (bool), `layout` (column\|row), `padding` (none\|sm\|md\|lg\|xl), `href`, +6
 - `<c-catalog-card>` — Catalog/resource card: icon + title/subtitle + status tag, a tag row, and a maturity + open footer
   <br>attrs: `icon`, `title`, `subtitle`, `status`, `status-type` (default\|info\|success\|warning\|error), `maturity` (none\|goud\|zilver\|brons), `open-label`, `href`
-- `<c-cell>` — A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. `ver
-  <br>attrs: `width`, `min-width`, `max-width`, `min-height`, `vertical-alignment` (top\|center\|bottom), `horizontal-alignment` (left\|center\|right), `hide-below`, `hide-above`
+- `<c-cell>` — A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. For 
+  <br>attrs: `width`, `min-width`, `max-width`, `min-height`, `horizontal-alignment` (left\|center\|right), `vertical-alignment` (top\|center\|bottom), `hide-below`, `hide-above`
 - `<c-chip>` — Small monospace chip/pill for a resource name (e.g. inside a layer)
 - `<c-data-list>` — Key-value pair display using a definition list
 - `<c-description-cell>` — A cell component for displaying a title-description pair in lists. `vertical-alignment="center"` (default) stretches the cell to fill the fu
@@ -370,19 +380,19 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-drag-handle-cell>` — A cell that displays a drag handle for reorderable list items. Always vertically centered and sized to fit the handle. To enable drag-to-reo
   <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `translations`
 - `<c-icon-cell>` — A cell component for displaying icons in lists with configurable alignment and size. Set `icon` to render an `nldd-icon` by name, or slot cu
-  <br>attrs: `vertical-alignment` (top\|center\|bottom), `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `color` (neutral\|inherit\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen\|content\|secondary), `icon`, `hide-below`, `hide-above`
+  <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `color` (neutral\|inherit\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen\|content\|secondary), `vertical-alignment` (top\|center\|bottom), `icon`, `hide-below`, `hide-above`
 - `<c-identity>` — Profile/identity header: avatar initials + name, with tag content and an optional aside
   <br>attrs: `name`, `initials`, `handle`, `aside-tag`, `aside-tag-type` (default\|info\|success\|warning\|error), `aside-sub`, `aside-label`, `aside-href`
 - `<c-layer>` — Platform-layer row: icon tile, title + count, sub, and chip content
   <br>attrs: `icon`, `title`, `count`, `sub`, `href`
 - `<c-list>` — A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role="list
-  <br>attrs: `variant` (simple\|box-tinted\|box-base), `type` (none\|bullet\|ordered\|task\|list\|navigation\|listbox\|tree\|form\|radiogroup), `reorderable` (bool), `dividers` (always\|on-touch\|never), `height`, `accessible-label`, `translations`
+  <br>attrs: `variant` (simple\|box-tinted\|box-base), `type` (none\|bullet\|ordered\|task\|list\|navigation\|listbox\|tree\|form\|radiogroup), `dividers` (always\|on-touch\|never), `height`, `accessible-label`, `translations`, `reorderable` (bool)
   <br>slots: `toolbar` — Controls below the search field (filters, sort, counts, view…; `search-bar-end` — Controls inline at the end of the search bar, beside the…; `empty` — Shown when the list has no items at all. Empty by default:…; `no-results` — Shown when the list has items but every one of them is…
 - `<c-list-item>` — A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox when `checkbox` is set, as a button when `button` is set, o
-  <br>attrs: `size` (sm\|md), `selected` (bool), `current` (bool), `button` (bool), `checkbox` (bool), `radio` (bool), `checked` (bool), `disabled` (bool), +6
+  <br>attrs: `size` (sm\|md), `href`, `target`, `rel`, `button` (bool), `checkbox` (bool), `radio` (bool), `reorderable` (bool), +8
   <br>slots: `children` — Child rows of a branch in an `nldd-list type="tree"`.…
 - `<c-list-item-segment>` — A segment inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one segm
-  <br>attrs: `button` (bool), `href`, `target`, `rel`, `checkbox` (bool), `checked` (bool), `expanded`, `disclosure` (bool), +4
+  <br>attrs: `width` (fit-content\|full), `href`, `target`, `rel`, `button` (bool), `checkbox` (bool), `disclosure` (bool), `accessible-label`, +8
 - `<c-metric>` — Stat/metric card link: icon + value, with a label and sub-line
   <br>attrs: `icon`, `value`, `label`, `sub`, `href`
 - `<c-notification>` — Notification feed container (holds notification-item)
@@ -396,8 +406,8 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `color` (neutral\|inherit\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen\|content\|secondary), `width`, `min-width`, `max-width`, `min-height`, `horizontal-alignment` (left\|center\|right), `vertical-alignment` (top\|center\|bottom), +7
   <br>slots: `overline` — Rich content for the overline region. Overrides the…; `supporting-text` — Rich content for the supporting text region. Overrides the…
 - `<c-timeline-track-cell>` — A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state.
-  <br>attrs: `status` (past\|current\|future), `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `variant` (primary\|secondary\|destructive\|accent-filled\|accent-transparent\|neutral-tinted\|neutral-base\|neutral-transparent\|critical-tinted\|critical-transparent\|inherit-filled\|inherit-tinted\|box\|simple\|text\|icon\|icon-and-text\|major\|minor\|none), `direction` (horizontal\|vertical\|both\|down\|up), `position` (first\|between\|last\|only), `line` (auto\|top\|bottom\|both\|none), `text`, `icon`, +2
-- `<c-title-cell>` — A cell component for displaying a title with optional overline and subtitle in lists. `vertical-alignment="center"` (default) stretches the 
+  <br>attrs: `variant` (primary\|secondary\|destructive\|accent-filled\|accent-transparent\|neutral-tinted\|neutral-base\|neutral-transparent\|critical-tinted\|critical-transparent\|inherit-filled\|inherit-tinted\|box\|simple\|text\|icon\|icon-and-text\|major\|minor\|none), `status` (past\|current\|future), `size` (xs\|sm\|md\|lg\|inherit\|xxs\|16\|20\|24\|32\|2\|4\|6\|8\|10\|12\|28\|40\|44\|48\|56\|64\|80\|96\|flexible), `direction` (horizontal\|vertical\|both\|down\|up), `position` (first\|between\|last\|only), `line` (auto\|top\|bottom\|both\|none), `text`, `icon`, +2
+- `<c-title-cell>` — A cell component for displaying a title with optional overline and supporting text in lists. `vertical-alignment="center"` (default) stretch
   <br>attrs: `size`, `color` (neutral\|inherit\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen\|content\|secondary), `width`, `min-width`, `max-width`, `min-height`, `horizontal-alignment` (left\|center\|right), `vertical-alignment` (top\|center\|bottom), +8
   <br>slots: `overline` — Rich content for the overline region. Overrides the…; `supporting-text` — Rich content for the supporting text region. Overrides the…
 
@@ -432,7 +442,7 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
 - `<c-tabs>` — Tab bar; fill it declaratively with <c-tab> or from data via :items
   <br>attrs: `aria-label`
 - `<c-top-title-bar>` — A toolbar for page and container headings with optional navigation and action buttons. The component has two states: - Default: the back but
-  <br>attrs: `text`, `supporting-text`, `collapse-anchor`, `back-text`, `back-href`, `dismiss-text`
+  <br>attrs: `text`, `supporting-text`, `heading-level`, `collapse-anchor`, `back-text`, `back-href`, `dismiss-text`
   <br>slots: `toolbar` — Optional buttons to the left of the dismiss button
 
 ### Feedback (15)
@@ -454,9 +464,9 @@ Grouped by category. Enum attrs show their allowed values; `[theme-only]` marks 
   <br>attrs: `active` (bool), `text`, `supporting-text`, `placement` (top\|bottom\|left\|right\|auto), `dismissable` (bool), `arrow-length`, `no-arrow` (bool), `translations`
   <br>methods: JavaScript only: `complete()`
 - `<c-modal-dialog>` — A modal window with overlay backdrop, based on the native <dialog> element. Internally renders an <nldd-inline-dialog> for the visual struct
-  <br>attrs: `variant`, `icon`, `text`, `supporting-text`, `horizontal-alignment`, `accessible-label`
-  <br>slots: `actions` — nldd-button elements, forwarded to nldd-inline-dialog
-  <br>methods: no attribute opens this — call `el.show()`; `hide()`, `show()`
+  <br>attrs: `variant`, `horizontal-alignment`, `text`, `supporting-text`, `icon`, `accessible-label`, `open` (bool)
+  <br>slots: `actions` — nldd-button elements, forwarded to nldd-inline-dialog; `notifications` — Where the notifications area lands while this overlay is…
+  <br>methods: `open` renders it open, or call `el.show()`; `hide()`, `show()`
 - `<c-progress-bar>` — Exports both NLDDProgressBar and NLDDProgressBarSegmentIndicator. A progress bar that supports a single value (loading-style) or multiple se
   <br>attrs: `mode` (progress\|distribution), `max`, `value`, `color` (neutral\|accent\|success\|warning\|critical\|lintblauw\|donkerblauw\|hemelblauw\|lichtblauw\|paars\|violet\|robijnrood\|roze\|rood\|oranje\|donkergeel\|geel\|donkerbruin\|bruin\|donkergroen\|groen\|mosgroen\|mintgroen), `size` (sm\|md\|lg), `text`, `value-format` (percentage\|absolute\|fraction), `value-text`, +4
 - `<c-progress-bar-segment-indicator>` — NLDD progress-bar-segment-indicator

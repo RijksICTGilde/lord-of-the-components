@@ -4,8 +4,8 @@ Voor een applicatie die de vijf packages van dit repo pint op `d19c7a5` van
 20 augustus 2026. Alles hieronder is gemeten op de huidige tip, niet afgeleid
 uit commitberichten.
 
-**Wat je binnenhaalt:** NLDD 0.8.84, 0.8.85, 0.8.86, 0.8.88 en 0.8.92, plus
-achttien wijzigingen aan de componentenlaag zelf.
+**Wat je binnenhaalt:** NLDD 0.8.84, 0.8.85, 0.8.86, 0.8.88, 0.8.92 en 0.8.93,
+plus de wijzigingen aan de componentenlaag zelf.
 
 **Is dit een drop-in?** Nee. Er zijn vier dingen die je moet aanpassen en twee
 die je build hard rood maken tot je ze aanraakt. Reken op een eigen ticket met
@@ -68,6 +68,18 @@ terwijl het element niets tekent; dat is precies waar de val zit.
 
 Ook weg: `modeless` op `sheet` en `window`. En `c-list-item-action` bestaat niet
 meer — dat heet nu `list-item-segment`, met dezelfde attributen.
+
+### e. `scheme` is weg bij de zes paginasecties (0.8.93)
+
+`scheme` bestaat niet meer op `c-simple-section`, `c-full-bleed-section`,
+`c-sidebar-section`, `c-one-half-one-half-section`,
+`c-one-third-two-thirds-section` en `c-two-thirds-one-third-section`. Een sectie
+kiest dus niet meer zelf een licht/donker-stand; dat loopt via `data-scheme` op
+`<html>` (wat `<c-page theme="...">` zet) en via `background` op de sectie zelf.
+`c-window` houdt zijn `scheme` wel.
+
+Als je ergens `scheme="dark"` op een sectie had staan, is dat nu een harde fout
+in plaats van stille drift — zie punt 2a.
 
 ### d. Nieuwe bestanden die geladen moeten worden
 
@@ -134,6 +146,22 @@ geen fout.
   verdween zonder foutmelding, waaronder de zes waar een applicatieschil uit
   bestaat. Een kind houdt nu ook zijn eigen `slot=`, dus een paneel kan een
   direct kind zijn.
+- **Een sheet, dialog en window gaan nu open met een attribuut** (0.8.93). Tot
+  0.8.92 was `show()` de enige deur en deed het attribuut niets; nu is
+  servergerenderde stand genoeg: `<c-sheet accessible-label="…" open>` staat open
+  bij de eerste paint, en `show()` werkt nog en schrijft zich in het attribuut
+  terug. Gemeten in een browser, niet uit het manifest gelezen.
+  **Een popover is de uitzondering**: die heeft een anker nodig
+  (`anchor="<id>"`, of een knop met `popovertarget`). Zonder anker doen `open`
+  én `show()` **niets** — geen foutmelding, en het element gooit het attribuut
+  zelf weer weg. En er staat er maar één open: een popover openen sluit de
+  andere (ze delen de top layer).
+- **`c-title` en `c-top-title-bar` kennen nu tekstattributen** (`text`,
+  `supporting-text`, `overline`, `heading-level`) waar eerst alleen slots waren.
+  Je bestaande slots blijven werken.
+- **`orientation` op `c-button-group` en `c-split-view-divider` staat standaard
+  op `auto`** in plaats van `vertical`, en `auto` is er als waarde bijgekomen.
+  Hing je op het oude standaardgedrag, zet `vertical` er dan expliciet bij.
 - **`@event` werkt op velden** en interpoleert: `@click="{{ js }}"` en
   `@click="go({{ id }})"` doen nu wat er staat. Voorheen belandde de letterlijke
   `{{ js }}` in het `onclick`-attribuut. De vorm `:@click="js"` blijft geldig.
@@ -150,10 +178,12 @@ geen fout.
 - **Kijk bij "kan dit component X" ook naar de SLOTS**, niet alleen naar de
   attributen. `AUTHORING.md` lijst ze nu per component. Een mogelijkheid die in
   een slot zit is anders onvindbaar.
-- **Zes componenten openen alleen vanuit JavaScript** (`sheet`, `modal-dialog`,
-  `popover`, `window`, `sidebar-section`, `navigation-split-view`). `show` is
-  daar een methode, geen attribuut: het attribuut zetten doet niets en
-  `el.show = true` ook niet. Zie de sectie in `AUTHORING.md`.
+- **Twee componenten openen nog alleen vanuit JavaScript**
+  (`c-sidebar-section`, `c-navigation-split-view`). `show` is daar een methode,
+  geen attribuut: het attribuut zetten doet niets en `el.show = true` ook niet.
+  De andere vier (sheet, modal-dialog, window, popover) staan hierboven onder
+  punt 3. `AUTHORING.md` splitst de lijst nu op het `open`-attribuut, dus die
+  blijft kloppen als een volgende release er een bij zet.
 - **Tien namen betekenen hier iets anders dan in NLDD** (`box`, `checkbox`,
   `checkbox-field`, `identity`, `menu`, `menu-item`, `notification`, `page`,
   `radio-button-field`, `status-bar`). Ook in `AUTHORING.md`.
