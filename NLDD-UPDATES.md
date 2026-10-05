@@ -25,7 +25,13 @@ npm run nldd:diff
 # 3. Apply: regenerate the fragment + templates, icon vocabulary, and docs.
 npm run nldd:update      # = gen:nldd && gen:icons && gen:docs
 
-# 4. Review the diff, run the suite, commit.
+# 4. Rebuild the shipped bundle. NLDD's own CSS/JS is COMMITTED under
+#    lotc_nldd/static/, and no gate compares it to the installed version:
+#    nldd:check covers the fragment and the extracted assets, not the bundle.
+#    Skip this and the pin says one version while the served JS is the old one.
+npm run build:fe:nldd
+
+# 5. Review the diff, run the suite, commit.
 git diff
 (cd python && uv run pytest -q -o addopts="")
 ```
@@ -61,4 +67,4 @@ consumer's pin forward:
 
 | From | Note |
 | --- | --- |
-| `d19c7a5` (NLDD 0.8.83) | [`docs/UPGRADEN-VANAF-d19c7a5.md`](docs/UPGRADEN-VANAF-d19c7a5.md) — secret-field markup, field-error rewiring, `default` removed as a value, `scheme` removed on the page sections, new asset files |
+| `d19c7a5` (NLDD 0.8.83) | [`docs/UPGRADEN-VANAF-d19c7a5.md`](docs/UPGRADEN-VANAF-d19c7a5.md) — secret-field markup, field-error rewiring, `default` removed as a value, `scheme` removed on the page sections, `variant` split into `appearance`/`variant`/`level`, new asset files |

@@ -4,10 +4,10 @@ Voor een applicatie die de vijf packages van dit repo pint op `d19c7a5` van
 20 augustus 2026. Alles hieronder is gemeten op de huidige tip, niet afgeleid
 uit commitberichten.
 
-**Wat je binnenhaalt:** NLDD 0.8.84, 0.8.85, 0.8.86, 0.8.88, 0.8.92 en 0.8.93,
-plus de wijzigingen aan de componentenlaag zelf.
+**Wat je binnenhaalt:** NLDD 0.8.84, 0.8.85, 0.8.86, 0.8.88, 0.8.92, 0.8.93 en
+0.8.94, plus de wijzigingen aan de componentenlaag zelf.
 
-**Is dit een drop-in?** Nee. Er zijn vier dingen die je moet aanpassen en twee
+**Is dit een drop-in?** Nee. Er zijn zes dingen die je moet aanpassen en twee
 die je build hard rood maken tot je ze aanraakt. Reken op een eigen ticket met
 een eigen tak; het is geen bump die je in het voorbijgaan doet.
 
@@ -80,6 +80,44 @@ kiest dus niet meer zelf een licht/donker-stand; dat loopt via `data-scheme` op
 
 Als je ergens `scheme="dark"` op een sectie had staan, is dat nu een harde fout
 in plaats van stille drift — zie punt 2a.
+
+### f. `variant` is opgesplitst in `appearance`, `variant` en `level` (0.8.94)
+
+NLDD had één `Variant`-unie van twintig waarden waarin drie dingen op elkaar
+lagen: een visuele stijl, een inhoudstype en een zwaarte. 0.8.94 haalt ze uit
+elkaar, en de rekensom klopt precies: de veertien waarden van `Appearance`, de
+drie van `Variant` en de drie van `Level` zijn samen exact die oude twintig.
+
+| component | was | is |
+|---|---|---|
+| `c-button-bar`, `c-code-editor`, `c-code-viewer`, `c-icon-button`, `c-keyboard-shortcut`, `c-list`, `c-split-button`, `c-text-editor` | `variant` | `appearance` |
+| `c-timeline-track-cell` | `variant` (twintig waarden) | `level` (`major` \| `minor` \| `none`) |
+| `c-progress-bar`, `c-progress-circle` | `mode` | `variant` (`progress` \| `distribution`) |
+
+Twee dingen waar een zoek-en-vervang over struikelt:
+
+**`variant` verdwijnt niet overal.** Op `c-segmented-control`,
+`c-segmented-control-item` en `c-toggle-button` blijft `variant` bestaan en
+betekent het iets anders dan `appearance`: `variant` is het **inhoudstype**
+(`text` | `icon` | `icon-and-text`), `appearance` is de **visuele stijl inclusief
+kleur** (`neutral-tinted` | `neutral-base`). Daar hernoem je dus niets; je kunt
+`appearance` erbij zetten. (`c-toggle-button-group` krijgt alleen `appearance`.)
+
+**`c-icon-button` verliest ook waarden.** Naast de hernoeming is de set versmald
+van twintig naar veertien: `text`, `icon`, `icon-and-text`, `major`, `minor` en
+`none` bestaan daar niet meer. Die hoorden bij de twee andere begrippen en
+stonden er alleen omdat de unie ze meesleepte.
+
+Je build zegt het zelf, en luid — gemeten bij het renderen, met regel en kolom,
+ook zonder `LOTC_STRICT=1`:
+
+```
+Unknown attribute 'variant' on component 'c-list' at line 1, column 9
+```
+
+Wat die melding **niet** doet, is de nieuwe naam voorstellen: `variant` en
+`appearance` lijken te weinig op elkaar voor de "did you mean". De tabel
+hierboven is dus je kaart.
 
 ### d. Nieuwe bestanden die geladen moeten worden
 
@@ -165,6 +203,14 @@ geen fout.
 - **`@event` werkt op velden** en interpoleert: `@click="{{ js }}"` en
   `@click="go({{ id }})"` doen nu wat er staat. Voorheen belandde de letterlijke
   `{{ js }}` in het `onclick`-attribuut. De vorm `:@click="js"` blijft geldig.
+
+- **Vier nieuwe attributen die niets kosten** (0.8.94): `no-filter` op
+  `c-combo-box` en `c-token-field` laat de opties staan tijdens het typen, voor
+  een lijst die je server al per toetsaanslag filtert; `loading-text` op
+  `c-icon-button` is wat de schermlezer zegt terwijl `loading` aanstaat;
+  `no-spellcheck` op `c-text-editor` zet de spellingcontrole uit; en
+  `selected-icon` op `c-toggle-button` toont een ander icoon zolang de knop
+  aanstaat (`check-mark` bij `plus`).
 
 ---
 
