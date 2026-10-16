@@ -1,6 +1,6 @@
 {
  "meta": {
-  "nldd_version": "0.8.92",
+  "nldd_version": "0.8.93",
   "components": 100,
   "upstream_repository": "https://github.com/NederlandseDigitaleDienst/design-system",
   "storybook_url": "https://nederlandsedigitaledienst.github.io/design-system/"
@@ -110,14 +110,15 @@
      "name": "orientation",
      "type": "enum",
      "enum_values": [
+      "auto",
       "horizontal",
       "vertical"
      ],
-     "default": "vertical",
-     "description": "Layout direction: 'horizontal' | 'vertical' (default: 'vertical')"
+     "default": "auto",
+     "description": "Layout direction: 'auto' | 'horizontal' | 'vertical' (default: 'auto')"
     }
    ],
-   "description": "A container for grouping related buttons together, either horizontally or vertically.",
+   "description": "A container for grouping related buttons together, in a row or stacked. `auto`, the default, is a row on a container wide enough for one and",
    "category": "actions",
    "backend": "jinja",
    "content": {
@@ -452,43 +453,13 @@
    "slots": [
     {
      "name": "overflow",
-     "description": "nldd-menu-item / nldd-menu-divider / nldd-menu-group children, shown in the overflow menu when this "
+     "description": "Required: nldd-menu-item / nldd-menu-divider / nldd-menu-group children, shown in the overflow menu "
     }
    ]
   },
   {
    "name": "toolbar-title",
    "attributes": [
-    {
-     "name": "href",
-     "type": "string",
-     "description": "Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` s"
-    },
-    {
-     "name": "target",
-     "type": "string",
-     "description": "Where the link opens; only meaningful with `href`. `_blank` adds rel=\"noopener noreferrer\" and a visually hidden \"opens "
-    },
-    {
-     "name": "text",
-     "type": "string",
-     "description": "Title text."
-    },
-    {
-     "name": "supporting-text",
-     "type": "string",
-     "description": "Secondary supporting text shown below the title."
-    },
-    {
-     "name": "align",
-     "type": "enum",
-     "enum_values": [
-      "left",
-      "center"
-     ],
-     "default": "left",
-     "description": "Text alignment: 'left' | 'center' (default: 'left')."
-    },
     {
      "name": "width",
      "type": "string",
@@ -503,6 +474,36 @@
      "name": "max-width",
      "type": "string",
      "description": "Maximum width as a CSS length (default: '240px'); the title text truncates with an ellipsis beyond it. The cap is lifted"
+    },
+    {
+     "name": "align",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center"
+     ],
+     "default": "left",
+     "description": "Text alignment: 'left' | 'center' (default: 'left')."
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Title text."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Secondary supporting text shown below the title."
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Makes the mark and the name one link, for the place this window belongs to (usually the app's own start). The `action` s"
+    },
+    {
+     "name": "target",
+     "type": "string",
+     "description": "Where the link opens; only meaningful with `href`. `_blank` adds rel=\"noopener noreferrer\" and a visually hidden \"opens "
     },
     {
      "name": "translations",
@@ -579,7 +580,7 @@
      "description": "Override translation keys (e.g. the overflow button label); unset keys fall back to Dutch."
     }
    ],
-   "description": "NLDD toolbar",
+   "description": "A row of controls that belong to a whole screen or pane, with an overflow menu for what does not fit. The toolbar measures itself: as the ro",
    "category": "actions",
    "backend": "jinja",
    "content": {
@@ -1089,6 +1090,11 @@
    "name": "rich-text",
    "attributes": [
     {
+     "name": "color",
+     "type": "string",
+     "description": "'content' (the default) takes the system's own content colors, each element its own. 'inherit' lets all text follow the "
+    },
+    {
      "name": "spacing",
      "type": "enum",
      "enum_values": [
@@ -1106,19 +1112,14 @@
      "description": "Centers the main column inside the container; without it, content is left-aligned"
     },
     {
-     "name": "hyphens",
-     "type": "boolean",
-     "description": "Opt-in automatic hyphenation for running text (p, li, dd). Needs a correct `lang` on the page (`lang=\"nl\"` on `<html>`, "
-    },
-    {
-     "name": "color",
-     "type": "string",
-     "description": "'content' (the default) takes the system's own content colors, each element its own. 'inherit' lets all text follow the "
-    },
-    {
      "name": "translations",
      "type": "string",
      "description": "Override translation keys; unset keys fall back to Dutch"
+    },
+    {
+     "name": "hyphens",
+     "type": "boolean",
+     "description": "Opt-in automatic hyphenation for running text (p, li, dd). Needs a correct `lang` on the page (`lang=\"nl\"` on `<html>`, "
     }
    ],
    "description": "A container for rich text content that automatically applies responsive typography. Uses no shadow DOM so styles apply to all nested element",
@@ -1285,9 +1286,29 @@
      ],
      "default": "content",
      "description": "'content' (the default) takes the system's own content colors. 'inherit' lets the title follow the text color of the sur"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Title text. Content in the default slot takes its place."
+    },
+    {
+     "name": "supporting-text",
+     "type": "string",
+     "description": "Text below the title. Content in the supporting-text slot takes its place."
+    },
+    {
+     "name": "overline",
+     "type": "string",
+     "description": "Text above the title. Content in the overline slot takes its place."
+    },
+    {
+     "name": "heading-level",
+     "type": "string",
+     "description": "Renders text as h1–h6; absent renders a p, for a title that is not a heading."
     }
    ],
-   "description": "A title bar with an optional overline, title, and subtitle on the left, and a slot at the end of the title line on the right.",
+   "description": "A title bar with an optional overline, title, and supporting text on the left, and a slot at the end of the title line on the right. The tit",
    "category": "content",
    "backend": "jinja",
    "content": {
@@ -1296,11 +1317,11 @@
    "slots": [
     {
      "name": "overline",
-     "description": "Optional overline above the title"
+     "description": "Overline that is more than text. Takes the place of the overline attribute."
     },
     {
-     "name": "subtitle",
-     "description": "Optional subtitle below the title"
+     "name": "supporting-text",
+     "description": "Supporting text that is more than text. Takes the place of the supporting-text attribute."
     },
     {
      "name": "end",
@@ -1328,6 +1349,26 @@
      "description": "Control type (default: 'none')"
     },
     {
+     "name": "dismiss-text",
+     "type": "string",
+     "description": "Accessible label for the dismiss button. Unset, it names the token: `Verwijder \"{text}\"`, so a row of tokens does not re"
+    },
+    {
+     "name": "menu-text",
+     "type": "string",
+     "description": "Accessible label for the menu button. Unset, it is `Toon opties voor \"{text}\"`."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to Dutch"
+    },
+    {
+     "name": "roving",
+     "type": "boolean",
+     "description": "Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not"
+    },
+    {
      "name": "expanded",
      "type": "boolean",
      "description": "Reflects whether the token's menu is open (control=\"menu\"); managed by the token."
@@ -1336,21 +1377,6 @@
      "name": "disabled",
      "type": "boolean",
      "description": "Disabled state"
-    },
-    {
-     "name": "dismiss-text",
-     "type": "string",
-     "description": "Accessible label for the dismiss button (default: 'Verwijder')"
-    },
-    {
-     "name": "menu-text",
-     "type": "string",
-     "description": "Accessible label for the menu button (default: 'Toon opties')"
-    },
-    {
-     "name": "roving",
-     "type": "boolean",
-     "description": "Inside a roving-focus container (e.g. nldd-token-field): the host is the single tab stop, so the trailing control is not"
     }
    ],
    "description": "A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be o",
@@ -1468,7 +1494,7 @@
      "description": "Text for the optional badge. Defaults to 'Optioneel'."
     }
    ],
-   "description": "NLDD form-field",
+   "description": "A field around one input: its label, supporting label, optional badge, validation and help text. It finds the input among its children, hand",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -1561,7 +1587,7 @@
      "description": "Whether the item is on screen. Managed by the list."
     }
    ],
-   "description": "NLDD validation-item",
+   "description": "One requirement of a value, with the rule that checks it. Give every item an id that names its field as well as its rule: an id has to be un",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -2608,21 +2634,6 @@
    "name": "search-field",
    "attributes": [
     {
-     "name": "value",
-     "type": "string",
-     "description": "The search value"
-    },
-    {
-     "name": "placeholder",
-     "type": "string",
-     "description": "Placeholder text for the input"
-    },
-    {
-     "name": "accessible-label",
-     "type": "string",
-     "description": "Accessible label (aria-label) for the native input. Falls back to placeholder when not set. Set explicitly when a value "
-    },
-    {
      "name": "size",
      "type": "enum",
      "enum_values": [
@@ -2633,14 +2644,19 @@
      "description": "Field size: 'sm' | 'md' (default: 'md')"
     },
     {
-     "name": "disabled",
-     "type": "boolean",
-     "description": "Disabled state"
+     "name": "width",
+     "type": "string",
+     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
     },
     {
-     "name": "name",
+     "name": "placeholder",
      "type": "string",
-     "description": "Input name for form submission"
+     "description": "Placeholder text for the input"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name (aria-label) of the native input. Falls back to `placeholder`, and keeps it when a value is typed. That "
     },
     {
      "name": "show-search-button",
@@ -2653,24 +2669,29 @@
      "description": "Override translation keys; unset keys fall back to Dutch"
     },
     {
-     "name": "no-spellcheck",
+     "name": "invalid",
      "type": "boolean",
-     "description": "Disables browser spellchecking on the inner input"
+     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     },
     {
-     "name": "width",
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Disabled state"
+    },
+    {
+     "name": "name",
      "type": "string",
-     "description": "Optional fixed width (any CSS length, e.g. \"240px\"). Default: stretches to fill container."
+     "description": "Input name for form submission"
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The search value"
     },
     {
      "name": "required",
      "type": "boolean",
      "description": "Required state"
-    },
-    {
-     "name": "pattern",
-     "type": "string",
-     "description": "Regular expression the value has to match, as the native `pattern`."
     },
     {
      "name": "minlength",
@@ -2683,9 +2704,14 @@
      "description": "Most characters the value may have."
     },
     {
-     "name": "invalid",
+     "name": "pattern",
+     "type": "string",
+     "description": "Regular expression the value has to match, as the native `pattern`."
+    },
+    {
+     "name": "no-spellcheck",
      "type": "boolean",
-     "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
+     "description": "Disables browser spellchecking on the inner input"
     }
    ],
    "description": "A search input with a leading search icon, an optional dismiss button, and an optional search button.",
@@ -3795,7 +3821,7 @@
      "description": "Background color (cascades to descendants)"
     }
    ],
-   "description": "The required root shell of a Nederlandse Digitale Dienst application. Always contains a split view or an nldd-page as direct content. Set ba",
+   "description": "The required root shell of a Nederlandse Digitale Dienst application. Always contains a split view or an nldd-page as direct content. The do",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -3819,21 +3845,6 @@
      ],
      "default": "grid",
      "description": "Layout mode: 'grid' | 'stack' | 'lanes' | 'horizontal-scroll' (default: 'grid')"
-    },
-    {
-     "name": "show-load-more",
-     "type": "boolean",
-     "description": "Show load-more button in grid/stack (default: false)"
-    },
-    {
-     "name": "max-items",
-     "type": "string",
-     "description": "Number of visible items per page (default: 24)"
-    },
-    {
-     "name": "lazy-load",
-     "type": "boolean",
-     "description": "Automatically load more items when the button becomes visible"
     },
     {
      "name": "item-width",
@@ -3945,12 +3956,27 @@
      "description": "Gap at lg, overriding `gap` there"
     },
     {
+     "name": "max-items",
+     "type": "string",
+     "description": "Number of visible items per page (default: 24)"
+    },
+    {
      "name": "translations",
      "type": "string",
      "description": "Translation overrides; unset keys fall back to Dutch. Available keys: 'components.collection.previous-action', 'componen"
+    },
+    {
+     "name": "show-load-more",
+     "type": "boolean",
+     "description": "Show load-more button in grid/stack (default: false)"
+    },
+    {
+     "name": "lazy-load",
+     "type": "boolean",
+     "description": "Automatically load more items when the button becomes visible"
     }
    ],
-   "description": "A container for displaying collections of items. Supports grid, stack, lanes and horizontal scroll layouts. In grid and stack modes, items a",
+   "description": "A container for displaying collections of items. Supports grid, stack, lanes and horizontal scroll layouts. Use it for a set of equal blocks",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -4016,28 +4042,6 @@
      "description": "Maximum width as a CSS length (e.g. '480px')"
     },
     {
-     "name": "horizontal-alignment",
-     "type": "enum",
-     "enum_values": [
-      "left",
-      "center",
-      "right"
-     ],
-     "default": "undefined",
-     "description": "'left' | 'center' | 'right'"
-    },
-    {
-     "name": "vertical-alignment",
-     "type": "enum",
-     "enum_values": [
-      "top",
-      "center",
-      "bottom"
-     ],
-     "default": "undefined",
-     "description": "'top' | 'center' | 'bottom'"
-    },
-    {
      "name": "gap",
      "type": "enum",
      "enum_values": [
@@ -4062,7 +4066,7 @@
       "96"
      ],
      "default": "undefined",
-     "description": "Gap between children"
+     "description": "Gap between children. One distance for all of them, so it fits children of one kind; for a stack of different kinds, spa"
     },
     {
      "name": "sm-gap",
@@ -4900,6 +4904,28 @@
      ],
      "default": "undefined",
      "description": "Padding left at lg"
+    },
+    {
+     "name": "horizontal-alignment",
+     "type": "enum",
+     "enum_values": [
+      "left",
+      "center",
+      "right"
+     ],
+     "default": "undefined",
+     "description": "'left' | 'center' | 'right'"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "undefined",
+     "description": "'top' | 'center' | 'bottom'"
     }
    ],
    "description": "A simple layout primitive: pick a layout mode, give it a gap, optionally align contents, and add padding. Padding can be set for all sides, ",
@@ -4923,14 +4949,14 @@
    "name": "page-footer-legal-bar-item",
    "attributes": [
     {
-     "name": "href",
-     "type": "string",
-     "description": "Link target. When omitted, the item renders as plain text."
-    },
-    {
      "name": "text",
      "type": "string",
      "description": "Item label. Falls back to the default slot."
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Link target. When omitted, the item renders as plain text."
     }
    ],
    "description": "A single entry in an `nldd-page-footer-legal-bar`. Renders as a link",
@@ -4991,16 +5017,9 @@
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
-     "name": "scheme",
-     "type": "enum",
-     "enum_values": [
-      "inherit",
-      "light",
-      "dark",
-      "inverted"
-     ],
-     "default": "inherit",
-     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     },
     {
      "name": "padding-block",
@@ -5313,11 +5332,6 @@
       "96"
      ],
      "description": ""
-    },
-    {
-     "name": "height",
-     "type": "string",
-     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     }
    ],
    "description": "A section that spans the full width without horizontal padding. Useful for background colors, images, or other content that runs edge to edg",
@@ -5357,16 +5371,9 @@
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
-     "name": "scheme",
-     "type": "enum",
-     "enum_values": [
-      "inherit",
-      "light",
-      "dark",
-      "inverted"
-     ],
-     "default": "inherit",
-     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     },
     {
      "name": "padding-block",
@@ -5679,11 +5686,6 @@
       "96"
      ],
      "description": ""
-    },
-    {
-     "name": "height",
-     "type": "string",
-     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     }
    ],
    "description": "A section with two equal columns side by side. The columns wrap automatically when they become smaller than 280px. Padding and gap adjust vi",
@@ -5731,16 +5733,9 @@
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
-     "name": "scheme",
-     "type": "enum",
-     "enum_values": [
-      "inherit",
-      "light",
-      "dark",
-      "inverted"
-     ],
-     "default": "inherit",
-     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     },
     {
      "name": "padding-block",
@@ -6053,11 +6048,6 @@
       "96"
      ],
      "description": ""
-    },
-    {
-     "name": "height",
-     "type": "string",
-     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     }
    ],
    "description": "A section with a 1/3 sidebar on the left and 2/3 main content on the right. The columns wrap automatically when they become smaller than 280",
@@ -6094,6 +6084,21 @@
      "description": "Body max-width: 'full' removes the constraint; any CSS length overrides the default."
     },
     {
+     "name": "sidebar-label",
+     "type": "string",
+     "description": "Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys (sheet title fallback, dismiss label); unset keys fall back to Dutch."
+    },
+    {
+     "name": "no-collapse",
+     "type": "boolean",
+     "description": "Opt out of the sheet: a narrow section stacks the sidebar above the main instead of collapsing. `collapsed` then stays f"
+    },
+    {
      "name": "sticky-top",
      "type": "string",
      "description": "Sticky top inset on lg (CSS length; default = 16px)."
@@ -6102,21 +6107,6 @@
      "name": "sticky-bottom",
      "type": "string",
      "description": "Sticky bottom inset on lg (CSS length; default = 16px)."
-    },
-    {
-     "name": "sidebar-label",
-     "type": "string",
-     "description": "Accessible name for the sidebar (the aside landmark on lg and the sheet on sm/md). Default 'Zijbalk'."
-    },
-    {
-     "name": "no-collapse",
-     "type": "boolean",
-     "description": "Opt out of the sheet: a narrow section stacks the sidebar above the main instead of collapsing. `collapsed` then stays f"
-    },
-    {
-     "name": "translations",
-     "type": "string",
-     "description": "Override translation keys (sheet title fallback, dismiss label); unset keys fall back to Dutch."
     },
     {
      "name": "collapsed",
@@ -6135,15 +6125,8 @@
      "description": ""
     },
     {
-     "name": "scheme",
-     "type": "enum",
-     "enum_values": [
-      "inherit",
-      "light",
-      "dark",
-      "inverted"
-     ],
-     "default": "inherit",
+     "name": "height",
+     "type": "string",
      "description": ""
     },
     {
@@ -6456,11 +6439,6 @@
       "80",
       "96"
      ],
-     "description": ""
-    },
-    {
-     "name": "height",
-     "type": "string",
      "description": ""
     }
    ],
@@ -6536,16 +6514,9 @@
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
-     "name": "scheme",
-     "type": "enum",
-     "enum_values": [
-      "inherit",
-      "light",
-      "dark",
-      "inverted"
-     ],
-     "default": "inherit",
-     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     },
     {
      "name": "padding-block",
@@ -6858,11 +6829,6 @@
       "96"
      ],
      "description": ""
-    },
-    {
-     "name": "height",
-     "type": "string",
-     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     }
    ],
    "description": "A basic section with responsive padding and gap based on container size. Contains optional header and footer slots. The padding and spacing ",
@@ -6902,16 +6868,9 @@
      "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
     },
     {
-     "name": "scheme",
-     "type": "enum",
-     "enum_values": [
-      "inherit",
-      "light",
-      "dark",
-      "inverted"
-     ],
-     "default": "inherit",
-     "description": "Color scheme ('inherit' default; 'inverted' = opposite of the surrounding page scheme)."
+     "name": "height",
+     "type": "string",
+     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     },
     {
      "name": "padding-block",
@@ -7224,11 +7183,6 @@
       "96"
      ],
      "description": ""
-    },
-    {
-     "name": "height",
-     "type": "string",
-     "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
     }
    ],
    "description": "A section with 2/3 main content on the left and a 1/3 sidebar on the right. The columns wrap automatically when they become smaller than 280",
@@ -7260,6 +7214,16 @@
    "name": "popover",
    "attributes": [
     {
+     "name": "width",
+     "type": "string",
+     "description": "Width as a CSS length (default: 320px through --components-popover-default-width). A content-based size (`fit-content`, "
+    },
+    {
+     "name": "sm-full-height",
+     "type": "boolean",
+     "description": "On an sm viewport (where the popover renders as a bottom sheet) fills the whole available height instead of shrinking to"
+    },
+    {
      "name": "anchor",
      "type": "string",
      "description": "ID of the trigger element, used for positioning"
@@ -7278,19 +7242,9 @@
      "description": "Floating UI placement (default: 'bottom-start')"
     },
     {
-     "name": "width",
-     "type": "string",
-     "description": "Width as a CSS length (default: 320px through --components-popover-default-width). A content-based size (`fit-content`, "
-    },
-    {
      "name": "top",
      "type": "string",
      "description": "CSS top position. When set (on its own, or together with other edge attributes or `centered`) Floating UI's anchor posit"
-    },
-    {
-     "name": "left",
-     "type": "string",
-     "description": "CSS left position. See `top` for the semantics."
     },
     {
      "name": "right",
@@ -7303,14 +7257,14 @@
      "description": "CSS bottom position. See `top` for the semantics."
     },
     {
+     "name": "left",
+     "type": "string",
+     "description": "CSS left position. See `top` for the semantics."
+    },
+    {
      "name": "centered",
      "type": "boolean",
      "description": "Centers both axes on the viewport. Overridable per axis: `centered top=\"0\"` is centered horizontally, aligned to the top"
-    },
-    {
-     "name": "sm-full-height",
-     "type": "boolean",
-     "description": "On an sm viewport (where the popover renders as a bottom sheet) fills the whole available height instead of shrinking to"
     },
     {
      "name": "accessible-label",
@@ -7321,6 +7275,11 @@
      "name": "translations",
      "type": "string",
      "description": "Override translation keys; unset keys fall back to the Dutch default."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Whether the popover is open. Set it to open or close the popover, as an alternative to show() and hide(); opening needs "
     }
    ],
    "description": "A non-modal floating panel anchored to a trigger element. Built on the native Popover API (popover=\"auto\") with Floating UI for positioning.",
@@ -7340,6 +7299,16 @@
    "name": "sheet",
    "attributes": [
     {
+     "name": "width",
+     "type": "string",
+     "description": "Custom width for side sheets (left/right) as a CSS length (e.g. '480px', '32rem'). Applied from the md breakpoint up; ig"
+    },
+    {
+     "name": "height",
+     "type": "string",
+     "description": "Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `"
+    },
+    {
      "name": "placement",
      "type": "enum",
      "enum_values": [
@@ -7353,19 +7322,14 @@
      "description": "Sheet position: 'left' | 'right' | 'bottom' (default: 'right')"
     },
     {
-     "name": "height",
-     "type": "string",
-     "description": "Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `"
-    },
-    {
      "name": "accessible-label",
      "type": "string",
-     "description": "Accessible name for the dialog, forwarded as aria-label (default: 'Venster')"
+     "description": "Accessible name for the dialog, forwarded as aria-label. Unset, the sheet takes the text of the nldd-top-title-bar insid"
     },
     {
-     "name": "width",
-     "type": "string",
-     "description": "Custom width for side sheets (left/right) as a CSS length (e.g. '480px', '32rem'). Applied from the md breakpoint up; ig"
+     "name": "open",
+     "type": "boolean",
+     "description": "Whether the sheet is open. Set it to open or close the sheet, as an alternative to show() and hide(). The sheet clears i"
     }
    ],
    "description": "An overlay component that slides in from the side or bottom of the screen. Based on the native <dialog> element for built-in accessibility, ",
@@ -7377,6 +7341,12 @@
    "methods": [
     "hide",
     "show"
+   ],
+   "slots": [
+    {
+     "name": "notifications",
+     "description": "Where the notifications area lands while this overlay is open, so a notification is not left inert b"
+    }
    ]
   },
   {
@@ -7501,7 +7471,7 @@
      "description": "Direction: 'horizontal' | 'vertical' | 'both' (default: 'both')"
     }
    ],
-   "description": "Add explicit space between elements. Components here have no margins of their own — all whitespace is set by a spacer. Use a single `size` a",
+   "description": "Add explicit space between elements. Components here have no margins of their own — all whitespace is set by a spacer. A spacer is fixed spa",
    "category": "layout",
    "backend": "jinja",
    "content": {
@@ -7534,11 +7504,6 @@
    "name": "navigation-split-view",
    "attributes": [
     {
-     "name": "inspector-auto-hidden",
-     "type": "boolean",
-     "description": "Inspector hidden to free up space for other panes (read-only, set by the split view)"
-    },
-    {
      "name": "inspector-as-sheet",
      "type": "boolean",
      "description": "Always show the inspector as a sheet regardless of available space"
@@ -7549,11 +7514,6 @@
      "description": "Always show the primary sidebar as a sheet, keeping main visible at full width"
     },
     {
-     "name": "sidebar-as-sheet",
-     "type": "boolean",
-     "description": "@deprecated alias for primary-sidebar-as-sheet (kept for backwards compatibility)"
-    },
-    {
      "name": "inspector-accessible-label",
      "type": "string",
      "description": "Accessible name for the inspector sheet dialog (default: 'Details')"
@@ -7562,6 +7522,16 @@
      "name": "primary-sidebar-accessible-label",
      "type": "string",
      "description": "Accessible name for the primary sidebar sheet dialog (default: 'Navigatie')"
+    },
+    {
+     "name": "inspector-auto-hidden",
+     "type": "boolean",
+     "description": "Inspector hidden to free up space for other panes (read-only, set by the split view)"
+    },
+    {
+     "name": "sidebar-as-sheet",
+     "type": "boolean",
+     "description": "@deprecated alias for primary-sidebar-as-sheet (kept for backwards compatibility)"
     },
     {
      "name": "sidebar-accessible-label",
@@ -7648,6 +7618,7 @@
      "name": "orientation",
      "type": "enum",
      "enum_values": [
+      "auto",
       "horizontal",
       "vertical"
      ],
@@ -7671,9 +7642,9 @@
    "name": "split-view-pane",
    "attributes": [
     {
-     "name": "has-content",
-     "type": "boolean",
-     "description": "The pane has content (default: false)"
+     "name": "background",
+     "type": "string",
+     "description": "Use a tinted background color (cascades to descendants)"
     },
     {
      "name": "hide-back",
@@ -7681,9 +7652,9 @@
      "description": "Hide the back button (set automatically by the split view)"
     },
     {
-     "name": "background",
-     "type": "string",
-     "description": "Use a tinted background color (cascades to descendants)"
+     "name": "has-content",
+     "type": "boolean",
+     "description": "The pane has content (default: false)"
     }
    ],
    "description": "A simple pane container for use inside split views. The split view automatically sets context: whether a back button should be shown. The co",
@@ -7732,44 +7703,15 @@
    "name": "window",
    "attributes": [
     {
-     "name": "no-light-dismiss",
-     "type": "boolean",
-     "description": "A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form"
-    },
-    {
-     "name": "accessible-label",
-     "type": "string",
-     "description": "(required) Accessible name (aria-label). Falls back to the i18n default ('Venster') when unset. Always pass a unique, de"
-    },
-    {
-     "name": "translations",
-     "type": "string",
-     "description": "Override translation keys; unset keys fall back to the Dutch default."
-    },
-    {
-     "name": "top",
-     "type": "string",
-     "description": "CSS top position of the top edge (e.g. '0', '100px')"
-    },
-    {
-     "name": "left",
-     "type": "string",
-     "description": "CSS left position of the left edge"
-    },
-    {
-     "name": "right",
-     "type": "string",
-     "description": "CSS right value"
-    },
-    {
-     "name": "bottom",
-     "type": "string",
-     "description": "CSS bottom value"
-    },
-    {
-     "name": "centered",
-     "type": "boolean",
-     "description": "Centers both axes on the viewport. Overridable per axis: `centered top=\"0\"` is horizontally centered, top aligned. Mirro"
+     "name": "scheme",
+     "type": "enum",
+     "enum_values": [
+      "inherit",
+      "light",
+      "dark"
+     ],
+     "default": "inherit",
+     "description": "Color scheme (default 'inherit')."
     },
     {
      "name": "width",
@@ -7782,15 +7724,49 @@
      "description": "CSS height (default: content height)"
     },
     {
-     "name": "scheme",
-     "type": "enum",
-     "enum_values": [
-      "inherit",
-      "light",
-      "dark"
-     ],
-     "default": "inherit",
-     "description": "Color scheme (default 'inherit')."
+     "name": "top",
+     "type": "string",
+     "description": "CSS top position of the top edge (e.g. '0', '100px')"
+    },
+    {
+     "name": "right",
+     "type": "string",
+     "description": "CSS right value"
+    },
+    {
+     "name": "bottom",
+     "type": "string",
+     "description": "CSS bottom value"
+    },
+    {
+     "name": "left",
+     "type": "string",
+     "description": "CSS left position of the left edge"
+    },
+    {
+     "name": "centered",
+     "type": "boolean",
+     "description": "Centers both axes on the viewport. Overridable per axis: `centered top=\"0\"` is horizontally centered, top aligned. Mirro"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name (aria-label). Unset, the window takes the text of the nldd-top-title-bar inside it, and without one the "
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override translation keys; unset keys fall back to the Dutch default."
+    },
+    {
+     "name": "no-light-dismiss",
+     "type": "boolean",
+     "description": "A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form"
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Whether the window is open. Set it to open or close the window, as an alternative to show() and hide(). The window clear"
     }
    ],
    "description": "A floating window based on the native <dialog> element, positionable through CSS values. Always modal. No header of its own: consumers use n",
@@ -7802,6 +7778,12 @@
    "methods": [
     "hide",
     "show"
+   ],
+   "slots": [
+    {
+     "name": "notifications",
+     "description": "Where the notifications area lands while this overlay is open, so a notification is not left inert b"
+    }
    ]
   },
   {
@@ -7828,17 +7810,6 @@
      "description": "Minimum height as CSS length (e.g. '44px', '3rem')"
     },
     {
-     "name": "vertical-alignment",
-     "type": "enum",
-     "enum_values": [
-      "top",
-      "center",
-      "bottom"
-     ],
-     "default": "center",
-     "description": "Vertical alignment of slotted content (default: 'center')"
-    },
-    {
      "name": "horizontal-alignment",
      "type": "enum",
      "enum_values": [
@@ -7848,6 +7819,17 @@
      ],
      "default": "left",
      "description": "Horizontal alignment of slotted content (default: 'left')"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
+     "description": "Vertical alignment of slotted content (default: 'center')"
     },
     {
      "name": "hide-below",
@@ -7860,7 +7842,7 @@
      "description": ""
     }
    ],
-   "description": "A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. `ver",
+   "description": "A generic cell for wrapping arbitrary content in a list item. Controls vertical alignment and sizing without imposing content opinions. For ",
    "category": "data-display",
    "backend": "jinja",
    "content": {
@@ -7982,17 +7964,6 @@
    "name": "icon-cell",
    "attributes": [
     {
-     "name": "vertical-alignment",
-     "type": "enum",
-     "enum_values": [
-      "top",
-      "center",
-      "bottom"
-     ],
-     "default": "center",
-     "description": "Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')"
-    },
-    {
      "name": "size",
      "type": "enum",
      "enum_values": [
@@ -8058,6 +8029,17 @@
      ],
      "default": "content",
      "description": "Color variant of the icon (default: 'content')"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
+     "description": "Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')"
     },
     {
      "name": "icon",
@@ -8254,14 +8236,14 @@
      "description": "Main text content. Supports **bold** syntax for inline bold segments. Falls back to default slot."
     },
     {
-     "name": "overline",
-     "type": "string",
-     "description": "Optional overline text displayed above the main content. Supports **bold**. Falls back to `overline` slot."
-    },
-    {
      "name": "supporting-text",
      "type": "string",
      "description": "Optional supporting text displayed below the main content. Supports **bold**. Falls back to `supporting-text` slot."
+    },
+    {
+     "name": "overline",
+     "type": "string",
+     "description": "Optional overline text displayed above the main content. Supports **bold**. Falls back to `overline` slot."
     },
     {
      "name": "query",
@@ -8310,6 +8292,34 @@
    "name": "timeline-track-cell",
    "attributes": [
     {
+     "name": "variant",
+     "type": "enum",
+     "enum_values": [
+      "primary",
+      "secondary",
+      "destructive",
+      "accent-filled",
+      "accent-transparent",
+      "neutral-tinted",
+      "neutral-base",
+      "neutral-transparent",
+      "critical-tinted",
+      "critical-transparent",
+      "inherit-filled",
+      "inherit-tinted",
+      "box",
+      "simple",
+      "text",
+      "icon",
+      "icon-and-text",
+      "major",
+      "minor",
+      "none"
+     ],
+     "default": "major",
+     "description": "What stands in the lane: a whole dot (`major`, the default), a smaller one for a row that belongs under the one above it"
+    },
+    {
      "name": "status",
      "type": "enum",
      "enum_values": [
@@ -8352,34 +8362,6 @@
      ],
      "default": "sm",
      "description": "How wide the lane is and so how big the dot: `sm` (default, 16px) for a timeline of events, `md` (24px) where a number o"
-    },
-    {
-     "name": "variant",
-     "type": "enum",
-     "enum_values": [
-      "primary",
-      "secondary",
-      "destructive",
-      "accent-filled",
-      "accent-transparent",
-      "neutral-tinted",
-      "neutral-base",
-      "neutral-transparent",
-      "critical-tinted",
-      "critical-transparent",
-      "inherit-filled",
-      "inherit-tinted",
-      "box",
-      "simple",
-      "text",
-      "icon",
-      "icon-and-text",
-      "major",
-      "minor",
-      "none"
-     ],
-     "default": "major",
-     "description": "What stands in the lane: a whole dot (`major`, the default), a smaller one for a row that belongs under the one above it"
     },
     {
      "name": "direction",
@@ -8537,14 +8519,14 @@
      "description": "Title text content. Supports **bold** syntax for inline bold segments. Falls back to default slot."
     },
     {
-     "name": "overline",
-     "type": "string",
-     "description": "Optional overline text displayed above the title. Supports **bold**. Falls back to `overline` slot."
-    },
-    {
      "name": "supporting-text",
      "type": "string",
      "description": "Optional supporting text displayed below the title. Supports **bold**. Falls back to `supporting-text` slot."
+    },
+    {
+     "name": "overline",
+     "type": "string",
+     "description": "Optional overline text displayed above the title. Supports **bold**. Falls back to `overline` slot."
     },
     {
      "name": "heading-level",
@@ -8577,7 +8559,7 @@
      "description": ""
     }
    ],
-   "description": "A cell component for displaying a title with optional overline and subtitle in lists. `vertical-alignment=\"center\"` (default) stretches the ",
+   "description": "A cell component for displaying a title with optional overline and supporting text in lists. `vertical-alignment=\"center\"` (default) stretch",
    "category": "data-display",
    "backend": "jinja",
    "content": {
@@ -8598,9 +8580,14 @@
    "name": "list-item-segment",
    "attributes": [
     {
-     "name": "button",
-     "type": "boolean",
-     "description": "Renders the segment as a `<button>`. Last of the three: `href` and `checkbox` both win over it."
+     "name": "width",
+     "type": "enum",
+     "enum_values": [
+      "fit-content",
+      "full"
+     ],
+     "default": "fit-content",
+     "description": "`full` lets the segment grow to fill the row (default: 'fit-content')"
     },
     {
      "name": "href",
@@ -8618,9 +8605,24 @@
      "description": "Link rel forwarded to the `<a>`, only with `href`; with target '_blank', 'noopener noreferrer' is added to whatever you "
     },
     {
+     "name": "button",
+     "type": "boolean",
+     "description": "Renders the segment as a `<button>`. Last of the three: `href` and `checkbox` both win over it."
+    },
+    {
      "name": "checkbox",
      "type": "boolean",
      "description": "Makes the segment a `role=\"checkbox\"` control. Wins over `button`, loses to `href`."
+    },
+    {
+     "name": "disclosure",
+     "type": "boolean",
+     "description": "Marks the segment as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so the state"
+    },
+    {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name for the control. Set it when the segment holds only an icon, or when the cell text does not describe the"
     },
     {
      "name": "checked",
@@ -8633,9 +8635,14 @@
      "description": "Disclosure state, reflected as `aria-expanded` on the control, and painted: the segment stays lit a step above hover for"
     },
     {
-     "name": "disclosure",
-     "type": "boolean",
-     "description": "Marks the segment as the row's disclosure control: `aria-expanded` comes from the parent item's `expanded`, so the state"
+     "name": "popup-type",
+     "type": "string",
+     "description": "Type of popup this segment opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Becomes aria-haspopup on the control "
+    },
+    {
+     "name": "popovertarget",
+     "type": "string",
+     "description": "ID of a popover this segment toggles; forwarded to the inner button. The IDL counterparts `popoverTargetElement` and `po"
     },
     {
      "name": "current",
@@ -8648,19 +8655,14 @@
      "description": "Switches the segment off: a `button` or `checkbox` segment stops responding and dims, a `href` segment gets `aria-disabl"
     },
     {
-     "name": "width",
-     "type": "enum",
-     "enum_values": [
-      "fit-content",
-      "full"
-     ],
-     "default": "fit-content",
-     "description": "`full` lets the segment grow to fill the row (default: 'fit-content')"
+     "name": "divider-start",
+     "type": "boolean",
+     "description": "The row's divider starts at this cell instead of at its first text or title cell."
     },
     {
-     "name": "accessible-label",
-     "type": "string",
-     "description": "Accessible name for the control. Set it when the segment holds only an icon, or when the cell text does not describe the"
+     "name": "divider-end",
+     "type": "boolean",
+     "description": "The row's divider stops after this cell."
     }
    ],
    "description": "A segment inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one segm",
@@ -8684,14 +8686,19 @@
      "description": "Row size (default: 'md'). Pushed onto the cells whose `size` means the same scale (nldd-text-cell, nldd-drag-handle-cell"
     },
     {
-     "name": "selected",
-     "type": "boolean",
-     "description": "Marks the item as selected: it is one of the rows you picked. Selection is consumer-managed; the list never sets it. In "
+     "name": "href",
+     "type": "string",
+     "description": "Renders the item as an `<a>` with this URL. Wins over `checkbox` and `button`; without any of the three the item is a pl"
     },
     {
-     "name": "current",
-     "type": "boolean",
-     "description": "Marks the item as the one you are on: the page a menu row points at, the record a list has open. Exactly one row in a li"
+     "name": "target",
+     "type": "string",
+     "description": "Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden \"opens in "
+    },
+    {
+     "name": "rel",
+     "type": "string",
+     "description": "Link rel forwarded to the `<a>`, only with `href`; with target '_blank', 'noopener noreferrer' is added to whatever you "
     },
     {
      "name": "button",
@@ -8709,14 +8716,19 @@
      "description": "Makes the whole row one radio of a group: the action becomes a `role=\"radio\"` button carrying `aria-checked`, and activa"
     },
     {
+     "name": "reorderable",
+     "type": "boolean",
+     "description": "Set by the parent `nldd-list` when its own `reorderable` is on (with `type=\"list\"`); consumers do not set this. Serves a"
+    },
+    {
+     "name": "selected",
+     "type": "boolean",
+     "description": "Marks the item as selected: it is one of the rows you picked. Selection is consumer-managed; the list never sets it. In "
+    },
+    {
      "name": "checked",
      "type": "boolean",
      "description": "Checked state of a `checkbox` or `radio` row. A checkbox row toggles it on activation, a radio row only ever sets it"
-    },
-    {
-     "name": "disabled",
-     "type": "boolean",
-     "description": "Switches the row's own control off: a `button` or `checkbox` row stops responding and dims, a `href` row gets `aria-disa"
     },
     {
      "name": "expanded",
@@ -8724,24 +8736,24 @@
      "description": "Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when "
     },
     {
-     "name": "href",
-     "type": "string",
-     "description": "Renders the item as an `<a>` with this URL. Wins over `checkbox` and `button`; without any of the three the item is a pl"
-    },
-    {
-     "name": "target",
-     "type": "string",
-     "description": "Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden \"opens in "
-    },
-    {
-     "name": "rel",
-     "type": "string",
-     "description": "Link rel forwarded to the `<a>`, only with `href`; with target '_blank', 'noopener noreferrer' is added to whatever you "
-    },
-    {
-     "name": "reorderable",
+     "name": "current",
      "type": "boolean",
-     "description": "Set by the parent `nldd-list` when its own `reorderable` is on (with `type=\"list\"`); consumers do not set this. Serves a"
+     "description": "Marks the item as the one you are on: the page a menu row points at, the record a list has open. Exactly one row in a li"
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": "Switches the row's own control off: a `button` or `checkbox` row stops responding and dims, a `href` row gets `aria-disa"
+    },
+    {
+     "name": "divider-start",
+     "type": "boolean",
+     "description": "The divider starts at this cell instead of at the row's first text or title cell. On the leading cell it restores the fu"
+    },
+    {
+     "name": "divider-end",
+     "type": "boolean",
+     "description": "The divider stops after this cell. With several markers the line runs from the first start to the last end."
     },
     {
      "name": "translations",
@@ -8795,11 +8807,6 @@
      "description": "A11y role and behavior (default 'list'). See the docblock above."
     },
     {
-     "name": "reorderable",
-     "type": "boolean",
-     "description": "Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type=\"list\"`; there the arrow keys mov"
-    },
-    {
      "name": "dividers",
      "type": "enum",
      "enum_values": [
@@ -8824,6 +8831,11 @@
      "name": "translations",
      "type": "string",
      "description": "Override translation keys; unset keys fall back to Dutch"
+    },
+    {
+     "name": "reorderable",
+     "type": "boolean",
+     "description": "Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type=\"list\"`; there the arrow keys mov"
     }
    ],
    "description": "A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role=\"list",
@@ -8997,12 +9009,17 @@
     {
      "name": "text",
      "type": "string",
-     "description": "Title of the bar, rendered as the h1 in the title group."
+     "description": "Title of the bar, rendered as the heading in the title group."
     },
     {
      "name": "supporting-text",
      "type": "string",
-     "description": "Subtitle under the title."
+     "description": "Text under the title."
+    },
+    {
+     "name": "heading-level",
+     "type": "string",
+     "description": "Heading level of the title: 1–6 (default: 1). Lower it where the bar is not the top of the page, such as a pane beside c"
     },
     {
      "name": "collapse-anchor",
@@ -9313,9 +9330,9 @@
      "description": "Forwarded to nldd-inline-dialog; 'alert' forces icon and color"
     },
     {
-     "name": "icon",
+     "name": "horizontal-alignment",
      "type": "string",
-     "description": "Forwarded to nldd-inline-dialog; absent when not set"
+     "description": "Forwarded to nldd-inline-dialog. Unset derives it there: slotted content aligns left, a bare message stays centered."
     },
     {
      "name": "text",
@@ -9328,14 +9345,19 @@
      "description": "Forwarded to nldd-inline-dialog; supporting text"
     },
     {
-     "name": "horizontal-alignment",
+     "name": "icon",
      "type": "string",
-     "description": "Forwarded to nldd-inline-dialog. Unset derives it there: slotted content aligns left, a bare message stays centered."
+     "description": "Forwarded to nldd-inline-dialog; absent when not set"
     },
     {
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible name for the dialog (aria-label); falls back to text"
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Whether the dialog is open. Set it to open or close the dialog, as an alternative to show() and hide(). The dialog clear"
     }
    ],
    "description": "A modal window with overlay backdrop, based on the native <dialog> element. Internally renders an <nldd-inline-dialog> for the visual struct",
@@ -9352,6 +9374,10 @@
     {
      "name": "actions",
      "description": "nldd-button elements, forwarded to nldd-inline-dialog"
+    },
+    {
+     "name": "notifications",
+     "description": "Where the notifications area lands while this overlay is open, so a notification is not left inert b"
     }
    ]
   },

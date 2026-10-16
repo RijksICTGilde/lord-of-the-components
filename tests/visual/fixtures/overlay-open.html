@@ -1,0 +1,38 @@
+{# Meetfixture voor NLDD 0.8.93: de overlays kregen een `open`-attribuut, dus
+   servergerenderde stand is genoeg — behalve bij de popover, die een ANKER
+   nodig heeft en zonder anker stil niets doet.
+
+   Deze fixture is er om GEDRAG te meten (staat het ding open, is zijn inhoud
+   groter dan 0x0), niet om er een schermafdruk van te maken. De toets staat in
+   specs/overlay-open.spec.ts.
+
+   De drie "dicht"-varianten zijn de negatieve controle: zonder `open` moet
+   dezelfde markup onzichtbaar blijven. Anders meet de toets alleen dat een
+   element bestaat. #}
+<c-page title="Overlays openen" design-systems="lotc-layout nldd">
+  <div class="fixture-container" style="padding:1rem">
+    <p>Deze pagina meet hoe overlays opengaan.</p>
+
+    <c-sheet id="sheet-open" accessible-label="Sheet open" open>
+      <p id="sheet-open-inhoud">inhoud van de sheet</p>
+    </c-sheet>
+    <c-sheet id="sheet-dicht" accessible-label="Sheet dicht">
+      <p id="sheet-dicht-inhoud">inhoud van de dichte sheet</p>
+    </c-sheet>
+
+    <c-modal-dialog id="dialog-open" accessible-label="Dialog open" open>
+      <p id="dialog-open-inhoud">inhoud van de dialog</p>
+    </c-modal-dialog>
+    <c-modal-dialog id="dialog-dicht" accessible-label="Dialog dicht">
+      <p id="dialog-dicht-inhoud">inhoud van de dichte dialog</p>
+    </c-modal-dialog>
+
+    <c-window id="window-open" accessible-label="Window open" open>
+      <p id="window-open-inhoud">inhoud van het window</p>
+    </c-window>
+    <c-window id="window-dicht" accessible-label="Window dicht">
+      <p id="window-dicht-inhoud">inhoud van het dichte window</p>
+    </c-window>
+
+  </div>
+</c-page>

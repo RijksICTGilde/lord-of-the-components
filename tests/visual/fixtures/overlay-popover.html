@@ -1,0 +1,19 @@
+{# Meetfixture: de popover apart, want hij overleeft geen andere open overlay.
+   In een pagina waar ook een sheet/dialog/window open staat was deze popover
+   NIET zichtbaar — ze delen de top layer en de laatste opener wint. De meting
+   staat daarom op een eigen pagina, met alleen popovers erop.
+
+   Wat hier gepind wordt: `open` werkt MET een anker, en zonder anker doet
+   dezelfde markup stil niets (het element gooit het attribuut zelfs weg). #}
+<c-page title="Popover openen" design-systems="lotc-layout nldd">
+  <div class="fixture-container" style="padding:1rem">
+    <button id="anker" type="button">anker</button>
+    <c-popover id="popover-anker" anchor="anker" open>
+      <p id="popover-anker-inhoud">inhoud met anker</p>
+    </c-popover>
+
+    <c-popover id="popover-zonder" open>
+      <p id="popover-zonder-inhoud">inhoud zonder anker</p>
+    </c-popover>
+  </div>
+</c-page>

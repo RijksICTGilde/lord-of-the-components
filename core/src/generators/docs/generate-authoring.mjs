@@ -44,6 +44,11 @@ const attrShort = (a) => {
 // Behaviour the design system exposes as a METHOD, so no attribute reaches it.
 // `show` on a sheet is the one that catches people out: it reads like an
 // attribute, and setting it — or assigning `el.show = true` — does nothing.
+// NLDD 0.8.93 gave sheet/modal-dialog/window an `open` attribute, so for those
+// the method is no longer the only door — hence the check for it here rather
+// than a hardcoded list. Keyed on the ATTRIBUTE and not on a version, so the
+// next release that adds or drops one moves the component by itself.
+const hasOpenAttr = (c) => (c.attributes || []).some((a) => a.name === "open");
 const methodNote = (c) => {
   const methods = c.methods || [];
   if (!methods.length) return "";
@@ -51,9 +56,11 @@ const methodNote = (c) => {
   // switch does NOT: that has `checked`, so the method is a convenience, not the
   // only door.
   const opener = methods.find((m) => m === "show" || /^show[A-Z]/.test(m));
-  const lead = opener
-    ? `no attribute opens this — call \`el.${opener}()\`;`
-    : `JavaScript only:`;
+  const lead = !opener
+    ? `JavaScript only:`
+    : hasOpenAttr(c)
+      ? `\`open\` renders it open, or call \`el.${opener}()\`;`
+      : `no attribute opens this — call \`el.${opener}()\`;`;
   return `\n  <br>methods: ${lead} ${methods.map((m) => `\`${m}()\``).join(", ")}`;
 };
 // Named slots. Not decoration: a capability that lives in a slot is invisible if
@@ -184,20 +191,57 @@ const jsOpened = all
   .filter((c) => (c.methods || []).some((m) => m === "show" || /^show[A-Z]/.test(m)))
   .sort((a, b) => a.name.localeCompare(b.name));
 if (jsOpened.length) {
+  const declarative = jsOpened.filter(hasOpenAttr);
+  const methodOnly = jsOpened.filter((c) => !hasOpenAttr(c));
   L.push(`### Opening a sheet, dialog or popover\n`);
   L.push(
-    `${jsOpened.length} components have no attribute that opens them — the design system` +
-      ` exposes it as a **method**. Rendering the markup is not enough; something has to call` +
-      ` it. The *state* can still come from the server (render the sheet only when it should` +
-      ` be open); the *opening* is one line of JavaScript.\n`,
+    `${jsOpened.length} components open as overlays, and they do not all open the same way.` +
+      ` Rendering the markup is never enough on its own — something has to put them in the` +
+      ` open state.\n`,
   );
-  L.push("```js");
-  L.push(`document.getElementById("my-sheet").show();   // not show="true", not el.show = true`);
-  L.push("```");
-  for (const c of jsOpened) {
-    L.push(`- \`<c-${c.name}>\` — ${(c.methods || []).map((m) => `\`${m}()\``).join(", ")}`);
+  if (declarative.length) {
+    L.push(
+      `**${declarative.length} take an \`open\` attribute**, so server-rendered state is enough:` +
+        ` render it with \`open\` and it is open on first paint. The method still works and` +
+        ` reflects back into the attribute.\n`,
+    );
+    L.push("```html");
+    L.push(`<c-sheet accessible-label="Details" open> … </c-sheet>   <!-- open on load -->`);
+    L.push("```");
+    for (const c of declarative) {
+      L.push(`- \`<c-${c.name}>\` — \`open\`, or ${(c.methods || []).map((m) => `\`${m}()\``).join(", ")}`);
+    }
+    L.push("");
   }
-  L.push("");
+  if (methodOnly.length) {
+    L.push(
+      `**${methodOnly.length} have no attribute that opens them** — the design system exposes it` +
+        ` as a **method** only. The *state* can still come from the server (render it only when` +
+        ` it should be open); the *opening* is one line of JavaScript.\n`,
+    );
+    L.push("```js");
+    L.push(`document.getElementById("my-panel").show();   // not show="true", not el.show = true`);
+    L.push("```");
+    for (const c of methodOnly) {
+      L.push(`- \`<c-${c.name}>\` — ${(c.methods || []).map((m) => `\`${m}()\``).join(", ")}`);
+    }
+    L.push("");
+  }
+  // Popover is the exception to both halves, and it fails SILENTLY — measured in
+  // a browser, not read off the manifest: `<nldd-popover open>` with no anchor
+  // never opens, the element drops the attribute again, and `show()` returns
+  // without doing anything. It is positioned relative to an anchor, so without
+  // one there is nowhere to put it. Also only one popover is open at a time:
+  // opening a second closes the first (top layer).
+  if (jsOpened.some((c) => c.name === "popover")) {
+    L.push(
+      `**\`<c-popover>\` needs an anchor, whichever way you open it.** Give it` +
+        ` \`anchor="<id-of-the-anchor>"\`, or point a button at it with` +
+        ` \`popovertarget\`. Without an anchor, \`open\` and \`show()\` both do` +
+        ` **nothing at all** — no error, and the element quietly drops the attribute` +
+        ` again. Opening a popover closes any other open one (they share the top layer).\n`,
+    );
+  }
 }
 
 // ── names that mean something else here than in NLDD ──

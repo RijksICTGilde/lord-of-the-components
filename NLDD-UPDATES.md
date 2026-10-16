@@ -61,4 +61,4 @@ consumer's pin forward:
 
 | From | Note |
 | --- | --- |
-| `d19c7a5` (NLDD 0.8.83) | [`docs/UPGRADEN-VANAF-d19c7a5.md`](docs/UPGRADEN-VANAF-d19c7a5.md) — secret-field markup, field-error rewiring, `default` removed as a value, new asset files |
+| `d19c7a5` (NLDD 0.8.83) | [`docs/UPGRADEN-VANAF-d19c7a5.md`](docs/UPGRADEN-VANAF-d19c7a5.md) — secret-field markup, field-error rewiring, `default` removed as a value, `scheme` removed on the page sections, new asset files |
