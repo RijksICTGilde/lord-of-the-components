@@ -39,7 +39,7 @@ def test_metric_composes_nldd_primitives(render):
     html = render('<c-metric icon="apartment-building" value="5" label="Datacenters" sub="4 operationeel"/>')
     assert "<nldd-card" in html
     assert '<nldd-container' in html and 'padding="20"' in html
-    assert '<nldd-icon' in html and 'name="apartment-building"' in html
+    assert '<nldd-icon' in html and 'icon="apartment-building"' in html
 
 
 def test_sidenav_active_state(render):

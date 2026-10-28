@@ -29,7 +29,7 @@ const walk = (d: string, acc: string[] = []): string[] => {
 };
 const rvo = [...new Set(walk(rvoDir))].sort();
 
-// NLDD: the names <nldd-icon name="..."> actually draws. That is TWO files —
+// NLDD: the names <nldd-icon icon="..."> actually draws. That is TWO files —
 // the drawn icons AND the design system's own friendly-name layer, which maps
 // e.g. `download` -> `arrow-down-in-bucket`. Reading only the registry made the
 // vocabulary too strict: 315 names that render fine were rejected in debug mode,

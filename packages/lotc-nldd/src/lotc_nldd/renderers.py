@@ -377,7 +377,7 @@ def icon(*, icon='', size='md', color='', aria_label='', content=None, _extra=No
         parts.append('"')
     parts.append(' data-lotc-component="icon"')
     if icon:
-        parts.append(' name="')
+        parts.append(' icon="')
         parts.append(esc(_ICON_ICONS_MAP.get(icon, icon)))
         parts.append('"')
     if size:

@@ -1,4 +1,4 @@
-/** NLDD Icon — <nldd-icon name size color>, with semantic icon aliasing. */
+/** NLDD Icon — <nldd-icon icon size color>, with semantic icon aliasing. */
 import { defineImplementation } from "../../../implementations/implementation.js";
 import { icon } from "../../../definitions/components/icon.def.js";
 import { iconMapFor } from "../../../definitions/icons.js";
@@ -11,7 +11,7 @@ export const iconImpl = defineImplementation({
     isRoot: true,
     attributes: [
       // Semantic icon name -> NLDD icon name (definitions/icons.ts).
-      { prop: "icon", attr: "name", type: "value", conditional: true, valueMap: "icons" },
+      { prop: "icon", attr: "icon", type: "value", conditional: true, valueMap: "icons" },
       // Semantic size -> NLDD numeric spacer token. NLDD's <nldd-icon> only knows
       // size="16|20|24|..."; anything else falls back to --_size:100% (fills its
       // parent -> giant icons). Map our t-shirt sizes onto the spacer scale.

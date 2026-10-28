@@ -71,7 +71,7 @@ class LotcSecretField extends HTMLElement {
 		toggle.setAttribute('aria-pressed', this.revealed ? 'true' : 'false');
 		toggle.setAttribute('title', this.revealed ? 'Verbergen' : 'Tonen');
 		const icon = toggle.querySelector('nldd-icon');
-		if (icon) icon.setAttribute('name', this.revealed ? 'eye-slash' : 'eye');
+		if (icon) icon.setAttribute('icon', this.revealed ? 'eye-slash' : 'eye');
 	}
 }
 

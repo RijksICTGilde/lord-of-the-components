@@ -8,7 +8,7 @@ uit commitberichten.
 0.8.100 en de minors 0.9.0, 0.10.0, 0.11.0, 0.12.0 en 0.13.0, plus de
 wijzigingen aan de componentenlaag zelf.
 
-**Is dit een drop-in?** Nee. Er zijn acht dingen die je moet aanpassen en twee
+**Is dit een drop-in?** Nee. Er zijn negen dingen die je moet aanpassen en twee
 die je build hard rood maken tot je ze aanraakt. Reken op een eigen ticket met
 een eigen tak; het is geen bump die je in het voorbijgaan doet.
 
@@ -152,6 +152,17 @@ Style je tegen de semantics-laag van NLDD, dan is
 precies de drift die je niet ziet. Onze eigen `lotc-nldd.css` is omgezet, en een
 toets in deze repo bewaakt dat elk `--semantics-*` dat wij gebruiken ook echt in
 het thema bestaat.
+
+### i. `<nldd-icon>` leest `icon`, niet meer `name` (0.13.0)
+
+Het attribuut dat het icoon kiest heet op het ruwe element nu `icon`. Een
+`<nldd-icon name="house">` tekent geen fout en geen consolemelding, maar de
+gestippelde vervangcirkel, en dat voor elke naam. `<c-icon icon="…">` verandert
+niet: dat emitteert sinds deze tip `icon=` (de eerste 0.13.0-commit, `2eeff25`,
+deed dat nog niet; pin daar dus niet op). Schrijf je in eigen templates of
+JavaScript `<nldd-icon name=…>` of `setAttribute('name', …)` op een icoon, zet
+die om naar `icon`. Een toets in deze repo leest de attributen die `nldd-icon`
+declareert uit de gevendorde bundel en faalt als wij er een andere uitgeven.
 
 ### d. Nieuwe bestanden die geladen moeten worden
 

@@ -18,8 +18,8 @@ def test_secret_field_nldd_renders_masked_with_reveal_and_copy():
     out = _render(["nldd"], SRC)
     assert "•" * 8 in out  # masked dots, length from mask-length
     assert 'value="sk-abc123"' in out  # value client-side only
-    assert 'name="eye"' in out  # reveal toggle
-    assert 'name="clipboard"' in out  # copy button (show-copy)
+    assert 'icon="eye"' in out  # reveal toggle
+    assert 'icon="clipboard"' in out  # copy button (show-copy)
     assert 'data-lotc-component="secret-field"' in out
 
 
@@ -46,8 +46,8 @@ def test_secret_field_state_lives_on_the_host_element():
 
 def test_secret_field_copy_button_omitted_without_show_copy():
     out = _render(["nldd"], '<c-secret-field value="x" mask-length="4"/>')
-    assert 'name="clipboard"' not in out
-    assert 'name="eye"' in out
+    assert 'icon="clipboard"' not in out
+    assert 'icon="eye"' in out
 
 
 def test_secret_field_has_no_rvo_impl_yet():
@@ -66,5 +66,5 @@ def test_secret_field_revealed_shows_value_and_drops_the_eye():
     assert code == "age1-public-xyz"  # plain value, not mask dots
     assert "•" not in code
     assert 'data-action="reveal"' not in out  # no reveal-eye
-    assert 'name="eye"' not in out
+    assert 'icon="eye"' not in out
     assert 'data-action="copy"' in out  # clipboard still present

@@ -146,7 +146,7 @@ def test_semantic_icon_resolves_per_theme():
     rvo = mk("rvo").from_string('<c-icon icon="home"/>').render()
     nldd = mk("nldd").from_string('<c-icon icon="home"/>').render()
     assert "rvo-icon-home" in rvo
-    assert 'name="house"' in nldd  # same semantic name, NLDD icon
+    assert 'icon="house"' in nldd  # same semantic name, NLDD icon
 
 
 def test_semantic_icon_favorite():
@@ -158,7 +158,7 @@ def test_semantic_icon_favorite():
         return env
 
     assert "rvo-icon-favoriet" in mk("rvo").from_string('<c-icon icon="favorite"/>').render()
-    assert 'name="star"' in mk("nldd").from_string('<c-icon icon="favorite"/>').render()
+    assert 'icon="star"' in mk("nldd").from_string('<c-icon icon="favorite"/>').render()
 
 
 def test_raw_icon_name_passes_through():
