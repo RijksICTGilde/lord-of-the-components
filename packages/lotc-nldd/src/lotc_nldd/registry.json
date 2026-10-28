@@ -1,6 +1,6 @@
 {
  "meta": {
-  "nldd_version": "0.8.93",
+  "nldd_version": "0.8.94",
   "components": 100,
   "upstream_repository": "https://github.com/NederlandseDigitaleDienst/design-system",
   "storybook_url": "https://nederlandsedigitaledienst.github.io/design-system/"
@@ -53,9 +53,9 @@
      "description": "Bar size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md'). At 'lg', icon-button children stack their label below the icon (mob"
     },
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "string",
-     "description": "Button variant (default: 'neutral-tinted')"
+     "description": "Visual style of the buttons (default: 'neutral-tinted'; 'inherit-tinted' and 'inherit-filled' for a colored surface)"
     },
     {
      "name": "disabled",
@@ -63,7 +63,7 @@
      "description": "Disabled state"
     }
    ],
-   "description": "A horizontal container for grouping buttons with a neutral background. Automatically propagates its size and variant to all child nldd-butto",
+   "description": "A horizontal container for grouping buttons with a neutral background. Automatically propagates its size and appearance to all child nldd-bu",
    "category": "actions",
    "backend": "jinja",
    "content": {
@@ -129,7 +129,7 @@
    "name": "icon-button",
    "attributes": [
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "enum",
      "enum_values": [
       "primary",
@@ -145,16 +145,10 @@
       "inherit-filled",
       "inherit-tinted",
       "box",
-      "simple",
-      "text",
-      "icon",
-      "icon-and-text",
-      "major",
-      "minor",
-      "none"
+      "simple"
      ],
      "default": "neutral-tinted",
-     "description": "Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | "
+     "description": "Visual style, color included: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'criti"
     },
     {
      "name": "size",
@@ -200,6 +194,11 @@
      "description": "Loading state (default: false). Shows an activity indicator over the visually hidden icon, sets aria-busy on the inner c"
     },
     {
+     "name": "loading-text",
+     "type": "string",
+     "description": "What the screen reader announces while `loading` is on, for a button that does more than load: \"Aan het bewaren\". Leave "
+    },
+    {
      "name": "disabled",
      "type": "boolean",
      "description": "Disabled state"
@@ -207,7 +206,7 @@
     {
      "name": "no-highlight-border",
      "type": "boolean",
-     "description": "Removes the per-variant highlight border (e.g. when a control group draws a single border instead)."
+     "description": "Removes the per-appearance highlight border (e.g. when a control group draws a single border instead)."
     },
     {
      "name": "type",
@@ -378,9 +377,9 @@
      "description": "Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')"
     },
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "string",
-     "description": "Button variant (default: 'neutral-tinted')"
+     "description": "Visual style (default: 'neutral-tinted'; 'inherit-tinted' and 'inherit-filled' for a colored surface)"
     },
     {
      "name": "disabled",
@@ -767,7 +766,7 @@
    "name": "code-viewer",
    "attributes": [
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "enum",
      "enum_values": [
       "box-tinted",
@@ -1012,7 +1011,7 @@
      "description": "Size: 'sm' | 'md' | 'inherit' (default: 'md'). 'inherit' takes the font-size from the container; in the box variant the "
     },
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "enum",
      "enum_values": [
       "primary",
@@ -1028,13 +1027,7 @@
       "inherit-filled",
       "inherit-tinted",
       "box",
-      "simple",
-      "text",
-      "icon",
-      "icon-and-text",
-      "major",
-      "minor",
-      "none"
+      "simple"
      ],
      "default": "box",
      "description": "'box' (default) shows each key as a keycap with a fill and a highlight edge. 'simple' shows the keys as plain text with "
@@ -1683,7 +1676,7 @@
      "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
     },
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "enum",
      "enum_values": [
       "input-field",
@@ -1778,7 +1771,12 @@
     {
      "name": "allow-custom",
      "type": "boolean",
-     "description": "Allow committing free-typed values that match no option (Enter/blur). Default false: only menu options are accepted."
+     "description": "Allow committing free-typed values that match no option (Enter/blur). Default false: only menu options are accepted. Typ"
+    },
+    {
+     "name": "no-filter",
+     "type": "boolean",
+     "description": "Leaves the options as they are while typing, for a list your server already filtered per keystroke. Without it the field"
     },
     {
      "name": "name",
@@ -2752,6 +2750,16 @@
      "description": "Disabled state"
     },
     {
+     "name": "appearance",
+     "type": "enum",
+     "enum_values": [
+      "neutral-tinted",
+      "neutral-base"
+     ],
+     "default": "neutral-tinted",
+     "description": "Visual style: 'neutral-tinted' | 'neutral-base' (default: 'neutral-tinted'). Set by nldd-segmented-control."
+    },
+    {
      "name": "size",
      "type": "enum",
      "enum_values": [
@@ -2829,6 +2837,16 @@
      "name": "value",
      "type": "string",
      "description": "Selected value for radio type"
+    },
+    {
+     "name": "appearance",
+     "type": "enum",
+     "enum_values": [
+      "neutral-tinted",
+      "neutral-base"
+     ],
+     "default": "neutral-tinted",
+     "description": "Visual style, color included: 'neutral-tinted' | 'neutral-base' (default: 'neutral-tinted'). neutral-base is for a tinte"
     },
     {
      "name": "size",
@@ -3132,6 +3150,11 @@
      "description": "Required state"
     },
     {
+     "name": "no-spellcheck",
+     "type": "boolean",
+     "description": "Turns spellchecking off. It is on by default, like the other text fields, and leaves out what is not running text: inlin"
+    },
+    {
      "name": "wrap",
      "type": "boolean",
      "description": "Wrap long lines (default true; prose wraps)"
@@ -3153,7 +3176,7 @@
      "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
     },
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "enum",
      "enum_values": [
       "input-field",
@@ -3566,6 +3589,18 @@
      "description": "Forwarded to all buttons"
     },
     {
+     "name": "appearance",
+     "type": "enum",
+     "enum_values": [
+      "neutral-tinted",
+      "neutral-base",
+      "neutral-transparent",
+      "accent-transparent"
+     ],
+     "default": "neutral-tinted",
+     "description": "Forwarded to all buttons (default: 'neutral-tinted')"
+    },
+    {
      "name": "size",
      "type": "enum",
      "enum_values": [
@@ -3598,7 +3633,7 @@
      "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
-   "description": "Groups nldd-toggle-button elements and manages selection, keyboard navigation, and forwarding of type, name, size, and disabled state to all",
+   "description": "Groups nldd-toggle-button elements and manages selection, keyboard navigation, and forwarding of type, name, appearance, size, and disabled ",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -3623,6 +3658,18 @@
      ],
      "default": "button",
      "description": "What the button is: a button with aria-pressed, a native checkbox, or a radio (default: 'button')"
+    },
+    {
+     "name": "appearance",
+     "type": "enum",
+     "enum_values": [
+      "neutral-tinted",
+      "neutral-base",
+      "neutral-transparent",
+      "accent-transparent"
+     ],
+     "default": "neutral-tinted",
+     "description": "Visual style, color included (default: 'neutral-tinted'). Selected is filled in each of them; the transparent ones are f"
     },
     {
      "name": "size",
@@ -3672,6 +3719,11 @@
      "description": "Icon name for nldd-icon"
     },
     {
+     "name": "selected-icon",
+     "type": "string",
+     "description": "Icon shown instead of `icon` while selected, such as `check-mark` for `plus` or `heart-filled` for `heart`. The appearan"
+    },
+    {
      "name": "variant",
      "type": "string",
      "description": "What renders: text, icon, or both. Unset → auto-detect from text/icon attributes."
@@ -3687,7 +3739,7 @@
      "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
     }
    ],
-   "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), a checkbox, or a radio. In radio mod",
+   "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), a checkbox, or a radio. The label st",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -3739,7 +3791,12 @@
     {
      "name": "allow-custom",
      "type": "boolean",
-     "description": "Allow free-typed values (not just menu options)"
+     "description": "Allow free-typed values (not just menu options). Typing an option's label in full adds that option, with its value, igno"
+    },
+    {
+     "name": "no-filter",
+     "type": "boolean",
+     "description": "Leaves the options as they are while typing, for a list your server already filtered per keystroke. Without it the field"
     },
     {
      "name": "valid",
@@ -8292,26 +8349,9 @@
    "name": "timeline-track-cell",
    "attributes": [
     {
-     "name": "variant",
+     "name": "level",
      "type": "enum",
      "enum_values": [
-      "primary",
-      "secondary",
-      "destructive",
-      "accent-filled",
-      "accent-transparent",
-      "neutral-tinted",
-      "neutral-base",
-      "neutral-transparent",
-      "critical-tinted",
-      "critical-transparent",
-      "inherit-filled",
-      "inherit-tinted",
-      "box",
-      "simple",
-      "text",
-      "icon",
-      "icon-and-text",
       "major",
       "minor",
       "none"
@@ -8778,7 +8818,7 @@
    "name": "list",
    "attributes": [
     {
-     "name": "variant",
+     "name": "appearance",
      "type": "enum",
      "enum_values": [
       "simple",
@@ -9442,7 +9482,7 @@
    "name": "progress-bar",
    "attributes": [
     {
-     "name": "mode",
+     "name": "variant",
      "type": "enum",
      "enum_values": [
       "progress",
@@ -9614,7 +9654,7 @@
    "name": "progress-circle",
    "attributes": [
     {
-     "name": "mode",
+     "name": "variant",
      "type": "enum",
      "enum_values": [
       "progress",
