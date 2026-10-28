@@ -1,1 +1,1 @@
-export const breakpoints={smMin:"320px",smMax:"640px",mdMin:"641px",mdMax:"1007px",lgMin:"1008px"};
+export const breakpoints={smMin:"320px",smMax:"640px",mdMin:"641px",mdMax:"1007px",lgMin:"1008px"};export const queryBreakpoints={smMin:"20rem",smMax:"40rem",mdMin:"40.0625rem",mdMax:"62.9375rem",lgMin:"63rem"};export function rootFontSize(){return parseFloat(getComputedStyle(document.documentElement).fontSize)||16}export function breakpointPx(e,t=rootFontSize()){return parseFloat(queryBreakpoints[e])*t}

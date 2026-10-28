@@ -4,10 +4,11 @@ Voor een applicatie die de vijf packages van dit repo pint op `d19c7a5` van
 20 augustus 2026. Alles hieronder is gemeten op de huidige tip, niet afgeleid
 uit commitberichten.
 
-**Wat je binnenhaalt:** NLDD 0.8.84, 0.8.85, 0.8.86, 0.8.88, 0.8.92, 0.8.93 en
-0.8.94, plus de wijzigingen aan de componentenlaag zelf.
+**Wat je binnenhaalt:** NLDD 0.8.84 tot en met 0.8.94, en daarna 0.8.95 t/m
+0.8.100 en de minors 0.9.0, 0.10.0, 0.11.0, 0.12.0 en 0.13.0, plus de
+wijzigingen aan de componentenlaag zelf.
 
-**Is dit een drop-in?** Nee. Er zijn zes dingen die je moet aanpassen en twee
+**Is dit een drop-in?** Nee. Er zijn acht dingen die je moet aanpassen en twee
 die je build hard rood maken tot je ze aanraakt. Reken op een eigen ticket met
 een eigen tak; het is geen bump die je in het voorbijgaan doet.
 
@@ -91,7 +92,7 @@ drie van `Variant` en de drie van `Level` zijn samen exact die oude twintig.
 | component | was | is |
 |---|---|---|
 | `c-button-bar`, `c-code-editor`, `c-code-viewer`, `c-icon-button`, `c-keyboard-shortcut`, `c-list`, `c-split-button`, `c-text-editor` | `variant` | `appearance` |
-| `c-timeline-track-cell` | `variant` (twintig waarden) | `level` (`major` \| `minor` \| `none`) |
+| `c-timeline-track-cell` (heet sinds 0.13.0 `c-step-cell`, zie g) | `variant` (twintig waarden) | `level` (`major` \| `minor` \| `none`) |
 | `c-progress-bar`, `c-progress-circle` | `mode` | `variant` (`progress` \| `distribution`) |
 
 Twee dingen waar een zoek-en-vervang over struikelt:
@@ -118,6 +119,39 @@ Unknown attribute 'variant' on component 'c-list' at line 1, column 9
 Wat die melding **niet** doet, is de nieuwe naam voorstellen: `variant` en
 `appearance` lijken te weinig op elkaar voor de "did you mean". De tabel
 hierboven is dus je kaart.
+
+### g. Vier componenten zijn hernoemd (0.13.0)
+
+Tussen 0.8.94 en 0.13.0 zitten elf releases, waarvan vier minors. Dat klinkt als
+veel; gemeten in ons gemapte oppervlak breekt er precies dit:
+
+| was | is | |
+|---|---|---|
+| `c-app-view` | `c-shell` | zelfde attributen, 1-op-1 |
+| `c-step-indicator` | `c-step-bar` | zelfde attributen, 1-op-1 |
+| `c-step-indicator-item` | `c-step-bar-item` | zelfde attributen, 1-op-1 |
+| `c-timeline-track-cell` | `c-step-cell` | niets weg; `marker-offset` en `vertical-alignment` erbij |
+
+En een attribuut: **`label` op `c-toolbar` heet nu `accessible-label`**, in lijn
+met de rest van de bibliotheek.
+
+Verder niets. Nagemeten over alle 101 componenten: geen enkel ander attribuut is
+verdwenen, geen enkele waardenset is versmald en geen enkel type is veranderd.
+Alles wat er verder in die elf releases zit is aanvullend — zie punt 3.
+
+Zoals bij elke verdwenen naam is dit een harde `ComponentError` bij het
+renderen, niet stille drift.
+
+### h. Een CSS-token is hernoemd (0.13.0)
+
+Style je tegen de semantics-laag van NLDD, dan is
+`--semantics-surfaces-border-width` weg; die heet nu
+`--semantics-surfaces-highlight-border-width`. Gemeten: beide lossen op naar
+`var(--semantics-dividers-thickness)`, dus de waarde verandert niet — maar een
+`var(..., 1px)` met de oude naam valt stil terug op zijn fallback, en dat is
+precies de drift die je niet ziet. Onze eigen `lotc-nldd.css` is omgezet, en een
+toets in deze repo bewaakt dat elk `--semantics-*` dat wij gebruiken ook echt in
+het thema bestaat.
 
 ### d. Nieuwe bestanden die geladen moeten worden
 
@@ -211,6 +245,16 @@ geen fout.
   `no-spellcheck` op `c-text-editor` zet de spellingcontrole uit; en
   `selected-icon` op `c-toggle-button` toont een ander icoon zolang de knop
   aanstaat (`check-mark` bij `plus`).
+
+- **0.13.0 is verder vooral aanvulling.** Nieuw: `c-visually-hidden`.
+  Toetsenbindingen (`shortcut`, `shortcut-mac`, `shortcut-windows`,
+  `shortcut-linux`) op icon-button, split-button, tooltip, search-field,
+  segmented-control-item en toggle-button. `color` op `c-switch`,
+  `c-switch-field` en `c-radio-button`. `grow` op de zes paginasecties en
+  `vertical-alignment` op de drie gedeelde. `min-height` op `c-container`,
+  `item-min-width`/`item-max-width` op `c-collection`, `diff` en `max-height` op
+  `c-code-viewer`, `syntax` op `c-text-editor`, en `sm-custom-size`/
+  `md-custom-size`/`lg-custom-size` op `c-title`. Je hoeft er niets voor te doen.
 
 ---
 

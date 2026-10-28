@@ -1,7 +1,7 @@
 {
  "meta": {
-  "nldd_version": "0.8.94",
-  "components": 100,
+  "nldd_version": "0.13.0",
+  "components": 101,
   "upstream_repository": "https://github.com/NederlandseDigitaleDienst/design-system",
   "storybook_url": "https://nederlandsedigitaledienst.github.io/design-system/"
  },
@@ -118,7 +118,7 @@
      "description": "Layout direction: 'auto' | 'horizontal' | 'vertical' (default: 'auto')"
     }
    ],
-   "description": "A container for grouping related buttons together, in a row or stacked. `auto`, the default, is a row on a container wide enough for one and",
+   "description": "A container for grouping related buttons together, in a row or stacked. `auto`, the default, is a row, and a stack over the full width in a ",
    "category": "actions",
    "backend": "jinja",
    "content": {
@@ -201,7 +201,7 @@
     {
      "name": "disabled",
      "type": "boolean",
-     "description": "Disabled state"
+     "description": "Disabled state. Avoid it: let the action run and say afterwards what is missing; the design guidelines say why."
     },
     {
      "name": "no-highlight-border",
@@ -275,6 +275,26 @@
      "name": "tooltip-timing",
      "type": "string",
      "description": "Forwarded to the inner nldd-tooltip's `timing`: 'delay' (the default, a 700 ms show-delay), 'instant', or 'never' (suppr"
+    },
+    {
+     "name": "shortcut",
+     "type": "string",
+     "description": "Keyboard shortcut hint shown in the tooltip after the text, e.g. 'Alt+P'. Display only (rendered via nldd-keyboard-short"
+    },
+    {
+     "name": "shortcut-mac",
+     "type": "string",
+     "description": "Override of `shortcut` on macOS, where the keys differ (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-windows",
+     "type": "string",
+     "description": "Override of `shortcut` on Windows (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-linux",
+     "type": "string",
+     "description": "Override of `shortcut` on Linux (falls back to `shortcut`)."
     },
     {
      "name": "href",
@@ -384,7 +404,7 @@
     {
      "name": "disabled",
      "type": "boolean",
-     "description": "Disabled state"
+     "description": "Disabled state. Avoid it: let the action run and say afterwards what is missing; the design guidelines say why."
     },
     {
      "name": "width",
@@ -395,6 +415,26 @@
      "name": "text",
      "type": "string",
      "description": "Button text for the primary action"
+    },
+    {
+     "name": "shortcut",
+     "type": "string",
+     "description": "Keyboard shortcut hint for the primary action, shown right after its text, e.g. 'Cmd+S'. Forwarded to the inner nldd-but"
+    },
+    {
+     "name": "shortcut-mac",
+     "type": "string",
+     "description": "Override of `shortcut` on macOS, where the keys differ (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-windows",
+     "type": "string",
+     "description": "Override of `shortcut` on Windows (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-linux",
+     "type": "string",
+     "description": "Override of `shortcut` on Linux (falls back to `shortcut`)."
     },
     {
      "name": "icon",
@@ -467,7 +507,7 @@
     {
      "name": "min-width",
      "type": "string",
-     "description": "Minimum width as a CSS length (default: '0', so the title shrink-wraps its content and the next element sits against it)"
+     "description": "Minimum width as a CSS length (default: the width of its own text, up to `max-width`). Items move into the overflow menu"
     },
     {
      "name": "max-width",
@@ -569,9 +609,9 @@
      "description": "When true, shows a text label below each toolbar item and the overflow button"
     },
     {
-     "name": "label",
+     "name": "accessible-label",
      "type": "string",
-     "description": "Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page"
+     "description": "Accessible name of the toolbar. Only needed when multiple toolbars appear on the same page."
     },
     {
      "name": "translations",
@@ -615,7 +655,7 @@
     {
      "name": "max",
      "type": "string",
-     "description": "Shows at most this many avatars; the rest go behind a \"+N\" button that opens them as a list of names"
+     "description": "Shows at most this many avatars; the rest go behind a \"+N\" button that opens them as a list of names. A longer number is"
     },
     {
      "name": "accessible-label",
@@ -727,7 +767,7 @@
     {
      "name": "href",
      "type": "string",
-     "description": "Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it"
+     "description": "Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it. As"
     },
     {
      "name": "no-tab",
@@ -742,7 +782,7 @@
     {
      "name": "target",
      "type": "string",
-     "description": "Link target for href (e.g. '_blank'); completes rel and announces \"Opens in a new tab\""
+     "description": "Link target for href (e.g. '_blank'); completes rel and announces \"Opens in a new tab\". An `href` to another origin than"
     },
     {
      "name": "rel",
@@ -782,6 +822,11 @@
      "description": "Grammar to highlight with. Empty disables highlighting."
     },
     {
+     "name": "diff",
+     "type": "boolean",
+     "description": "The content is a unified diff: shown with line colors, old and new line numbers, and the changed words marked."
+    },
+    {
      "name": "no-copy",
      "type": "boolean",
      "description": "Hide the copy-to-clipboard button (shown by default)."
@@ -790,6 +835,11 @@
      "name": "wrap",
      "type": "boolean",
      "description": "Wrap long lines instead of horizontal scroll"
+    },
+    {
+     "name": "max-height",
+     "type": "string",
+     "description": "Tallest the block may get, as a CSS length (e.g. '400px', '50vh'). Beyond it the content scrolls vertically. Unset means"
     },
     {
      "name": "copy-unavailable",
@@ -933,7 +983,7 @@
     {
      "name": "lqip",
      "type": "string",
-     "description": "Low-quality image placeholder as a CSV string `\"base,c1,c2,c3,c4,c5,c6\"` — seven 0-255 bytes, each packing an 8-bit Okla"
+     "description": "Loading preview (LQIP, low-quality image placeholder) as a CSV string `\"base,c1,c2,c3,c4,c5,c6\"` — seven 0-255 bytes, ea"
     },
     {
      "name": "translations",
@@ -960,7 +1010,7 @@
     {
      "name": "keys",
      "type": "string",
-     "description": "Keys separated by '+' (e.g. 'Cmd+K' or 'Ctrl+Shift+P'). Use '+++' for a literal '+' key: 'Ctrl+++' becomes 'Ctrl' + '+'."
+     "description": "Keys separated by '+' (e.g. 'Cmd+K' or 'Ctrl+Shift+P'). End with '++' for a literal '+' key: 'Ctrl++' becomes 'Ctrl' + '"
     },
     {
      "name": "mac-keys",
@@ -1271,6 +1321,21 @@
      "description": "Visual size of the title: 1–6 (default: 3)"
     },
     {
+     "name": "sm-custom-size",
+     "type": "string",
+     "description": "A size of your own at sm, any CSS length (e.g. '56px', '3.5rem', 'clamp(3rem, 8vw, 7rem)'), for a statement larger than "
+    },
+    {
+     "name": "md-custom-size",
+     "type": "string",
+     "description": "The same, at md"
+    },
+    {
+     "name": "lg-custom-size",
+     "type": "string",
+     "description": "The same, at lg"
+    },
+    {
      "name": "color",
      "type": "enum",
      "enum_values": [
@@ -1369,7 +1434,7 @@
     {
      "name": "disabled",
      "type": "boolean",
-     "description": "Disabled state"
+     "description": "Disabled state. Avoid it where you can; the design guidelines say why."
     }
    ],
    "description": "A self-contained piece of data the user is handling: a person in an address field, an active filter value. Alone among the three it can be o",
@@ -1392,6 +1457,26 @@
      "name": "text",
      "type": "string",
      "description": "Tooltip text"
+    },
+    {
+     "name": "shortcut",
+     "type": "string",
+     "description": "Keyboard shortcut hint shown after the text, e.g. 'Cmd+P'. Display only (rendered via nldd-keyboard-shortcut): it does n"
+    },
+    {
+     "name": "shortcut-mac",
+     "type": "string",
+     "description": "Override of `shortcut` on macOS, where the keys differ (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-windows",
+     "type": "string",
+     "description": "Override of `shortcut` on Windows (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-linux",
+     "type": "string",
+     "description": "Override of `shortcut` on Linux (falls back to `shortcut`)."
     },
     {
      "name": "open",
@@ -1424,6 +1509,16 @@
     }
    ],
    "description": "A wrapper that shows a tooltip on hover or focus of its child element. It uses `display: contents`, so it does not affect the child's layout",
+   "category": "content",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
+   "name": "visually-hidden",
+   "attributes": [],
+   "description": "Text a screen reader reads and the screen does not show. It stays in the accessibility tree and in the reading order, and takes no room on t",
    "category": "content",
    "backend": "jinja",
    "content": {
@@ -1552,7 +1647,7 @@
     {
      "name": "minlength",
      "type": "string",
-     "description": "Fewest characters the value may have."
+     "description": "Fewest characters the value may have. Not held against an empty value unless the field is required."
     },
     {
      "name": "maxlength",
@@ -1562,7 +1657,7 @@
     {
      "name": "required",
      "type": "boolean",
-     "description": "The value may not be empty. Use it on a field whose other rules would pass an empty value."
+     "description": "The value may not be empty. Without it, and without `required` on the control, an empty value passes every rule in the l"
     },
     {
      "name": "hint",
@@ -1620,6 +1715,42 @@
    "name": "code-editor",
    "attributes": [
     {
+     "name": "wrap",
+     "type": "boolean",
+     "description": "Wrap long lines instead of horizontal scroll"
+    },
+    {
+     "name": "resize",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "vertical",
+      "auto"
+     ],
+     "default": "auto",
+     "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
+    },
+    {
+     "name": "appearance",
+     "type": "enum",
+     "enum_values": [
+      "input-field",
+      "simple"
+     ],
+     "default": "simple",
+     "description": "'simple' (default, bare) | 'input-field' (framed surface)"
+    },
+    {
+     "name": "language",
+     "type": "string",
+     "description": "Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python)"
+    },
+    {
+     "name": "line-numbers",
+     "type": "boolean",
+     "description": "Show a line-number gutter"
+    },
+    {
      "name": "value",
      "type": "string",
      "description": "Editor content"
@@ -1655,45 +1786,9 @@
      "description": "Required state"
     },
     {
-     "name": "wrap",
-     "type": "boolean",
-     "description": "Wrap long lines instead of horizontal scroll"
-    },
-    {
      "name": "rows",
      "type": "string",
      "description": "Minimum visible rows (the floor in every resize mode). Default: 6."
-    },
-    {
-     "name": "resize",
-     "type": "enum",
-     "enum_values": [
-      "none",
-      "vertical",
-      "auto"
-     ],
-     "default": "auto",
-     "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
-    },
-    {
-     "name": "appearance",
-     "type": "enum",
-     "enum_values": [
-      "input-field",
-      "simple"
-     ],
-     "default": "simple",
-     "description": "'simple' (default, bare) | 'input-field' (framed surface)"
-    },
-    {
-     "name": "language",
-     "type": "string",
-     "description": "Highlight grammar (yaml, json, javascript, typescript, css, html, xml, bash, markdown, rust, gherkin, toml, sql, python)"
-    },
-    {
-     "name": "line-numbers",
-     "type": "boolean",
-     "description": "Show a line-number gutter"
     },
     {
      "name": "accessible-label",
@@ -2155,7 +2250,7 @@
      "description": "Override translation keys; unset keys fall back to Dutch"
     }
    ],
-   "description": "A file picker that reads as one control: an nldd-button flush in the corner of a tinted surface, the chosen file next to it, and a dismiss b",
+   "description": "A file picker that reads as one control. Empty, the whole tinted surface is one button with one sentence centered in it, \"Bestand kiezen of ",
    "category": "forms",
    "backend": "jinja",
    "content": {
@@ -2603,6 +2698,11 @@
      "description": "Value submitted with the form when this radio button is checked"
     },
     {
+     "name": "color",
+     "type": "string",
+     "description": "'inherit' draws the control in the color of the text around it, with the mark in the surface color (`--context-parent-ba"
+    },
+    {
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible label, set as aria-label on this element: it is the radio."
@@ -2660,6 +2760,26 @@
      "name": "show-search-button",
      "type": "boolean",
      "description": "When set, shows a search button on the right"
+    },
+    {
+     "name": "shortcut",
+     "type": "string",
+     "description": "Keyboard shortcut hint shown at the right end of the empty field, e.g. 'Cmd+K' or '/'. Display only (rendered via nldd-k"
+    },
+    {
+     "name": "shortcut-mac",
+     "type": "string",
+     "description": "Override of `shortcut` on macOS, where the keys differ (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-windows",
+     "type": "string",
+     "description": "Override of `shortcut` on Windows (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-linux",
+     "type": "string",
+     "description": "Override of `shortcut` on Linux (falls back to `shortcut`)."
     },
     {
      "name": "translations",
@@ -2805,6 +2925,26 @@
      "name": "icon",
      "type": "string",
      "description": "Icon name for nldd-icon"
+    },
+    {
+     "name": "shortcut",
+     "type": "string",
+     "description": "Keyboard shortcut hint shown in the tooltip, e.g. 'Cmd+B'. Display only (rendered via nldd-keyboard-shortcut): it does n"
+    },
+    {
+     "name": "shortcut-mac",
+     "type": "string",
+     "description": "Override of `shortcut` on macOS, where the keys differ (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-windows",
+     "type": "string",
+     "description": "Override of `shortcut` on Windows (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-linux",
+     "type": "string",
+     "description": "Override of `shortcut` on Linux (falls back to `shortcut`)."
     }
    ],
    "description": "NLDD segmented-control-item",
@@ -3017,6 +3157,11 @@
      "description": "Name for form submission"
     },
     {
+     "name": "color",
+     "type": "string",
+     "description": "'inherit' draws the control and its label in the color of the text around it, for a field on a colored surface such as t"
+    },
+    {
      "name": "label",
      "type": "string",
      "description": "Label text for the switch"
@@ -3076,6 +3221,11 @@
      "description": "Switch size: 'xs' | 'sm' (default: 'sm')"
     },
     {
+     "name": "color",
+     "type": "string",
+     "description": "'inherit' draws the control in the color of the text around it, with the mark in the surface color (`--context-parent-ba"
+    },
+    {
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible label forwarded as aria-label to the native input. Required when using nldd-switch without nldd-switch-field."
@@ -3115,6 +3265,57 @@
    "name": "text-editor",
    "attributes": [
     {
+     "name": "no-spellcheck",
+     "type": "boolean",
+     "description": "Turns spellchecking off. It is on by default, like the other text fields, and leaves out what is not running text: inlin"
+    },
+    {
+     "name": "wrap",
+     "type": "boolean",
+     "description": "Wrap long lines (default true; prose wraps)"
+    },
+    {
+     "name": "resize",
+     "type": "enum",
+     "enum_values": [
+      "none",
+      "vertical",
+      "auto"
+     ],
+     "default": "auto",
+     "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
+    },
+    {
+     "name": "appearance",
+     "type": "enum",
+     "enum_values": [
+      "input-field",
+      "simple"
+     ],
+     "default": "simple",
+     "description": "'simple' (default, bare) | 'input-field' (framed surface)"
+    },
+    {
+     "name": "syntax",
+     "type": "enum",
+     "enum_values": [
+      "visible",
+      "hidden"
+     ],
+     "default": "visible",
+     "description": "'visible' (default): every formatting mark stays in view, dimmed, a bullet as the character you typed (`-`, `*` or `+`)."
+    },
+    {
+     "name": "annotatable",
+     "type": "boolean",
+     "description": "Enable the annotation overlay (off by default). Annotations only render when this is set."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": "Override the editor's assistive-tech strings (the open-in-new-tab link badge, the annotation count badge, the label of a"
+    },
+    {
      "name": "value",
      "type": "string",
      "description": "Editor content (markdown)"
@@ -3150,55 +3351,14 @@
      "description": "Required state"
     },
     {
-     "name": "no-spellcheck",
-     "type": "boolean",
-     "description": "Turns spellchecking off. It is on by default, like the other text fields, and leaves out what is not running text: inlin"
-    },
-    {
-     "name": "wrap",
-     "type": "boolean",
-     "description": "Wrap long lines (default true; prose wraps)"
-    },
-    {
      "name": "rows",
      "type": "string",
      "description": "Minimum visible rows (the floor in every resize mode). Default: 6."
     },
     {
-     "name": "resize",
-     "type": "enum",
-     "enum_values": [
-      "none",
-      "vertical",
-      "auto"
-     ],
-     "default": "auto",
-     "description": "'none' (fixed) | 'vertical' (drag) | 'auto' (grow, default)"
-    },
-    {
-     "name": "appearance",
-     "type": "enum",
-     "enum_values": [
-      "input-field",
-      "simple"
-     ],
-     "default": "simple",
-     "description": "'simple' (default, bare) | 'input-field' (framed surface)"
-    },
-    {
      "name": "accessible-label",
      "type": "string",
      "description": "Accessible label forwarded to the editor. Set automatically by nldd-form-field."
-    },
-    {
-     "name": "annotatable",
-     "type": "boolean",
-     "description": "Enable the annotation overlay (off by default). Annotations only render when this is set."
-    },
-    {
-     "name": "translations",
-     "type": "string",
-     "description": "Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys"
     },
     {
      "name": "invalid",
@@ -3734,6 +3894,26 @@
      "description": "Accessible label; required for icon-only usage"
     },
     {
+     "name": "shortcut",
+     "type": "string",
+     "description": "Keyboard shortcut hint shown in the tooltip, e.g. 'Cmd+B'. Display only (rendered via nldd-keyboard-shortcut): it does n"
+    },
+    {
+     "name": "shortcut-mac",
+     "type": "string",
+     "description": "Override of `shortcut` on macOS, where the keys differ (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-windows",
+     "type": "string",
+     "description": "Override of `shortcut` on Windows (falls back to `shortcut`)."
+    },
+    {
+     "name": "shortcut-linux",
+     "type": "string",
+     "description": "Override of `shortcut` on Linux (falls back to `shortcut`)."
+    },
+    {
      "name": "invalid",
      "type": "boolean",
      "description": "Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it."
@@ -3870,24 +4050,13 @@
    ]
   },
   {
-   "name": "app-view",
-   "attributes": [
-    {
-     "name": "background",
-     "type": "string",
-     "description": "Background color (cascades to descendants)"
-    }
-   ],
-   "description": "The required root shell of a Nederlandse Digitale Dienst application. Always contains a split view or an nldd-page as direct content. The do",
-   "category": "layout",
-   "backend": "jinja",
-   "content": {
-    "allowed": true
-   }
-  },
-  {
    "name": "collection",
    "attributes": [
+    {
+     "name": "item-width",
+     "type": "string",
+     "description": ""
+    },
     {
      "name": "layout",
      "type": "enum",
@@ -3904,9 +4073,14 @@
      "description": "Layout mode: 'grid' | 'stack' | 'lanes' | 'horizontal-scroll' (default: 'grid')"
     },
     {
-     "name": "item-width",
+     "name": "item-min-width",
      "type": "string",
-     "description": "Preferred width for each item (e.g. '280px', '20rem'). In grid and lanes layouts used as the minimum column width (colum"
+     "description": "Smallest width an item takes (e.g. '280px', '20rem'). In grid and lanes the minimum column width: columns are at least t"
+    },
+    {
+     "name": "item-max-width",
+     "type": "string",
+     "description": "Largest width an item takes in horizontal scroll (e.g. '400px', '25rem'), so one or two items that fit do not stretch ac"
     },
     {
      "name": "gap",
@@ -4097,6 +4271,11 @@
      "name": "max-width",
      "type": "string",
      "description": "Maximum width as a CSS length (e.g. '480px')"
+    },
+    {
+     "name": "min-height",
+     "type": "string",
+     "description": "Minimum height as a CSS length (e.g. '240px'), padding included. Reserves the room that content still on its way will ta"
     },
     {
      "name": "gap",
@@ -5068,15 +5247,21 @@
      "enum_values": [
       "inherit",
       "base",
-      "tinted"
+      "tinted",
+      "accent-tinted"
      ],
      "default": "inherit",
-     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+     "description": "Surface background ('inherit' default; 'base', 'tinted' and 'accent-tinted', a tint of the theme's accent with the contr"
     },
     {
      "name": "height",
      "type": "string",
      "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    },
+    {
+     "name": "grow",
+     "type": "boolean",
+     "description": "Takes the height the page has left, so the footer sits at the bottom of a short page. Without it, nldd-page lets its las"
     },
     {
      "name": "padding-block",
@@ -5417,20 +5602,31 @@
      "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
     },
     {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Where the shorter column sits next to the longer one ('top' default). Only where the columns stand side by side; stacked"
+    },
+    {
      "name": "background",
      "type": "enum",
      "enum_values": [
       "inherit",
       "base",
-      "tinted"
+      "tinted",
+      "accent-tinted"
      ],
      "default": "inherit",
-     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+     "description": "Surface background ('inherit' default; 'base', 'tinted' and 'accent-tinted', a tint of the theme's accent with the contr"
     },
     {
      "name": "height",
      "type": "string",
      "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    },
+    {
+     "name": "grow",
+     "type": "boolean",
+     "description": "Takes the height the page has left, so the footer sits at the bottom of a short page. Without it, nldd-page lets its las"
     },
     {
      "name": "padding-block",
@@ -5779,20 +5975,31 @@
      "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
     },
     {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Where the shorter column sits next to the longer one ('top' default). Only where the columns stand side by side; stacked"
+    },
+    {
      "name": "background",
      "type": "enum",
      "enum_values": [
       "inherit",
       "base",
-      "tinted"
+      "tinted",
+      "accent-tinted"
      ],
      "default": "inherit",
-     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+     "description": "Surface background ('inherit' default; 'base', 'tinted' and 'accent-tinted', a tint of the theme's accent with the contr"
     },
     {
      "name": "height",
      "type": "string",
      "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    },
+    {
+     "name": "grow",
+     "type": "boolean",
+     "description": "Takes the height the page has left, so the footer sits at the bottom of a short page. Without it, nldd-page lets its las"
     },
     {
      "name": "padding-block",
@@ -6176,7 +6383,8 @@
      "enum_values": [
       "inherit",
       "base",
-      "tinted"
+      "tinted",
+      "accent-tinted"
      ],
      "default": "inherit",
      "description": ""
@@ -6185,6 +6393,11 @@
      "name": "height",
      "type": "string",
      "description": ""
+    },
+    {
+     "name": "grow",
+     "type": "boolean",
+     "description": "Takes the height the page has left, so the footer sits at the bottom of a short page. Without it, nldd-page lets its las"
     },
     {
      "name": "padding-block",
@@ -6565,15 +6778,21 @@
      "enum_values": [
       "inherit",
       "base",
-      "tinted"
+      "tinted",
+      "accent-tinted"
      ],
      "default": "inherit",
-     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+     "description": "Surface background ('inherit' default; 'base', 'tinted' and 'accent-tinted', a tint of the theme's accent with the contr"
     },
     {
      "name": "height",
      "type": "string",
      "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    },
+    {
+     "name": "grow",
+     "type": "boolean",
+     "description": "Takes the height the page has left, so the footer sits at the bottom of a short page. Without it, nldd-page lets its las"
     },
     {
      "name": "padding-block",
@@ -6914,20 +7133,31 @@
      "description": "Body max-width: 'full' removes the constraint so the section spans the full available width. Any CSS length (e.g. '480px"
     },
     {
+     "name": "vertical-alignment",
+     "type": "string",
+     "description": "Where the shorter column sits next to the longer one ('top' default). Only where the columns stand side by side; stacked"
+    },
+    {
      "name": "background",
      "type": "enum",
      "enum_values": [
       "inherit",
       "base",
-      "tinted"
+      "tinted",
+      "accent-tinted"
      ],
      "default": "inherit",
-     "description": "Surface background ('inherit' default; 'base'/'tinted' paint and cascade a surface)."
+     "description": "Surface background ('inherit' default; 'base', 'tinted' and 'accent-tinted', a tint of the theme's accent with the contr"
     },
     {
      "name": "height",
      "type": "string",
      "description": "Minimum section height (any CSS length, e.g. '400px', '100dvh') (mirrors width, which sets the body max-width)."
+    },
+    {
+     "name": "grow",
+     "type": "boolean",
+     "description": "Takes the height the page has left, so the footer sits at the bottom of a short page. Without it, nldd-page lets its las"
     },
     {
      "name": "padding-block",
@@ -7273,7 +7503,7 @@
     {
      "name": "width",
      "type": "string",
-     "description": "Width as a CSS length (default: 320px through --components-popover-default-width). A content-based size (`fit-content`, "
+     "description": "Width as a CSS length (default: 320px). A content-based size (`fit-content`, `min-content`, `max-content`, `auto`) is re"
     },
     {
      "name": "sm-full-height",
@@ -7405,6 +7635,22 @@
      "description": "Where the notifications area lands while this overlay is open, so a notification is not left inert b"
     }
    ]
+  },
+  {
+   "name": "shell",
+   "attributes": [
+    {
+     "name": "background",
+     "type": "string",
+     "description": "Background color (cascades to descendants)"
+    }
+   ],
+   "description": "The required root shell of a Nederlandse Digitale Dienst application. Always contains a split view or an nldd-page as direct content. The do",
+   "category": "layout",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
   },
   {
    "name": "spacer",
@@ -7773,7 +8019,7 @@
     {
      "name": "width",
      "type": "string",
-     "description": "CSS width (default: var(--components-window-default-width))"
+     "description": "CSS width (default: 640px)"
     },
     {
      "name": "height",
@@ -7818,7 +8064,7 @@
     {
      "name": "no-light-dismiss",
      "type": "boolean",
-     "description": "A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form"
+     "description": "A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a process of sev"
     },
     {
      "name": "open",
@@ -8176,6 +8422,146 @@
    }
   },
   {
+   "name": "step-cell",
+   "attributes": [
+    {
+     "name": "level",
+     "type": "enum",
+     "enum_values": [
+      "major",
+      "minor",
+      "none"
+     ],
+     "default": "major",
+     "description": "What stands in the lane: a whole dot (`major`, the default), a smaller one for a row that belongs under the one above it"
+    },
+    {
+     "name": "status",
+     "type": "enum",
+     "enum_values": [
+      "past",
+      "current",
+      "future"
+     ],
+     "default": "past",
+     "description": "How far along this row is (default 'past'); the same values as `nldd-step-bar-item`. It colors the dot and the track aro"
+    },
+    {
+     "name": "size",
+     "type": "enum",
+     "enum_values": [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "inherit",
+      "xxs",
+      "16",
+      "20",
+      "24",
+      "32",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
+      "12",
+      "28",
+      "40",
+      "44",
+      "48",
+      "56",
+      "64",
+      "80",
+      "96",
+      "flexible"
+     ],
+     "default": "sm",
+     "description": "How wide the lane is and so how big the dot: `sm` (default, 16px) for steps without a number, `md` (24px) where a number"
+    },
+    {
+     "name": "vertical-alignment",
+     "type": "enum",
+     "enum_values": [
+      "top",
+      "center",
+      "bottom"
+     ],
+     "default": "center",
+     "description": "Where the dot stands in the row (default 'center'). `top` puts it against the row's top padding and `bottom` against its"
+    },
+    {
+     "name": "marker-offset",
+     "type": "string",
+     "description": "How far below the top of the row's content the middle of the dot stands, as a CSS length or a percentage of the content'"
+    },
+    {
+     "name": "direction",
+     "type": "enum",
+     "enum_values": [
+      "horizontal",
+      "vertical",
+      "both",
+      "down",
+      "up"
+     ],
+     "default": "down",
+     "description": "The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has"
+    },
+    {
+     "name": "position",
+     "type": "enum",
+     "enum_values": [
+      "first",
+      "between",
+      "last",
+      "only"
+     ],
+     "default": "between",
+     "description": "Place of the row in the list as it stands on screen (default 'between'): decides whether the line continues above the do"
+    },
+    {
+     "name": "line",
+     "type": "enum",
+     "enum_values": [
+      "auto",
+      "top",
+      "bottom",
+      "both",
+      "none"
+     ],
+     "default": "auto",
+     "description": "Which halves of the track you have covered, when `status` and `direction` get it wrong (default 'auto', which is what th"
+    },
+    {
+     "name": "text",
+     "type": "string",
+     "description": "Number or short text in the dot"
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "description": "Icon name in the dot; wins over `text`"
+    },
+    {
+     "name": "hide-below",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "hide-above",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "description": "A cell that draws steps under each other in an `nldd-list`: a vertical track with a dot per row, colored by how far along each step is. It i",
+   "category": "data-display",
+   "backend": "jinja",
+   "content": {
+    "allowed": true
+   }
+  },
+  {
    "name": "text-cell",
    "attributes": [
     {
@@ -8346,130 +8732,6 @@
    ]
   },
   {
-   "name": "timeline-track-cell",
-   "attributes": [
-    {
-     "name": "level",
-     "type": "enum",
-     "enum_values": [
-      "major",
-      "minor",
-      "none"
-     ],
-     "default": "major",
-     "description": "What stands in the lane: a whole dot (`major`, the default), a smaller one for a row that belongs under the one above it"
-    },
-    {
-     "name": "status",
-     "type": "enum",
-     "enum_values": [
-      "past",
-      "current",
-      "future"
-     ],
-     "default": "past",
-     "description": "How far along this row is (default 'past'); the same values as `nldd-step-indicator-item`. It colors the dot and the tra"
-    },
-    {
-     "name": "size",
-     "type": "enum",
-     "enum_values": [
-      "xs",
-      "sm",
-      "md",
-      "lg",
-      "inherit",
-      "xxs",
-      "16",
-      "20",
-      "24",
-      "32",
-      "2",
-      "4",
-      "6",
-      "8",
-      "10",
-      "12",
-      "28",
-      "40",
-      "44",
-      "48",
-      "56",
-      "64",
-      "80",
-      "96",
-      "flexible"
-     ],
-     "default": "sm",
-     "description": "How wide the lane is and so how big the dot: `sm` (default, 16px) for a timeline of events, `md` (24px) where a number o"
-    },
-    {
-     "name": "direction",
-     "type": "enum",
-     "enum_values": [
-      "horizontal",
-      "vertical",
-      "both",
-      "down",
-      "up"
-     ],
-     "default": "down",
-     "description": "The direction the timeline moves forward in: `down` (default) puts the past above, `up` below. Only the current step has"
-    },
-    {
-     "name": "position",
-     "type": "enum",
-     "enum_values": [
-      "first",
-      "between",
-      "last",
-      "only"
-     ],
-     "default": "between",
-     "description": "Place in the series (default 'between'): decides whether the line continues above the dot, below it, or on both sides. `"
-    },
-    {
-     "name": "line",
-     "type": "enum",
-     "enum_values": [
-      "auto",
-      "top",
-      "bottom",
-      "both",
-      "none"
-     ],
-     "default": "auto",
-     "description": "Which halves of the track you have covered, when `status` and `direction` get it wrong (default 'auto', which is what th"
-    },
-    {
-     "name": "text",
-     "type": "string",
-     "description": "Number or short text in the dot"
-    },
-    {
-     "name": "icon",
-     "type": "string",
-     "description": "Icon name in the dot; wins over `text`"
-    },
-    {
-     "name": "hide-below",
-     "type": "string",
-     "description": ""
-    },
-    {
-     "name": "hide-above",
-     "type": "string",
-     "description": ""
-    }
-   ],
-   "description": "A cell component for displaying timeline track indicators in lists. Shows a vertical line with a dot indicating timeline position and state.",
-   "category": "data-display",
-   "backend": "jinja",
-   "content": {
-    "allowed": true
-   }
-  },
-  {
    "name": "title-cell",
    "attributes": [
     {
@@ -8637,7 +8899,7 @@
     {
      "name": "target",
      "type": "string",
-     "description": "Link target forwarded to the `<a>`; only applies with `href`"
+     "description": "Link target forwarded to the `<a>`; only applies with `href`. With '_blank' a visually hidden \"opent in nieuw tabblad\" a"
     },
     {
      "name": "rel",
@@ -8687,7 +8949,12 @@
     {
      "name": "current",
      "type": "boolean",
-     "description": "Marks the segment as the current page (`aria-current=\"page\"`). The row it sits in paints itself as the current row from "
+     "description": "Marks the segment as the current one, with `aria-current` set to `current-type`. The row it sits in paints itself as the"
+    },
+    {
+     "name": "current-type",
+     "type": "string",
+     "description": "The `aria-current` value of a `current` segment (default 'page'). Use 'location' for a table of contents, whose rows poi"
     },
     {
      "name": "disabled",
@@ -8703,6 +8970,11 @@
      "name": "divider-end",
      "type": "boolean",
      "description": "The row's divider stops after this cell."
+    },
+    {
+     "name": "translations",
+     "type": "string",
+     "description": ""
     }
    ],
    "description": "A segment inside an `nldd-list-item`: it groups a run of cells and makes just that run clickable. Use it when a row needs more than one segm",
@@ -8756,6 +9028,11 @@
      "description": "Makes the whole row one radio of a group: the action becomes a `role=\"radio\"` button carrying `aria-checked`, and activa"
     },
     {
+     "name": "accessible-label",
+     "type": "string",
+     "description": "Accessible name of the row's action (its link, button, checkbox or radio), for a row whose text does not say enough on i"
+    },
+    {
      "name": "reorderable",
      "type": "boolean",
      "description": "Set by the parent `nldd-list` when its own `reorderable` is on (with `type=\"list\"`); consumers do not set this. Serves a"
@@ -8763,7 +9040,7 @@
     {
      "name": "selected",
      "type": "boolean",
-     "description": "Marks the item as selected: it is one of the rows you picked. Selection is consumer-managed; the list never sets it. In "
+     "description": "Marks the item as selected: it is one of the rows you picked. Selection is consumer-managed; the list never sets it. A s"
     },
     {
      "name": "checked",
@@ -8779,6 +9056,11 @@
      "name": "current",
      "type": "boolean",
      "description": "Marks the item as the one you are on: the page a menu row points at, the record a list has open. Exactly one row in a li"
+    },
+    {
+     "name": "current-type",
+     "type": "string",
+     "description": "The `aria-current` value a `current` or `selected` row puts on its action in a `navigation` parent (default 'page'). Use"
     },
     {
      "name": "disabled",
@@ -8810,7 +9092,7 @@
    "slots": [
     {
      "name": "children",
-     "description": "Child rows of a branch in an `nldd-list type=\"tree\"`. Rendered as a `role=\"group\"` below the row, hi"
+     "description": "Child rows of this row, in an `nldd-list type=\"tree\"` or `type=\"navigation\"`. In a tree they render "
     }
    ]
   },
@@ -8865,7 +9147,7 @@
     {
      "name": "accessible-label",
      "type": "string",
-     "description": "Accessible name, forwarded to the list in `type=\"list\"` and to the search field in `type=\"listbox\"`. For `type=\"navigati"
+     "description": "Accessible name: of the list in `type=\"list\"`, of the search field in `type=\"listbox\"`, and of the navigation landmark i"
     },
     {
      "name": "translations",
@@ -8992,7 +9274,7 @@
     {
      "name": "disabled",
      "type": "boolean",
-     "description": "Disabled state"
+     "description": "Disabled state. Avoid it where you can; the design guidelines say why."
     },
     {
      "name": "centered",
@@ -9023,12 +9305,12 @@
     {
      "name": "text",
      "type": "string",
-     "description": "Text of the skip link. Falls back to the i18n default."
+     "description": "Text of the skip link. Name what is skipped. Falls back to the i18n default."
     },
     {
      "name": "href",
      "type": "string",
-     "description": "Optional external target id. Without href it jumps to the end of its own content."
+     "description": "Optional external target id. Without href it jumps to the first rendered element after the skip link."
     },
     {
      "name": "translations",
@@ -9036,7 +9318,7 @@
      "description": ""
     }
    ],
-   "description": "Accessibility pattern that lets keyboard users skip past content. Wraps content in a default slot. Without href it focuses the first element",
+   "description": "Accessibility pattern that lets keyboard users skip past content. Wraps content in a default slot. Not only for the header of a page. Any bl",
    "category": "navigation",
    "backend": "jinja",
    "content": {
@@ -9049,7 +9331,7 @@
     {
      "name": "text",
      "type": "string",
-     "description": "Title of the bar, rendered as the heading in the title group."
+     "description": "Title of the bar, rendered as the heading in the title group. One line, cut off with an ellipsis when it does not fit; s"
     },
     {
      "name": "supporting-text",
@@ -9159,13 +9441,7 @@
    "backend": "jinja",
    "content": {
     "allowed": true
-   },
-   "slots": [
-    {
-     "name": "indicator",
-     "description": "Optional custom indicator; overrides the default circle (and its visually-hidden label). Consumers r"
-    }
-   ]
+   }
   },
   {
    "name": "banner",
@@ -9196,7 +9472,7 @@
     {
      "name": "icon",
      "type": "string",
-     "description": "Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-circle-fi"
+     "description": "Icon override. Default per variant: neutral → info-circle-filled, accent → info-circle-filled, success → check-mark-circ"
     },
     {
      "name": "text",
@@ -9458,7 +9734,7 @@
       "mintgroen"
      ],
      "default": "accent",
-     "description": "Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'."
+     "description": "Color. Semantic (neutral, accent, success, warning, critical) or a Rijkskleur. Default 'accent'. With more than one segm"
     },
     {
      "name": "name",
@@ -9635,7 +9911,7 @@
       "mintgroen"
      ],
      "default": "accent",
-     "description": "Color (semantic or Rijkskleur). Default 'accent'."
+     "description": "Color (semantic or Rijkskleur). Default 'accent'. With more than one segment, give each a Rijkskleur (or success, warnin"
     },
     {
      "name": "name",
@@ -9780,7 +10056,7 @@
    }
   },
   {
-   "name": "step-indicator-item",
+   "name": "step-bar-item",
    "attributes": [
     {
      "name": "status",
@@ -9790,7 +10066,7 @@
       "current",
       "future"
      ],
-     "description": "`past` | `current` | `future`; overrides what the parent derives"
+     "description": "How far along this step is. `current` marks the step you are on (`aria-current=\"step\"`) and the parent derives the other"
     },
     {
      "name": "text",
@@ -9810,10 +10086,10 @@
     {
      "name": "button",
      "type": "boolean",
-     "description": "For flows without a URL per step (a wizard inside one window). Ignored"
+     "description": "For flows without a URL per step (a process that runs inside one window). Ignored"
     }
    ],
-   "description": "One step in an `nldd-step-indicator`. The parent decides the status and the",
+   "description": "One step in an `nldd-step-bar`. `status=\"current\"` marks the step you",
    "category": "feedback",
    "backend": "jinja",
    "content": {
@@ -9821,17 +10097,17 @@
    }
   },
   {
-   "name": "step-indicator",
+   "name": "step-bar",
    "attributes": [
+    {
+     "name": "current",
+     "type": "string",
+     "description": ""
+    },
     {
      "name": "accessible-label",
      "type": "string",
      "description": "Name of the nav; defaults to the i18n value (\"Voortgang\")"
-    },
-    {
-     "name": "current",
-     "type": "string",
-     "description": "1-based number of the current step (default 1)"
     },
     {
      "name": "translations",
